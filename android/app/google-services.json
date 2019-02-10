@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "856214861570",
+    "firebase_url": "https://piggybanx-c2e75.firebaseio.com",
+    "project_id": "piggybanx-c2e75",
+    "storage_bucket": "piggybanx-c2e75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856214861570:android:5ce991802b237008",
+        "android_client_info": {
+          "package_name": "com.example.piggybanx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856214861570-dc8hl1pt6nmbs0dl79i12vonmbcrsvaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.piggybanx",
+            "certificate_hash": "4994e0573eddbd112e2be4e0fa405e570ad4481a"
+          }
+        },
+        {
+          "client_id": "856214861570-t7ki2gghft3rtd2uaq70vcom57fn6q9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfI77PeiMrJmam1Pu86gU3lmCe7xRj0jM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856214861570-t7ki2gghft3rtd2uaq70vcom57fn6q9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
