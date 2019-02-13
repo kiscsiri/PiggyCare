@@ -13,8 +13,9 @@ class PiggyButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: new Container(
+        alignment: Alignment.center,
         width: MediaQuery.of(context).size.width * 0.7,
-        height: MediaQuery.of(context).size.height * 0.075,
+        height: MediaQuery.of(context).size.height * 0.09,
         decoration: new BoxDecoration(
             color: (disabled) ? Colors.grey : Theme.of(context).primaryColorDark,
             borderRadius: BorderRadius.circular(70.0)),
@@ -24,8 +25,12 @@ class PiggyButton extends StatelessWidget {
           } : null,
           child: new Text(
             text,
+            textAlign: TextAlign.left,
             style: new TextStyle(
-                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                color: Colors.white, 
+                fontSize: 25, 
+                fontWeight: FontWeight.bold
+                ),
           ),
         ),
       ),

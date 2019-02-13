@@ -20,10 +20,8 @@ class _SettingsPageState extends State<SettingsPage> {
   int _feedPerPeriod;
 
   _saveUserSettings() {
-    var updatedUser = new UserData(
-      feedPerPeriod: _feedPerPeriod,
-      period: _period
-    );
+    var updatedUser =
+        new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
     widget.store.dispatch(UpdateUserData(updatedUser));
   }
 
@@ -36,12 +34,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final boxHeight = MediaQuery.of(context).size.height * 0.2;
     return new Scaffold(
       body: new Container(
           child: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           new Container(
+            height: boxHeight,
             child: Center(
                 child: new Text("FEEDING SETTINGS",
                     style: Theme.of(context).textTheme.display2)),
@@ -52,12 +52,13 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               children: <Widget>[
                 new Container(
+                  height: boxHeight,
                   color: Color(0xfff3f3f3),
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 60, horizontal: 10.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10.0),
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -71,10 +72,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                   new Text(
                                     "I want to feed Piggy with this amount: ",
-                                    style: Theme.of(context).textTheme.display4,
+                                    style: 
+                                    new TextStyle(
+                                      fontSize: 12
+                                    ),
                                   ),
                                   new Text(
-                                    "$_feedPerPeriod \$",
+                                    " $_feedPerPeriod \$",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .display3,
@@ -120,6 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           new Container(
+            height: boxHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -136,7 +141,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: new DropdownButton(
                       onChanged: (value) {
                         setState(() {
-                         _period = value; 
+                          _period = value;
                         });
                       },
                       value: _period,
@@ -174,7 +179,9 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           new PiggyButton(
             text: "SAVE SETTINGS",
-            onClick: () async {_saveUserSettings();},
+            onClick: () async {
+              _saveUserSettings();
+            },
           )
         ],
       )),

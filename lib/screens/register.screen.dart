@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -21,14 +23,12 @@ class RegisterPage extends StatefulWidget {
   final Store<UserData> store;
   final String title;
 
-  final youtube = new FlutterYoutube();
-
   @override
   _RegisterPageState createState() => new _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  Future<String> _message = Future<String>.value('');
+  String _message = '';
 
   String verificationId;
   bool _isCodeSent = false;
@@ -38,10 +38,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final _telephoneFormKey = new GlobalKey<FormState>();
   final _codeFormKey = new GlobalKey<FormState>();
 
-  TextEditingController _phoneCodeController =
-      new TextEditingController(text: "+1 650-555-6969");
-  TextEditingController _smsCodeController =
-      TextEditingController(text: "555555");
+  TextEditingController _phoneCodeController = new TextEditingController();
+  TextEditingController _smsCodeController = TextEditingController();
+
+  final Completer<WebViewController> _youtubeController =
+      Completer<WebViewController>();
 
   @override
   void initState() {
@@ -59,16 +60,14 @@ class _RegisterPageState extends State<RegisterPage> {
     final PhoneVerificationCompleted verificationCompleted =
         (FirebaseUser user) {
       setState(() {
-        _message =
-            Future<String>.value('signInWithPhoneNumber auto succeeded: $user');
+        _message = 'signInWithPhoneNumber auto succeeded: $user';
       });
     };
 
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
       setState(() {
-        _message = Future<String>.value(
-            'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+        _message = 'Phone number verification failed. Please try again!';
       });
     };
 
@@ -86,13 +85,19 @@ class _RegisterPageState extends State<RegisterPage> {
       _isCodeSent = true;
     });
 
-    await _auth.verifyPhoneNumber(
-        phoneNumber: _phoneCodeController.text,
-        timeout: const Duration(seconds: 0),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    try {
+      await _auth.verifyPhoneNumber(
+          phoneNumber: _phoneCodeController.text,
+          timeout: const Duration(seconds: 0),
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    } catch (Exception) {
+      setState(() {
+        _message = 'Phone number verification failed. Please try again!';
+      });
+    }
   }
 
   Future<String> _testSignInWithPhoneNumber() async {
@@ -100,9 +105,15 @@ class _RegisterPageState extends State<RegisterPage> {
       verificationId: verificationId,
       smsCode: _smsCodeController.text,
     );
-
-    var user = await _auth.signInWithCredential(credential);
-
+    FirebaseUser user;
+    try {
+      user = await _auth.signInWithCredential(credential);
+    } catch (Exception) {
+      setState(() {
+        _message = 'Phone number verification failed. Please try again!';
+      });
+      return null;
+    }
     await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)
@@ -111,10 +122,11 @@ class _RegisterPageState extends State<RegisterPage> {
       if (value.documents.length == 0) {
         UserData userData = new UserData(
             id: user.uid,
-            phoneNumber: _phoneCodeController.text,
+            phoneNumber: user.phoneNumber,
             feedPerPeriod: 200,
             lastFeed: null,
             money: 100000,
+            created: DateTime.now(),
             saving: 0,
             period: Period.daily);
         Firestore.instance.collection('users').add(userData.toJson());
@@ -127,6 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
             feedPerPeriod: data['feedPerPeriod'],
             lastFeed: data['lastFeed'],
             money: data['money'],
+            created: data['created'],
             saving: data['saving'],
             period: Period.values[data['period']]);
         widget.store.dispatch(InitUserData(userData));
@@ -146,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 80.0, top: 60.0),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
                 child: new Text(
                   "ADD PHONE NUMBER",
                   style: Theme.of(context).textTheme.display3,
@@ -159,19 +172,21 @@ class _RegisterPageState extends State<RegisterPage> {
                 onValidate: (value) {
                   if (value.isEmpty) {
                     return "This field is required";
-                  } else if (value.length > 12) {
-                    return "The number is too long";
-                  } else if (value.length < 10) {
+                  } else if (value.length < 9) {
                     return "The number is too short";
                   }
                 },
+              ),
+              Text(
+                _message,
+                style: new TextStyle(color: Colors.redAccent),
               ),
               PiggyButton(
                   text: "SEND",
                   onClick: () {
                     if (_telephoneFormKey.currentState.validate()) {
                       setState(() {
-                        _message = _testVerifyPhoneNumber();
+                        _testVerifyPhoneNumber();
                       });
                     }
                   })
@@ -182,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 80.0, top: 60.0),
+            padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
             child: new Text(
               "ENTER YOUR SMS CODE",
               style: Theme.of(context).textTheme.display3,
@@ -202,12 +217,16 @@ class _RegisterPageState extends State<RegisterPage> {
               }
             },
           ),
+          Text(
+            _message,
+            style: new TextStyle(color: Colors.redAccent),
+          ),
           PiggyButton(
               text: "VERIFY",
               onClick: () {
                 if (_codeFormKey.currentState.validate()) {
                   setState(() {
-                    _message = _testSignInWithPhoneNumber();
+                    _testSignInWithPhoneNumber();
                   });
                 }
               })
@@ -217,47 +236,54 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),
-      body: new Center(
-          child: Padding(
-        padding:
-            const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 25),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                (_isCodeSent) ? codeBlock : telephoneBlock,
-                new Padding(
-                  padding: new EdgeInsets.only(bottom: 25),
+      body: new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: (_isCodeSent) ? codeBlock : telephoneBlock,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                        decoration: new BoxDecoration(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        margin: EdgeInsets.only(bottom: 0),
+                        child: Center(
+                          child: new Text(
+                            "Watch this video, to learn, how to do it!",
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(
+                                color: Colors.white, fontSize: 17),
+                          ),
+                        )),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: new WebView(
+                          javascriptMode: JavascriptMode.unrestricted,
+                          initialUrl:
+                              "https://www.youtube.com/embed/y6120QOlsfU",
+                          onWebViewCreated:
+                              (WebViewController webViewController) {
+                            _youtubeController.complete(webViewController);
+                          },
+                        ))
+                  ],
                 ),
-                Container(
-                    decoration: new BoxDecoration(
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    margin: EdgeInsets.only(bottom: 0),
-                    child: Center(
-                      child: new Text(
-                        "Watch this video, to learn, how to do it!",
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(color: Colors.white, fontSize: 17),
-                      ),
-                    )),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: new WebviewScaffold(
-                    url: "https://www.youtube.com/embed/y6120QOlsfU",
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      )),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

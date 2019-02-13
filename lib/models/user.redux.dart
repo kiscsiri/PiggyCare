@@ -52,6 +52,7 @@ UserData initUser(UserData state, InitUserData action) {
     period: action.user.period,
     phoneNumber: action.user.phoneNumber,
     saving: action.user.saving,
+    created: action.user.created
   );
 }
 
@@ -64,6 +65,7 @@ UserData updateUser(UserData state, UpdateUserData action) {
     period: action.user.period,
     phoneNumber: state.phoneNumber,
     saving: state.saving,
+    created: state.created
   );
 }
 
@@ -103,6 +105,7 @@ UserData feedPiggy(UserData state, FeedPiggy action) {
       lastFeed: DateTime.now(),
       money: (state.money - state.feedPerPeriod),
       period: state.period,
+      created: state.created,
       phoneNumber: state.phoneNumber,
       saving: (state.saving + state.feedPerPeriod));
 }
@@ -114,6 +117,7 @@ class UserData {
   int feedPerPeriod;
   String phoneNumber;
   DateTime lastFeed;
+  DateTime created;
   double money;
 
   Duration get timeUntilNextFeed {
@@ -148,7 +152,8 @@ class UserData {
       "phoneNumber": this.phoneNumber,
       "money": this.money,
       "period": this.period.index,
-      "lastFeed": this.lastFeed
+      "lastFeed": this.lastFeed,
+      "created": this.created
     });
   }
 
@@ -159,5 +164,6 @@ class UserData {
       this.period,
       this.money,
       this.lastFeed,
-      this.phoneNumber});
+      this.phoneNumber,
+      this.created});
 }

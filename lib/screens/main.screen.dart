@@ -15,7 +15,8 @@ class MainPage extends StatefulWidget {
 
   final Store<UserData> store;
 
-  final navigationStore = new Store<NavigationState>(navigationReducer, initialState: new NavigationState(index: 0));
+  final navigationStore = new Store<NavigationState>(navigationReducer,
+      initialState: new NavigationState(index: 0));
 
   final swipeKey = GlobalKey();
   final _pageController = new PageController(initialPage: 0, keepPage: true);
@@ -48,8 +49,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () =>
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+      onWillPop: () {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text("PiggyBanx"),
@@ -63,10 +65,9 @@ class _MainPageState extends State<MainPage> {
           ],
           onPageChanged: (int index) {
             setState(() {
-              widget.navigationStore.dispatch(SetNavigationIndex(index: index));  
+              widget.navigationStore.dispatch(SetNavigationIndex(index: index));
             });
           },
-
           controller: widget._pageController,
         ),
         bottomNavigationBar: new BottomNavigationBar(

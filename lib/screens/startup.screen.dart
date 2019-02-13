@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:redux/redux.dart';
 
@@ -16,6 +17,7 @@ class StartupPage extends StatefulWidget {
 
 class _StartupPageState extends State<StartupPage> {
   final Firestore firestore = new Firestore();
+  bool _isLoaded = false;
 
   @override
   void initState() {
@@ -27,13 +29,27 @@ class _StartupPageState extends State<StartupPage> {
             .where("phoneNumber", isEqualTo: user.phoneNumber)
             .getDocuments()
             .then((value) {
-          UserData u = UserData(
-              money: value.documents.first['Money'],
-              period: value.documents.first['Period'],
-              feedPerPeriod: value.documents.first['SavingPeriod'],
-              lastFeed: value.documents.first['LastFeedTime'],
-              saving: value.documents.first['Saving']);
-          widget.store.dispatch(InitUserData(u));
+          if (value.documents.length > 0) {
+            UserData u = UserData(
+                money: value.documents.first['money'],
+                period: Period.values[value.documents.first['period']],
+                feedPerPeriod: value.documents.first['feedPerPeriod'],
+                lastFeed: value.documents.first['lastFeed'],
+                id: user.uid,
+                created: value.documents.first['created'],
+                phoneNumber: value.documents.first['phoneNumber'],
+                saving: value.documents.first['saving']);
+            widget.store.dispatch(InitUserData(u));
+            Navigator.of(context).pushNamed("home");
+          } else {
+            setState(() {
+              _isLoaded = true;
+            });
+          }
+        });
+      } else {
+        setState(() {
+          _isLoaded = true;
         });
       }
     });
@@ -45,47 +61,55 @@ class _StartupPageState extends State<StartupPage> {
       backgroundColor: Theme.of(context).primaryColor,
       body: new Center(
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Image.asset("lib/assets/images/piggy_nyito.png"),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 100.0, top: 15),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Text("Piggy",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white)),
-                  new Text("Banx",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.white)),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: new Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: MediaQuery.of(context).size.height * 0.075,
-                decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(70.0)),
-                child: new FlatButton(
-                  onPressed: () async {
-                    Navigator.of(context).pushNamed('');
-                  },
-                  child: new Text(
-                    "Let's start!",
-                    style: new TextStyle(
-                        color: Theme.of(context).primaryColor, fontSize: 25),
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new Image.asset("lib/assets/images/piggy_nyito.png"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text("Piggy",
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white)),
+                      new Text("Banx",
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.white)),
+                    ],
                   ),
                 ),
-              ),
-            )
+              ],
+            ),
+            (_isLoaded)
+                ? Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: new Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.085,
+                      decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(70.0)),
+                      child: new FlatButton(
+                        onPressed: () async {
+                          Navigator.of(context).pushNamed('');
+                        },
+                        child: new Text(
+                          "Let's start!",
+                          style: new TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 25),
+                        ),
+                      ),
+                    ),
+                  )
+                : new Container()
           ],
         ),
       ),

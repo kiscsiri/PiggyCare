@@ -29,23 +29,29 @@ class _SavingsPageState extends State<SavingsPage> {
                 child: new Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        Column(
-          children: <Widget>[
-            Padding(
-                padding:
-                    const EdgeInsets.only(right: 32.0, left: 32.0, bottom: 8.0),
-                child: new Text("HOW MUCH MONEY I ALREADY EARNED",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).primaryTextTheme.display2)),
-            new Text("On this page, you can check out your savings!"),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 8.0),
+                  child: new Text("HOW MUCH MONEY I ALREADY EARNED",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).primaryTextTheme.display3)),
+              new Text(
+                "On this page, you can check out your savings!",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
         new Container(
           child: new Column(
             children: <Widget>[
               new Container(
                   width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.13,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: Theme.of(context).primaryColorDark,
@@ -75,14 +81,14 @@ class _SavingsPageState extends State<SavingsPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         new Text(
-                          "2 months 3 days",
+                          "${widget.store.state.created.year}.${widget.store.state.created.month}.${widget.store.state.created.day}",
                           style: new TextStyle(fontWeight: FontWeight.bold),
                         )
                       ]),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 35.0),
+                padding: const EdgeInsets.only(top: 25.0),
                 child: new Column(
                   children: <Widget>[
                     Padding(
@@ -98,9 +104,8 @@ class _SavingsPageState extends State<SavingsPage> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child:
-                      PiggyButton(text: "FEED PIGGY!", onClick: _navigate))
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: PiggyButton(text: "FEED PIGGY!", onClick: _navigate))
             ],
           ),
         )
