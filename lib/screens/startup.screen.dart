@@ -29,7 +29,7 @@ class _StartupPageState extends State<StartupPage> {
             .where("phoneNumber", isEqualTo: user.phoneNumber)
             .getDocuments()
             .then((value) {
-          if (value.documents.length > 0) {
+          if (value.documents.length > 2) {
             UserData u = UserData(
                 money: value.documents.first['money'],
                 period: Period.values[value.documents.first['period']],

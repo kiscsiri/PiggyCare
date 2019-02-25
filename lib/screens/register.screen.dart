@@ -169,12 +169,18 @@ class _RegisterPageState extends State<RegisterPage> {
               PiggyInput(
                 hintText: "+123456789101",
                 textController: _phoneCodeController,
+                width: MediaQuery.of(context).size.width * 0.7,
                 onValidate: (value) {
                   if (value.isEmpty) {
                     return "This field is required";
                   } else if (value.length < 9) {
                     return "The number is too short";
                   }
+                },
+                onErrorMessage: (error) {
+                  setState(() {
+                   _message = error; 
+                  });
                 },
               ),
               Text(
@@ -204,18 +210,36 @@ class _RegisterPageState extends State<RegisterPage> {
               textAlign: TextAlign.center,
             ),
           ),
-          PiggyInput(
-            hintText: "Your SMS code",
-            textController: _smsCodeController,
-            onValidate: (value) {
-              if (value.length > 6) {
-                return "The validation code is too long";
-              } else if (value.length < 6) {
-                return "The validation code is too short";
-              } else if (value.isEmpty) {
-                return "This field is required";
-              }
-            },
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new IconButton(
+                tooltip: "Go back to type in another phone number",
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () {
+                  setState(() {
+                    _isCodeSent = !_isCodeSent;
+                  });
+                },
+              ),
+              PiggyInput(
+                width: MediaQuery.of(context).size.width * 0.49,
+                hintText: "Your SMS code",
+                textController: _smsCodeController,
+                onValidate: (value) {
+                  if (value.length > 6) {
+                    return "The validation code is too long";
+                  } else if (value.length < 6) {
+                    return "The validation code is too short";
+                  } else if (value.isEmpty) {
+                    return "This field is required";
+                  }
+                },
+                onErrorMessage: (error) {
+                  _message = error;
+                },
+              ),
+            ],
           ),
           Text(
             _message,
@@ -267,7 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         )),
                     Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.4,
+                        height: MediaQuery.of(context).size.height * 0.37,
                         child: new WebView(
                           javascriptMode: JavascriptMode.unrestricted,
                           initialUrl:

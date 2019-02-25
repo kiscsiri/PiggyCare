@@ -144,6 +144,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                               vertical: 8.0, horizontal: 50),
                           child: new Text(
                             "PIGGY IS HUNGRY!",
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.display2,
                           ),
                         ),
