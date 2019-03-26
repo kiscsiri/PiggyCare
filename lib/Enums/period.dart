@@ -1,5 +1,6 @@
 enum Period {
   daily,
   weely,
-  monthly
+  monthly,
+  demo
 }

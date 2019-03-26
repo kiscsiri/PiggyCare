@@ -21,6 +21,8 @@ dependencies:
   flutter_redux: ^0.5.3
   flutter_webview_plugin: ^0.3.0+2
   webview_flutter: ^0.3.2+1
+  audioplayers: ^0.10.1
+  vibration: ^1.0.1
   
   flutter:
     sdk: flutter
@@ -51,6 +53,8 @@ flutter:
    - lib/assets/images/piggy_nyito.png
    - lib/assets/images/piggy_etetes.png
    - lib/assets/images/piggy_inaktiv.png
+   - lib/assets/images/coin.png
+   - assets/coin_sound.mp3
    - lib/assets/animation/animation-piggy.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see

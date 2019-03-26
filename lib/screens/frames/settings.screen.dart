@@ -93,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 });
                               },
                               min: 0,
-                              max: 10000,
+                              max: 10,
                               value: _feedPerPeriod.toDouble(),
                             ),
                             Padding(
@@ -107,7 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .display4),
-                                  new Text("10 000 \$",
+                                  new Text("10 \$",
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .display4)
@@ -146,6 +146,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                       value: _period,
                       items: [
+                        new DropdownMenuItem(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0, left: 20),
+                            child: new Text("Demo mode ( korlátlan )"),
+                          ),
+                          value: Period.demo,
+                        ),
                         new DropdownMenuItem(
                           child: Padding(
                             padding: const EdgeInsets.only(

@@ -29,7 +29,7 @@ class _StartupPageState extends State<StartupPage> {
             .where("phoneNumber", isEqualTo: user.phoneNumber)
             .getDocuments()
             .then((value) {
-          if (value.documents.length > 2) {
+          if (value.documents.length > 0) {
             UserData u = UserData(
                 money: value.documents.first['money'],
                 period: Period.values[value.documents.first['period']],
@@ -39,6 +39,7 @@ class _StartupPageState extends State<StartupPage> {
                 created: value.documents.first['created'],
                 phoneNumber: value.documents.first['phoneNumber'],
                 saving: value.documents.first['saving']);
+            user.reload();
             widget.store.dispatch(InitUserData(u));
             Navigator.of(context).pushNamed("home");
           } else {

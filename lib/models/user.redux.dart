@@ -45,28 +45,26 @@ UserData piggyReducer(UserData userState, dynamic action) {
 
 UserData initUser(UserData state, InitUserData action) {
   return new UserData(
-    feedPerPeriod: action.user.feedPerPeriod,
-    id: action.user.id,
-    lastFeed: action.user.lastFeed,
-    money: action.user.money,
-    period: action.user.period,
-    phoneNumber: action.user.phoneNumber,
-    saving: action.user.saving,
-    created: action.user.created
-  );
+      feedPerPeriod: action.user.feedPerPeriod,
+      id: action.user.id,
+      lastFeed: action.user.lastFeed,
+      money: action.user.money,
+      period: action.user.period,
+      phoneNumber: action.user.phoneNumber,
+      saving: action.user.saving,
+      created: action.user.created);
 }
 
 UserData updateUser(UserData state, UpdateUserData action) {
   return new UserData(
-    feedPerPeriod: action.user.feedPerPeriod,
-    id: state.id,
-    lastFeed: state.lastFeed,
-    money: state.money,
-    period: action.user.period,
-    phoneNumber: state.phoneNumber,
-    saving: state.saving,
-    created: state.created
-  );
+      feedPerPeriod: action.user.feedPerPeriod,
+      id: state.id,
+      lastFeed: state.lastFeed,
+      money: state.money,
+      period: action.user.period,
+      phoneNumber: state.phoneNumber,
+      saving: state.saving,
+      created: state.created);
 }
 
 updateUserDatabase(UserData state, UpdateUserData action) {
@@ -133,6 +131,9 @@ class UserData {
         break;
       case Period.weely:
         return DateTime.now().difference(lastFeed.add(Duration(days: 7)));
+        break;
+      case Period.demo:
+        return DateTime.now().difference(lastFeed.add(Duration(days: -7)));
         break;
       default:
         return Duration(seconds: 1);
