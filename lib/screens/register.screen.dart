@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -124,13 +126,27 @@ class _RegisterPageState extends State<RegisterPage> {
             id: user.uid,
             phoneNumber: user.phoneNumber,
             feedPerPeriod: 200,
-            lastFeed: null,
+            lastFeed: DateTime(1995),
             money: 100000,
             created: DateTime.now(),
             saving: 0,
             period: Period.daily);
+
+        var token = "";
+        var platfom = "";
+        _firebaseMessaging.getToken().then((val) {
+          token = val;
+        });
+        if (Platform.isAndroid) {
+          platfom = "android";
+        } else if (Platform.isIOS) {
+          platfom = "ios";
+        }
+        NotificationUpdate.register(user.uid, token, platfom);
+
         Firestore.instance.collection('users').add(userData.toJson());
         widget.store.dispatch(InitUserData(userData));
+
       } else {
         var data = value.documents[0];
         UserData userData = new UserData(
@@ -179,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
                 onErrorMessage: (error) {
                   setState(() {
-                   _message = error; 
+                    _message = error;
                   });
                 },
               ),

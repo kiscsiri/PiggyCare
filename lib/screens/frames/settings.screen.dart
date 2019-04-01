@@ -92,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   _feedPerPeriod = value.toInt();
                                 });
                               },
-                              min: 0,
+                              min: 1,
                               max: 10,
                               value: _feedPerPeriod.toDouble(),
                             ),
@@ -103,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  new Text('0 \$',
+                                  new Text('1 \$',
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .display4),

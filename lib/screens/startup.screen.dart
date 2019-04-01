@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
@@ -10,7 +11,8 @@ class StartupPage extends StatefulWidget {
   final String title;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Store<UserData> store;
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  
   @override
   _StartupPageState createState() => new _StartupPageState();
 }
@@ -22,6 +24,7 @@ class _StartupPageState extends State<StartupPage> {
   @override
   void initState() {
     super.initState();
+    
     widget._auth.currentUser().then((user) {
       if (user != null) {
         firestore

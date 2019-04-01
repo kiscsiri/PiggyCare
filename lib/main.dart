@@ -6,6 +6,7 @@ import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/register.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/notification-update.dart';
 import 'package:redux/redux.dart';
 
 var width = 0.0;
@@ -14,7 +15,7 @@ var height = 0.0;
 void main() {
   var primaryColor = new Color(0xffe25979);
   var primaryDark = new Color(0xffb1264c);
-
+  
   final store = new Store<UserData>(piggyReducer, initialState: new UserData());
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
