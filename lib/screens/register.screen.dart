@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
@@ -53,9 +52,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _phoneCodeController.dispose();
     _smsCodeController.dispose();
+    super.dispose();
   }
 
   Future<void> _testVerifyPhoneNumber() async {
@@ -125,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
         UserData userData = new UserData(
             id: user.uid,
             phoneNumber: user.phoneNumber,
-            feedPerPeriod: 200,
+            feedPerPeriod: 5,
             lastFeed: DateTime(1995),
             money: 100000,
             created: DateTime.now(),
@@ -136,7 +135,11 @@ class _RegisterPageState extends State<RegisterPage> {
         var platfom = "";
         _firebaseMessaging.getToken().then((val) {
           token = val;
+          _firebaseMessaging.onTokenRefresh.listen((token) {
+            NotificationUpdate.updateToken(token, user.uid);
+          });
         });
+
         if (Platform.isAndroid) {
           platfom = "android";
         } else if (Platform.isIOS) {
@@ -146,7 +149,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
         Firestore.instance.collection('users').add(userData.toJson());
         widget.store.dispatch(InitUserData(userData));
-
       } else {
         var data = value.documents[0];
         UserData userData = new UserData(

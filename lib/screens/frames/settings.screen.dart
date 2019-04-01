@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -22,7 +23,19 @@ class _SettingsPageState extends State<SettingsPage> {
   _saveUserSettings() {
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
+
+    NotificationUpdate.updateSettings(_period, widget.store.state.id);
     widget.store.dispatch(UpdateUserData(updatedUser));
+    final snackBar = SnackBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      content: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('Settings saved'),
+        ],
+      ));
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -185,11 +198,14 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          new PiggyButton(
-            text: "SAVE SETTINGS",
-            onClick: () async {
-              _saveUserSettings();
-            },
+          Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: new PiggyButton(
+              text: "SAVE SETTINGS",
+              onClick: () async {
+                _saveUserSettings();
+              },
+            ),
           )
         ],
       )),

@@ -42,8 +42,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    super.dispose();
     widget._pageController.dispose();
+    super.dispose();
   }
 
   @override

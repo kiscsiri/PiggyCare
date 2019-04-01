@@ -24,6 +24,7 @@ dependencies:
   audioplayers: ^0.10.1
   vibration: ^1.0.1
   http: ^0.12.0+1
+  connectivity: ^0.4.2
   
   flutter:
     sdk: flutter

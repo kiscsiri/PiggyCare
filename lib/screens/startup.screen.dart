@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:redux/redux.dart';
+import 'package:connectivity/connectivity.dart';
 
 class StartupPage extends StatefulWidget {
   StartupPage({Key key, this.title, this.store}) : super(key: key);
@@ -12,9 +14,29 @@ class StartupPage extends StatefulWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Store<UserData> store;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  
+
   @override
   _StartupPageState createState() => new _StartupPageState();
+}
+
+Future<void> alert(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('No internet connection'),
+        content: const Text('Please check your internet connection, then restart the application'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class _StartupPageState extends State<StartupPage> {
@@ -24,37 +46,44 @@ class _StartupPageState extends State<StartupPage> {
   @override
   void initState() {
     super.initState();
-    
-    widget._auth.currentUser().then((user) {
-      if (user != null) {
-        firestore
-            .collection('users')
-            .where("phoneNumber", isEqualTo: user.phoneNumber)
-            .getDocuments()
-            .then((value) {
-          if (value.documents.length > 0) {
-            UserData u = UserData(
-                money: value.documents.first['money'],
-                period: Period.values[value.documents.first['period']],
-                feedPerPeriod: value.documents.first['feedPerPeriod'],
-                lastFeed: value.documents.first['lastFeed'],
-                id: user.uid,
-                created: value.documents.first['created'],
-                phoneNumber: value.documents.first['phoneNumber'],
-                saving: value.documents.first['saving']);
-            user.reload();
-            widget.store.dispatch(InitUserData(u));
-            Navigator.of(context).pushNamed("home");
+
+    var connectivityResult = (Connectivity().checkConnectivity()).then((value) {
+      if (value == ConnectivityResult.mobile ||
+          value == ConnectivityResult.wifi) {
+        widget._auth.currentUser().then((user) {
+          if (user != null) {
+            firestore
+                .collection('users')
+                .where("phoneNumber", isEqualTo: user.phoneNumber)
+                .getDocuments()
+                .then((value) {
+              if (value.documents.length > 0) {
+                UserData u = UserData(
+                    money: value.documents.first['money'],
+                    period: Period.values[value.documents.first['period']],
+                    feedPerPeriod: value.documents.first['feedPerPeriod'],
+                    lastFeed: value.documents.first['lastFeed'],
+                    id: user.uid,
+                    created: value.documents.first['created'],
+                    phoneNumber: value.documents.first['phoneNumber'],
+                    saving: value.documents.first['saving']);
+                user.reload();
+                widget.store.dispatch(InitUserData(u));
+                Navigator.of(context).pushNamed("home");
+              } else {
+                setState(() {
+                  _isLoaded = true;
+                });
+              }
+            });
           } else {
             setState(() {
               _isLoaded = true;
             });
           }
         });
-      } else {
-        setState(() {
-          _isLoaded = true;
-        });
+      } else if (value == ConnectivityResult.none) {
+        alert(context);
       }
     });
   }

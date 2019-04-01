@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'dart:convert' as JSON;
+import 'package:piggybanx/Enums/period.dart';
 
 class NotificationUpdate {
   //Debug
@@ -19,7 +19,7 @@ class NotificationUpdate {
 
     var jsonString = json.encode(mappedData);
 
-    var result = await http
+    await http
         .post(url,
             headers: {
               "Content-Type": "application/json",
@@ -31,18 +31,56 @@ class NotificationUpdate {
     });
   }
 
-  static updateSettings() async {
+  static feedPiggy(String uid) async {
     Map<String, Object> mappedData = {
-      "token": "asd",
-      "uid": "asds",
-      "platform": "android"
+      "userId": uid,
     };
 
     var jsonString = json.encode(mappedData);
 
-    var result = await http.get(url, headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    });
+    await http.put(url + "feed",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: jsonString).then((val) {
+          print(val);
+        });
+  }
+
+  static updateSettings(Period period, String uid) async {
+    Map<String, Object> mappedData = {
+      'userId': uid,
+      "feedPeriod": period.index,
+    };
+
+    var jsonString = json.encode(mappedData);
+
+    await http.put(url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: jsonString).then((val) {
+          print(val);
+        });
+  }
+
+    static updateToken(String token, String uid) async {
+    Map<String, Object> mappedData = {
+      'userId': uid,
+      "device_id": token,
+    };
+
+    var jsonString = json.encode(mappedData);
+
+    await http.put(url + "updateToken",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: jsonString).then((val) {
+          print(val);
+        });
   }
 }

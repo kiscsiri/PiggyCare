@@ -4,6 +4,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
@@ -29,6 +30,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
 
   Future<void> _feedPiggy() async {
     widget.store.dispatch(FeedPiggy(widget.store.state.id));
+    NotificationUpdate.feedPiggy(widget.store.state.id);
+    
     await _loadAnimation();
   }
 
@@ -63,8 +66,9 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
+    _everySecond.cancel();
     _controller.dispose();
+    super.dispose();
   }
 
   Future<void> _loadAnimation() async {
