@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PiggyPage extends StatefulWidget {
   PiggyPage({Key key, this.title, this.store}) : super(key: key);
@@ -21,23 +25,40 @@ class PiggyPage extends StatefulWidget {
 
 class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   AnimationController _controller;
+  BehaviorSubject<bool> willAcceptStream;
+
   StepTween tween = new StepTween();
   String _now;
   Timer _everySecond;
   double coinX = -1;
   double coinY = 20.0;
   bool _coinVisible = false;
+  bool isOnTarget = false;
+  final _dragKey = GlobalKey();
+
+  final List<String> _productLists = Platform.isAndroid
+      ? [
+          'android.test.purchased',
+          'point_1000',
+          '5000_point',
+          'android.test.canceled',
+        ]
+      : ['com.cooni.point1000', 'com.cooni.point5000'];
+  String _platformVersion = 'Unknown';
+  List<IAPItem> _items = [];
 
   Future<void> _feedPiggy() async {
     widget.store.dispatch(FeedPiggy(widget.store.state.id));
     NotificationUpdate.feedPiggy(widget.store.state.id);
-    
+
     await _loadAnimation();
   }
 
   @override
   void initState() {
     super.initState();
+    willAcceptStream = new BehaviorSubject<bool>();
+    willAcceptStream.add(false);
     _controller = new AnimationController(
       vsync: this,
       duration: new Duration(
@@ -60,21 +81,38 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         _now = DateTime.now().second.toString();
       });
     });
-
+    asyncInitState();
     _controller.forward();
   }
 
+  void asyncInitState() async {
+    await FlutterInappPurchase.initConnection;
+  }
+
   @override
-  void dispose() {
+  void dispose() async {
     _everySecond.cancel();
     _controller.dispose();
+    await FlutterInappPurchase.endConnection;
     super.dispose();
   }
+
+  Future<void> testPurchace() async {}
 
   Future<void> _loadAnimation() async {
     AnimationController _controller =
         AnimationController(duration: const Duration(seconds: 5), vsync: this)
           ..forward();
+    // try {
+    //   // PurchasedItem purchased =
+    //   //     await FlutterInappPurchase.getProducts("token");
+    //   // print('purcuased - ${purchased.toString()}');
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => PaysafeCardPage()));
+    // } catch (error) {
+    //   print('$error');
+    // }
+
     var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -127,6 +165,22 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     } else if (widget.store.state.period == Period.monthly) {
       period = "next month";
     }
+    var bigcoin = Container(
+        decoration: ShapeDecoration(
+          shape: CircleBorder(side: BorderSide(width: 2, color: Colors.green)),
+          color: Colors.green,
+        ),
+        child: Image.asset(
+          "lib/assets/images/coin.png",
+          gaplessPlayback: false,
+          width: MediaQuery.of(context).size.width * 0.1 * 1.7,
+          height: MediaQuery.of(context).size.width * 0.1 * 1.7,
+        ));
+
+    var smallCoin = Image.asset("lib/assets/images/coin.png",
+        width: MediaQuery.of(context).size.width * 0.1,
+        height: MediaQuery.of(context).size.width * 0.1);
+
     return new Scaffold(
       body: Stack(children: <Widget>[
         new Container(
@@ -196,33 +250,53 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                 DragTarget(
                     onWillAccept: (data) {
                       if (data == "Coin") {
+                        setState(() {
+                          willAcceptStream.value = true;
+                        });
                         return true;
                       } else {
+                        setState(() {
+                          willAcceptStream.value = false;
+                        });
                         return false;
                       }
                     },
+                    onLeave: (val) {
+                      setState(() {
+                        willAcceptStream.value = false;
+                      });
+                    },
                     onAccept: (data) {
+                      setState(() {
+                        isOnTarget = false;
+                      });
                       _feedPiggy();
                     },
                     builder: (context, List<String> candidateData,
                             rejectedData) =>
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 38.0),
-                          child: _isDisabled
-                              ? new Image.asset(
-                                  "lib/assets/images/piggy_inaktiv.png",
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                )
-                              : new Image.asset(
-                                  "lib/assets/images/piggy_etetes.png",
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: MediaQuery.of(context).size.width * 0.65,
+                            child: _isDisabled
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.65,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.65,
+                                    child: FlareActor("assets/piggy_sleep.flr",
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.cover,
+                                        animation: "sleep"))
+                                : new Image.asset(
+                                    "lib/assets/images/piggy_etetes.png",
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    width: MediaQuery.of(context).size.height *
+                                        0.5,
+                                  ),
+                          ),
                         )),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
@@ -268,22 +342,26 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                     ? MediaQuery.of(context).size.width * 0.45
                     : coinX,
                 child: Draggable(
-                  axis: Axis.vertical,
                   data: "Coin",
                   onDragEnd: (data) {
                     coinX = -1;
                     coinY = 20.0;
                     setState(() {
                       _coinVisible = false;
+                      isOnTarget = false;
                     });
                   },
-                  child: Image.asset("lib/assets/images/coin.png",
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      height: MediaQuery.of(context).size.width * 0.1),
-                  feedback: Image.asset("lib/assets/images/coin.png",
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      height: MediaQuery.of(context).size.width * 0.1),
+                  key: _dragKey,
                   childWhenDragging: Container(),
+                  child: ((!isOnTarget) ? smallCoin : bigcoin),
+                  feedback: StreamBuilder(
+                    initialData: false,
+                    stream: willAcceptStream,
+                    builder: (context, snapshot) {
+                      return snapshot.data ? bigcoin : smallCoin;
+                    },
+                  ),
+                  maxSimultaneousDrags: 1,
                 ),
               )
             : Container(),

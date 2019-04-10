@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/screens/piggyTryOut.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -138,14 +139,14 @@ class _RegisterPageState extends State<RegisterPage> {
           _firebaseMessaging.onTokenRefresh.listen((token) {
             NotificationUpdate.updateToken(token, user.uid);
           });
-        });
 
-        if (Platform.isAndroid) {
-          platfom = "android";
-        } else if (Platform.isIOS) {
-          platfom = "ios";
-        }
-        NotificationUpdate.register(user.uid, token, platfom);
+          if (Platform.isAndroid) {
+            platfom = "android";
+          } else if (Platform.isIOS) {
+            platfom = "ios";
+          }
+          NotificationUpdate.register(token, user.uid, platfom);
+        });
 
         Firestore.instance.collection('users').add(userData.toJson());
         widget.store.dispatch(InitUserData(userData));
@@ -293,32 +294,24 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                        decoration: new BoxDecoration(
-                          color: Theme.of(context).primaryColorDark,
-                        ),
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.05,
                         margin: EdgeInsets.only(bottom: 0),
                         child: Center(
-                          child: new Text(
-                            "Watch this video, to learn, how to do it!",
+                          child: new Text(" ",
                             textAlign: TextAlign.center,
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),
                         )),
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.37,
-                        child: new WebView(
-                          javascriptMode: JavascriptMode.unrestricted,
-                          initialUrl:
-                              "https://www.youtube.com/embed/y6120QOlsfU",
-                          onWebViewCreated:
-                              (WebViewController webViewController) {
-                            _youtubeController.complete(webViewController);
-                          },
-                        ))
+                    PiggyButton(
+                        text: "Test it out!",
+                        onClick: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PiggyTestPage()));
+                        })
                   ],
                 ),
               )

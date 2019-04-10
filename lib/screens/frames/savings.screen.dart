@@ -77,7 +77,7 @@ class _SavingsPageState extends State<SavingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         new Text(
-                          "You have been collection since: ",
+                          "You have been collecting since: ",
                           style: TextStyle(color: Colors.white),
                         ),
                         new Text(

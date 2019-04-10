@@ -9,6 +9,7 @@
 #import <firebase_auth/FirebaseAuthPlugin.h>
 #import <firebase_core/FirebaseCorePlugin.h>
 #import <firebase_messaging/FirebaseMessagingPlugin.h>
+#import <flutter_inapp_purchase/FlutterInappPurchasePlugin.h>
 #import <flutter_webview_plugin/FlutterWebviewPlugin.h>
 #import <google_sign_in/GoogleSignInPlugin.h>
 #import <path_provider/PathProviderPlugin.h>
@@ -24,6 +25,7 @@
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
+  [FlutterInappPurchasePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterInappPurchasePlugin"]];
   [FlutterWebviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterWebviewPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
