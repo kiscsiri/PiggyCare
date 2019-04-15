@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/screens/piggyTryOut.dart';
 import 'package:piggybanx/screens/register.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
@@ -46,6 +47,7 @@ void main() {
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold),
             ),
+            backgroundColor: new Color(0xffd2576b),
             textTheme: TextTheme(
               display1: TextStyle(
                   color: primaryColor,
@@ -67,7 +69,9 @@ void main() {
           ),
           routes: {
             '': (context) => new RegisterPage(store: store),
-            'home': (context) => new MainPage(store: store)
+            'tryOut': (context) => new PiggyTestPage(),
+            'home': (context) => new MainPage(store: store),
+            'register': (context) => new RegisterPage(store: store)
           }),
     );
   });

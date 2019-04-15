@@ -69,7 +69,7 @@ class _StartupPageState extends State<StartupPage> {
                     saving: value.documents.first['saving']);
                 user.reload();
                 widget.store.dispatch(InitUserData(u));
-                Navigator.of(context).pushNamed("home");
+                Navigator.of(context).pushReplacementNamed("home");
               } else {
                 setState(() {
                   _isLoaded = true;
@@ -131,7 +131,7 @@ class _StartupPageState extends State<StartupPage> {
                           borderRadius: BorderRadius.circular(70.0)),
                       child: new FlatButton(
                         onPressed: () async {
-                          Navigator.of(context).pushNamed('');
+                          Navigator.of(context).pushReplacementNamed('tryOut');
                         },
                         child: new Text(
                           "Let's start!",

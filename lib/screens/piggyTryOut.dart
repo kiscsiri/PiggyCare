@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggybanx/widgets/piggy.coin.dart';
+import 'package:piggybanx/widgets/piggy.main.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:vibration/vibration.dart';
 
 class PiggyTestPage extends StatefulWidget {
-  PiggyTestPage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  PiggyTestPage({Key key}) : super(key: key);
 
   @override
   _PiggyPageState createState() => new _PiggyPageState();
@@ -16,12 +17,16 @@ class PiggyTestPage extends StatefulWidget {
 
 class _PiggyPageState extends State<PiggyTestPage>
     with TickerProviderStateMixin {
-  double coinX = -1;
-  double coinY = 20.0;
+  BehaviorSubject<bool> willAcceptStream;
+
+  Animation<double> _coinAnimation;
+  Tween<double> _tween;
+  AnimationController _animationController;
+
   int counter = 0;
-  bool _coinVisible = false;
+  bool _coinVisible = true;
   bool isOnTarget = false;
-  final _dragKey = GlobalKey();
+  bool _isDisabled = false;
 
   Future<void> _feedPiggy() async {
     await _loadAnimation();
@@ -29,11 +34,33 @@ class _PiggyPageState extends State<PiggyTestPage>
 
   @override
   void initState() {
+    _animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _tween = Tween(begin: 0.15, end: 0.25);
+    _coinAnimation = _tween.animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.fastOutSlowIn,
+    ))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _animationController.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _animationController.forward();
+        }
+      })
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController.forward();
+
+    willAcceptStream = new BehaviorSubject<bool>();
+    willAcceptStream.add(false);
     super.initState();
   }
 
   @override
   void dispose() async {
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -81,118 +108,59 @@ class _PiggyPageState extends State<PiggyTestPage>
     });
   }
 
-  setPosition(DraggableDetails data) {
-    coinX = data.offset.dx;
-    coinY = data.offset.dy;
-  }
-
   @override
   Widget build(BuildContext context) {
-    var bigcoin = Image.asset(
-      "lib/assets/images/coin.png",
-      gaplessPlayback: false,
-      width: MediaQuery.of(context).size.width * 0.1 * 1.5,
-      height: MediaQuery.of(context).size.width * 0.1 * 1.5,
-    );
-
-    var smallCoin = Image.asset("lib/assets/images/coin.png",
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.width * 0.1);
-
     return new Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text("Feed piggy to save money"),
       ),
-      body: Stack(children: <Widget>[
-        new Container(
-            child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                DragTarget(
-                    onWillAccept: (data) {
-                      if (data == "Coin") {
-                        setState(() {
-                          imageCache.clear();
-                          isOnTarget = true;
-                        });
-                        return true;
-                      } else {
-                        setState(() {
-                          imageCache.clear();
-                          isOnTarget = false;
-                        });
-                        return false;
-                      }
-                    },
-                    onAccept: (data) {
+      body: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+          new Container(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  PiggyFeedWidget(
+                    willAcceptStream: willAcceptStream,
+                    isDisabled: _isDisabled,
+                    onDrop: () {
                       setState(() {
-                        isOnTarget = false;
+                        _coinVisible = false;
+                        _isDisabled = true;
                       });
-                      _feedPiggy();
+                      _loadAnimation();
                     },
-                    builder: (context, List<String> candidateData,
-                            rejectedData) =>
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: new Image.asset(
-                            "lib/assets/images/piggy_etetes.png",
-                            height: MediaQuery.of(context).size.width * 0.5,
-                            width: MediaQuery.of(context).size.height * 0.5,
-                          ),
-                        )),
-                new Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                    child: new Center(
-                        child: new Text(
-                      "You saved $counter \$!",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ))),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.13,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: PiggyButton(
-                        text: "FEED PIGGY!", onClick: () => _feedPiggy()),
                   ),
-                ),
-              ]),
-        )),
-        Positioned(
-          top: coinY,
-          left: coinX.isNegative
-              ? MediaQuery.of(context).size.width * 0.45
-              : coinX,
-          child: Draggable(
-            axis: Axis.vertical,
-            data: "Coin",
-            onDragEnd: (data) {
-              coinX = -1;
-              coinY = 20.0;
-              setState(() {
-                _coinVisible = false;
-                isOnTarget = false;
-              });
-            },
-            key: _dragKey,
-            child: smallCoin,
-            feedback: ((!isOnTarget) ? smallCoin : bigcoin),
-            ignoringFeedbackSemantics: true,
-            maxSimultaneousDrags: 1,
-          ),
-        )
-      ]),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.13,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: _isDisabled
+                          ? PiggyButton(
+                              disabled: !_isDisabled,
+                              text: "REGISTER",
+                              onClick: () => Navigator.pushReplacementNamed(
+                                  context, 'register'))
+                          : Container(),
+                    ),
+                  ),
+                ]),
+          )),
+          PiggyCoin(
+            coinController: _coinAnimation,
+            coinVisible: _coinVisible,
+            isOnTarget: isOnTarget,
+            willAcceptStream: willAcceptStream,
+          )
+        ]),
+      ),
     );
   }
 }

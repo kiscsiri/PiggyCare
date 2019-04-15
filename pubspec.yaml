@@ -60,7 +60,7 @@ flutter:
    - lib/assets/images/piggy_etetes.png
    - lib/assets/images/piggy_inaktiv.png
    - lib/assets/images/coin.png
-   - assets/piggy_sleep.flr2d
+   - assets/piggy_etetes.flr
    - assets/piggy_sleep.flr
    - assets/coin_sound.mp3
    - lib/assets/animation/animation-piggy.gif

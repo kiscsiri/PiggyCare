@@ -9,6 +9,8 @@ import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggybanx/widgets/piggy.coin.dart';
+import 'package:piggybanx/widgets/piggy.main.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
@@ -27,14 +29,16 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   AnimationController _controller;
   BehaviorSubject<bool> willAcceptStream;
 
+  Animation<double> _coinAnimation;
+  Tween<double> _tween;
+  AnimationController _animationController;
+
   StepTween tween = new StepTween();
-  String _now;
   Timer _everySecond;
   double coinX = -1;
   double coinY = 20.0;
-  bool _coinVisible = false;
+  bool _coinVisible = true;
   bool isOnTarget = false;
-  final _dragKey = GlobalKey();
 
   final List<String> _productLists = Platform.isAndroid
       ? [
@@ -56,6 +60,25 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    _animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _tween = Tween(begin: 0.35, end: 0.4 );
+    _coinAnimation = _tween.animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.fastOutSlowIn,
+    ))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _animationController.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _animationController.forward();
+        }
+      })
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController.forward();
+
     super.initState();
     willAcceptStream = new BehaviorSubject<bool>();
     willAcceptStream.add(false);
@@ -76,11 +99,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         }
       });
 
-    _everySecond = Timer.periodic(Duration(seconds: 1), (Timer t) {
-      setState(() {
-        _now = DateTime.now().second.toString();
-      });
-    });
     asyncInitState();
     _controller.forward();
   }
@@ -92,9 +110,17 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   void dispose() async {
     _everySecond.cancel();
+    _animationController.dispose();
     _controller.dispose();
     await FlutterInappPurchase.endConnection;
     super.dispose();
+  }
+
+  void onCoinDrop() {
+    setState(() {
+      isOnTarget = false;
+    });
+    _feedPiggy();
   }
 
   Future<void> testPurchace() async {}
@@ -103,15 +129,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     AnimationController _controller =
         AnimationController(duration: const Duration(seconds: 5), vsync: this)
           ..forward();
-    // try {
-    //   // PurchasedItem purchased =
-    //   //     await FlutterInappPurchase.getProducts("token");
-    //   // print('purcuased - ${purchased.toString()}');
-    //   Navigator.push(
-    //       context, MaterialPageRoute(builder: (context) => PaysafeCardPage()));
-    // } catch (error) {
-    //   print('$error');
-    // }
 
     var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
       ..addStatusListener((status) {
@@ -157,6 +174,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         widget.store.state.timeUntilNextFeed > Duration(seconds: 0)
             ? false
             : true;
+    _coinVisible = !_isDisabled;
     String period;
     if (widget.store.state.period == Period.daily) {
       period = "tomorrow";
@@ -165,6 +183,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     } else if (widget.store.state.period == Period.monthly) {
       period = "next month";
     }
+
     var bigcoin = Container(
         decoration: ShapeDecoration(
           shape: CircleBorder(side: BorderSide(width: 2, color: Colors.green)),
@@ -190,20 +209,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // OutlineButton(
-                //   onPressed: () {
-                //     setState(() {
-                //       if (_coinVisible) {
-                //         _coinVisible = false;
-                //       } else {
-                //         _coinVisible = true;
-                //       }
-                //     });
-                //   },
-                //   child: Image.asset("lib/assets/images/coin.png",
-                //       width: MediaQuery.of(context).size.width * 0.1,
-                //       height: MediaQuery.of(context).size.width * 0.1),
-                // ),
                 _isDisabled
                     ? new Column(
                         children: <Widget>[
@@ -211,7 +216,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 30),
                             child: new Text(
-                              "PIGGY IS FULL FOR TODAY :(",
+                              "PIGGY IS FULL FOR TODAY :)",
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.display2,
                             ),
@@ -230,7 +235,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 50),
+                                vertical: 8.0, horizontal: 20),
                             child: new Text(
                               "PIGGY IS HUNGRY!",
                               textAlign: TextAlign.center,
@@ -239,7 +244,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 90.0),
+                                const EdgeInsets.symmetric(horizontal: 60.0),
                             child: new Text(
                               "You have to feed him before he starves to death!",
                               textAlign: TextAlign.center,
@@ -247,59 +252,15 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                DragTarget(
-                    onWillAccept: (data) {
-                      if (data == "Coin") {
-                        setState(() {
-                          willAcceptStream.value = true;
-                        });
-                        return true;
-                      } else {
-                        setState(() {
-                          willAcceptStream.value = false;
-                        });
-                        return false;
-                      }
-                    },
-                    onLeave: (val) {
-                      setState(() {
-                        willAcceptStream.value = false;
-                      });
-                    },
-                    onAccept: (data) {
-                      setState(() {
-                        isOnTarget = false;
-                      });
-                      _feedPiggy();
-                    },
-                    builder: (context, List<String> candidateData,
-                            rejectedData) =>
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 38.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            height: MediaQuery.of(context).size.width * 0.65,
-                            child: _isDisabled
-                                ? Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.65,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.65,
-                                    child: FlareActor("assets/piggy_sleep.flr",
-                                        alignment: Alignment.center,
-                                        fit: BoxFit.cover,
-                                        animation: "sleep"))
-                                : new Image.asset(
-                                    "lib/assets/images/piggy_etetes.png",
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    width: MediaQuery.of(context).size.height *
-                                        0.5,
-                                  ),
-                          ),
-                        )),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 25.0),
+                  child: PiggyFeedWidget(
+                      willAcceptStream: willAcceptStream,
+                      isDisabled: _isDisabled,
+                      onDrop: onCoinDrop),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.13,
                     width: MediaQuery.of(context).size.width * 0.7,
@@ -336,33 +297,11 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
               ]),
         )),
         (!_isDisabled)
-            ? Positioned(
-                top: coinY,
-                left: coinX.isNegative
-                    ? MediaQuery.of(context).size.width * 0.45
-                    : coinX,
-                child: Draggable(
-                  data: "Coin",
-                  onDragEnd: (data) {
-                    coinX = -1;
-                    coinY = 20.0;
-                    setState(() {
-                      _coinVisible = false;
-                      isOnTarget = false;
-                    });
-                  },
-                  key: _dragKey,
-                  childWhenDragging: Container(),
-                  child: ((!isOnTarget) ? smallCoin : bigcoin),
-                  feedback: StreamBuilder(
-                    initialData: false,
-                    stream: willAcceptStream,
-                    builder: (context, snapshot) {
-                      return snapshot.data ? bigcoin : smallCoin;
-                    },
-                  ),
-                  maxSimultaneousDrags: 1,
-                ),
+            ? PiggyCoin(
+                coinController: _coinAnimation,
+                coinVisible: _coinVisible,
+                isOnTarget: isOnTarget,
+                willAcceptStream: willAcceptStream,
               )
             : Container(),
       ]),

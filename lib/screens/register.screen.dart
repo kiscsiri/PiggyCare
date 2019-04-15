@@ -303,15 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),
-                        )),
-                    PiggyButton(
-                        text: "Test it out!",
-                        onClick: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PiggyTestPage()));
-                        })
+                        ))
                   ],
                 ),
               )
