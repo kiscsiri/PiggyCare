@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
 import 'package:piggybanx/services/notification-update.dart';
@@ -34,7 +33,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   AnimationController _animationController;
 
   StepTween tween = new StepTween();
-  Timer _everySecond;
   double coinX = -1;
   double coinY = 20.0;
   bool _coinVisible = true;
@@ -49,7 +47,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         ]
       : ['com.cooni.point1000', 'com.cooni.point5000'];
   String _platformVersion = 'Unknown';
-  List<IAPItem> _items = [];
 
   Future<void> _feedPiggy() async {
     widget.store.dispatch(FeedPiggy(widget.store.state.id));
@@ -99,20 +96,13 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         }
       });
 
-    asyncInitState();
     _controller.forward();
-  }
-
-  void asyncInitState() async {
-    await FlutterInappPurchase.initConnection;
   }
 
   @override
   void dispose() async {
-    _everySecond.cancel();
     _animationController.dispose();
     _controller.dispose();
-    await FlutterInappPurchase.endConnection;
     super.dispose();
   }
 

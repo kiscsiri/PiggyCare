@@ -156,9 +156,9 @@ class _RegisterPageState extends State<RegisterPage> {
             id: user.uid,
             phoneNumber: data['phoneNumber'],
             feedPerPeriod: data['feedPerPeriod'],
-            lastFeed: data['lastFeed'],
+            lastFeed: data['lastFeed'].toDate(),
             money: data['money'],
-            created: data['created'],
+            created: data['created'].toDate(),
             saving: data['saving'],
             period: Period.values[data['period']]);
         widget.store.dispatch(InitUserData(userData));
@@ -194,11 +194,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     return "This field is required";
                   } else if (value.length < 9) {
                     return "The number is too short";
+                  } else if (value.length > 12) {
+                    return "The number is too long";
                   }
                 },
                 onErrorMessage: (error) {
                   setState(() {
-                    _message = error;
                   });
                 },
               ),

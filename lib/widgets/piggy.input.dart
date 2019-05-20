@@ -31,6 +31,7 @@ class PiggyInput extends StatelessWidget {
             var result = onValidate(value);
             if(result != null) {
               onErrorMessage(result);
+              return result;
             }
           },
           decoration:

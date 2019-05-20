@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/Enums/period.dart';
@@ -13,7 +12,6 @@ class StartupPage extends StatefulWidget {
   final String title;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Store<UserData> store;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   _StartupPageState createState() => new _StartupPageState();
@@ -62,9 +60,9 @@ class _StartupPageState extends State<StartupPage> {
                     money: value.documents.first['money'],
                     period: Period.values[value.documents.first['period']],
                     feedPerPeriod: value.documents.first['feedPerPeriod'],
-                    lastFeed: value.documents.first['lastFeed'],
+                    lastFeed: value.documents.first['lastFeed'].toDate(),
                     id: user.uid,
-                    created: value.documents.first['created'],
+                    created: value.documents.first['created'].toDate(),
                     phoneNumber: value.documents.first['phoneNumber'],
                     saving: value.documents.first['saving']);
                 user.reload();

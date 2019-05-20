@@ -116,9 +116,7 @@ class _PiggyPageState extends State<PiggyTestPage>
         title: Text("Feed piggy to save money"),
       ),
       body: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
+        child: Stack(alignment: Alignment.center, children: <Widget>[
           new Container(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -146,6 +144,20 @@ class _PiggyPageState extends State<PiggyTestPage>
                           ? PiggyButton(
                               disabled: !_isDisabled,
                               text: "REGISTER",
+                              onClick: () => Navigator.pushReplacementNamed(
+                                  context, 'register'))
+                          : Container(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.13,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: _isDisabled
+                          ? PiggyButton(
+                              disabled: !_isDisabled,
+                              text: "LOGIN",
                               onClick: () => Navigator.pushReplacementNamed(
                                   context, 'register'))
                           : Container(),
