@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/user.redux.dart';
-import 'package:piggybanx/screens/skrill_deposit.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
@@ -14,7 +11,6 @@ import 'package:piggybanx/widgets/piggy.main.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class PiggyPage extends StatefulWidget {
   PiggyPage({Key key, this.title, this.store}) : super(key: key);
@@ -39,16 +35,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   double coinY = 20.0;
   bool _coinVisible = true;
   bool isOnTarget = false;
-
-  final List<String> _productLists = Platform.isAndroid
-      ? [
-          'android.test.purchased',
-          'point_1000',
-          '5000_point',
-          'android.test.canceled',
-        ]
-      : ['com.cooni.point1000', 'com.cooni.point5000'];
-  String _platformVersion = 'Unknown';
 
   Future<void> _feedPiggy() async {
     widget.store.dispatch(FeedPiggy(widget.store.state.id));
@@ -134,41 +120,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       AudioCache().play("coin_sound.mp3");
       Vibration.vibrate(duration: 1000);
     });
-    Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => new SkrillPage(
-              )));
-    // await showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return WillPopScope(
-    //         onWillPop: () {
-    //           _controller.dispose();
-    //           imageCache.clear();
-    //           // Navigator.pop(context);
-    //         },
-    //         child: Stack(
-    //           children: <Widget>[
-    //             // AnimatedBuilder(
-    //             // animation: animation,
-    //             // builder: (context, child) => Image.asset(
-    //             //       'lib/assets/animation/animation-piggy.gif',
-    //             //       gaplessPlayback: true,
-    //             //     ),
-    //             // ),
-    //             Center(
-    //               child: Container(
-    //                 child: WebView(
-    //                   initialUrl: "https://account.skrill.com/wallet/ng/deposit/card/instruments",
-    //                   javascriptMode: JavascriptMode.unrestricted,
-    //                 ),
-    //                 width: MediaQuery.of(context).size.width,
-    //                 height: MediaQuery.of(context).size.height * 0.8
-    //               ),
-    //             ) 
-    //           ],
-    //         ),
-    //       );
-    //     });
   }
 
   setPosition(DraggableDetails data) {
@@ -191,22 +142,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     } else if (widget.store.state.period == Period.monthly) {
       period = "next month";
     }
-
-    var bigcoin = Container(
-        decoration: ShapeDecoration(
-          shape: CircleBorder(side: BorderSide(width: 2, color: Colors.green)),
-          color: Colors.green,
-        ),
-        child: Image.asset(
-          "lib/assets/images/coin.png",
-          gaplessPlayback: false,
-          width: MediaQuery.of(context).size.width * 0.1 * 1.7,
-          height: MediaQuery.of(context).size.width * 0.1 * 1.7,
-        ));
-
-    var smallCoin = Image.asset("lib/assets/images/coin.png",
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.width * 0.1);
 
     return new Scaffold(
       body: Stack(children: <Widget>[

@@ -30,7 +30,6 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double coinY = MediaQuery.of(context).size.height * 0.18;
     var bigcoin = Container(
         decoration: ShapeDecoration(
           shape: CircleBorder(side: BorderSide(width: 2, color: Colors.green)),

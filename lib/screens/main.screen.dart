@@ -26,10 +26,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 0;
 
   _navigate(int index) {
-    _currentIndex = index;
     widget._pageController.animateToPage(index,
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
   }
@@ -37,7 +35,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _currentIndex = 0;
   }
 
   @override
