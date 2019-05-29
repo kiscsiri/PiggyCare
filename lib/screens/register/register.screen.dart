@@ -6,13 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -21,7 +22,7 @@ class RegisterPage extends StatefulWidget {
       : super(key: key);
 
   final Firestore firestore;
-  final Store<UserData> store;
+  final Store<AppState> store;
   final String title;
 
   @override
@@ -41,9 +42,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController _phoneCodeController = new TextEditingController();
   TextEditingController _smsCodeController = TextEditingController();
-
-  final Completer<WebViewController> _youtubeController =
-      Completer<WebViewController>();
 
   @override
   void initState() {
@@ -101,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Future<String> _testSignInWithPhoneNumber() async {
+  _testSignInWithPhoneNumber() async {
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: verificationId,
       smsCode: _smsCodeController.text,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -8,7 +9,7 @@ class SavingsPage extends StatefulWidget {
       : super(key: key);
 
   final String title;
-  final Store<UserData> store;
+  final Store<AppState> store;
   final PageController pageController;
 
   @override
@@ -58,7 +59,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   ),
                   child: new Center(
                       child: new Text(
-                    "${widget.store.state.saving.toInt()} \$",
+                    "${widget.store.state.user.saving.toInt()} \$",
                     style: TextStyle(
                         fontSize: 50,
                         color: Colors.white,
@@ -81,7 +82,7 @@ class _SavingsPageState extends State<SavingsPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         new Text(
-                          "${widget.store.state.created.year}.${widget.store.state.created.month}.${widget.store.state.created.day}",
+                          "${widget.store.state.user.created.year}.${widget.store.state.user.created.month}.${widget.store.state.user.created.day}",
                           style: new TextStyle(fontWeight: FontWeight.bold),
                         )
                       ]),

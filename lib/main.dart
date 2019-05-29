@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/piggyTryOut.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
+import 'package:piggybanx/models/store.reducer.dart';
 
 var width = 0.0;
 var height = 0.0;
@@ -16,7 +17,7 @@ void main() {
   var primaryColor = new Color(0xffe25979);
   var primaryDark = new Color(0xffb1264c);
   
-  final store = new Store<UserData>(piggyReducer, initialState: new UserData());
+  final store = new Store<AppState>(applicationReducer);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(

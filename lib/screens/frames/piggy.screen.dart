@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
@@ -16,7 +17,7 @@ class PiggyPage extends StatefulWidget {
   PiggyPage({Key key, this.title, this.store}) : super(key: key);
 
   final String title;
-  final Store<UserData> store;
+  final Store<AppState> store;
 
   @override
   _PiggyPageState createState() => new _PiggyPageState();
@@ -37,8 +38,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   bool isOnTarget = false;
 
   Future<void> _feedPiggy() async {
-    widget.store.dispatch(FeedPiggy(widget.store.state.id));
-    NotificationUpdate.feedPiggy(widget.store.state.id);
+    widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
+    NotificationUpdate.feedPiggy(widget.store.state.user.id);
 
     await _loadAnimation();
   }
@@ -70,13 +71,13 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     _controller = new AnimationController(
       vsync: this,
       duration: new Duration(
-          seconds: widget.store.state.timeUntilNextFeed.inSeconds % 60),
+          seconds: widget.store.state.user.timeUntilNextFeed.inSeconds % 60),
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller.duration = new Duration(seconds: 60);
 
           setState(() {
-            tween.begin = widget.store.state.timeUntilNextFeed.inSeconds % 60;
+            tween.begin = widget.store.state.user.timeUntilNextFeed.inSeconds % 60;
           });
 
           _controller.reset();
@@ -108,7 +109,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         AnimationController(duration: const Duration(seconds: 5), vsync: this)
           ..forward();
 
-    var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
+    new Tween<double>(begin: 0, end: 300).animate(_controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           imageCache.clear();
@@ -130,16 +131,16 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     bool _isDisabled =
-        widget.store.state.timeUntilNextFeed > Duration(seconds: 0)
+        widget.store.state.user.timeUntilNextFeed > Duration(seconds: 0)
             ? false
             : true;
     _coinVisible = !_isDisabled;
     String period;
-    if (widget.store.state.period == Period.daily) {
+    if (widget.store.state.user.period == Period.daily) {
       period = "tomorrow";
-    } else if (widget.store.state.period == Period.weely) {
+    } else if (widget.store.state.user.period == Period.weely) {
       period = "next week";
-    } else if (widget.store.state.period == Period.monthly) {
+    } else if (widget.store.state.user.period == Period.monthly) {
       period = "next month";
     }
 
@@ -223,13 +224,13 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                               "NEXT FEED IN: ",
                               style: Theme.of(context).textTheme.display4,
                             ),
-                            new Text((widget.store.state.timeUntilNextFeed * -1)
+                            new Text((widget.store.state.user.timeUntilNextFeed * -1)
                                 .toString()
                                 .replaceRange(
-                                    widget.store.state.timeUntilNextFeed
+                                    widget.store.state.user.timeUntilNextFeed
                                         .toString()
                                         .lastIndexOf('.'),
-                                    (widget.store.state.timeUntilNextFeed * -1)
+                                    (widget.store.state.user.timeUntilNextFeed * -1)
                                         .toString()
                                         .length,
                                     '')),

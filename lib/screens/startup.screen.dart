@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/models/user/user.model.dart';
 import 'package:redux/redux.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -11,13 +13,13 @@ class StartupPage extends StatefulWidget {
   StartupPage({Key key, this.title, this.store}) : super(key: key);
   final String title;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Store<UserData> store;
+  final Store<AppState> store;
 
   @override
   _StartupPageState createState() => new _StartupPageState();
 }
 
-Future<void> alert(BuildContext context) {
+alert(BuildContext context) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -45,7 +47,7 @@ class _StartupPageState extends State<StartupPage> {
   void initState() {
     super.initState();
 
-    var connectivityResult = (Connectivity().checkConnectivity()).then((value) {
+    (Connectivity().checkConnectivity()).then((value) {
       if (value == ConnectivityResult.mobile ||
           value == ConnectivityResult.wifi) {
         widget._auth.currentUser().then((user) {

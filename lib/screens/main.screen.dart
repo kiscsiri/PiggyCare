@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
@@ -13,7 +14,7 @@ class MainPage extends StatefulWidget {
 
   final String title = "Piggybanx";
 
-  final Store<UserData> store;
+  final Store<AppState> store;
 
   final navigationStore = new Store<NavigationState>(navigationReducer,
       initialState: new NavigationState(index: 0));

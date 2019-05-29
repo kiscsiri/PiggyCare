@@ -28,10 +28,6 @@ class _PiggyPageState extends State<PiggyTestPage>
   bool isOnTarget = false;
   bool _isDisabled = false;
 
-  Future<void> _feedPiggy() async {
-    await _loadAnimation();
-  }
-
   @override
   void initState() {
     _animationController =

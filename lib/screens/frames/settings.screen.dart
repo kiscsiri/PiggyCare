@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/models/user.redux.dart';
+import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
@@ -10,7 +12,7 @@ class SettingsPage extends StatefulWidget {
 
   final String title;
 
-  final Store<UserData> store;
+  final Store<AppState> store;
 
   @override
   _SettingsPageState createState() => new _SettingsPageState();
@@ -24,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
 
-    NotificationUpdate.updateSettings(_period, widget.store.state.id);
+    NotificationUpdate.updateSettings(_period, widget.store.state.user.id);
     widget.store.dispatch(UpdateUserData(updatedUser));
     final snackBar = SnackBar(
       backgroundColor: Theme.of(context).primaryColor,
@@ -41,8 +43,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _period = widget.store.state.period;
-    _feedPerPeriod = widget.store.state.feedPerPeriod;
+    _period = widget.store.state.user.period;
+    _feedPerPeriod = widget.store.state.user.feedPerPeriod;
   }
 
   @override
