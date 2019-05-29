@@ -1,8 +1,8 @@
 audioplayers=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\audioplayers-0.10.1\\
-cloud_firestore=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.9.13+1\\
+cloud_firestore=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.11.0+2\\
 connectivity=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\connectivity-0.4.3+1\\
-firebase_auth=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-0.8.4+5\\
-firebase_core=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.3.4\\
+firebase_auth=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-0.11.1\\
+firebase_core=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.4.0+1\\
 firebase_messaging=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_messaging-5.0.1+1\\
 flutter_webview_plugin=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_webview_plugin-0.3.5\\
 path_provider=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-0.5.0+1\\

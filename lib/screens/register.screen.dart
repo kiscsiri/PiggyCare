@@ -60,9 +60,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _testVerifyPhoneNumber() async {
     final PhoneVerificationCompleted verificationCompleted =
-        (FirebaseUser user) {
+        (AuthCredential credentials) {
       setState(() {
-        _message = 'signInWithPhoneNumber auto succeeded: $user';
+        _message = 'signInWithPhoneNumber auto succeeded';
       });
     };
 
@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     return "This field is required";
                   } else if (value.length < 9) {
                     return "The number is too short";
-                  } else if (value.length > 12) {
+                  } else if (value.length > 15) {
                     return "The number is too long";
                   }
                 },
