@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -104,6 +105,10 @@ class _RegisterPageState extends State<RegisterPage> {
       verificationId: verificationId,
       smsCode: _smsCodeController.text,
     );
+
+    var phoneState = SetPhoneNumber(_phoneCodeController.text);
+    widget.store.dispatch(phoneState);
+    
     FirebaseUser user;
     try {
       user = await _auth.signInWithCredential(credential);
@@ -175,9 +180,9 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
+                padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
                 child: new Text(
-                  "ADD PHONE NUMBER",
+                  "And for the final step, please add your phone number",
                   style: Theme.of(context).textTheme.display3,
                   textAlign: TextAlign.center,
                 ),
@@ -196,8 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   }
                 },
                 onErrorMessage: (error) {
-                  setState(() {
-                  });
+                  setState(() {});
                 },
               ),
               Text(
@@ -296,7 +300,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: MediaQuery.of(context).size.height * 0.05,
                         margin: EdgeInsets.only(bottom: 0),
                         child: Center(
-                          child: new Text(" ",
+                          child: new Text(
+                            " ",
                             textAlign: TextAlign.center,
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 17),

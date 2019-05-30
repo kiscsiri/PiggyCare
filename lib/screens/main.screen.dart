@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';

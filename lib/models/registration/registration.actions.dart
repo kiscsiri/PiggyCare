@@ -16,6 +16,9 @@ class SetItem {
   SetItem(this.item);
 }
 
+class ClearRegisterState {
+}
+
 class InitRegistration {
   final String item;
   final String phoneNumber;

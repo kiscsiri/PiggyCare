@@ -1,5 +1,4 @@
 import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:piggybanx/models/registration/registration.reducers.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -14,6 +13,8 @@ AppState applicationReducer(AppState appState, dynamic action) {
     return initRegistrationState(appState, action);
   } else if (action is SaveSettingsAction) {
     return appState;
+  } else if (action is ClearRegisterState) {
+    return clearRegistrationStore(appState, action);
   } else if (action is FeedPiggy) {
     feedPiggyDatabase(action);
     return feedPiggy(appState, action);

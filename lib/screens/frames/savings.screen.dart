@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
