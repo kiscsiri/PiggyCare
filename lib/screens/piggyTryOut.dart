@@ -140,7 +140,7 @@ class _PiggyPageState extends State<PiggyTestPage>
                           ? PiggyButton(
                               disabled: !_isDisabled,
                               text: "REGISTER",
-                              onClick: () => Navigator.pushReplacementNamed(
+                              onClick: () => Navigator.pushNamed(
                                   context, 'register'))
                           : Container(),
                     ),
@@ -154,8 +154,8 @@ class _PiggyPageState extends State<PiggyTestPage>
                           ? PiggyButton(
                               disabled: !_isDisabled,
                               text: "LOGIN",
-                              onClick: () => Navigator.pushReplacementNamed(
-                                  context, 'register'))
+                              onClick: () => Navigator.pushNamed(
+                                  context, 'login'))
                           : Container(),
                     ),
                   ),

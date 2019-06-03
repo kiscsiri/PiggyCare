@@ -40,8 +40,8 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
         builder: (context, List<String> candidateData, rejectedData) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 38.0),
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: MediaQuery.of(context).size.width * 0.65,
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: MediaQuery.of(context).size.width * 0.5,
                 child: widget.isDisabled
                     ? Container(
                       height: MediaQuery.of(context).size.height,

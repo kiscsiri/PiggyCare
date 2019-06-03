@@ -9,7 +9,7 @@ import 'package:redux/redux.dart';
 class FirstRegisterPage extends StatefulWidget {
   FirstRegisterPage({Key key, this.store}) : super(key: key);
   final Store<AppState> store;
-  
+
   @override
   _FirstRegisterPageState createState() => new _FirstRegisterPageState();
 }
@@ -22,7 +22,16 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(),
+      appBar: new AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.pink,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Form(
         key: _itemFormKey,
         child: new Center(
@@ -59,6 +68,9 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                   height: MediaQuery.of(context).size.height * 0.15,
                   width: MediaQuery.of(context).size.width * 0.8,
                   textController: textEditingController,
+                  onErrorMessage: (error) {
+                    setState(() {});
+                  },
                   onValidate: (value) {
                     if (value.isEmpty) {
                       return "This field is required!";
@@ -72,7 +84,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
                       widget.store.dispatch(action);
-                      Navigator.pushReplacement(
+                      Navigator.push(
                           context,
                           new MaterialPageRoute(
                               builder: (context) => new SecondRegisterPage(

@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -19,13 +18,11 @@ import 'package:redux/redux.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.title, this.firestore, this.store})
+  RegisterPage({Key key, this.store})
       : super(key: key);
 
-  final Firestore firestore;
   final Store<AppState> store;
-  final String title;
-
+  
   @override
   _RegisterPageState createState() => new _RegisterPageState();
 }
@@ -108,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     var phoneState = SetPhoneNumber(_phoneCodeController.text);
     widget.store.dispatch(phoneState);
-    
+
     FirebaseUser user;
     try {
       user = await _auth.signInWithCredential(credential);
@@ -123,17 +120,19 @@ class _RegisterPageState extends State<RegisterPage> {
         .where("uid", isEqualTo: user.uid)
         .getDocuments()
         .then((QuerySnapshot value) {
+      var registrationData = widget.store.state.registrationData;
       if (value.documents.length == 0) {
         UserData userData = new UserData(
             id: user.uid,
             phoneNumber: user.phoneNumber,
-            feedPerPeriod: 5,
+            feedPerPeriod: registrationData.schedule.savingPerPeriod,
+            item: registrationData.item,
+            targetPrice: registrationData.targetPrice,
             lastFeed: DateTime(1995),
             money: 100000,
             created: DateTime.now(),
             saving: 0,
-            period: Period.daily);
-
+            period: registrationData.schedule.period);
         var token = "";
         var platfom = "";
         _firebaseMessaging.getToken().then((val) {
@@ -151,18 +150,11 @@ class _RegisterPageState extends State<RegisterPage> {
         });
 
         Firestore.instance.collection('users').add(userData.toJson());
+        widget.store.dispatch(ClearRegisterState());
         widget.store.dispatch(InitUserData(userData));
       } else {
         var data = value.documents[0];
-        UserData userData = new UserData(
-            id: user.uid,
-            phoneNumber: data['phoneNumber'],
-            feedPerPeriod: data['feedPerPeriod'],
-            lastFeed: data['lastFeed'].toDate(),
-            money: data['money'],
-            created: data['created'].toDate(),
-            saving: data['saving'],
-            period: Period.values[data['period']]);
+        UserData userData = new UserData.fromFirebaseDocumentSnapshot(data);
         widget.store.dispatch(InitUserData(userData));
       }
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -279,7 +271,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("PiggyBanx"),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.pink,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

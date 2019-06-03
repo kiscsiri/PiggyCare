@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 typedef String OnValidate(String value);
 typedef void OnErrorMessage(String value);
 
 class PiggyInput extends StatelessWidget {
   PiggyInput(
-      {Key key, @required this.hintText, this.textController, this.onValidate, this.width, this.height, this.onErrorMessage, this.keyboardType})
+      {Key key,
+      @required this.hintText,
+      this.textController,
+      this.onValidate,
+      this.width,
+      this.height,
+      this.onErrorMessage,
+      this.keyboardType,
+      this.inputFormatters})
       : super(key: key);
   final String hintText;
   final TextEditingController textController;
   final OnValidate onValidate;
+  final List<TextInputFormatter> inputFormatters;
   final OnErrorMessage onErrorMessage;
   final TextInputType keyboardType;
   final double width;
@@ -29,10 +39,11 @@ class PiggyInput extends StatelessWidget {
         child: TextFormField(
           controller: textController,
           keyboardType: keyboardType ?? TextInputType.text,
+          inputFormatters: inputFormatters,
           validator: (value) {
             var result = onValidate(value);
-            if(result != null) {
-              onErrorMessage(result);
+            if (result != null) {
+              if (onErrorMessage != null) onErrorMessage(result);
               return result;
             }
           },

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -58,15 +57,7 @@ class _StartupPageState extends State<StartupPage> {
                 .getDocuments()
                 .then((value) {
               if (value.documents.length > 0) {
-                UserData u = UserData(
-                    money: value.documents.first['money'],
-                    period: Period.values[value.documents.first['period']],
-                    feedPerPeriod: value.documents.first['feedPerPeriod'],
-                    lastFeed: value.documents.first['lastFeed'].toDate(),
-                    id: user.uid,
-                    created: value.documents.first['created'].toDate(),
-                    phoneNumber: value.documents.first['phoneNumber'],
-                    saving: value.documents.first['saving']);
+                UserData u = new UserData.fromFirebaseDocumentSnapshot(value.documents.first);
                 user.reload();
                 widget.store.dispatch(InitUserData(u));
                 Navigator.of(context).pushReplacementNamed("home");

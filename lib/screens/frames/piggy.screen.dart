@@ -9,6 +9,7 @@ import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
+import 'package:piggybanx/widgets/piggy.progress.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
@@ -197,14 +198,15 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                         ],
                       ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 25.0),
+                  padding: const EdgeInsets.only(top: 23.0),
                   child: PiggyFeedWidget(
                       willAcceptStream: willAcceptStream,
                       isDisabled: _isDisabled,
                       onDrop: onCoinDrop),
                 ),
+                PiggyProgress(saving: widget.store.state.user.saving.toDouble(), targetPrice: widget.store.state.user.targetPrice.toDouble()),
                 Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
+                  padding: const EdgeInsets.only(bottom: 0.0),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.13,
                     width: MediaQuery.of(context).size.width * 0.7,
@@ -215,7 +217,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: 0.0),
                   child: _isDisabled
                       ? new Row(
                           mainAxisAlignment: MainAxisAlignment.center,

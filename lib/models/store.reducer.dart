@@ -25,6 +25,8 @@ AppState applicationReducer(AppState appState, dynamic action) {
     return initUser(appState, action);
   } else if (action is SetPrice) {
     return setStoreTargetPrice(appState, action);
+  } else if (action is SetSchedule) {
+    return setStoreSchedule(appState, action);
   } else {
     return null;
   }
