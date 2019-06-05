@@ -6,6 +6,7 @@ import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
+import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/src/store.dart';
 
 class MainPage extends StatefulWidget {
@@ -26,7 +27,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   _navigate(int index) {
     widget._pageController.animateToPage(index,
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
@@ -50,36 +50,29 @@ class _MainPageState extends State<MainPage> {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("PiggyBanx"),
-        ),
-        body: new PageView(
-          children: <Widget>[
-            new PiggyPage(store: widget.store),
-            new SavingsPage(
-                store: widget.store, pageController: widget._pageController),
-            new SettingsPage(store: widget.store)
-          ],
-          onPageChanged: (int index) {
-            setState(() {
-              widget.navigationStore.dispatch(SetNavigationIndex(index: index));
-            });
-          },
-          controller: widget._pageController,
-        ),
-        bottomNavigationBar: new BottomNavigationBar(
-          onTap: (index) => _navigate(index),
-          currentIndex: widget.navigationStore.state.index,
-          items: [
-            new BottomNavigationBarItem(
-                title: new Text("Home"), icon: Icon(Icons.home)),
-            new BottomNavigationBarItem(
-                title: new Text("Savings"), icon: Icon(Icons.attach_money)),
-            new BottomNavigationBarItem(
-                title: new Text("Settings"), icon: Icon(Icons.settings))
-          ],
-        ),
-      ),
+          appBar: AppBar(
+            title: Text("PiggyBanx"),
+          ),
+          body: new PageView(
+            children: <Widget>[
+              new PiggyPage(store: widget.store),
+              new SavingsPage(
+                  store: widget.store, pageController: widget._pageController),
+              new SettingsPage(store: widget.store)
+            ],
+            onPageChanged: (int index) {
+              setState(() {
+                widget.navigationStore
+                    .dispatch(SetNavigationIndex(index: index));
+              });
+            },
+            controller: widget._pageController,
+          ),
+          bottomNavigationBar: PiggyNavigationBar(
+            onNavigateTap: (index) {
+              _navigate(index);
+            },
+          )),
     );
   }
 }

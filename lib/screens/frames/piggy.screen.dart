@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification-update.dart';
@@ -212,7 +213,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: PiggyButton(
                         disabled: _isDisabled,
-                        text: "FEED PIGGY!",
+                        text: PiggyLocalizations.of(context).trans('feed_piggy') ,
                         onClick: () => _feedPiggy()),
                   ),
                 ),

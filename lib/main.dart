@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/localization/localizations.delegate.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -19,26 +21,54 @@ var width = 0.0;
 var height = 0.0;
 
 void main() {
+  ///Localization
+  var supportedLangs = [const Locale('hu', 'HU'), const Locale('en', 'US')];
+
+  List<LocalizationsDelegate> localizationDelegates = [
+    const PiggyLocalizationsDelegate(),
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate
+  ];
+
+  var localisationResultCallback =
+      (Locale locale, Iterable<Locale> supportedLocales) {
+    for (Locale supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode ||
+          supportedLocale.countryCode == locale.countryCode) {
+        return supportedLocale;
+      }
+    }
+
+    return supportedLocales.first;
+  };
+
+  ///Themes colors
   var primaryColor = Color(0xffe25979);
   var primaryDark = Color(0xffb1264c);
-  
-  var registrationState = RegistrationData(item: "", phoneNumber: "", targetPrice: 0);
-  var userState = UserData(
-    created: DateTime.now(),
-    feedPerPeriod: 0,
-    id: "",
-    lastFeed: DateTime.now(),
-    money: 0,
-    period: Period.demo,
-    phoneNumber: "",
-    saving: 0
-  );
 
-  final store =  Store<AppState>(applicationReducer, initialState:  AppState(registrationData: registrationState, user: userState));
+  ///Redux states init
+  var registrationState =
+      RegistrationData(item: "", phoneNumber: "", targetPrice: 0);
+  var userState = UserData(
+      created: DateTime.now(),
+      feedPerPeriod: 0,
+      id: "",
+      lastFeed: DateTime.now(),
+      money: 0,
+      period: Period.demo,
+      phoneNumber: "",
+      saving: 0);
+
+  final store = Store<AppState>(applicationReducer,
+      initialState:
+          AppState(registrationData: registrationState, user: userState));
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(
       MaterialApp(
+          supportedLocales: supportedLangs,
+          localizationsDelegates: localizationDelegates,
+          localeResolutionCallback: localisationResultCallback,
           home: StoreProvider(
             store: store,
             child: StartupPage(store: store),

@@ -14,32 +14,34 @@ class PiggyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: !disabled
-                ? () async {
-                    onClick();
-                  }
-                : null,
-          child: Padding(
+          ? () async {
+              onClick();
+            }
+          : null,
+      child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: new Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width * 0.7,
           height: MediaQuery.of(context).size.height * 0.09,
           decoration: new BoxDecoration(
-              color: (disabled)
-                  ? Colors.grey
-                  : Theme.of(context).primaryColorDark,
+              color:
+                  (disabled) ? Colors.grey : Theme.of(context).primaryColorDark,
               borderRadius: BorderRadius.circular(70.0)),
-          child: new FlatButton(
+          child: FlatButton(
             onPressed: null,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            child: new Text(
-              text,
-              textAlign: TextAlign.left,
-              style: new TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                text,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
