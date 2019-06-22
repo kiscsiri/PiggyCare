@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
@@ -106,10 +107,13 @@ class _PiggyPageState extends State<PiggyTestPage>
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: Text("Feed piggy to save money"),
+        title: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Text(loc.trans("feed_piggy_to_save"))),
       ),
       body: Center(
         child: Stack(alignment: Alignment.center, children: <Widget>[
@@ -139,9 +143,9 @@ class _PiggyPageState extends State<PiggyTestPage>
                       child: _isDisabled
                           ? PiggyButton(
                               disabled: !_isDisabled,
-                              text: "REGISTER",
-                              onClick: () => Navigator.pushNamed(
-                                  context, 'register'))
+                              text: loc.trans("register"),
+                              onClick: () =>
+                                  Navigator.pushNamed(context, 'register'))
                           : Container(),
                     ),
                   ),
@@ -153,9 +157,9 @@ class _PiggyPageState extends State<PiggyTestPage>
                       child: _isDisabled
                           ? PiggyButton(
                               disabled: !_isDisabled,
-                              text: "LOGIN",
-                              onClick: () => Navigator.pushNamed(
-                                  context, 'login'))
+                              text: loc.trans("login"),
+                              onClick: () =>
+                                  Navigator.pushNamed(context, 'login'))
                           : Container(),
                     ),
                   ),

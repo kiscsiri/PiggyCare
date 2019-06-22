@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -53,7 +54,8 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _testVerifyPhoneNumber() async {
+  Future<void> _testVerifyPhoneNumber(BuildContext context) async {
+    var loc = PiggyLocalizations.of(context);
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential credentials) {
       setState(() {
@@ -64,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
       setState(() {
-        _message = 'Phone number verification failed. Please try again!';
+        _message = loc.trans("verification_failed");
       });
     };
 
@@ -92,12 +94,13 @@ class _RegisterPageState extends State<RegisterPage> {
           codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
     } catch (Exception) {
       setState(() {
-        _message = 'Phone number verification failed. Please try again!';
+        _message = loc.trans("verification_failed");
       });
     }
   }
 
-  _testSignInWithPhoneNumber() async {
+  _testSignInWithPhoneNumber(BuildContext context) async {
+    var loc = PiggyLocalizations.of(context);
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: verificationId,
       smsCode: _smsCodeController.text,
@@ -111,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
       user = await _auth.signInWithCredential(credential);
     } catch (Exception) {
       setState(() {
-        _message = 'Phone number verification failed. Please try again!';
+        _message = loc.trans("verification_failed");
       });
       return null;
     }
@@ -166,6 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     var telephoneBlock = new Form(
         key: _telephoneFormKey,
         child: new Column(
@@ -174,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
                 child: new Text(
-                  "And for the final step, please add your phone number",
+                  loc.trans("final_step"),
                   style: Theme.of(context).textTheme.display3,
                   textAlign: TextAlign.center,
                 ),
@@ -185,11 +189,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 onValidate: (value) {
                   if (value.isEmpty) {
-                    return "This field is required";
+                    return loc.trans("required_field");
                   } else if (value.length < 9) {
-                    return "The number is too short";
+                    return loc.trans("short_number_validation");
                   } else if (value.length > 15) {
-                    return "The number is too long";
+                    return loc.trans("long_number_validation");
                   }
                 },
                 onErrorMessage: (error) {
@@ -201,11 +205,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: new TextStyle(color: Colors.redAccent),
               ),
               PiggyButton(
-                  text: "SEND",
+                  text: loc.trans("send"),
                   onClick: () {
                     if (_telephoneFormKey.currentState.validate()) {
                       setState(() {
-                        _testVerifyPhoneNumber();
+                        _testVerifyPhoneNumber(context);
                       });
                     }
                   })
@@ -218,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Padding(
             padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
             child: new Text(
-              "ENTER YOUR SMS CODE",
+              loc.trans("enter_sms"),
               style: Theme.of(context).textTheme.display3,
               textAlign: TextAlign.center,
             ),
@@ -227,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new IconButton(
-                tooltip: "Go back to type in another phone number",
+                tooltip: loc.trans("go_back_phone_number_tooltip"),
                 icon: new Icon(Icons.arrow_back),
                 onPressed: () {
                   setState(() {
@@ -237,15 +241,15 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               PiggyInput(
                 width: MediaQuery.of(context).size.width * 0.49,
-                hintText: "Your SMS code",
+                hintText: loc.trans("sms_code_hint"),
                 textController: _smsCodeController,
                 onValidate: (value) {
                   if (value.length > 6) {
-                    return "The validation code is too long";
+                    return loc.trans("long_code_error");
                   } else if (value.length < 6) {
-                    return "The validation code is too short";
+                    return loc.trans("short_code_error");
                   } else if (value.isEmpty) {
-                    return "This field is required";
+                    return loc.trans("required_field");
                   }
                 },
                 onErrorMessage: (error) {
@@ -259,11 +263,11 @@ class _RegisterPageState extends State<RegisterPage> {
             style: new TextStyle(color: Colors.redAccent),
           ),
           PiggyButton(
-              text: "VERIFY",
+              text: loc.trans("verify"),
               onClick: () {
                 if (_codeFormKey.currentState.validate()) {
                   setState(() {
-                    _testSignInWithPhoneNumber();
+                    _testSignInWithPhoneNumber(context);
                   });
                 }
               })

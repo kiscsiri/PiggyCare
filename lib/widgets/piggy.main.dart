@@ -15,46 +15,48 @@ class PiggyFeedWidget extends StatefulWidget {
 class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
   @override
   Widget build(BuildContext context) {
-    return new DragTarget(
-        onWillAccept: (data) {
-          if (data == "Coin") {
-            setState(() {
-              widget.willAcceptStream.value = true;
-            });
-            return true;
-          } else {
+    return Center(
+      child: new DragTarget(
+          onWillAccept: (data) {
+            if (data == "Coin") {
+              setState(() {
+                widget.willAcceptStream.value = true;
+              });
+              return true;
+            } else {
+              setState(() {
+                widget.willAcceptStream.value = false;
+              });
+              return false;
+            }
+          },
+          onLeave: (val) {
             setState(() {
               widget.willAcceptStream.value = false;
             });
-            return false;
-          }
-        },
-        onLeave: (val) {
-          setState(() {
-            widget.willAcceptStream.value = false;
-          });
-        },
-        onAccept:(data) {
-          widget.onDrop();
           },
-        builder: (context, List<String> candidateData, rejectedData) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 38.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.width * 0.5,
-                child: widget.isDisabled
-                    ? Container(
-                      height: MediaQuery.of(context).size.height,
-                        child: FlareActor("assets/piggy_sleep.flr",
-                            alignment: Alignment.center,
-                            fit: BoxFit.cover,
-                            animation: "sleep"))
-                    : Container(
-                        child: FlareActor("assets/piggy_etetes.flr",
-                            alignment: Alignment.center,
-                            fit: BoxFit.cover,
-                            animation: "sleep")),
-              ),
-            ));
+          onAccept:(data) {
+            widget.onDrop();
+            },
+          builder: (context, List<String> candidateData, rejectedData) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 38.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.width * 0.5,
+                  child: widget.isDisabled
+                      ? Container(
+                        height: MediaQuery.of(context).size.height,
+                          child: FlareActor("assets/piggy_sleep.flr",
+                              alignment: Alignment.center,
+                              fit: BoxFit.cover,
+                              animation: "sleep"))
+                      : Container(
+                          child: FlareActor("assets/piggy_etetes.flr",
+                              alignment: Alignment.center,
+                              fit: BoxFit.cover,
+                              animation: "sleep")),
+                ),
+              )),
+    );
   }
 }

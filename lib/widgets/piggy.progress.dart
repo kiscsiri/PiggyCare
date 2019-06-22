@@ -10,6 +10,7 @@ class PiggyProgress extends StatefulWidget {
 
 
 class _PiggyProgressState extends State<PiggyProgress> {
+  
   @override
   Widget build(BuildContext context) {
     final currentSavingPadding = (MediaQuery.of(context).size.width * (1 - widget.saving / widget.targetPrice));
@@ -32,7 +33,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
             children: <Widget>[
               Text("${widget.saving.toInt()}\$"),
               Padding(
-                padding: EdgeInsets.only(left: currentSavingPadding - 88, right: 1),
+                padding: EdgeInsets.only(left: currentSavingPadding - 88, right: 0),
                 child: Text("${widget.targetPrice.toInt()}\$"),
               )
             ],

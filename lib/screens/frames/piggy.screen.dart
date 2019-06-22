@@ -111,10 +111,11 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         AnimationController(duration: const Duration(seconds: 5), vsync: this)
           ..forward();
 
-    new Tween<double>(begin: 0, end: 300).animate(_controller)
+    var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           imageCache.clear();
+          Navigator.pop(context);
           _controller.dispose();
         }
       });
@@ -123,6 +124,24 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       AudioCache().play("coin_sound.mp3");
       Vibration.vibrate(duration: 1000);
     });
+
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () {
+              _controller.dispose();
+              imageCache.clear();
+            },
+            child: AnimatedBuilder(
+              animation: animation,
+              builder: (context, child) => Image.asset(
+                    'lib/assets/animation/animation-piggy.gif',
+                    gaplessPlayback: true,
+                  ),
+            ),
+          );
+        });
   }
 
   setPosition(DraggableDetails data) {
@@ -132,6 +151,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     bool _isDisabled =
         widget.store.state.user.timeUntilNextFeed > Duration(seconds: 0)
             ? false
@@ -139,11 +159,11 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     _coinVisible = !_isDisabled;
     String period;
     if (widget.store.state.user.period == Period.daily) {
-      period = "tomorrow";
+      period = loc.trans("tomorrow");
     } else if (widget.store.state.user.period == Period.weely) {
-      period = "next week";
+      period = loc.trans("next_week");
     } else if (widget.store.state.user.period == Period.monthly) {
-      period = "next month";
+      period = loc.trans("next_month");
     }
 
     return new Scaffold(
@@ -162,7 +182,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 30),
                             child: new Text(
-                              "PIGGY IS FULL FOR TODAY :)",
+                              loc.trans("piggy_full"),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.display2,
                             ),
@@ -171,7 +191,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 90.0),
                             child: new Text(
-                              "Come back $period!",
+                              loc.trans("come_back") + "$period!",
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -183,7 +203,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 20),
                             child: new Text(
-                              "PIGGY IS HUNGRY!",
+                              loc.trans("piggy_hungry"),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.display2,
                             ),
@@ -192,7 +212,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 60.0),
                             child: new Text(
-                              "You have to feed him before he starves to death!",
+                              loc.trans("you_have_to_feed"),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -205,7 +225,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                       isDisabled: _isDisabled,
                       onDrop: onCoinDrop),
                 ),
-                PiggyProgress(saving: widget.store.state.user.saving.toDouble(), targetPrice: widget.store.state.user.targetPrice.toDouble()),
+                PiggyProgress(saving: widget.store.state.user.currentSaving.toDouble(), targetPrice: widget.store.state.user.targetPrice.toDouble()),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: Container(
@@ -213,7 +233,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: PiggyButton(
                         disabled: _isDisabled,
-                        text: PiggyLocalizations.of(context).trans('feed_piggy') ,
+                        text: loc.trans('feed_piggy') ,
                         onClick: () => _feedPiggy()),
                   ),
                 ),
@@ -224,7 +244,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             new Text(
-                              "NEXT FEED IN: ",
+                               loc.trans("next_feed_in"),
                               style: Theme.of(context).textTheme.display4,
                             ),
                             new Text((widget.store.state.user.timeUntilNextFeed * -1)

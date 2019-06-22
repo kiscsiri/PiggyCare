@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/period.dart';
 
 class UserData {
@@ -9,6 +10,9 @@ class UserData {
   int feedPerPeriod;
   String item;
   int targetPrice;
+  PiggyLevel piggyLevel;
+  int currentSaving;
+  int currentFeedTime;
   String phoneNumber;
   DateTime lastFeed;
   DateTime created;
@@ -50,9 +54,28 @@ class UserData {
         item: user['item'],
         targetPrice: user['targetPrice'],
         money: user['money'],
+        currentSaving: user['currentSaving'],
+        piggyLevel: PiggyLevel.values[user['piggyLevel']],
+        currentFeedTime: user['currentFeedTime'],
         created: user['created'].toDate(),
         saving: user['saving'],
         period: Period.values[user['period']]);
+  }
+
+  factory UserData.constructInitial(id, phoneNumber) {
+    return new UserData(
+            id: id,
+            phoneNumber: phoneNumber,
+            feedPerPeriod: 5,
+            lastFeed: DateTime(1995),
+            money: 100000,
+            currentFeedTime: 0,
+            currentSaving: 0,
+            piggyLevel: PiggyLevel.baby,
+            created: DateTime.now(),
+            saving: 0,
+            period: Period.daily
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -66,7 +89,10 @@ class UserData {
       "money": this.money,
       "period": this.period.index,
       "lastFeed": this.lastFeed,
-      "created": this.created
+      "created": this.created,
+      "currentSaving": this.currentSaving,
+      "piggyLevel" : this.piggyLevel,
+      "currentFeedTime": this.currentFeedTime
     });
   }
 
@@ -77,6 +103,9 @@ class UserData {
       this.period,
       this.item,
       this.targetPrice,
+      this.currentSaving,
+      this.piggyLevel,
+      this.currentFeedTime,
       this.money,
       this.lastFeed,
       this.phoneNumber,

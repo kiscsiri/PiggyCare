@@ -1,0 +1,85 @@
+{"frames": [
+
+{
+	"filename": "Baby-sleepy042.png",
+	"frame": {"x":1,"y":1059,"w":647,"h":529},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":195,"y":799,"w":647,"h":529},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy043.png",
+	"frame": {"x":650,"y":1059,"w":647,"h":529},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":195,"y":799,"w":647,"h":529},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy044.png",
+	"frame": {"x":1349,"y":1,"w":647,"h":529},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":195,"y":799,"w":647,"h":529},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy123.png",
+	"frame": {"x":1,"y":530,"w":688,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":194,"y":801,"w":688,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy124.png",
+	"frame": {"x":1,"y":1,"w":689,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":194,"y":801,"w":689,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy141.png",
+	"frame": {"x":1347,"y":532,"w":646,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":196,"y":801,"w":646,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy211.png",
+	"frame": {"x":1299,"y":1061,"w":653,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":194,"y":801,"w":653,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy212.png",
+	"frame": {"x":691,"y":530,"w":654,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":194,"y":801,"w":654,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+},
+{
+	"filename": "Baby-sleepy213.png",
+	"frame": {"x":692,"y":1,"w":655,"h":527},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":194,"y":801,"w":655,"h":527},
+	"sourceSize": {"w":1080,"h":1920}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Piggy-prba-23.webp",
+	"format": "RGBA8888",
+	"size": {"w":1997,"h":1589},
+	"scale": "1",
+	"related_multi_packs": [ "Piggy-prba-0.json", "Piggy-prba-1.json", "Piggy-prba-2.json", "Piggy-prba-3.json", "Piggy-prba-4.json", "Piggy-prba-5.json", "Piggy-prba-6.json", "Piggy-prba-7.json", "Piggy-prba-8.json", "Piggy-prba-9.json", "Piggy-prba-10.json", "Piggy-prba-11.json", "Piggy-prba-12.json", "Piggy-prba-13.json", "Piggy-prba-14.json", "Piggy-prba-15.json", "Piggy-prba-16.json", "Piggy-prba-17.json", "Piggy-prba-18.json", "Piggy-prba-19.json", "Piggy-prba-20.json", "Piggy-prba-21.json", "Piggy-prba-22.json", "Piggy-prba-24.json", "Piggy-prba-25.json", "Piggy-prba-26.json", "Piggy-prba-27.json", "Piggy-prba-28.json", "Piggy-prba-29.json" ],
+	"smartupdate": "$TexturePacker:SmartUpdate:08459585798f22af9c0ab2110c0ccd4f:10d7031b9e805f2642e15b8f347adad8:f2ed1f5c50f689db29f66a51f193daf9$"
+}
+}

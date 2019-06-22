@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
@@ -23,6 +24,7 @@ class _SavingsPageState extends State<SavingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return new Scaffold(
         body: Container(
             child: new Center(
@@ -34,13 +36,12 @@ class _SavingsPageState extends State<SavingsPage> {
           child: Column(
             children: <Widget>[
               Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 8.0),
-                  child: new Text("HOW MUCH MONEY I ALREADY EARNED",
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(loc.trans("how_much_i_earned"),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).primaryTextTheme.display3)),
-              new Text(
-                "On this page, you can check out your savings!",
+              Text(
+                loc.trans("check_savings"),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -77,7 +78,7 @@ class _SavingsPageState extends State<SavingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         new Text(
-                          "You have been collecting since: ",
+                          loc.trans("collecting_since"),
                           style: TextStyle(color: Colors.white),
                         ),
                         new Text(
@@ -94,18 +95,18 @@ class _SavingsPageState extends State<SavingsPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: new Text(
-                        "Congratulations!",
+                        loc.trans("congratulations"),
                         style: new TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
-                    new Text("Piggy is so happy to have you!")
+                    new Text(loc.trans("piggy_happy"))
                   ],
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.only(top: 20.0),
-                  child: PiggyButton(text: "FEED PIGGY!", onClick: _navigate))
+                  child: PiggyButton(text: loc.trans("feed_piggy"), onClick: _navigate))
             ],
           ),
         )

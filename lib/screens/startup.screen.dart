@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -19,12 +20,13 @@ class StartupPage extends StatefulWidget {
 }
 
 alert(BuildContext context) {
+  var loc = PiggyLocalizations.of(context);
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('No internet connection'),
-        content: const Text('Please check your internet connection, then restart the application'),
+        title: Text(loc.trans("no_internet")),
+        content: Text(loc.trans("check_internet")),
         actions: <Widget>[
           FlatButton(
             child: Text('Ok'),
@@ -81,6 +83,7 @@ class _StartupPageState extends State<StartupPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: new Center(
@@ -125,7 +128,7 @@ class _StartupPageState extends State<StartupPage> {
                           Navigator.of(context).pushReplacementNamed('tryOut');
                         },
                         child: new Text(
-                          "Let's start!",
+                          loc.trans("lets_start"),
                           style: new TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 25),
