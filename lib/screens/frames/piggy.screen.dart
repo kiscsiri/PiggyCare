@@ -43,7 +43,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
     NotificationUpdate.feedPiggy(widget.store.state.user.id);
 
-    await _loadAnimation();
+    await _loadAnimation;
   }
 
   @override
@@ -105,44 +105,6 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   }
 
   Future<void> testPurchace() async {}
-
-  Future<void> _loadAnimation() async {
-    AnimationController _controller =
-        AnimationController(duration: const Duration(seconds: 5), vsync: this)
-          ..forward();
-
-    var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          imageCache.clear();
-          Navigator.pop(context);
-          _controller.dispose();
-        }
-      });
-
-    Future.delayed(Duration(milliseconds: 1500), () {
-      AudioCache().play("coin_sound.mp3");
-      Vibration.vibrate(duration: 1000);
-    });
-
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WillPopScope(
-            onWillPop: () {
-              _controller.dispose();
-              imageCache.clear();
-            },
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => Image.asset(
-                    'lib/assets/animation/animation-piggy.gif',
-                    gaplessPlayback: true,
-                  ),
-            ),
-          );
-        });
-  }
 
   setPosition(DraggableDetails data) {
     coinX = data.offset.dx;
@@ -223,7 +185,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                   child: PiggyFeedWidget(
                       willAcceptStream: willAcceptStream,
                       isDisabled: _isDisabled,
-                      onDrop: onCoinDrop),
+                      onDrop: onCoinDrop,
+                      store: widget.store),
                 ),
                 PiggyProgress(saving: widget.store.state.user.currentSaving.toDouble(), targetPrice: widget.store.state.user.targetPrice.toDouble()),
                 Padding(

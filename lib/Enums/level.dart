@@ -1,47 +1,64 @@
 import 'package:flutter/material.dart';
 
-enum PiggyLevel { baby, child, teen, adult, old }
+enum PiggyLevel { Baby, Child, Teen, Adult, Old }
 
 int levelMap(PiggyLevel level) {
   switch (level) {
-    case PiggyLevel.baby:
+    case PiggyLevel.Baby:
       return 0;
-    case PiggyLevel.child:
+    case PiggyLevel.Child:
       return 1;
-    case PiggyLevel.teen:
+    case PiggyLevel.Teen:
       return 2;
-    case PiggyLevel.adult:
+    case PiggyLevel.Adult:
       return 3;
-    case PiggyLevel.old:
+    case PiggyLevel.Old:
       return 4;
     default:
       return 0;
   }
 }
 
+String levelStringValue(PiggyLevel level) {
+  switch (level) {
+    case PiggyLevel.Baby:
+      return "Baby";
+    case PiggyLevel.Child:
+      return "Child";
+    case PiggyLevel.Teen:
+      return "Teen";
+    case PiggyLevel.Adult:
+      return "Adult";
+    case PiggyLevel.Old:
+      return "Old";
+    default:
+      return "";
+  }
+}
+
 Widget getAnimation(PiggyLevel level) {
   switch (level) {
-    case PiggyLevel.baby:
+    case PiggyLevel.Baby:
       return Image.asset(
         'lib/assets/animation/animation-piggy.gif',
         gaplessPlayback: true,
       );
-    case PiggyLevel.child:
+    case PiggyLevel.Child:
       return Image.asset(
         'lib/assets/animation/animation-piggy.gif',
         gaplessPlayback: true,
       );
-    case PiggyLevel.teen:
+    case PiggyLevel.Teen:
       return Image.asset(
         'lib/assets/animation/animation-piggy.gif',
         gaplessPlayback: true,
       );
-    case PiggyLevel.adult:
+    case PiggyLevel.Adult:
       return Image.asset(
         'lib/assets/animation/animation-piggy.gif',
         gaplessPlayback: true,
       );
-    case PiggyLevel.old:
+    case PiggyLevel.Old:
       return Image.asset(
         'lib/assets/animation/animation-piggy.gif',
         gaplessPlayback: true,

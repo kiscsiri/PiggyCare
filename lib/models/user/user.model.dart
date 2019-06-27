@@ -55,7 +55,7 @@ class UserData {
         targetPrice: user['targetPrice'],
         money: user['money'],
         currentSaving: user['currentSaving'],
-        piggyLevel: PiggyLevel.values[user['piggyLevel']],
+        piggyLevel: PiggyLevel.values[user['piggyLevel'] - 1],
         currentFeedTime: user['currentFeedTime'],
         created: user['created'].toDate(),
         saving: user['saving'],
@@ -71,7 +71,7 @@ class UserData {
             money: 100000,
             currentFeedTime: 0,
             currentSaving: 0,
-            piggyLevel: PiggyLevel.baby,
+            piggyLevel: PiggyLevel.Baby,
             created: DateTime.now(),
             saving: 0,
             period: Period.daily

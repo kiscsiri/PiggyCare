@@ -89,8 +89,8 @@ feedPiggyDatabase(FeedPiggy action) {
 
 feedPiggy(AppState state, FeedPiggy action) {
   var newCurrentFeedTime = state.user.currentFeedTime + 1;
-  var newPiggyLevel = PiggyLevel.baby;
-  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.old) {
+  var newPiggyLevel = PiggyLevel.Baby;
+  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Old) {
     newPiggyLevel = PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
     newCurrentFeedTime = 0;
   } else {
