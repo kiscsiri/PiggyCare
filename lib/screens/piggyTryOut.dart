@@ -28,7 +28,7 @@ class _PiggyPageState extends State<PiggyTestPage>
   bool _coinVisible = true;
   bool isOnTarget = false;
   bool _isDisabled = false;
-
+bool isAnimationPlaying = false;
   @override
   void initState() {
     _animationController =
@@ -72,6 +72,9 @@ class _PiggyPageState extends State<PiggyTestPage>
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           imageCache.clear();
+          setState(() {
+            isAnimationPlaying = false;
+          });
           Navigator.pop(context);
           _controller.dispose();
         }
@@ -112,8 +115,7 @@ class _PiggyPageState extends State<PiggyTestPage>
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Text(loc.trans("feed_piggy_to_save"))),
+            fit: BoxFit.fitWidth, child: Text(loc.trans("feed_piggy_to_save"))),
       ),
       body: Center(
         child: Stack(alignment: Alignment.center, children: <Widget>[
@@ -127,6 +129,7 @@ class _PiggyPageState extends State<PiggyTestPage>
                   PiggyFeedWidget(
                     willAcceptStream: willAcceptStream,
                     isDisabled: _isDisabled,
+                    isAnimationPlaying: isAnimationPlaying,
                     onDrop: () {
                       setState(() {
                         _coinVisible = false;

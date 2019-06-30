@@ -14,7 +14,7 @@ class PiggyFeedWidget extends StatefulWidget {
       this.willAcceptStream,
       this.onDrop,
       @required this.isDisabled,
-      @required this.store, 
+      this.store,
       @required this.isAnimationPlaying})
       : super(key: key);
 
@@ -27,15 +27,51 @@ class PiggyFeedWidget extends StatefulWidget {
   _PiggyFeedWidgetState createState() => new _PiggyFeedWidgetState();
 }
 
-Widget getAnimation(
-    BuildContext context, Store<AppState> store, bool isDisabled) {
-  if (isDisabled) {
+class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
+  bool isFeedingPlayed = false;
+  bool isRandomGenerated = false;
+  int feedRandom = 1;
+
+Widget getFeedAnimation(BuildContext context, Store<AppState> store) {
+  if(widget.isAnimationPlaying && !isRandomGenerated)
+  {
+      feedRandom = Random().nextInt(3) + 1;
+      isRandomGenerated = true;
+  }
+  try {
+    return Image.asset(
+        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+        gaplessPlayback: true,
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.height * 0.2);
+  } catch (err) {
+    return Image.asset(
+        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+        gaplessPlayback: true,
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.height * 0.2);
+  }
+}
+
+
+Widget getAnimation(BuildContext context, Store<AppState> store) {
+  if(store == null) {
+        return Image.asset(
+        'assets/animations/Baby-Normal.gif',
+        gaplessPlayback: true,
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.height * 0.2);
+  }
+  if (widget.isDisabled) {
     return Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Sleep.gif',
         gaplessPlayback: true,
         width: MediaQuery.of(context).size.width * 0.2,
         height: MediaQuery.of(context).size.height * 0.2);
+  } else if (!widget.isDisabled && widget.isAnimationPlaying) {
+    return getFeedAnimation(context, store);
   } else {
+    isRandomGenerated = false;
     return Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Normal.gif',
         gaplessPlayback: true,
@@ -43,27 +79,6 @@ Widget getAnimation(
         height: MediaQuery.of(context).size.height * 0.2);
   }
 }
-
-Widget getFeedAnimation(
-    BuildContext context, Store<AppState> store, bool isDisabled) {
-  var rng = new Random();
-  try {
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed${rng.nextInt(4)}.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  } catch (err) {
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed${rng.nextInt(3)}.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  }
-}
-
-class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
-  bool isFeedingPlayed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +109,11 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 38.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  height: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.width * 0.4,
                   child: Container(
                       height: MediaQuery.of(context).size.height,
-                      child: getAnimation(
-                          context, widget.store, widget.isDisabled)),
+                      child: getAnimation(context, widget.store)),
                 ),
               )),
     );

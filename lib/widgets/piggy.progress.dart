@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class PiggyProgress extends StatefulWidget {
@@ -33,7 +35,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
             children: <Widget>[
               Text("${widget.saving.toInt()}\$"),
               Padding(
-                padding: EdgeInsets.only(left: currentSavingPadding - 88, right: 0),
+                padding: EdgeInsets.only(left: max(currentSavingPadding - 88, 0), right: 0),
                 child: Text("${widget.targetPrice.toInt()}\$"),
               )
             ],

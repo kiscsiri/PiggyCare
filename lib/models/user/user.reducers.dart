@@ -75,6 +75,12 @@ feedPiggyDatabase(FeedPiggy action) {
     } else {
       newPiggyLevel = doc.data['piggyLevel'];
     }
+
+    if(newPiggyLevel > 3)
+    {
+      //amíg nincs bent a többi szint
+      newPiggyLevel = 3;
+    }
     var feedDate = DateTime.now();
     Firestore.instance.collection('users').document(doc.documentID).updateData({
       'money': newMoney,
@@ -90,7 +96,7 @@ feedPiggyDatabase(FeedPiggy action) {
 feedPiggy(AppState state, FeedPiggy action) {
   var newCurrentFeedTime = state.user.currentFeedTime + 1;
   var newPiggyLevel = PiggyLevel.Baby;
-  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Old) {
+  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Teen) {
     newPiggyLevel = PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
     newCurrentFeedTime = 0;
   } else {

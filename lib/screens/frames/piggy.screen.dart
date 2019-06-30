@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
@@ -38,19 +39,26 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   double coinY = 20.0;
   bool _coinVisible = true;
   bool isOnTarget = false;
+  bool isAnimationPlaying = false;
+  String timeUntilNextFeed = "";
 
   Future<void> _feedPiggy() async {
+    var tempLevel = widget.store.state.user.piggyLevel;
     widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
     NotificationUpdate.feedPiggy(widget.store.state.user.id);
 
-    await _loadAnimation;
+    if (tempLevel.index == widget.store.state.user.piggyLevel.index) {
+      _loadAnimation(false);
+    } else {
+      _loadAnimation(true);
+    }
   }
 
   @override
   void initState() {
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _tween = Tween(begin: 0.35, end: 0.4 );
+    _tween = Tween(begin: 0.35, end: 0.4);
     _coinAnimation = _tween.animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.fastOutSlowIn,
@@ -63,7 +71,18 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
         }
       })
       ..addListener(() {
-        setState(() {});
+        setState(() {
+          timeUntilNextFeed = (widget.store.state.user.timeUntilNextFeed * -1)
+              .toString()
+              .replaceRange(
+                  widget.store.state.user.timeUntilNextFeed
+                      .toString()
+                      .lastIndexOf('.'),
+                  (widget.store.state.user.timeUntilNextFeed * -1)
+                      .toString()
+                      .length,
+                  '');
+        });
       });
     _animationController.forward();
 
@@ -79,7 +98,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
           _controller.duration = new Duration(seconds: 60);
 
           setState(() {
-            tween.begin = widget.store.state.user.timeUntilNextFeed.inSeconds % 60;
+            tween.begin =
+                widget.store.state.user.timeUntilNextFeed.inSeconds % 60;
           });
 
           _controller.reset();
@@ -102,6 +122,51 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       isOnTarget = false;
     });
     _feedPiggy();
+  }
+
+  Future<void> _loadAnimation(bool isLevelUp) async {
+    AnimationController _controller =
+        AnimationController(duration: const Duration(seconds: 5), vsync: this)
+          ..forward();
+
+    var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          imageCache.clear();
+          setState(() {
+            isAnimationPlaying = false;
+          });
+          if (isLevelUp) Navigator.of(context).pop();
+          _controller.dispose();
+        }
+      });
+
+    setState(() {
+      isAnimationPlaying = true;
+    });
+
+    Future.delayed(Duration(milliseconds: 250), () {
+      AudioCache().play("coin_sound.mp3");
+      Vibration.vibrate(duration: 750);
+    });
+    if (isLevelUp)
+      await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () {
+                _controller.dispose();
+                imageCache.clear();
+              },
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) => Image.asset(
+                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
+                      gaplessPlayback: true,
+                    ),
+              ),
+            );
+          });
   }
 
   Future<void> testPurchace() async {}
@@ -184,11 +249,15 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                   padding: const EdgeInsets.only(top: 23.0),
                   child: PiggyFeedWidget(
                       willAcceptStream: willAcceptStream,
+                      isAnimationPlaying: isAnimationPlaying,
                       isDisabled: _isDisabled,
                       onDrop: onCoinDrop,
                       store: widget.store),
                 ),
-                PiggyProgress(saving: widget.store.state.user.currentSaving.toDouble(), targetPrice: widget.store.state.user.targetPrice.toDouble()),
+                PiggyProgress(
+                    saving: widget.store.state.user.currentSaving.toDouble(),
+                    targetPrice:
+                        widget.store.state.user.targetPrice.toDouble()),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: Container(
@@ -196,33 +265,24 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: PiggyButton(
                         disabled: _isDisabled,
-                        text: loc.trans('feed_piggy') ,
+                        text: loc.trans('feed_piggy'),
                         onClick: () => _feedPiggy()),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: _isDisabled
-                      ? new Row(
+                      ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            new Text(
-                               loc.trans("next_feed_in"),
+                            Text(
+                              loc.trans("next_feed_in"),
                               style: Theme.of(context).textTheme.display4,
                             ),
-                            new Text((widget.store.state.user.timeUntilNextFeed * -1)
-                                .toString()
-                                .replaceRange(
-                                    widget.store.state.user.timeUntilNextFeed
-                                        .toString()
-                                        .lastIndexOf('.'),
-                                    (widget.store.state.user.timeUntilNextFeed * -1)
-                                        .toString()
-                                        .length,
-                                    '')),
+                            Text(timeUntilNextFeed),
                           ],
                         )
-                      : new Container(),
+                      : Container(),
                 )
               ]),
         )),
