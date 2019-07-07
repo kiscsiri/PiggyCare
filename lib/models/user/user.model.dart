@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/registration/registration.model.dart';
 
 class UserData {
   String id;
   int saving;
   Period period;
   int feedPerPeriod;
-  String item;
-  int targetPrice;
+  List<Item> items;
   PiggyLevel piggyLevel;
-  int currentSaving;
   int currentFeedTime;
   String phoneNumber;
   DateTime lastFeed;
@@ -24,7 +24,7 @@ class UserData {
     }
     switch (period) {
       case Period.daily:
-        return DateTime.now().difference(lastFeed.add(Duration(days: 1)));
+        return DateTime.now().difference(lastFeed.add(Duration(hours: 12)));
         break;
       case Period.monthly:
         return DateTime.now().difference(lastFeed.add(Duration(days: 30)));
@@ -51,30 +51,27 @@ class UserData {
         phoneNumber: user['phoneNumber'],
         feedPerPeriod: user['feedPerPeriod'],
         lastFeed: user['lastFeed'].toDate(),
-        item: user['item'],
-        targetPrice: user['targetPrice'],
         money: user['money'],
-        currentSaving: user['currentSaving'],
-        piggyLevel: PiggyLevel.values[user['piggyLevel'] - 1],
+        piggyLevel: PiggyLevel.values[user['piggyLevel']],
         currentFeedTime: user['currentFeedTime'],
         created: user['created'].toDate(),
         saving: user['saving'],
         period: Period.values[user['period']]);
   }
 
-  factory UserData.constructInitial(id, phoneNumber) {
+  factory UserData.constructInitial(id, phoneNumber, RegistrationData register) {
     return new UserData(
             id: id,
             phoneNumber: phoneNumber,
-            feedPerPeriod: 5,
+            feedPerPeriod: register.schedule.savingPerPeriod,
             lastFeed: DateTime(1995),
             money: 100000,
             currentFeedTime: 0,
-            currentSaving: 0,
+            items: [Item(currentSaving: 0, item: register.item, targetPrice: register.targetPrice)],
             piggyLevel: PiggyLevel.Baby,
             created: DateTime.now(),
             saving: 0,
-            period: Period.daily
+            period: register.schedule.period
     );
   }
 
@@ -84,14 +81,11 @@ class UserData {
       "saving": this.saving,
       "feedPerPeriod": this.feedPerPeriod,
       "phoneNumber": this.phoneNumber,
-      "item": this.item,
-      "targetPrice": this.targetPrice,
       "money": this.money,
       "period": this.period.index,
       "lastFeed": this.lastFeed,
       "created": this.created,
-      "currentSaving": this.currentSaving,
-      "piggyLevel" : this.piggyLevel,
+      "piggyLevel" : this.piggyLevel.index,
       "currentFeedTime": this.currentFeedTime
     });
   }
@@ -101,9 +95,7 @@ class UserData {
       this.saving,
       this.feedPerPeriod,
       this.period,
-      this.item,
-      this.targetPrice,
-      this.currentSaving,
+      this.items,
       this.piggyLevel,
       this.currentFeedTime,
       this.money,

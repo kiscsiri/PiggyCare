@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
@@ -124,10 +125,30 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     _feedPiggy();
   }
 
+  Widget getFeedAnimation(
+      BuildContext context, Store<AppState> store, int feedRandom) {
+    try {
+      return AnimatedOpacity(
+          opacity: 1.0,
+          duration: Duration(milliseconds: 1500),
+          child: Image.asset(
+              'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+              gaplessPlayback: true,
+              width: MediaQuery.of(context).size.width * 0.2,
+              height: MediaQuery.of(context).size.height * 0.2));
+    } catch (err) {
+      return Image.asset(
+          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+          gaplessPlayback: true,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.2);
+    }
+  }
+
   Future<void> _loadAnimation(bool isLevelUp) async {
-    AnimationController _controller =
-        AnimationController(duration: const Duration(seconds: 5), vsync: this)
-          ..forward();
+    AnimationController _controller = AnimationController(
+        duration: const Duration(milliseconds: 7500), vsync: this)
+      ..forward();
 
     var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
       ..addStatusListener((status) {
@@ -136,7 +157,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
           setState(() {
             isAnimationPlaying = false;
           });
-          if (isLevelUp) Navigator.of(context).pop();
+          Navigator.of(context).pop();
           _controller.dispose();
         }
       });
@@ -149,24 +170,28 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       AudioCache().play("coin_sound.mp3");
       Vibration.vibrate(duration: 750);
     });
-    if (isLevelUp)
-      await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return WillPopScope(
-              onWillPop: () {
-                _controller.dispose();
-                imageCache.clear();
-              },
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, child) => Image.asset(
+    var feedRandom = Random().nextInt(2) + 1;
+
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () {
+              _controller.dispose();
+              imageCache.clear();
+            },
+            child: AnimatedBuilder(
+              animation: animation,
+              builder: (context, child) => (isLevelUp)
+                  ? Image.asset(
                       'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
                       gaplessPlayback: true,
-                    ),
-              ),
-            );
-          });
+                    )
+                  : (Image.asset(
+                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+            ),
+          );
+        });
   }
 
   Future<void> testPurchace() async {}
@@ -179,6 +204,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var item = widget.store.state.user.items.last;
+
     bool _isDisabled =
         widget.store.state.user.timeUntilNextFeed > Duration(seconds: 0)
             ? false
@@ -255,9 +282,9 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                       store: widget.store),
                 ),
                 PiggyProgress(
-                    saving: widget.store.state.user.currentSaving.toDouble(),
-                    targetPrice:
-                        widget.store.state.user.targetPrice.toDouble()),
+                    item: item.item,
+                    saving: item.currentSaving.toDouble(),
+                    targetPrice: item.targetPrice.toDouble()),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: Container(

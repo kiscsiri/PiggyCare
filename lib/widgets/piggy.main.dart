@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.model.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -39,11 +37,15 @@ Widget getFeedAnimation(BuildContext context, Store<AppState> store) {
       isRandomGenerated = true;
   }
   try {
-    return Image.asset(
+    return 
+    AnimatedOpacity(
+  opacity: 1.0,
+  duration: Duration(milliseconds: 1500),
+  child: Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
         gaplessPlayback: true,
         width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
+        height: MediaQuery.of(context).size.height * 0.2));
   } catch (err) {
     return Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
@@ -62,19 +64,20 @@ Widget getAnimation(BuildContext context, Store<AppState> store) {
         width: MediaQuery.of(context).size.width * 0.2,
         height: MediaQuery.of(context).size.height * 0.2);
   }
-  if (widget.isDisabled) {
+  if (widget.isDisabled && !widget.isAnimationPlaying) {
     return Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Sleep.gif',
         gaplessPlayback: true,
         width: MediaQuery.of(context).size.width * 0.2,
         height: MediaQuery.of(context).size.height * 0.2);
-  } else if (!widget.isDisabled && widget.isAnimationPlaying) {
+  } else if (widget.isAnimationPlaying) {
     return getFeedAnimation(context, store);
   } else {
     isRandomGenerated = false;
     return Image.asset(
         'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Normal.gif',
         gaplessPlayback: true,
+        scale: 0.8,
         width: MediaQuery.of(context).size.width * 0.2,
         height: MediaQuery.of(context).size.height * 0.2);
   }

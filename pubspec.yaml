@@ -55,19 +55,14 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/images/piggy_nyito.png
-    - lib/assets/images/piggy_etetes.png
-    - lib/assets/images/piggy_inaktiv.png
     - lib/assets/images/coin.png
-    - assets/piggy_etetes.flr
-    - assets/piggy_sleep.flr
+    - lib/assets/images/piggy_nyito.png
     - assets/coin_sound.mp3
-    - assets/piggy_sleep.webp
     - lib/assets/animation/animation-piggy.gif
     - assets/locale/en.json
+    - assets/piggy_etetes.flr
     - assets/locale/hu.json
     - assets/coin_sound.mp3
-    - assets/piggy_sleep.webp
     - assets/animations/Baby-LevelUp.gif
     - assets/animations/Baby-Feed1.gif
     - assets/animations/Baby-Feed2.gif
@@ -77,7 +72,7 @@ flutter:
     - assets/animations/Child-LevelUp.gif
     - assets/animations/Child-Feed1.gif
     - assets/animations/Child-Feed2.gif
-    - assets/animations/Child-Feed3.gif
+    - assets/animations/Child-Feed2.gif
     - assets/animations/Child-Normal.gif
     - assets/animations/Child-Sleep.gif
     - assets/animations/Teen-LevelUp.gif

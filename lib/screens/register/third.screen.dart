@@ -5,8 +5,10 @@ import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/helpers/InputFormatters.dart';
 import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -85,13 +87,31 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                     onTap: () {
                                       widget.store
                                           .dispatch(SetSchedule(schedule));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (context) =>
-                                                  new RegisterPage(
-                                                    store: widget.store,
-                                                  )));
+                                      if (widget.store.state.user.id.isNotEmpty) {
+                                        var item = Item(
+                                            currentSaving: 0,
+                                            item: widget.store.state
+                                                .registrationData.item,
+                                            targetPrice: widget.store.state
+                                                .registrationData.targetPrice);
+
+                                        widget.store.dispatch(AddItem(item));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new MainPage(
+                                                      store: widget.store,
+                                                    )));
+                                      } else {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new RegisterPage(
+                                                      store: widget.store,
+                                                    )));
+                                      }
                                     },
                                     trailing: Center(
                                       child: Container(
@@ -104,8 +124,10 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                             MediaQuery.of(context).size.width *
                                                 0.75,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
                                               "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -55,12 +56,22 @@ class _StartupPageState extends State<StartupPage> {
           if (user != null) {
             firestore
                 .collection('users')
-                .where("phoneNumber", isEqualTo: user.phoneNumber)
+                .where("uid", isEqualTo: user.uid)
                 .getDocuments()
-                .then((value) {
+                .then((value) async {
               if (value.documents.length > 0) {
-                UserData u = new UserData.fromFirebaseDocumentSnapshot(value.documents.first);
+                UserData u = new UserData.fromFirebaseDocumentSnapshot(
+                    value.documents.first);
                 user.reload();
+
+                await Firestore.instance
+                    .collection("items")
+                    .where("userId", isEqualTo: value.documents[0].documentID)
+                    .getDocuments()
+                    .then((value) {
+                  u.items = fromDocumentSnapshot(value.documents);
+                });
+
                 widget.store.dispatch(InitUserData(u));
                 Navigator.of(context).pushReplacementNamed("home");
               } else {

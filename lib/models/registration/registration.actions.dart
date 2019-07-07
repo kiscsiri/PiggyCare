@@ -1,4 +1,5 @@
 import 'package:piggybanx/models/SavingSchedule.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 
 class SetPrice {
   final int price;
@@ -16,6 +17,12 @@ class SetItem {
   final String item;
 
   SetItem(this.item);
+}
+
+class AddItem {
+  final Item item;
+
+  AddItem(this.item);
 }
 
 class SetSchedule {

@@ -1,4 +1,5 @@
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
 class SaveSettingsAction {
@@ -18,6 +19,12 @@ class UpdateUserData {
   final UserData user;
 
   UpdateUserData(this.user);
+}
+
+class AddNewItem {
+  final Item item;
+
+  AddNewItem(this.item);
 }
 
 class InitUserData {

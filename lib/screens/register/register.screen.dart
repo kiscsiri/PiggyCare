@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -19,11 +20,10 @@ import 'package:redux/redux.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.store})
-      : super(key: key);
+  RegisterPage({Key key, this.store}) : super(key: key);
 
   final Store<AppState> store;
-  
+
   @override
   _RegisterPageState createState() => new _RegisterPageState();
 }
@@ -122,20 +122,11 @@ class _RegisterPageState extends State<RegisterPage> {
         .collection("users")
         .where("uid", isEqualTo: user.uid)
         .getDocuments()
-        .then((QuerySnapshot value) {
+        .then((QuerySnapshot value) async {
       var registrationData = widget.store.state.registrationData;
       if (value.documents.length == 0) {
-        UserData userData = new UserData(
-            id: user.uid,
-            phoneNumber: user.phoneNumber,
-            feedPerPeriod: registrationData.schedule.savingPerPeriod,
-            item: registrationData.item,
-            targetPrice: registrationData.targetPrice,
-            lastFeed: DateTime(1995),
-            money: 100000,
-            created: DateTime.now(),
-            saving: 0,
-            period: registrationData.schedule.period);
+        UserData userData = new UserData.constructInitial(
+            user.uid, _phoneCodeController.text, registrationData);
         var token = "";
         var platfom = "";
         _firebaseMessaging.getToken().then((val) {
@@ -152,7 +143,13 @@ class _RegisterPageState extends State<RegisterPage> {
           NotificationUpdate.register(token, user.uid, platfom);
         });
 
-        Firestore.instance.collection('users').add(userData.toJson());
+        var newDoc =
+            await Firestore.instance.collection('users').add(userData.toJson());
+        Firestore.instance.collection('items').add(Item(
+                currentSaving: 0,
+                item: widget.store.state.registrationData.item,
+                targetPrice: widget.store.state.registrationData.targetPrice)
+            .toJson(newDoc.documentID));
         widget.store.dispatch(ClearRegisterState());
         widget.store.dispatch(InitUserData(userData));
       } else {

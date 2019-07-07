@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/Enums/level.dart';
-import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/services/notification-update.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -150,30 +147,20 @@ class _LoginPageState extends State<LoginPage> {
         .collection("users")
         .where("uid", isEqualTo: user.uid)
         .getDocuments()
-        .then((QuerySnapshot value) {
+        .then((QuerySnapshot value) async {
       if (value.documents.length == 0) {
-        UserData userData = new UserData.constructInitial(user.uid, user.phoneNumber);
-        var token = "";
-        var platfom = "";
-        _firebaseMessaging.getToken().then((val) {
-          token = val;
-          _firebaseMessaging.onTokenRefresh.listen((token) {
-            NotificationUpdate.updateToken(token, user.uid);
-          });
-          if (Platform.isAndroid) {
-            platfom = "android";
-          } else if (Platform.isIOS) {
-            platfom = "ios";
-          }
-          NotificationUpdate.register(token, user.uid, platfom);
-        });
-
-        Firestore.instance.collection('users').add(userData.toJson());
-        widget.store.dispatch(InitUserData(userData));
       } else {
         var data = value.documents[0];
         UserData userData = UserData.fromFirebaseDocumentSnapshot(data);
         userData.id = user.uid;
+        await Firestore.instance
+            .collection("items")
+            .where("userId", isEqualTo: value.documents[0].documentID)
+            .orderBy('createdDate', descending: true)
+            .getDocuments()
+            .then((value) {
+          userData.items = fromDocumentSnapshot(value.documents);
+        });
         widget.store.dispatch(InitUserData(userData));
       }
       Navigator.of(context).pushReplacement(new MaterialPageRoute(

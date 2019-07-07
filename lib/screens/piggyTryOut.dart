@@ -28,7 +28,8 @@ class _PiggyPageState extends State<PiggyTestPage>
   bool _coinVisible = true;
   bool isOnTarget = false;
   bool _isDisabled = false;
-bool isAnimationPlaying = false;
+  bool isAnimationPlaying = false;
+
   @override
   void initState() {
     _animationController =
@@ -112,7 +113,7 @@ bool isAnimationPlaying = false;
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     return new Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: FittedBox(
             fit: BoxFit.fitWidth, child: Text(loc.trans("feed_piggy_to_save"))),
