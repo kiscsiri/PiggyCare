@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/register/third.screen.dart';
@@ -21,6 +22,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
@@ -40,7 +42,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 child: new Text(
-                  "Welcome to PiggyBanx!",
+                  loc.trans("welcome"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.title,
                 ),
@@ -48,7 +50,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: new Text(
-                  "Register with 3 easy steps!",
+                  loc.trans("3_easy_steps"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3,
                 ),
@@ -56,7 +58,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(
-                  "First, tell Piggy what do you want to buy.",
+                  loc.trans("register_saving_for"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3,
                 ),
@@ -64,7 +66,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 80.0),
                 child: PiggyInput(
-                  hintText: "What do you wish for?",
+                  hintText: loc.trans("your_wish_hint"),
                   height: MediaQuery.of(context).size.height * 0.15,
                   width: MediaQuery.of(context).size.width * 0.8,
                   textController: textEditingController,
@@ -73,13 +75,13 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                   },
                   onValidate: (value) {
                     if (value.isEmpty) {
-                      return "This field is required!";
+                      return loc.trans("required_field");
                     }
                   },
                 ),
               ),
               PiggyButton(
-                  text: "Next step",
+                  text: loc.trans("next_step"),
                   onClick: () {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);

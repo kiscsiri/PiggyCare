@@ -1,21 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/Enums/level.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
 AppState initUser(AppState state, InitUserData action) {
-  var newUserData =  new UserData(
+  var newUserData = new UserData(
       feedPerPeriod: action.user.feedPerPeriod,
       id: action.user.id,
       lastFeed: action.user.lastFeed,
       money: action.user.money,
-      item: action.user.item,
-      targetPrice: action.user.targetPrice,
+      items: action.user.items,
+      currentFeedTime: action.user.currentFeedTime,
+      piggyLevel: action.user.piggyLevel,
       period: action.user.period,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
       created: action.user.created);
-  return new AppState(user: newUserData, registrationData: state.registrationData);
+  return new AppState(
+      user: newUserData, registrationData: state.registrationData);
 }
 
 AppState updateUser(AppState state, UpdateUserData action) {
@@ -23,14 +27,33 @@ AppState updateUser(AppState state, UpdateUserData action) {
       feedPerPeriod: action.user.feedPerPeriod,
       id: state.user.id,
       lastFeed: state.user.lastFeed,
+      items: state.user.items,
       money: state.user.money,
-      item: state.user.item,
-      targetPrice: state.user.targetPrice,
+      currentFeedTime: state.user.currentFeedTime,
+      piggyLevel: state.user.piggyLevel,
       period: action.user.period,
       phoneNumber: state.user.phoneNumber,
       saving: state.user.saving,
       created: state.user.created);
-  return new AppState(user: newUserData, registrationData: state.registrationData);
+  return new AppState(
+      user: newUserData, registrationData: state.registrationData);
+}
+
+AppState addNewITem(AppState state, AddNewItem action) {
+  var newUserData = new UserData(
+      feedPerPeriod: state.user.feedPerPeriod,
+      id: state.user.id,
+      lastFeed: state.user.lastFeed,
+      items: state.user.items,
+      money: state.user.money,
+      currentFeedTime: state.user.currentFeedTime,
+      piggyLevel: state.user.piggyLevel,
+      period: state.user.period,
+      phoneNumber: state.user.phoneNumber,
+      saving: state.user.saving,
+      created: state.user.created);
+  return new AppState(
+      user: newUserData, registrationData: state.registrationData);
 }
 
 updateUserDatabase(AppState state, UpdateUserData action) {
@@ -54,27 +77,80 @@ feedPiggyDatabase(FeedPiggy action) {
       .getDocuments()
       .then((QuerySnapshot value) {
     var doc = value.documents.first;
+
     var newMoney = doc.data['money'] - doc.data['feedPerPeriod'];
     var newSaving = doc.data['saving'] + doc.data['feedPerPeriod'];
+    var newCurrentFeedTime = ++doc.data['currentFeedTime'];
+
+    var newPiggyLevel = 0;
+    if (newCurrentFeedTime >= 5) {
+      newPiggyLevel = ++doc.data['piggyLevel'];
+      newCurrentFeedTime = 0;
+    } else {
+      newPiggyLevel = doc.data['piggyLevel'];
+    }
+
+    if (newPiggyLevel > 2) {
+      //amíg nincs bent a többi szint
+      newPiggyLevel = 2;
+    }
     var feedDate = DateTime.now();
-    Firestore.instance.collection('users').document(doc.documentID).updateData(
-        {'money': newMoney, 'saving': newSaving, 'lastFeed': feedDate});
+    Firestore.instance.collection('users').document(doc.documentID).updateData({
+      'money': newMoney,
+      'saving': newSaving,
+      'lastFeed': feedDate,
+      'piggyLevel': newPiggyLevel,
+      'currentFeedTime': newCurrentFeedTime,
+    });
+
+    Firestore.instance
+        .collection('items')
+        .where('userId', isEqualTo: doc.documentID)
+        .orderBy('createdDate', descending: true)
+        .getDocuments()
+        .then((value) {
+      var item = Item.fromSnapshot(value.documents.first);
+      var newValue = item.currentSaving + doc.data['feedPerPeriod'];
+      Firestore.instance
+          .collection('items')
+          .document(value.documents.first.documentID)
+          .updateData({
+        'currentSaving': newValue,
+      });
+    });
   });
 }
 
- feedPiggy(AppState state, FeedPiggy action) {
+feedPiggy(AppState state, FeedPiggy action) {
+  var newCurrentFeedTime = state.user.currentFeedTime + 1;
+  var newPiggyLevel = PiggyLevel.Baby;
+  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Teen) {
+    newPiggyLevel = PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
+    newCurrentFeedTime = 0;
+  } else {
+    newPiggyLevel = state.user.piggyLevel;
+  }
+
+  var activeItem = state.user.items.last;
+
   var newUserData = new UserData(
       id: state.user.id,
       feedPerPeriod: state.user.feedPerPeriod,
       lastFeed: DateTime.now(),
+      items: state.user.items,
       money: (state.user.money - state.user.feedPerPeriod),
-      item: state.user.item,
-      targetPrice: state.user.targetPrice,
+      piggyLevel: newPiggyLevel,
+      currentFeedTime: newCurrentFeedTime,
       period: state.user.period,
       created: state.user.created,
       phoneNumber: state.user.phoneNumber,
       saving: (state.user.saving + state.user.feedPerPeriod));
 
-  return new AppState(user: newUserData, registrationData: state.registrationData);
-}
+  newUserData.items.last = Item(
+      currentSaving: (activeItem.currentSaving + state.user.feedPerPeriod),
+      item: activeItem.item,
+      targetPrice: activeItem.targetPrice);
 
+  return new AppState(
+      user: newUserData, registrationData: state.registrationData);
+}

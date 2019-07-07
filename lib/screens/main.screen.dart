@@ -7,7 +7,7 @@ import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
-import 'package:redux/src/store.dart';
+import 'package:redux/redux.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, this.store}) : super(key: key);
@@ -72,6 +72,7 @@ class _MainPageState extends State<MainPage> {
             onNavigateTap: (index) {
               _navigate(index);
             },
+            store: widget.navigationStore,
           )),
     );
   }

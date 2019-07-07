@@ -55,16 +55,32 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/images/piggy_nyito.png
-    - lib/assets/images/piggy_etetes.png
-    - lib/assets/images/piggy_inaktiv.png
     - lib/assets/images/coin.png
-    - assets/piggy_etetes.flr
-    - assets/piggy_sleep.flr
+    - lib/assets/images/piggy_nyito.png
     - assets/coin_sound.mp3
     - lib/assets/animation/animation-piggy.gif
     - assets/locale/en.json
+    - assets/piggy_etetes.flr
     - assets/locale/hu.json
+    - assets/coin_sound.mp3
+    - assets/animations/Baby-LevelUp.gif
+    - assets/animations/Baby-Feed1.gif
+    - assets/animations/Baby-Feed2.gif
+    - assets/animations/Baby-Feed3.gif
+    - assets/animations/Baby-Normal.gif
+    - assets/animations/Baby-Sleep.gif
+    - assets/animations/Child-LevelUp.gif
+    - assets/animations/Child-Feed1.gif
+    - assets/animations/Child-Feed2.gif
+    - assets/animations/Child-Feed2.gif
+    - assets/animations/Child-Normal.gif
+    - assets/animations/Child-Sleep.gif
+    - assets/animations/Teen-LevelUp.gif
+    - assets/animations/Teen-Feed1.gif
+    - assets/animations/Teen-Feed2.gif
+    - assets/animations/Teen-Feed3.gif
+    - assets/animations/Teen-Normal.gif
+    - assets/animations/Teen-Sleep.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

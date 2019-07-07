@@ -47,8 +47,8 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
         height: MediaQuery.of(context).size.width * 0.1);
 
     return Positioned(
-      top: MediaQuery.of(context).size.width * widget.coinController.value,
-      left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.39 : coinX,
+      top: (MediaQuery.of(context).size.width * widget.coinController.value) - 20,
+      left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.44 : coinX,
       child: Draggable(
         data: "Coin",
         childWhenDragging: Container(),

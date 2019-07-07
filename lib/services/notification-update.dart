@@ -38,14 +38,16 @@ class NotificationUpdate {
 
     var jsonString = json.encode(mappedData);
 
-    await http.put(url + "feed",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: jsonString).then((val) {
-          print(val);
-        });
+    await http
+        .put(url + "feed",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
   }
 
   static updateSettings(Period period, String uid) async {
@@ -56,17 +58,19 @@ class NotificationUpdate {
 
     var jsonString = json.encode(mappedData);
 
-    await http.put(url,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: jsonString).then((val) {
-          print(val);
-        });
+    await http
+        .put(url,
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
   }
 
-    static updateToken(String token, String uid) async {
+  static updateToken(String token, String uid) async {
     Map<String, Object> mappedData = {
       'userId': uid,
       "device_id": token,
@@ -74,13 +78,15 @@ class NotificationUpdate {
 
     var jsonString = json.encode(mappedData);
 
-    await http.put(url + "updateToken",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: jsonString).then((val) {
-          print(val);
-        });
+    await http
+        .put(url + "updateToken",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
   }
 }

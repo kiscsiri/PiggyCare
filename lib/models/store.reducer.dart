@@ -18,6 +18,9 @@ AppState applicationReducer(AppState appState, dynamic action) {
   } else if (action is FeedPiggy) {
     feedPiggyDatabase(action);
     return feedPiggy(appState, action);
+  } else if (action is AddItem) {
+    addItemDatabase(action, appState.user.id);
+    return addItem(appState, action);
   } else if (action is UpdateUserData) {
     updateUserDatabase(appState, action);
     return updateUser(appState, action);

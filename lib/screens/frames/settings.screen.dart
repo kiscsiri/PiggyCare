@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -22,7 +23,8 @@ class _SettingsPageState extends State<SettingsPage> {
   Period _period;
   int _feedPerPeriod;
 
-  _saveUserSettings() {
+  _saveUserSettings(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
 
@@ -34,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('Settings saved'),
+          Text(loc.trans("settings_saved_snackbar")),
         ],
       ));
     Scaffold.of(context).showSnackBar(snackBar);
@@ -49,6 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     final boxHeight = MediaQuery.of(context).size.height * 0.2;
     return new Scaffold(
       body: new Container(
@@ -58,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
           new Container(
             height: boxHeight,
             child: Center(
-                child: new Text("FEEDING SETTINGS",
+                child: new Text(loc.trans("feeding_settings"),
                     style: Theme.of(context).textTheme.display2)),
           ),
           new ConstrainedBox(
@@ -86,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                   ),
                                   new Text(
-                                    "I want to feed Piggy with this amount: ",
+                                    loc.trans("feed_piggy_with_this_amount"),
                                     style: 
                                     new TextStyle(
                                       fontSize: 12
@@ -145,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: new Text("I want to feed Piggy in this period:"),
+                  child: new Text(loc.trans("piggy_feed_period")),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -165,7 +168,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text("Demo mode ( korlátlan )"),
+                            child: new Text(loc.trans("demo")),
                           ),
                           value: Period.demo,
                         ),
@@ -173,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text("Daily"),
+                            child: new Text(loc.trans("daily")),
                           ),
                           value: Period.daily,
                         ),
@@ -181,7 +184,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text("Weekly"),
+                            child: new Text(loc.trans("weekly")),
                           ),
                           value: Period.weely,
                         ),
@@ -189,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text("Monthly"),
+                            child: new Text(loc.trans("monthly")),
                           ),
                           value: Period.monthly,
                         )
@@ -203,9 +206,9 @@ class _SettingsPageState extends State<SettingsPage> {
           Padding(
             padding: const EdgeInsets.only(bottom: 15.0),
             child: new PiggyButton(
-              text: "SAVE SETTINGS",
+              text: loc.trans("save_settings"),
               onClick: () async {
-                _saveUserSettings();
+                _saveUserSettings(context);
               },
             ),
           )

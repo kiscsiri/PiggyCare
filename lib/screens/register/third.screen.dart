@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/helpers/InputFormatters.dart';
 import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
+import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -30,39 +33,44 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
 
     return showDialog(
         context: context,
-        builder: (context) => Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width * 0.9,
-              padding: EdgeInsets.all(1.0),
-              child: AlertDialog(
-                title: Text(
-                  "Let Piggy offer you some scheduling for getting the ${widget.store.state.registrationData.item}!",
-                  style: Theme.of(context).textTheme.display3,
-                  textAlign: TextAlign.center,
-                ),
-                content: Center(
-                  child: ListView.builder(
-                    itemCount: schedules.length,
-                    itemBuilder: (context, index) {
-                      var schedule = schedules.elementAt(index);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 5),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              boxShadow: [
-                                new BoxShadow(
-                                  color: Colors.grey,
-                                  offset: new Offset(5.0, 2.0),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(10)),
+        builder: (context) {
+          var loc = PiggyLocalizations.of(context);
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width * 0.9,
+            padding: EdgeInsets.all(1.0),
+            child: AlertDialog(
+              title: Text(
+                "${loc.trans("piggy_offer_some_plans")} ${widget.store.state.registrationData.item}" +
+                    ((loc.locale.languageCode == "hu") ? "-t!" : "!"),
+                style: Theme.of(context).textTheme.display3,
+                textAlign: TextAlign.center,
+              ),
+              content: Center(
+                child: ListView.builder(
+                  itemCount: schedules.length,
+                  itemBuilder: (context, index) {
+                    var schedule = schedules.elementAt(index);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: 5),
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            boxShadow: [
+                              new BoxShadow(
+                                color: Colors.grey,
+                                offset: new Offset(5.0, 2.0),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
                           child: Container(
                             padding: EdgeInsets.all(7),
                             width: MediaQuery.of(context).size.width * 0.7,
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -79,32 +87,85 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                     onTap: () {
                                       widget.store
                                           .dispatch(SetSchedule(schedule));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (context) =>
-                                                  new RegisterPage(
-                                                    store: widget.store,
-                                                  )));
+                                      if (widget.store.state.user.id.isNotEmpty) {
+                                        var item = Item(
+                                            currentSaving: 0,
+                                            item: widget.store.state
+                                                .registrationData.item,
+                                            targetPrice: widget.store.state
+                                                .registrationData.targetPrice);
+
+                                        widget.store.dispatch(AddItem(item));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new MainPage(
+                                                      store: widget.store,
+                                                    )));
+                                      } else {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new RegisterPage(
+                                                      store: widget.store,
+                                                    )));
+                                      }
                                     },
-                                    trailing: Text(
-                                        "Get the ${widget.store.state.registrationData.item} in  ${schedule.daysUntilDone} days by feeding Piggy ${schedule.savingPerPeriod}\$ ${getStringValue(schedule.period)}"),
+                                    trailing: Center(
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.1,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14.0),
+                                            ),
+                                            Text(
+                                              "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14.0),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
-            ));
+            ),
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       appBar: new AppBar(
           backgroundColor: Colors.white,
@@ -123,7 +184,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 child: new Text(
-                  "Welcome to PiggyBanx!",
+                  loc.trans("welcome"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.title,
                 ),
@@ -131,7 +192,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(
-                  "Second, tell Piggy, how much does it cost!",
+                  loc.trans("how_much_it_cost"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3,
                 ),
@@ -139,7 +200,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 80.0),
                 child: PiggyInput(
-                  hintText: "How much does it cost?",
+                  hintText: loc.trans("how_much_it_cost_hint"),
                   height: MediaQuery.of(context).size.height * 0.15,
                   width: MediaQuery.of(context).size.width * 0.8,
                   inputFormatters: [
@@ -151,24 +212,24 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                   onValidate: (value) {
                     try {
                       if (value.length > 1 && value.startsWith("0"))
-                        return "The price can't start with zero!";
+                        return loc.trans("price_start_zero_validation");
                       int price = int.parse(
                           value.substring(0, value.length - 2),
                           radix: 10);
                       if (price.isNegative) {
-                        return "The price must be positive!";
+                        return loc.trans("price_positive_validation");
                       } else if (price == 0) {
-                        return "The price can't be 0";
+                        return loc.trans("price_non_zero_validation");
                       }
                     } catch (e) {
-                      return "The price must be a number!";
+                      return loc.trans("price_must_be_number_validation");
                     }
                   },
                   onErrorMessage: null,
                 ),
               ),
               PiggyButton(
-                text: "Next step",
+                text: loc.trans("next_step"),
                 disabled: false,
                 onClick: () {
                   if (_priceFormKey.currentState.validate()) {

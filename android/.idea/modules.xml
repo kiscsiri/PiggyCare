@@ -4,11 +4,21 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers-0.10.1/android/audioplayers.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers-0.10.1/android/audioplayers.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.11.0+2/android/cloud_firestore.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.11.0+2/android/cloud_firestore.iml" />
       <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.9.0/android/cloud_firestore.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.9.0/android/cloud_firestore.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity-0.4.3+1/android/connectivity.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity-0.4.3+1/android/connectivity.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.11.1/android/firebase_auth.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.11.1/android/firebase_auth.iml" />
       <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.0+1/android/firebase_auth.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.0+1/android/firebase_auth.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.0+1/android/firebase_core.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.0+1/android/firebase_core.iml" />
       <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.3.0/android/firebase_core.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.3.0/android/firebase_core.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-5.0.1+1/android/firebase_messaging.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-5.0.1+1/android/firebase_messaging.iml" />
       <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-3.0.0/android/firebase_messaging.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-3.0.0/android/firebase_messaging.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.5/android/flutter_webview_plugin.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.5/android/flutter_webview_plugin.iml" />
       <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-3.3.0/android/google_sign_in.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-3.3.0/android/google_sign_in.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-0.5.0+1/android/path_provider.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-0.5.0+1/android/path_provider.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/vibration-1.0.2/android/vibration.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/vibration-1.0.2/android/vibration.iml" />
+      <module fileurl="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-0.3.6/android/webview_flutter.iml" filepath="C:/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-0.3.6/android/webview_flutter.iml" />
     </modules>
   </component>
 </project>
