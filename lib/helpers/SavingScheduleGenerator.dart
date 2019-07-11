@@ -12,9 +12,9 @@ class ScheduleGenerator {
 
     if (price > 700) {
       schedule1 = new Schedule(
-          savingPerPeriod: 5,
+          savingPerPeriod: 8,
           period: Period.daily,
-          daysUntilDone: (price / 5).ceil());
+          daysUntilDone: (price / 8).ceil());
       schedule2 = new Schedule(
           savingPerPeriod: 5,
           period: Period.daily,

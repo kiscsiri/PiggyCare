@@ -170,7 +170,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       AudioCache().play("coin_sound.mp3");
       Vibration.vibrate(duration: 750);
     });
-    var feedRandom = Random().nextInt(2) + 1;
+    var feedRandom = Random().nextInt(3) + 1;
 
     await showDialog(
         context: context,
