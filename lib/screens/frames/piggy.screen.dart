@@ -180,15 +180,20 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
               _controller.dispose();
               imageCache.clear();
             },
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => (isLevelUp)
-                  ? Image.asset(
-                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
-                      gaplessPlayback: true,
-                    )
-                  : (Image.asset(
-                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+            child: Container(
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) => (isLevelUp)
+                    ? Image.asset(
+                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
+                        gaplessPlayback: true,
+                      )
+                    : (Image.asset(
+                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+              ),
+              color: Colors.red,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
             ),
           );
         });
