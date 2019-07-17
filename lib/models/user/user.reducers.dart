@@ -15,6 +15,7 @@ AppState initUser(AppState state, InitUserData action) {
       currentFeedTime: action.user.currentFeedTime,
       piggyLevel: action.user.piggyLevel,
       period: action.user.period,
+      isDemoOver: action.user.isDemoOver,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
       created: action.user.created);
@@ -34,6 +35,7 @@ AppState updateUser(AppState state, UpdateUserData action) {
       period: action.user.period,
       phoneNumber: state.user.phoneNumber,
       saving: state.user.saving,
+      isDemoOver: state.user.isDemoOver,
       created: state.user.created);
   return new AppState(
       user: newUserData, registrationData: state.registrationData);
@@ -81,6 +83,7 @@ feedPiggyDatabase(FeedPiggy action) {
     var newMoney = doc.data['money'] - doc.data['feedPerPeriod'];
     var newSaving = doc.data['saving'] + doc.data['feedPerPeriod'];
     var newCurrentFeedTime = ++doc.data['currentFeedTime'];
+    var newDemo = doc.data['isDemoOver'];
 
     var newPiggyLevel = 0;
     if (newCurrentFeedTime >= 5) {
@@ -91,9 +94,10 @@ feedPiggyDatabase(FeedPiggy action) {
     }
 
     if (newPiggyLevel > 2) {
-      //amíg nincs bent a többi szint
       newPiggyLevel = 2;
+      newDemo = true;
     }
+
     var feedDate = DateTime.now();
     Firestore.instance.collection('users').document(doc.documentID).updateData({
       'money': newMoney,
@@ -101,6 +105,7 @@ feedPiggyDatabase(FeedPiggy action) {
       'lastFeed': feedDate,
       'piggyLevel': newPiggyLevel,
       'currentFeedTime': newCurrentFeedTime,
+      'isDemoOver': newDemo
     });
 
     Firestore.instance
@@ -124,11 +129,17 @@ feedPiggyDatabase(FeedPiggy action) {
 feedPiggy(AppState state, FeedPiggy action) {
   var newCurrentFeedTime = state.user.currentFeedTime + 1;
   var newPiggyLevel = PiggyLevel.Baby;
+  var newDemo = state.user.isDemoOver;
+
   if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Teen) {
     newPiggyLevel = PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
     newCurrentFeedTime = 0;
   } else {
     newPiggyLevel = state.user.piggyLevel;
+  }
+
+  if (newCurrentFeedTime >= 5 && state.user.piggyLevel == PiggyLevel.Teen) {
+    newDemo = true;
   }
 
   var activeItem = state.user.items.last;
@@ -140,6 +151,7 @@ feedPiggy(AppState state, FeedPiggy action) {
       items: state.user.items,
       money: (state.user.money - state.user.feedPerPeriod),
       piggyLevel: newPiggyLevel,
+      isDemoOver: newDemo,
       currentFeedTime: newCurrentFeedTime,
       period: state.user.period,
       created: state.user.created,

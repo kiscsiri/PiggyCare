@@ -13,6 +13,7 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
 import 'package:piggybanx/widgets/piggy.progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
@@ -45,13 +46,19 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
 
   Future<void> _feedPiggy() async {
     var tempLevel = widget.store.state.user.piggyLevel;
+    var tempIsDemoOver = widget.store.state.user.isDemoOver;
+
     widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
     NotificationUpdate.feedPiggy(widget.store.state.user.id);
 
+    var showDemoAlert = (tempIsDemoOver != widget.store.state.user.isDemoOver);
+    if (showDemoAlert) {
+      showDemoOverDialog(context);
+    }
     if (tempLevel.index == widget.store.state.user.piggyLevel.index) {
-      _loadAnimation(false);
+      await _loadAnimation(false, showDemoAlert);
     } else {
-      _loadAnimation(true);
+      await _loadAnimation(true, showDemoAlert);
     }
   }
 
@@ -145,7 +152,29 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> _loadAnimation(bool isLevelUp) async {
+  showDemoOverDialog(BuildContext context) async {
+    var loc = PiggyLocalizations.of(context);
+
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(loc.trans("congratulations"),
+                style: Theme.of(context).textTheme.display3),
+            content: Text(loc.trans("demo_over_dialog_content")),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  Future<void> _loadAnimation(bool isLevelUp, bool showDemoOverAlert) async {
     AnimationController _controller = AnimationController(
         duration: const Duration(milliseconds: 7500), vsync: this)
       ..forward();
@@ -170,7 +199,15 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       AudioCache().play("coin_sound.mp3");
       Vibration.vibrate(duration: 750);
     });
-    var feedRandom = Random().nextInt(2) + 1;
+    var prefs = await SharedPreferences.getInstance();
+    var feedRandom = prefs.getInt("animationCount");
+    if (isLevelUp) {
+      prefs.setInt("animationCount", 1);
+    } else if (widget.store.state.user.isDemoOver) {
+      feedRandom = Random().nextInt(3) + 1;
+    } else {
+      prefs.setInt("animationCount", feedRandom + 1);
+    }
 
     await showDialog(
         context: context,
@@ -180,15 +217,20 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
               _controller.dispose();
               imageCache.clear();
             },
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => (isLevelUp)
-                  ? Image.asset(
-                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
-                      gaplessPlayback: true,
-                    )
-                  : (Image.asset(
-                      'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+            child: Container(
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) => (isLevelUp)
+                    ? Image.asset(
+                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
+                        gaplessPlayback: true,
+                      )
+                    : (Image.asset(
+                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Color(0xFFce475e),
             ),
           );
         });

@@ -9,6 +9,7 @@ import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:redux/redux.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StartupPage extends StatefulWidget {
   StartupPage({Key key, this.title, this.store}) : super(key: key);
@@ -48,6 +49,12 @@ class _StartupPageState extends State<StartupPage> {
   @override
   void initState() {
     super.initState();
+
+    SharedPreferences.getInstance().then((prefs) {
+      if (!prefs.containsKey("animationCount")) {
+        prefs.setInt("animationCount", 1);
+      }
+    });
 
     (Connectivity().checkConnectivity()).then((value) {
       if (value == ConnectivityResult.mobile ||

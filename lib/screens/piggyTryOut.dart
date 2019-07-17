@@ -121,12 +121,16 @@ class _PiggyPageState extends State<PiggyTestPage>
       body: Center(
         child: Stack(alignment: Alignment.center, children: <Widget>[
           new Container(
+            color: Color(0xFFcb435b),
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+                  ),
                   PiggyFeedWidget(
                     willAcceptStream: willAcceptStream,
                     isDisabled: _isDisabled,

@@ -24,6 +24,7 @@ dependencies:
   http: ^0.12.0+1
   connectivity: ^0.4.2
   rxdart: ^0.21.0
+  shared_preferences: ^0.5.3+4
   firebase_messaging: ^5.0.1+1
   flare_flutter:
 
@@ -67,18 +68,21 @@ flutter:
     - assets/animations/Baby-Feed1.gif
     - assets/animations/Baby-Feed2.gif
     - assets/animations/Baby-Feed3.gif
+    - assets/animations/Baby-Feed4.gif
     - assets/animations/Baby-Normal.gif
     - assets/animations/Baby-Sleep.gif
     - assets/animations/Child-LevelUp.gif
     - assets/animations/Child-Feed1.gif
     - assets/animations/Child-Feed2.gif
-    - assets/animations/Child-Feed2.gif
+    - assets/animations/Child-Feed3.gif
+    - assets/animations/Child-Feed4.gif
     - assets/animations/Child-Normal.gif
     - assets/animations/Child-Sleep.gif
     - assets/animations/Teen-LevelUp.gif
     - assets/animations/Teen-Feed1.gif
     - assets/animations/Teen-Feed2.gif
     - assets/animations/Teen-Feed3.gif
+    - assets/animations/Teen-Feed4.gif
     - assets/animations/Teen-Normal.gif
     - assets/animations/Teen-Sleep.gif
 

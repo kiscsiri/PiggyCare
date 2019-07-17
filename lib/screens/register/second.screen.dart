@@ -17,12 +17,14 @@ class FirstRegisterPage extends StatefulWidget {
 
 class _FirstRegisterPageState extends State<FirstRegisterPage> {
   TextEditingController textEditingController = new TextEditingController();
-
+ 
   final _itemFormKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var isAlreadyRegistered = widget.store.state.user.id.isNotEmpty;
+
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
@@ -39,22 +41,24 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
         child: new Center(
           child: new ListView(
             children: <Widget>[
-              Padding(
+              !isAlreadyRegistered ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 child: new Text(
                   loc.trans("welcome"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.title,
                 ),
+              ) : Container(
+                height: MediaQuery.of(context).size.height * 0.2,
               ),
-              Padding(
+              !isAlreadyRegistered ? Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: new Text(
                   loc.trans("3_easy_steps"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3,
                 ),
-              ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(
