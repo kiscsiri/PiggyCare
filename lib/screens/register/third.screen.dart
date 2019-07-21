@@ -87,7 +87,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                     onTap: () {
                                       widget.store
                                           .dispatch(SetSchedule(schedule));
-                                      if (widget.store.state.user.id.isNotEmpty) {
+                                      if (widget
+                                          .store.state.user.id.isNotEmpty) {
                                         var item = Item(
                                             currentSaving: 0,
                                             item: widget.store.state
@@ -113,37 +114,42 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                                     )));
                                       }
                                     },
-                                    trailing: Center(
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 2),
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14.0),
-                                            ),
-                                            Text(
-                                              "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14.0),
-                                            ),
-                                          ],
+                                    trailing: SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.38,
+                                      child: Center(
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 2),
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.1,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.75,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14.0),
+                                              ),
+                                              Text(
+                                                "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14.0),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -166,6 +172,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var isAlreadyRegistered = widget.store.state.user.id.isNotEmpty;
+
     return new Scaffold(
       appBar: new AppBar(
           backgroundColor: Colors.white,
@@ -181,14 +189,18 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
         child: new Center(
           child: new ListView(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14.0),
-                child: new Text(
-                  loc.trans("welcome"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.title,
-                ),
-              ),
+              !isAlreadyRegistered
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14.0),
+                      child: new Text(
+                        loc.trans("welcome"),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                    )
+                  : Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(

@@ -30,58 +30,53 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
   bool isRandomGenerated = false;
   int feedRandom = 1;
 
-Widget getFeedAnimation(BuildContext context, Store<AppState> store) {
-  if(widget.isAnimationPlaying && !isRandomGenerated)
-  {
+  Widget getFeedAnimation(BuildContext context, Store<AppState> store) {
+    if (widget.isAnimationPlaying && !isRandomGenerated) {
       feedRandom = Random().nextInt(3) + 1;
       isRandomGenerated = true;
+    }
+    try {
+      return AnimatedOpacity(
+          opacity: 1.0,
+          duration: Duration(milliseconds: 1500),
+          child: Image.asset(
+              'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+              gaplessPlayback: true,
+              width: MediaQuery.of(context).size.width * 0.2,
+              height: MediaQuery.of(context).size.height * 0.2));
+    } catch (err) {
+      return Image.asset(
+          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+          gaplessPlayback: true,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.2);
+    }
   }
-  try {
-    return 
-    AnimatedOpacity(
-  opacity: 1.0,
-  duration: Duration(milliseconds: 1500),
-  child: Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2));
-  } catch (err) {
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  }
-}
 
-
-Widget getAnimation(BuildContext context, Store<AppState> store) {
-  if(store == null) {
-        return Image.asset(
-        'assets/animations/Baby-Normal.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
+  Widget getAnimation(BuildContext context, Store<AppState> store) {
+    if (store == null) {
+      return Image.asset('assets/animations/Baby-Feed1.gif',
+          gaplessPlayback: true,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.2);
+    } else if (widget.isDisabled && !widget.isAnimationPlaying) {
+      return Image.asset(
+          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Sleep.gif',
+          gaplessPlayback: true,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.2);
+    } else if (widget.isAnimationPlaying) {
+      return getFeedAnimation(context, store);
+    } else {
+      isRandomGenerated = false;
+      return Image.asset(
+          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Normal.gif',
+          gaplessPlayback: true,
+          scale: 0.8,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.2);
+    }
   }
-  if (widget.isDisabled && !widget.isAnimationPlaying) {
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Sleep.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  } else if (widget.isAnimationPlaying) {
-    return getFeedAnimation(context, store);
-  } else {
-    isRandomGenerated = false;
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Normal.gif',
-        gaplessPlayback: true,
-        scale: 0.8,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  }
-}
 
   @override
   Widget build(BuildContext context) {

@@ -63,5 +63,7 @@
   "come_back": "Come back ",
   "tomorrow": "tomorrow",
   "next_week": "next week",
-  "next_month": "next month"
+  "next_month": "next month",
+  "demo_over_dialog_title": "Congratulation!",
+  "demo_over_dialog_content": "Piggy reached the end of his teenager age! Stay with us, and save more money, when the live version get released!"
 }

@@ -63,5 +63,7 @@
   "come_back": "Gyere vissza ",
   "tomorrow": "holnap",
   "next_week": "jövő héten",
-  "next_month": "következő hónapban"
+  "next_month": "következő hónapban",
+  "demo_over_dialog_title": "Gratulálunk!",
+  "demo_over_dialog_content": "Piggy elérte a tini korszak végét! Folytassa a megtakarítást az éles verzióban, amely jön hamarosan!"
 }

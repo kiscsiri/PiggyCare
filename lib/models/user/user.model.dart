@@ -17,6 +17,7 @@ class UserData {
   DateTime lastFeed;
   DateTime created;
   double money;
+  bool isDemoOver;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {
@@ -56,6 +57,7 @@ class UserData {
         currentFeedTime: user['currentFeedTime'],
         created: user['created'].toDate(),
         saving: user['saving'],
+        isDemoOver: user['isDemoOver'],
         period: Period.values[user['period']]);
   }
 
@@ -71,6 +73,7 @@ class UserData {
             piggyLevel: PiggyLevel.Baby,
             created: DateTime.now(),
             saving: 0,
+            isDemoOver: false,
             period: register.schedule.period
     );
   }
@@ -85,6 +88,7 @@ class UserData {
       "period": this.period.index,
       "lastFeed": this.lastFeed,
       "created": this.created,
+      "isDemoOver": this.isDemoOver,
       "piggyLevel" : this.piggyLevel.index,
       "currentFeedTime": this.currentFeedTime
     });
@@ -100,6 +104,7 @@ class UserData {
       this.currentFeedTime,
       this.money,
       this.lastFeed,
+      this.isDemoOver,
       this.phoneNumber,
       this.created});
 

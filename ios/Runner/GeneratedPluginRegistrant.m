@@ -11,6 +11,7 @@
 #import <firebase_messaging/FirebaseMessagingPlugin.h>
 #import <flutter_webview_plugin/FlutterWebviewPlugin.h>
 #import <path_provider/PathProviderPlugin.h>
+#import <shared_preferences/SharedPreferencesPlugin.h>
 #import <vibration/VibrationPlugin.h>
 #import <webview_flutter/WebViewFlutterPlugin.h>
 
@@ -25,6 +26,7 @@
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
   [FlutterWebviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterWebviewPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
+  [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [VibrationPlugin registerWithRegistrar:[registry registrarForPlugin:@"VibrationPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
 }
