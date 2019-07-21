@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.piggybanx</string>
+	<string>com.piggybanx</string>
 	<key>PROJECT_ID</key>
 	<string>piggybanx-9a7f7</string>
 	<key>STORAGE_BUCKET</key>

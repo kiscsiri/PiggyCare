@@ -76,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10.0),
+                            vertical: 3, horizontal: 10.0),
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -112,6 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                               min: 1,
                               max: 10,
+                              activeColor: Theme.of(context).primaryColor,
                               value: _feedPerPeriod.toDouble(),
                             ),
                             Padding(

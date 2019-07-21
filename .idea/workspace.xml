@@ -12,142 +12,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e66da453-a860-4611-89f4-620b49779a50" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_for_Android.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.10.2/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/4.10.2/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_16_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_16_0_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_errorprone_error_prone_annotations_2_1_2_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_analytics_16_0_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_analytics_impl_16_2_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_auth_16_0_5.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_auth_16_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_16_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_common_16_0_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_core_16_0_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_database_collection_16_0_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_firestore_17_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_iid_17_0_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_impl_17_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_17_3_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_16_0_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_google_guava_guava_20_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__com_squareup_okhttp_okhttp_2_7_2_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_grpc_grpc_context_1_12_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_grpc_grpc_core_1_12_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_grpc_grpc_okhttp_1_12_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_grpc_grpc_protobuf_lite_1_12_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_grpc_grpc_stub_1_12_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_opencensus_opencensus_api_0_11_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/libraries/Gradle__io_opencensus_opencensus_contrib_grpc_metrics_0_11_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/animations/Child-Feed4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/piggy-minta.webm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/piggy_etetes.flr" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/piggy_sleep.flr" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/piggy_sleep.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/5.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/6.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/7.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/8.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-0.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-10.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-10.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-11.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-11.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-12.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-12.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-13.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-13.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-14.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-14.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-15.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-15.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-16.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-16.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-17.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-17.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-18.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-18.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-19.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-19.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-20.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-20.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-21.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-21.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-22.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-22.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-23.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-23.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-24.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-24.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-25.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-25.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-26.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-26.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-27.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-27.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-28.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-28.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-29.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-29.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-5.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-6.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-6.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-7.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-8.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprite/Piggy-prba-9.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/assets/New File 1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/assets/images/piggy_etetes.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/assets/images/piggy_inaktiv.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/assets/piggy_sleep.flr" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/assets/piggy_sleep.flr2d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/user/user.model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/user/user.model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/frames/piggy.screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/frames/piggy.screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/login.screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/login.screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/piggyTryOut.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/piggyTryOut.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/register/register.screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/register/register.screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/piggy.coin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/piggy.coin.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/piggy.main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/piggy.main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/piggy.progress.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/piggy.progress.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -166,7 +42,7 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
+            <state relative-caret-position="17">
               <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
             </state>
           </provider>
@@ -220,6 +96,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -230,13 +108,7 @@
             <path>
               <item name="piggybanx" type="b2602c69:ProjectViewProjectNode" />
               <item name="piggybanx" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="piggybanx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="piggybanx" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -244,20 +116,18 @@
         <option name="show-excluded-files" value="false" />
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DEBUGGABLE_DEVICE" value="oneplus-oneplus_a6013-45135511" />
-    <property name="DEBUGGABLE_PROCESS" value="com.example.piggybanx" />
+    <property name="DEBUGGABLE_PROCESS" value="com.piggybanx" />
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/android" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunDashboard">
@@ -359,8 +229,8 @@
       <window_info id="Captures" order="2" weight="0.32995737" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49782136" visible="true" weight="0.25" />
-      <window_info id="Structure" order="1" sideWeight="0.50217867" side_tool="true" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49673203" visible="true" weight="0.25" />
+      <window_info id="Structure" order="1" sideWeight="0.503268" side_tool="true" visible="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39978212" />
@@ -380,6 +250,32 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="67" selection-start-line="9" selection-start-column="67" selection-end-line="9" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -571,7 +467,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="17">
           <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
         </state>
       </provider>

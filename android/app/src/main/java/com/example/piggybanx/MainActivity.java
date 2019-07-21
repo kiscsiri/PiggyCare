@@ -1,4 +1,4 @@
-package com.example.piggybanx;
+package com.piggybanx;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
 
-  private static final String CHANNEL = "com.example.piggybanx/firestore";
+  private static final String CHANNEL = "com.piggybanx/firestore";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
