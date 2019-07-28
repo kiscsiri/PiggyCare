@@ -29,3 +29,15 @@ build
 node_modules
 
 android/\.gradle/
+
+ios/Pods/
+
+ios/Flutter/
+
+ios/\.symlinks/
+
+android/local\.properties
+
+\.vscode/
+
+\.packages
