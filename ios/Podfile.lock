@@ -216,7 +216,7 @@ SPEC CHECKSUMS:
   cloud_firestore: c6f34148c1dfbb57a6147f9bb49c1c9f5c27036e
   connectivity: c72716e202a1225ec4810740d5cb56b8ae3bf4cc
   Firebase: dedc9e48ea3f3649ad5f6b982f8a0c73508a14b5
-  firebase_auth: 7a2cc520766f90212b845a5b35316601707bfa25
+  firebase_auth: cd05a509d96aafb3b092d39d4e4ba6643277e700
   firebase_core: ce5006bb48508ee4e71e0f429a3f519bb8ee2961
   firebase_messaging: b25b2fa94e685146bcf9d706ed87b4e95cd2a17d
   FirebaseAnalytics: 3fb375bc9d13779add4039716f868d233a473fad

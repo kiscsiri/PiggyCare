@@ -111,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     FirebaseUser user;
     try {
-      user = await _auth.signInWithCredential(credential);
+      user = (await _auth.signInWithCredential(credential)) as FirebaseUser;
     } catch (Exception) {
       setState(() {
         _message = loc.trans("verification_failed");

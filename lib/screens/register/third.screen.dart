@@ -46,129 +46,133 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                 style: Theme.of(context).textTheme.display3,
                 textAlign: TextAlign.center,
               ),
-              content: Center(
-                child: ListView.builder(
-                  itemCount: schedules.length,
-                  itemBuilder: (context, index) {
-                    var schedule = schedules.elementAt(index);
-                    return Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 5),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              boxShadow: [
-                                new BoxShadow(
-                                  color: Colors.grey,
-                                  offset: new Offset(5.0, 2.0),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.all(7),
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    child: FlareActor("assets/piggy_etetes.flr",
-                                        alignment: Alignment.center,
-                                        fit: BoxFit.cover,
-                                        animation: "sleep"),
-                                  ),
-                                  Flexible(
-                                    child: ListTile(
-                                      onTap: () {
-                                        widget.store
-                                            .dispatch(SetSchedule(schedule));
-                                        if (widget
-                                            .store.state.user.id.isNotEmpty) {
-                                          var item = Item(
-                                              currentSaving: 0,
-                                              item: widget.store.state
-                                                  .registrationData.item,
-                                              targetPrice: widget.store.state
-                                                  .registrationData.targetPrice);
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Center(
+                  child: ListView.builder(
+                    itemCount: schedules.length,
+                    itemBuilder: (context, index) {
+                      var schedule = schedules.elementAt(index);
+                      return Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0.0, vertical: 5),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                boxShadow: [
+                                  new BoxShadow(
+                                    color: Colors.grey,
+                                    offset: new Offset(5.0, 2.0),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.all(7),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 30,
+                                      width: 30,
+                                      child: FlareActor("assets/piggy_etetes.flr",
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.cover,
+                                          animation: "sleep"),
+                                    ),
+                                    Flexible(
+                                      child: ListTile(
+                                        onTap: () {
+                                          widget.store
+                                              .dispatch(SetSchedule(schedule));
+                                          if (widget
+                                              .store.state.user.id.isNotEmpty) {
+                                            var item = Item(
+                                                currentSaving: 0,
+                                                item: widget.store.state
+                                                    .registrationData.item,
+                                                targetPrice: widget.store.state
+                                                    .registrationData.targetPrice);
 
-                                          widget.store.dispatch(AddItem(item));
-                                          Navigator.pushReplacement(
-                                              context,
-                                              new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      new MainPage(
-                                                        store: widget.store,
-                                                      )));
-                                        } else {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      new RegisterPage(
-                                                        store: widget.store,
-                                                      )));
-                                        }
-                                      },
-                                      trailing: SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.38,
-                                        child: Container(
-
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height:  MediaQuery.of(context).size.width * 0.5,
-                                          child: Center(
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.symmetric(vertical: 2),
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.1,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.75,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Text(
-                                                    "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14.0),
-                                                  ),
-                                                  Text(
-                                                    "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14.0),
-                                                  ),
-                                                ],
+                                            widget.store.dispatch(AddItem(item));
+                                            Navigator.pushReplacement(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        new MainPage(
+                                                          store: widget.store,
+                                                        )));
+                                          } else {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        new RegisterPage(
+                                                          store: widget.store,
+                                                        )));
+                                          }
+                                        },
+                                        trailing: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.38,
+                                          height: MediaQuery.of(context).size.height * 0.38,
+                                          child: Container(
+                                             width: MediaQuery.of(context).size.width * 0.38,
+                                          height: MediaQuery.of(context).size.height * 0.38,
+                                            child: Center(
+                                              child: Container(
+                                                padding:
+                                                    EdgeInsets.symmetric(vertical: 2),
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.1,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.75,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14.0),
+                                                    ),
+                                                    Text(
+                                                      "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14.0),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

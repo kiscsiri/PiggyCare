@@ -2,39 +2,37 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>1005482150827-agjmq49e1ipiup0rb366t18e4204fbgv.apps.googleusercontent.com</string>
+	<string>856214861570-bdrshh637hj9ncoel1e544c107b5gdhr.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1005482150827-agjmq49e1ipiup0rb366t18e4204fbgv</string>
+	<string>com.googleusercontent.apps.856214861570-bdrshh637hj9ncoel1e544c107b5gdhr</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>856214861570-qpe9llbr6utctalob9h1fp8rlsobelsg.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDd4c6sXb9OiUsDDSDt8rP7nzvhf1iO9Yg</string>
+	<string>AIzaSyDTZSi4NrIA6edE6eVijhUBeN8_UGBBycM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1005482150827</string>
+	<string>856214861570</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.piggybanx</string>
+	<string>comexample.piggybanx</string>
 	<key>PROJECT_ID</key>
-	<string>piggybanx-9a7f7</string>
+	<string>piggybanx-c2e75</string>
 	<key>STORAGE_BUCKET</key>
-	<string>piggybanx-9a7f7.appspot.com</string>
+	<string>piggybanx-c2e75.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1005482150827:ios:5ce991802b237008</string>
+	<string>1:856214861570:ios:cdf85c62f854f62b</string>
 	<key>DATABASE_URL</key>
-	<string>https://piggybanx-9a7f7.firebaseio.com</string>
+	<string>https://piggybanx-c2e75.firebaseio.com</string>
 </dict>
 </plist>
