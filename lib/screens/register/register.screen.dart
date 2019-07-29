@@ -111,13 +111,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
     FirebaseUser user;
     try {
-      user = (await _auth.signInWithCredential(credential)) as FirebaseUser;
+      user = (await _auth.signInWithCredential(credential))?.user;
     } catch (Exception) {
       setState(() {
         _message = loc.trans("verification_failed");
       });
       return null;
     }
+    if(user == null) throw Exception();
     await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)

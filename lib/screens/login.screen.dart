@@ -136,13 +136,14 @@ class _LoginPageState extends State<LoginPage> {
     );
     FirebaseUser user;
     try {
-      user = (await _auth.signInWithCredential(credential)) as FirebaseUser;
-    } catch (Exception) {
+      user = (await _auth.signInWithCredential(credential))?.user;
+    } catch (e) {
       setState(() {
         _message = loc.trans("verification_failed");
       });
       return null;
     }
+    if(user == null) throw Exception();
     await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)
