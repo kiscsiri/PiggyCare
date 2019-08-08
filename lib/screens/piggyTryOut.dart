@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
@@ -113,7 +112,7 @@ class _PiggyPageState extends State<PiggyTestPage>
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    return new PiggyScaffold(
+    return new Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: FittedBox(

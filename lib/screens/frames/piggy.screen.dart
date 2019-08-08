@@ -9,7 +9,6 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification-update.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
@@ -263,7 +262,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
       period = loc.trans("next_month");
     }
 
-    return PiggyScaffold(
+    return new Scaffold(
       body: Stack(children: <Widget>[
         new Container(
             child: Padding(

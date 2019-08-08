@@ -10,7 +10,6 @@ import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -278,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
               })
         ]));
 
-    return PiggyScaffold(
+    return new Scaffold(
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),

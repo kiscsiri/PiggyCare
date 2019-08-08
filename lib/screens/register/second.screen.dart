@@ -3,7 +3,6 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/register/third.screen.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -26,7 +25,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
     var loc = PiggyLocalizations.of(context);
     var isAlreadyRegistered = widget.store.state.user.id.isNotEmpty;
 
-    return PiggyScaffold(
+    return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(

@@ -27,15 +27,7 @@ class PiggyButton extends StatelessWidget {
           decoration: new BoxDecoration(
               color:
                   (disabled) ? Colors.grey : Theme.of(context).primaryColorDark,
-              borderRadius: BorderRadius.circular(70.0),
-              boxShadow: [
-                new BoxShadow(
-                  color: Colors.black38,
-                  blurRadius: 8.0,
-                  spreadRadius: 2,
-                  offset: new Offset(3, 7.0),
-                ),
-              ]),
+              borderRadius: BorderRadius.circular(70.0)),
           child: FlatButton(
             onPressed: null,
             splashColor: Colors.transparent,

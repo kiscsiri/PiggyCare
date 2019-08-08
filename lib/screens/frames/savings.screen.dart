@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -26,7 +25,7 @@ class _SavingsPageState extends State<SavingsPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    return PiggyScaffold(
+    return new Scaffold(
         body: Container(
             child: new Center(
                 child: new Column(

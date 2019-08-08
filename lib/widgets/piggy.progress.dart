@@ -24,12 +24,12 @@ class _PiggyProgressState extends State<PiggyProgress> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Center(child: Text(widget.item ?? ""))),
+                  margin: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.22),
+                  child: Text(widget.item ?? ""),
                 ),
                 (widget.saving > widget.targetPrice)
                     ? IconButton(
@@ -39,22 +39,16 @@ class _PiggyProgressState extends State<PiggyProgress> {
                           Navigator.of(context).pushNamed('register');
                         },
                       )
-                    : Container()
+                    : Container(
+                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.15),
+                    )
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 0.5),
-                boxShadow: [
-                  new BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 6.0,
-                    spreadRadius: 1,
-                    offset: new Offset(2.0, 2.0),
-                  ),
-                ]),
+                    color: Theme.of(context).primaryColor, width: 0.5)),
             child: LinearProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(
                   Theme.of(context).primaryColor),

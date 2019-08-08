@@ -13,7 +13,6 @@ import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/notification-update.dart';
-import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -272,7 +271,7 @@ class _RegisterPageState extends State<RegisterPage> {
               })
         ]));
 
-    return PiggyScaffold(
+    return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
