@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SkrillPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class SkrillPage extends StatelessWidget {
 
     @override
      Widget build(BuildContext context) {
-         return new Scaffold(
+         return PiggyScaffold(
               appBar: new AppBar(
               title: Text("Skrill Deposit"),
               ),

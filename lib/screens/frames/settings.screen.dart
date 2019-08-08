@@ -5,6 +5,7 @@ import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/services/notification-update.dart';
+import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -53,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     final boxHeight = MediaQuery.of(context).size.height * 0.2;
-    return new Scaffold(
+    return PiggyScaffold(
       body: new Container(
           child: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -112,7 +113,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                               min: 1,
                               max: 10,
-                              activeColor: Theme.of(context).primaryColor,
+                              inactiveColor: Colors.grey,
+                              activeColor: Theme.of(context).primaryColorDark,
                               value: _feedPerPeriod.toDouble(),
                             ),
                             Padding(

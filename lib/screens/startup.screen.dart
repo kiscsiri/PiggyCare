@@ -7,6 +7,7 @@ import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:redux/redux.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,7 +103,7 @@ class _StartupPageState extends State<StartupPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    return new Scaffold(
+    return PiggyScaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: new Center(
         child: new Column(

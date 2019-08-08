@@ -6,6 +6,7 @@ import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
+import 'package:piggybanx/widgets/PiggyScaffold.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -46,10 +47,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      },
-      child: Scaffold(
+      onWillPop: () => SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+      child: PiggyScaffold(
           appBar: AppBar(
             title: Text("PiggyBanx"),
           ),
