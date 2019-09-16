@@ -46,9 +46,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      },
+      onWillPop: () =>
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
       child: Scaffold(
           appBar: AppBar(
             title: Text("PiggyBanx"),
@@ -69,9 +68,7 @@ class _MainPageState extends State<MainPage> {
             controller: widget._pageController,
           ),
           bottomNavigationBar: PiggyNavigationBar(
-            onNavigateTap: (index) {
-              _navigate(index);
-            },
+            onNavigateTap: (index) => _navigate(index),
             store: widget.navigationStore,
           )),
     );

@@ -63,69 +63,69 @@ void main() {
           AppState(registrationData: registrationState, user: userState));
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_){
-    runApp(
-      MaterialApp(
-          supportedLocales: supportedLangs,
-          localizationsDelegates: localizationDelegates,
-          localeResolutionCallback: localisationResultCallback,
-          home: StoreProvider(
-            store: store,
-            child: StartupPage(store: store),
+  runApp(
+    MaterialApp(
+        supportedLocales: supportedLangs,
+        localizationsDelegates: localizationDelegates,
+        localeResolutionCallback: localisationResultCallback,
+        home: StoreProvider(
+          store: store,
+          child: StartupPage(store: store),
+        ),
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          fontFamily: 'Montserrat',
+          primaryColorDark: primaryDark,
+          primaryTextTheme: TextTheme(
+            display1: TextStyle(
+                color: primaryColor,
+                fontSize: 72.0,
+                fontWeight: FontWeight.bold),
+            display2: TextStyle(
+                color: primaryColor,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold),
+            display3: TextStyle(
+                color: primaryColor,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
+            display4: TextStyle(
+                color: primaryColor,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold),
           ),
-          theme: ThemeData(
-            primaryColor: primaryColor,
-            fontFamily: 'Montserrat',
-            primaryColorDark: primaryDark,
-            primaryTextTheme: TextTheme(
-              display1: TextStyle(
-                  color: primaryColor,
-                  fontSize: 72.0,
-                  fontWeight: FontWeight.bold),
-              display2: TextStyle(
-                  color: primaryColor,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold),
-              display3: TextStyle(
-                  color: primaryColor,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
-              display4: TextStyle(
-                  color: primaryColor,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Color(0xffd2576b),
-            textTheme: TextTheme(
-              display1: TextStyle(
-                  color: primaryColor,
-                  fontSize: 45.0,
-                  fontWeight: FontWeight.bold),
-              display2: TextStyle(
-                  color: primaryColor,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold),
-              display3: TextStyle(
-                  color: primaryColor,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
-              display4: TextStyle(
-                  color: primaryColor,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold),
-              title: TextStyle(
-                  color: primaryDark,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold),
-            ),
+          backgroundColor: Color(0xffd2576b),
+          textTheme: TextTheme(
+            display1: TextStyle(
+                color: primaryColor,
+                fontSize: 45.0,
+                fontWeight: FontWeight.bold),
+            display2: TextStyle(
+                color: primaryColor,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold),
+            display3: TextStyle(
+                color: primaryColor,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
+            display4: TextStyle(
+                color: primaryColor,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold),
+            title: TextStyle(
+                color: primaryDark,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold),
           ),
-          routes: {
-            '': (context) => RegisterPage(store: store),
-            'tryOut': (context) => PiggyTestPage(),
-            'home': (context) => MainPage(store: store),
-            'register': (context) => FirstRegisterPage(store: store),
-            'login': (context) => LoginPage(store: store)
-          }),
-    );
+        ),
+        routes: {
+          '': (context) => RegisterPage(store: store),
+          'tryOut': (context) => PiggyTestPage(),
+          'home': (context) => MainPage(store: store),
+          'register': (context) => FirstRegisterPage(store: store),
+          'login': (context) => LoginPage(store: store)
+        }),
+  );
   // }
   // );
 }

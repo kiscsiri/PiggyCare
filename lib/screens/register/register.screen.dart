@@ -118,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       return null;
     }
-    if(user == null) throw Exception();
+    if (user == null) throw Exception();
     await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)

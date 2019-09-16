@@ -1,15 +1,10 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/services/authentication-service.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -31,8 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   String verificationId;
   bool _isCodeSent = false;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   final _telephoneFormKey = new GlobalKey<FormState>();
   final _codeFormKey = new GlobalKey<FormState>();
 
@@ -53,38 +46,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _testVerifyPhoneNumber(BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
-    var isExist = await Firestore.instance
-        .collection("users")
-        .where("phoneNumber", isEqualTo: _phoneCodeController.text)
-        .getDocuments()
-        .then((QuerySnapshot value) {
-      if (value.documents.isEmpty) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text(loc.trans("no_account")),
-                  actions: <Widget>[
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.72,
-                        child: PiggyButton(
-                          text: "OK",
-                          onClick: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                  content: Text(loc.trans("please_register")),
-                ));
-        return false;
-      } else {
-        return true;
-      }
-    });
+
+    var isExist = await AuthenticationService.verifyPhoneNumber(
+        _phoneCodeController.text, context);
 
     if (!isExist) return;
+
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential credentials) {
       setState(() {
@@ -101,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final PhoneCodeSent codeSent =
         (String verificationId, [int forceResendingToken]) async {
-      this.verificationId = verificationId;
+      verificationId = verificationId;
     };
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
@@ -143,32 +110,9 @@ class _LoginPageState extends State<LoginPage> {
       });
       return null;
     }
-    if(user == null) throw Exception();
-    await Firestore.instance
-        .collection("users")
-        .where("uid", isEqualTo: user.uid)
-        .getDocuments()
-        .then((QuerySnapshot value) async {
-      if (value.documents.length == 0) {
-      } else {
-        var data = value.documents[0];
-        UserData userData = UserData.fromFirebaseDocumentSnapshot(data);
-        userData.id = user.uid;
-        await Firestore.instance
-            .collection("items")
-            .where("userId", isEqualTo: value.documents[0].documentID)
-            .orderBy('createdDate', descending: true)
-            .getDocuments()
-            .then((value) {
-          userData.items = fromDocumentSnapshot(value.documents);
-        });
-        widget.store.dispatch(InitUserData(userData));
-      }
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new MainPage(
-                store: widget.store,
-              )));
-    });
+    if (user == null) throw Exception();
+
+    await AuthenticationService.authenticate(user, context, widget.store);
   }
 
   @override

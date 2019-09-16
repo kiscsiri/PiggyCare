@@ -31,14 +31,14 @@ class _SettingsPageState extends State<SettingsPage> {
     NotificationUpdate.updateSettings(_period, widget.store.state.user.id);
     widget.store.dispatch(UpdateUserData(updatedUser));
     final snackBar = SnackBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      content: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(loc.trans("settings_saved_snackbar")),
-        ],
-      ));
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(loc.trans("settings_saved_snackbar")),
+          ],
+        ));
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
@@ -75,8 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 3, horizontal: 10.0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 3, horizontal: 10.0),
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -90,10 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                   new Text(
                                     loc.trans("feed_piggy_with_this_amount"),
-                                    style: 
-                                    new TextStyle(
-                                      fontSize: 12
-                                    ),
+                                    style: new TextStyle(fontSize: 12),
                                   ),
                                   new Text(
                                     " $_feedPerPeriod \$",
