@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/Enums/period.dart';
@@ -62,8 +61,8 @@ void main() {
   final store = Store<AppState>(applicationReducer,
       initialState:
           AppState(registrationData: registrationState, user: userState));
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_){
     runApp(
       MaterialApp(
           supportedLocales: supportedLangs,
@@ -127,5 +126,6 @@ void main() {
             'login': (context) => LoginPage(store: store)
           }),
     );
-  });
+  // }
+  // );
 }

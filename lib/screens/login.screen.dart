@@ -277,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
               })
         ]));
 
-    return new Scaffold(
+    return Scaffold(
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),

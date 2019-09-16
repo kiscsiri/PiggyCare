@@ -102,7 +102,7 @@ class _StartupPageState extends State<StartupPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: new Center(
         child: new Column(
