@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -40,6 +41,41 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ));
     Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  List<DropdownMenuItem> _getDropDownMenuItems() {
+    var loc = PiggyLocalizations.of(context);
+    return [
+      if (!kReleaseMode)
+        new DropdownMenuItem(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+            child: new Text(loc.trans("demo")),
+          ),
+          value: Period.demo,
+        ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("daily")),
+        ),
+        value: Period.daily,
+      ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("weekly")),
+        ),
+        value: Period.weely,
+      ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("monthly")),
+        ),
+        value: Period.monthly,
+      )
+    ];
   }
 
   @override
@@ -161,40 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                       },
                       value: _period,
-                      items: [
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("demo")),
-                          ),
-                          value: Period.demo,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("daily")),
-                          ),
-                          value: Period.daily,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("weekly")),
-                          ),
-                          value: Period.weely,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("monthly")),
-                          ),
-                          value: Period.monthly,
-                        )
-                      ],
+                      items: _getDropDownMenuItems(),
                     ),
                   ),
                 ),

@@ -1,0 +1,1 @@
+enum ChoreType { haziMunka, iskolaiMunka }

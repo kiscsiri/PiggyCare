@@ -1,3 +1,4 @@
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/SavingSchedule.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 
@@ -19,6 +20,12 @@ class SetItem {
   SetItem(this.item);
 }
 
+class SetUserType {
+  final UserType userType;
+
+  SetUserType(this.userType);
+}
+
 class AddItem {
   final Item item;
 
@@ -31,14 +38,15 @@ class SetSchedule {
   SetSchedule(this.schedule);
 }
 
-class ClearRegisterState {
-}
+class ClearRegisterState {}
 
 class InitRegistration {
   final String item;
+  final UserType userType;
   final String phoneNumber;
   final String price;
   final Schedule schedule;
 
-  InitRegistration(this.item, this.phoneNumber, this.price, this.schedule);
+  InitRegistration(
+      this.item, this.phoneNumber, this.price, this.schedule, this.userType);
 }

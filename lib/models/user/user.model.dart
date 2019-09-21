@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:piggybanx/Enums/level.dart';
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/enums/period.dart';
+import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/models/chore/chore.model.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 
 class UserData {
   String id;
   int saving;
+  UserType userType;
   Period period;
   int feedPerPeriod;
   List<Item> items;
+  List<Chore> chores;
   PiggyLevel piggyLevel;
   int currentFeedTime;
   String phoneNumber;
@@ -49,6 +53,7 @@ class UserData {
   factory UserData.fromFirebaseDocumentSnapshot(DocumentSnapshot user) {
     return new UserData(
         id: user['uid'],
+        userType: user['userType'],
         phoneNumber: user['phoneNumber'],
         feedPerPeriod: user['feedPerPeriod'],
         lastFeed: user['lastFeed'].toDate(),
@@ -61,27 +66,34 @@ class UserData {
         period: Period.values[user['period']]);
   }
 
-  factory UserData.constructInitial(id, phoneNumber, RegistrationData register) {
+  factory UserData.constructInitial(
+      id, phoneNumber, RegistrationData register) {
     return new UserData(
-            id: id,
-            phoneNumber: phoneNumber,
-            feedPerPeriod: register.schedule.savingPerPeriod,
-            lastFeed: DateTime(1995),
-            money: 100000,
-            currentFeedTime: 0,
-            items: [Item(currentSaving: 0, item: register.item, targetPrice: register.targetPrice)],
-            piggyLevel: PiggyLevel.Baby,
-            created: DateTime.now(),
-            saving: 0,
-            isDemoOver: false,
-            period: register.schedule.period
-    );
+        id: id,
+        userType: register.userType,
+        phoneNumber: phoneNumber,
+        feedPerPeriod: register.schedule.savingPerPeriod,
+        lastFeed: DateTime(1995),
+        money: 100000,
+        currentFeedTime: 0,
+        items: [
+          Item(
+              currentSaving: 0,
+              item: register.item,
+              targetPrice: register.targetPrice)
+        ],
+        piggyLevel: PiggyLevel.Baby,
+        created: DateTime.now(),
+        saving: 0,
+        isDemoOver: false,
+        period: register.schedule.period);
   }
 
   Map<String, dynamic> toJson() {
     return new Map.from({
       "uid": this.id,
       "saving": this.saving,
+      "userType": this.userType,
       "feedPerPeriod": this.feedPerPeriod,
       "phoneNumber": this.phoneNumber,
       "money": this.money,
@@ -89,7 +101,8 @@ class UserData {
       "lastFeed": this.lastFeed,
       "created": this.created,
       "isDemoOver": this.isDemoOver,
-      "piggyLevel" : this.piggyLevel.index,
+      "userType": this.userType.index,
+      "piggyLevel": this.piggyLevel.index,
       "currentFeedTime": this.currentFeedTime
     });
   }
@@ -97,6 +110,7 @@ class UserData {
   UserData(
       {this.id,
       this.saving,
+      this.userType,
       this.feedPerPeriod,
       this.period,
       this.items,
@@ -107,5 +121,4 @@ class UserData {
       this.isDemoOver,
       this.phoneNumber,
       this.created});
-
 }

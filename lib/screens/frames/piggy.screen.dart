@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:piggybanx/Enums/level.dart';
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -220,13 +220,16 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
             child: Container(
               child: AnimatedBuilder(
                 animation: animation,
-                builder: (context, child) => (isLevelUp)
-                    ? Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
-                        gaplessPlayback: true,
-                      )
-                    : (Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+                builder: (context, child) => Hero(
+                  tag: "piggy",
+                  child: (isLevelUp)
+                      ? Image.asset(
+                          'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
+                          gaplessPlayback: true,
+                        )
+                      : (Image.asset(
+                          'assets/animations/${levelStringValue(PiggyLevel.values[widget.store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+                ),
               ),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,

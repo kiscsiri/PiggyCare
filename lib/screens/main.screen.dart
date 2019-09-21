@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/screens/frames/chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
@@ -43,6 +45,24 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
+  List<Widget> getFrames(UserType userType) {
+    if (userType == UserType.adult) {
+      return [
+        new PiggyPage(store: widget.store),
+        new SavingsPage(
+            store: widget.store, pageController: widget._pageController),
+        new SettingsPage(store: widget.store)
+      ];
+    } else {
+      return [
+        new PiggyPage(store: widget.store),
+        new SavingsPage(
+            store: widget.store, pageController: widget._pageController),
+        new ChoresPage(store: widget.store)
+      ];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -53,12 +73,7 @@ class _MainPageState extends State<MainPage> {
             title: Text("PiggyBanx"),
           ),
           body: new PageView(
-            children: <Widget>[
-              new PiggyPage(store: widget.store),
-              new SavingsPage(
-                  store: widget.store, pageController: widget._pageController),
-              new SettingsPage(store: widget.store)
-            ],
+            children: getFrames(widget.store.state.user.userType),
             onPageChanged: (int index) {
               setState(() {
                 widget.navigationStore

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/Enums/level.dart';
+import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';

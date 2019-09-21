@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/period.dart';
 
 class NotificationUpdate {
   //Debug

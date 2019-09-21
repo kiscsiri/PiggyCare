@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/localization/localizations.delegate.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:piggybanx/models/store.dart';
@@ -15,6 +14,8 @@ import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/models/store.reducer.dart';
+
+import 'enums/period.dart';
 
 var width = 0.0;
 var height = 0.0;

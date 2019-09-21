@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
@@ -14,6 +17,8 @@ import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+
+import 'notification-update.dart';
 
 class AuthenticationService {
   static Future<bool> verifyPhoneNumber(
@@ -117,6 +122,57 @@ class AuthenticationService {
       } else if (value == ConnectivityResult.none) {
         alert(context);
       }
+    });
+  }
+
+  static Future<void> registerUser(BuildContext context, Store<AppState> store,
+      FirebaseUser user, String phoneNumber) async {
+    await Firestore.instance
+        .collection("users")
+        .where("uid", isEqualTo: user.uid)
+        .getDocuments()
+        .then((QuerySnapshot value) async {
+      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+      var registrationData = store.state.registrationData;
+      if (value.documents.length == 0) {
+        UserData userData = new UserData.constructInitial(
+            user.uid, phoneNumber, registrationData);
+        var token = "";
+        var platfom = "";
+        _firebaseMessaging.getToken().then((val) {
+          token = val;
+          _firebaseMessaging.onTokenRefresh.listen((token) {
+            NotificationUpdate.updateToken(token, user.uid);
+          });
+
+          if (Platform.isAndroid) {
+            platfom = "android";
+          } else if (Platform.isIOS) {
+            platfom = "ios";
+          }
+          NotificationUpdate.register(token, user.uid, platfom);
+        });
+
+        var newDoc =
+            await Firestore.instance.collection('users').add(userData.toJson());
+
+        Firestore.instance.collection('items').add(Item(
+                currentSaving: 0,
+                item: store.state.registrationData.item,
+                targetPrice: store.state.registrationData.targetPrice)
+            .toJson(newDoc.documentID));
+        store.dispatch(ClearRegisterState());
+        store.dispatch(InitUserData(userData));
+      } else {
+        var data = value.documents[0];
+        UserData userData = new UserData.fromFirebaseDocumentSnapshot(data);
+        store.dispatch(InitUserData(userData));
+      }
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (context) => new MainPage(
+                store: store,
+              )));
     });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/helpers/InputFormatters.dart';
 import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
 import 'package:piggybanx/localization/Localizations.dart';
@@ -81,7 +81,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                     Container(
                                       height: 30,
                                       width: 30,
-                                      child: FlareActor("assets/piggy_etetes.flr",
+                                      child: FlareActor(
+                                          "assets/piggy_etetes.flr",
                                           alignment: Alignment.center,
                                           fit: BoxFit.cover,
                                           animation: "sleep"),
@@ -97,10 +98,14 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                                 currentSaving: 0,
                                                 item: widget.store.state
                                                     .registrationData.item,
-                                                targetPrice: widget.store.state
-                                                    .registrationData.targetPrice);
+                                                targetPrice: widget
+                                                    .store
+                                                    .state
+                                                    .registrationData
+                                                    .targetPrice);
 
-                                            widget.store.dispatch(AddItem(item));
+                                            widget.store
+                                                .dispatch(AddItem(item));
                                             Navigator.pushReplacement(
                                                 context,
                                                 new MaterialPageRoute(
@@ -119,15 +124,27 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                           }
                                         },
                                         trailing: SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.38,
-                                          height: MediaQuery.of(context).size.height * 0.38,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.38,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.38,
                                           child: Container(
-                                             width: MediaQuery.of(context).size.width * 0.38,
-                                          height: MediaQuery.of(context).size.height * 0.38,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.38,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.38,
                                             child: Center(
                                               child: Container(
-                                                padding:
-                                                    EdgeInsets.symmetric(vertical: 2),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 2),
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
@@ -144,14 +161,16 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                                   children: <Widget>[
                                                     Text(
                                                       "${loc.trans("time")}${schedule.daysUntilDone} ${loc.trans("days")}.",
-                                                      textAlign: TextAlign.start,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 14.0),
                                                     ),
                                                     Text(
                                                       "\n${getStringValueRegister(schedule.period, context)} ${loc.trans("saving")}: ${schedule.savingPerPeriod}\$",
-                                                      textAlign: TextAlign.start,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 14.0),
