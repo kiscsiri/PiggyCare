@@ -43,3 +43,7 @@ android/local\.properties
 \.packages
 
 \.flutter-plugins
+
+.dart_tool/
+
+.idea/
