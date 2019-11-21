@@ -3,18 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/chore/chore.model.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 
 class UserData {
   String id;
   int saving;
-  UserType userType;
+  UserType
+      userType; // itt ez lehet nem kell, hanem az objektum típusára szűrűnk majd
   Period period;
   int feedPerPeriod;
   List<Item> items;
-  List<Chore> chores;
   PiggyLevel piggyLevel;
   int currentFeedTime;
   String phoneNumber;
