@@ -8,7 +8,7 @@ import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/services/notification-update.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.coin.dart';
 import 'package:piggybanx/widgets/piggy.main.dart';
@@ -49,7 +49,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     var tempIsDemoOver = widget.store.state.user.isDemoOver;
 
     widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
-    NotificationUpdate.feedPiggy(widget.store.state.user.id);
+    NotificationServices.feedPiggy(widget.store.state.user.id);
 
     var showDemoAlert = (tempIsDemoOver != widget.store.state.user.isDemoOver);
     if (showDemoAlert) {

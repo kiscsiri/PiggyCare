@@ -18,7 +18,7 @@ import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
-import 'notification-update.dart';
+import 'notification.services.dart';
 
 class AuthenticationService {
   static Future<bool> verifyPhoneNumber(
@@ -113,6 +113,13 @@ class AuthenticationService {
                   u.items = fromDocumentSnapshot(value.documents);
                 });
 
+                final FirebaseMessaging _firebaseMessaging =
+                    FirebaseMessaging();
+                _firebaseMessaging.getToken().then((val) {
+                  var token = val;
+                  NotificationServices.updateToken(token, user.uid);
+                });
+
                 store.dispatch(InitUserData(u));
                 Navigator.of(context).pushReplacementNamed("home");
               }
@@ -138,12 +145,11 @@ class AuthenticationService {
       if (value.documents.length == 0) {
         UserData userData = new UserData.constructInitial(
             user.uid, phoneNumber, registrationData);
-        var token = "";
         var platfom = "";
         _firebaseMessaging.getToken().then((val) {
-          token = val;
+          var token = val;
           _firebaseMessaging.onTokenRefresh.listen((token) {
-            NotificationUpdate.updateToken(token, user.uid);
+            NotificationServices.updateToken(token, user.uid);
           });
 
           if (Platform.isAndroid) {
@@ -151,7 +157,7 @@ class AuthenticationService {
           } else if (Platform.isIOS) {
             platfom = "ios";
           }
-          NotificationUpdate.register(token, user.uid, platfom);
+          NotificationServices.register(token, user.uid, platfom);
         });
 
         var newDoc =

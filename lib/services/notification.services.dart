@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piggybanx/enums/period.dart';
 
-class NotificationUpdate {
+class NotificationServices {
   //Debug
   // static String url = "http://localhost:8080";
 

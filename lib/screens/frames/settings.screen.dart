@@ -5,7 +5,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/services/notification-update.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -29,7 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
 
-    NotificationUpdate.updateSettings(_period, widget.store.state.user.id);
+    NotificationServices.updateSettings(_period, widget.store.state.user.id);
     widget.store.dispatch(UpdateUserData(updatedUser));
     final snackBar = SnackBar(
         backgroundColor: Theme.of(context).primaryColor,
