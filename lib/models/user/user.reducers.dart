@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/store.dart';
@@ -56,74 +55,6 @@ AppState addNewITem(AppState state, AddNewItem action) {
       created: state.user.created);
   return new AppState(
       user: newUserData, registrationData: state.registrationData);
-}
-
-updateUserDatabase(AppState state, UpdateUserData action) {
-  Firestore.instance
-      .collection("users")
-      .where("uid", isEqualTo: state.user.id)
-      .getDocuments()
-      .then((QuerySnapshot value) {
-    var doc = value.documents.first;
-    var newPeriod = action.user.period;
-    var newFeedPerPeriod = action.user.feedPerPeriod;
-    Firestore.instance.collection('users').document(doc.documentID).updateData(
-        {'period': newPeriod.index, 'feedPerPeriod': newFeedPerPeriod.toInt()});
-  });
-}
-
-feedPiggyDatabase(FeedPiggy action) {
-  Firestore.instance
-      .collection("users")
-      .where("uid", isEqualTo: action.id)
-      .getDocuments()
-      .then((QuerySnapshot value) {
-    var doc = value.documents.first;
-
-    var newMoney = doc.data['money'] - doc.data['feedPerPeriod'];
-    var newSaving = doc.data['saving'] + doc.data['feedPerPeriod'];
-    var newCurrentFeedTime = ++doc.data['currentFeedTime'];
-    var newDemo = doc.data['isDemoOver'];
-
-    var newPiggyLevel = 0;
-    if (newCurrentFeedTime >= 5) {
-      newPiggyLevel = ++doc.data['piggyLevel'];
-      newCurrentFeedTime = 0;
-    } else {
-      newPiggyLevel = doc.data['piggyLevel'];
-    }
-
-    if (newPiggyLevel > 2) {
-      newPiggyLevel = 2;
-      newDemo = true;
-    }
-
-    var feedDate = DateTime.now();
-    Firestore.instance.collection('users').document(doc.documentID).updateData({
-      'money': newMoney,
-      'saving': newSaving,
-      'lastFeed': feedDate,
-      'piggyLevel': newPiggyLevel,
-      'currentFeedTime': newCurrentFeedTime,
-      'isDemoOver': newDemo
-    });
-
-    Firestore.instance
-        .collection('items')
-        .where('userId', isEqualTo: doc.documentID)
-        .orderBy('createdDate', descending: true)
-        .getDocuments()
-        .then((value) {
-      var item = Item.fromSnapshot(value.documents.first);
-      var newValue = item.currentSaving + doc.data['feedPerPeriod'];
-      Firestore.instance
-          .collection('items')
-          .document(value.documents.first.documentID)
-          .updateData({
-        'currentSaving': newValue,
-      });
-    });
-  });
 }
 
 feedPiggy(AppState state, FeedPiggy action) {

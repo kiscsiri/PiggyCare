@@ -65,6 +65,22 @@ class UserData {
         period: Period.values[user['period']]);
   }
 
+  factory UserData.fromMap(Map user) {
+    return new UserData(
+        id: user['uid'],
+        userType: user['userType'],
+        phoneNumber: user['phoneNumber'],
+        feedPerPeriod: user['feedPerPeriod'],
+        lastFeed: user['lastFeed'].toDate(),
+        money: user['money'],
+        piggyLevel: PiggyLevel.values[user['piggyLevel']],
+        currentFeedTime: user['currentFeedTime'],
+        created: user['created'].toDate(),
+        saving: user['saving'],
+        isDemoOver: user['isDemoOver'],
+        period: Period.values[user['period']]);
+  }
+
   factory UserData.constructInitial(
       id, phoneNumber, RegistrationData register) {
     return new UserData(

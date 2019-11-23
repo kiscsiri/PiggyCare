@@ -6,6 +6,8 @@ import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.reducers.dart';
 
+import 'user/user.firebase.dart';
+
 AppState applicationReducer(AppState appState, dynamic action) {
   if (action is RegistrationAction) {
     return handleRegistrationActions(appState, action);
@@ -69,6 +71,8 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
 }
 
 AppState handleChoresActions(AppState appState, ChoreAction action) {
-// TODO - Ide beépíteni a a házimunka reducereket
+  if (action is AddChore) {
+  } else if (action is RemoveChore) {
+  } else if (action is FinishChore) {}
   return null;
 }
