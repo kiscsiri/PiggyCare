@@ -49,6 +49,21 @@ class UserData {
     return UserData(id: user.uid);
   }
 
+  UserData.fromUserData(UserData another) {
+    feedPerPeriod = another.feedPerPeriod;
+    id = another.id;
+    lastFeed = another.lastFeed;
+    items = another.items;
+    money = another.money;
+    currentFeedTime = another.currentFeedTime;
+    piggyLevel = another.piggyLevel;
+    period = another.period;
+    phoneNumber = another.phoneNumber;
+    saving = another.saving;
+    isDemoOver = another.isDemoOver;
+    created = another.created;
+  }
+
   factory UserData.fromFirebaseDocumentSnapshot(DocumentSnapshot user) {
     return new UserData(
         id: user['uid'],

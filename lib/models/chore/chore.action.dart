@@ -15,19 +15,22 @@ class LoadChores extends ChoreAction {
 }
 
 class RemoveChore extends ChoreAction {
-  final String id;
+  final String choreId;
+  final String childId;
 
-  RemoveChore(this.id);
+  RemoveChore(this.childId, this.choreId);
 }
 
 class FinishChore extends ChoreAction {
-  final String id;
+  final String choreId;
+  final String childId;
 
-  FinishChore(this.id);
+  FinishChore(this.childId, this.choreId);
 }
 
 class AcceptChore extends ChoreAction {
-  final String id;
+  final String choreId;
+  final String childId;
 
-  AcceptChore(this.id);
+  AcceptChore(this.childId, this.choreId);
 }

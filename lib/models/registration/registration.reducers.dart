@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
 AppState initRegistrationState(AppState state, InitRegistration action) {

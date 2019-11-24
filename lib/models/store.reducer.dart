@@ -2,10 +2,11 @@ import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/piggy/piggy.action.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/registration/registration.reducers.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.reducers.dart';
 
+import 'appState.dart';
+import 'chore/chore.export.dart';
 import 'user/user.firebase.dart';
 
 AppState applicationReducer(AppState appState, dynamic action) {
@@ -72,7 +73,13 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
 
 AppState handleChoresActions(AppState appState, ChoreAction action) {
   if (action is AddChore) {
+    return addChore(appState, action);
   } else if (action is RemoveChore) {
-  } else if (action is FinishChore) {}
+    return removeChore(appState, action);
+  } else if (action is FinishChore) {
+    return finishChore(appState, action);
+  } else if (action is AcceptChore) {
+    return validateChore(appState, action);
+  }
   return null;
 }

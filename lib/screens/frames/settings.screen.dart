@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/services/notification.services.dart';

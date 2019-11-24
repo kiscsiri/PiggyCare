@@ -5,7 +5,7 @@ import 'package:piggybanx/firebase/locator.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
-import '../store.dart';
+import '../appState.dart';
 import 'user.actions.dart';
 
 updateUserDatabase(AppState state, UpdateUserData action) {

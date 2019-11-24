@@ -1,8 +1,9 @@
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/item/item.model.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
+
+import '../appState.dart';
 
 AppState initUser(AppState state, InitUserData action) {
   var newUserData = new UserData(

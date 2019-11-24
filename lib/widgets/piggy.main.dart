@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 

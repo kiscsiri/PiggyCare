@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/models/store.reducer.dart';
-
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:redux/redux.dart';
 
 class ChildChoresPage extends StatefulWidget {

@@ -14,6 +14,12 @@ class Item {
         targetPrice: snapshot['targetPrice']);
   }
 
+  Item.fromItem(Item another) {
+    item = another.item;
+    targetPrice = another.targetPrice;
+    currentSaving = another.currentSaving;
+  }
+
   Map<String, dynamic> toJson(String uid) {
     return new Map.from({
       "currentSaving": this.currentSaving,
