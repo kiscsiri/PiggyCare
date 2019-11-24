@@ -9,20 +9,21 @@ class AddNewPiggy extends ChildPiggyAction {
 }
 
 class RemovePiggy extends ChildPiggyAction {
-  final String id;
+  final String piggyId;
 
-  RemovePiggy(this.id);
+  RemovePiggy(this.piggyId);
 }
 
-class ChildFeedPiggy extends ChildPiggyAction {
-  final String id;
+class GrowPiggy extends ChildPiggyAction {
+  final String piggyId;
+
+  GrowPiggy(this.piggyId);
+}
+
+class FeedChildPiggy extends ChildPiggyAction {
+  final String piggyId;
   final int amount;
+  final bool isDouble;
 
-  ChildFeedPiggy(this.id, this.amount);
-}
-
-class DoublePiggyFeed extends ChildPiggyAction {
-  final String id;
-
-  DoublePiggyFeed(this.id);
+  FeedChildPiggy(this.piggyId, this.amount, this.isDouble);
 }

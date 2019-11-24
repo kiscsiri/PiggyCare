@@ -38,6 +38,7 @@ class Chore {
     isValidated = another.isValidated;
     reward = another.reward;
     title = another.title;
+    id = another.id;
   }
 
   toJson() {

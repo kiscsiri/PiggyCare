@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/localizations.delegate.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/login.screen.dart';
 import 'package:piggybanx/screens/main.screen.dart';
@@ -18,6 +17,7 @@ import 'package:piggybanx/models/store.reducer.dart';
 
 import 'enums/period.dart';
 import 'firebase/locator.dart';
+import 'models/appState.dart';
 import 'models/chore/chore.firebase.dart';
 
 var width = 0.0;

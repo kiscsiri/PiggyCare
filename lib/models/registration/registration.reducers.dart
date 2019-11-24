@@ -22,6 +22,12 @@ AppState setStoreItem(AppState state, SetItem action) {
   return new AppState(user: state.user, registrationData: newRegistration);
 }
 
+AppState setUserType(AppState state, SetUserType action) {
+  state.registrationData.userType = action.userType;
+  var newAppState = AppState.fromAppState(state);
+  return newAppState;
+}
+
 AppState addItem(AppState state, AddItem action) {
   var newItems = state.user.items;
 
@@ -75,17 +81,6 @@ AppState setStoreSchedule(AppState state, SetSchedule action) {
       item: state.registrationData.item,
       phoneNumber: state.registrationData.phoneNumber,
       schedule: action.schedule,
-      targetPrice: state.registrationData.targetPrice);
-
-  return new AppState(user: state.user, registrationData: newRegistration);
-}
-
-AppState setUserType(AppState state, SetUserType action) {
-  var newRegistration = new RegistrationData(
-      item: state.registrationData.item,
-      phoneNumber: state.registrationData.phoneNumber,
-      userType: action.userType,
-      schedule: state.registrationData.schedule,
       targetPrice: state.registrationData.targetPrice);
 
   return new AppState(user: state.user, registrationData: newRegistration);

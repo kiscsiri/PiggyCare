@@ -76,7 +76,7 @@ feedPiggyDatabase(FeedPiggy action) {
   });
 }
 
-class ChoreFirebaseServices extends ChangeNotifier {
+class UserFirebaseService extends ChangeNotifier {
   Api _api = locator<Api>();
 
   List<UserData> users;

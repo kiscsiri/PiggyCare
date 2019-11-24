@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';

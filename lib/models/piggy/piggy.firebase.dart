@@ -2,47 +2,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/firebase/firebase.api.dart';
 import 'package:piggybanx/firebase/locator.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 
-import 'chore.model.dart';
-
-class ChoreFirebaseServices extends ChangeNotifier {
+class PiggyFirebaseServices extends ChangeNotifier {
   Api _api = locator<Api>();
 
-  List<Chore> chores;
+  List<Piggy> chores;
 
-  Future<List<Chore>> fetchChores() async {
+  Future<List<Piggy>> fetchPiggies() async {
     var result = await _api.getDataCollection();
     chores = result.documents
-        .map((doc) => Chore.fromMap(doc.data, doc.documentID))
+        .map((doc) => Piggy.fromMap(doc.data, doc.documentID))
         .toList();
     return chores;
   }
 
-  Stream<QuerySnapshot> fetchChoresAsStream() {
+  Stream<QuerySnapshot> fetchPiggiesAsStream() {
     return _api.streamDataCollection();
   }
 
-  Future<Chore> getChoreById(String id) async {
+  Future<Piggy> getPiggyById(String id) async {
     var doc = await _api.getDocumentById(id);
-    return Chore.fromMap(doc.data, doc.documentID);
+    return Piggy.fromMap(doc.data, doc.documentID);
   }
 
-  Future removeChore(String id) async {
+  Future removePiggy(String id) async {
     await _api.removeDocument(id);
     return;
   }
 
-  Future updateChore(Chore data, String id) async {
+  Future updatePiggy(Piggy data, String id) async {
     await _api.updateDocument(data.toJson(), id);
     return;
   }
 
-  Future updateChoreProperty(String property, dynamic value, String id) async {
+  Future updatePiggyProperty(String property, dynamic value, String id) async {
     await _api.updateDocumentProperty(property, value, id);
     return;
   }
 
-  Future addChore(Chore data) async {
+  Future addPiggy(Piggy data) async {
     await _api.addDocument(data.toJson());
     return;
   }

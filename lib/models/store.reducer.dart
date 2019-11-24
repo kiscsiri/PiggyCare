@@ -1,13 +1,10 @@
-import 'package:piggybanx/models/chore/chore.action.dart';
-import 'package:piggybanx/models/piggy/piggy.action.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/models/registration/registration.reducers.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.reducers.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/services/notification.services.dart';
 
-import 'appState.dart';
 import 'chore/chore.export.dart';
-import 'user/user.firebase.dart';
+import 'piggy/piggy.export.dart';
+import 'registration/registration.export.dart';
+import 'user/user.export.dart';
 
 AppState applicationReducer(AppState appState, dynamic action) {
   if (action is RegistrationAction) {
@@ -61,24 +58,42 @@ AppState handleRegistrationActions(
     return setStoreSchedule(appState, action);
   } else if (action is ClearRegisterState) {
     return clearRegistrationStore(appState, action);
+  } else if (action is SetUserType) {
+    return setUserType(appState, action);
   } else {
     return null;
   }
 }
 
 AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
-  // TODO - Ide beépíteni a piggy reducereket
+  if (action is AddNewPiggy) {
+    NotificationServices.sendNotificationNewPiggy(action.piggy.childId);
+    PiggyFirebaseServices().addPiggy(action.piggy);
+    return addPiggy(appState, action);
+  } else if (action is FeedChildPiggy) {
+    PiggyFirebaseServices().updatePiggyProperty('amount',
+        action.isDouble ? action.amount * 2 : action.amount, action.piggyId);
+    return feedChildPiggy(appState, action);
+  } else if (action is RemovePiggy) {
+    PiggyFirebaseServices().removePiggy(action.piggyId);
+    return removePiggy(appState, action);
+  }
   return null;
 }
 
 AppState handleChoresActions(AppState appState, ChoreAction action) {
   if (action is AddChore) {
+    ChoreFirebaseServices().addChore(action.chore);
     return addChore(appState, action);
   } else if (action is RemoveChore) {
+    ChoreFirebaseServices().removeChore(action.choreId);
     return removeChore(appState, action);
   } else if (action is FinishChore) {
+    ChoreFirebaseServices().updateChoreProperty('isDone', true, action.choreId);
     return finishChore(appState, action);
   } else if (action is AcceptChore) {
+    ChoreFirebaseServices()
+        .updateChoreProperty('isValidated', true, action.choreId);
     return validateChore(appState, action);
   }
   return null;

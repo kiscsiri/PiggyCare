@@ -32,4 +32,9 @@ class Api {
   Future<void> updateDocument(Map data, String id) {
     return ref.document(id).updateData(data);
   }
+
+  Future<void> updateDocumentProperty(
+      String property, dynamic value, String id) async {
+    await ref.document(id).updateData({property: value});
+  }
 }
