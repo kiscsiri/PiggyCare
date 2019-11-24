@@ -8,14 +8,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
+import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/registration/registration.export.dart';
+import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/item/item.model.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
 import 'notification.services.dart';
