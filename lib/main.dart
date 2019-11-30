@@ -72,8 +72,8 @@ class PiggyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            builder: (_) => locator<ChoreFirebaseServices>()),
+        // ChangeNotifierProvider(
+        //     builder: (_) => locator<ChoreFirebaseServices>()),
       ],
       child: MaterialApp(
           supportedLocales: supportedLangs,
