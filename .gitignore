@@ -71,3 +71,4 @@ ios/Runner\.xcodeproj/
 ios/Runner\.xcworkspace/
 
 ios/Podfile\.lock
+android/local.properties
