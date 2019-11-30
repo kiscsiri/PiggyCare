@@ -6,4 +6,8 @@ class AppState {
   RegistrationData registrationData;
 
   AppState({this.user, this.registrationData});
+
+  AppState.fromAppState(AppState another)
+      : user = another.user,
+        registrationData = another.registrationData;
 }

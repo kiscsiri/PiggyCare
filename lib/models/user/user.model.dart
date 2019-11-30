@@ -3,18 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/chore/chore.model.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 
 class UserData {
   String id;
   int saving;
-  UserType userType;
+  UserType
+      userType; // itt ez lehet nem kell, hanem az objektum típusára szűrűnk majd
   Period period;
   int feedPerPeriod;
   List<Item> items;
-  List<Chore> chores;
   PiggyLevel piggyLevel;
   int currentFeedTime;
   String phoneNumber;
@@ -50,7 +49,38 @@ class UserData {
     return UserData(id: user.uid);
   }
 
+  UserData.fromUserData(UserData another) {
+    feedPerPeriod = another.feedPerPeriod;
+    id = another.id;
+    lastFeed = another.lastFeed;
+    items = another.items;
+    money = another.money;
+    currentFeedTime = another.currentFeedTime;
+    piggyLevel = another.piggyLevel;
+    period = another.period;
+    phoneNumber = another.phoneNumber;
+    saving = another.saving;
+    isDemoOver = another.isDemoOver;
+    created = another.created;
+  }
+
   factory UserData.fromFirebaseDocumentSnapshot(DocumentSnapshot user) {
+    return new UserData(
+        id: user['uid'],
+        userType: user['userType'],
+        phoneNumber: user['phoneNumber'],
+        feedPerPeriod: user['feedPerPeriod'],
+        lastFeed: user['lastFeed'].toDate(),
+        money: user['money'],
+        piggyLevel: PiggyLevel.values[user['piggyLevel']],
+        currentFeedTime: user['currentFeedTime'],
+        created: user['created'].toDate(),
+        saving: user['saving'],
+        isDemoOver: user['isDemoOver'],
+        period: Period.values[user['period']]);
+  }
+
+  factory UserData.fromMap(Map user) {
     return new UserData(
         id: user['uid'],
         userType: user['userType'],

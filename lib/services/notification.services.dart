@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piggybanx/enums/period.dart';
 
-class NotificationUpdate {
+class NotificationServices {
   //Debug
   // static String url = "http://localhost:8080";
 
@@ -80,6 +80,63 @@ class NotificationUpdate {
 
     await http
         .put(url + "updateToken",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationFinishedTask(String parentId) async {
+    Map<String, Object> data = {
+      'parentId': parentId,
+    };
+
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "finishedTask",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationValidatedTask(String childId) async {
+    Map<String, Object> data = {
+      'childId': childId,
+    };
+
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "validatedTask",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationNewPiggy(String childId) async {
+    Map<String, Object> data = {
+      'childId': childId,
+    };
+
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "newPiggy",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"

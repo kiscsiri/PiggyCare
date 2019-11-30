@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/authentication-service.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
