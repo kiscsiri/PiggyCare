@@ -63,3 +63,11 @@ android/local\.properties
 
 .idea/
 android/local.properties
+
+*.xcconfig
+
+ios/Runner\.xcodeproj/
+
+ios/Runner\.xcworkspace/
+
+ios/Podfile\.lock
