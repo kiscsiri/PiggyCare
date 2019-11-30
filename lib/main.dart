@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/localization/localizations.delegate.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/login.screen.dart';
 import 'package:piggybanx/screens/main.screen.dart';
@@ -14,23 +11,33 @@ import 'package:piggybanx/screens/piggyTryOut.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/models/store.reducer.dart';
+
+import 'enums/period.dart';
+import 'firebase/locator.dart';
+import 'models/appState.dart';
+import 'models/chore/chore.firebase.dart';
 
 var width = 0.0;
 var height = 0.0;
 
 void main() {
-  ///Localization
-  var supportedLangs = [const Locale('hu', 'HU'), const Locale('en', 'US')];
+  setupLocator();
+  runApp(PiggyApp());
+}
 
-  List<LocalizationsDelegate> localizationDelegates = [
+class PiggyApp extends StatelessWidget {
+  final supportedLangs = [const Locale('hu', 'HU'), const Locale('en', 'US')];
+
+  final List<LocalizationsDelegate> localizationDelegates = [
     const PiggyLocalizationsDelegate(),
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate
   ];
 
-  var localisationResultCallback =
+  final localisationResultCallback =
       (Locale locale, Iterable<Locale> supportedLocales) {
     for (Locale supportedLocale in supportedLocales) {
       if (supportedLocale.languageCode == locale.languageCode ||
@@ -38,18 +45,17 @@ void main() {
         return supportedLocale;
       }
     }
-
     return supportedLocales.first;
   };
 
   ///Themes colors
-  var primaryColor = Color(0xffe25979);
-  var primaryDark = Color(0xffb1264c);
+  final primaryColor = Color(0xffe25979);
+  final primaryDark = Color(0xffb1264c);
 
   ///Redux states init
-  var registrationState =
+  static final registrationState =
       RegistrationData(item: "", phoneNumber: "", targetPrice: 0);
-  var userState = UserData(
+  static final userState = UserData(
       created: DateTime.now(),
       feedPerPeriod: 0,
       id: "",
@@ -62,10 +68,14 @@ void main() {
   final store = Store<AppState>(applicationReducer,
       initialState:
           AppState(registrationData: registrationState, user: userState));
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(
-      MaterialApp(
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            builder: (_) => locator<ChoreFirebaseServices>()),
+      ],
+      child: MaterialApp(
           supportedLocales: supportedLangs,
           localizationsDelegates: localizationDelegates,
           localeResolutionCallback: localisationResultCallback,
@@ -127,5 +137,5 @@ void main() {
             'login': (context) => LoginPage(store: store)
           }),
     );
-  });
+  }
 }

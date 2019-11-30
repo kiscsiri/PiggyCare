@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
 AppState initRegistrationState(AppState state, InitRegistration action) {
@@ -20,6 +20,12 @@ AppState setStoreItem(AppState state, SetItem action) {
       targetPrice: state.registrationData.targetPrice);
 
   return new AppState(user: state.user, registrationData: newRegistration);
+}
+
+AppState setUserType(AppState state, SetUserType action) {
+  state.registrationData.userType = action.userType;
+  var newAppState = AppState.fromAppState(state);
+  return newAppState;
 }
 
 AppState addItem(AppState state, AddItem action) {
@@ -82,6 +88,7 @@ AppState setStoreSchedule(AppState state, SetSchedule action) {
 
 AppState setStoreTargetPrice(AppState state, SetPrice action) {
   var newRegistration = new RegistrationData(
+      userType: state.registrationData.userType,
       item: state.registrationData.item,
       schedule: state.registrationData.schedule,
       phoneNumber: state.registrationData.phoneNumber,

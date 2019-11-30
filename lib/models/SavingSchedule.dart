@@ -1,4 +1,4 @@
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/period.dart';
 
 class Schedule {
   Period period;

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:piggybanx/Enums/level.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -111,7 +111,9 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
                   height: MediaQuery.of(context).size.width * 0.4,
                   child: Container(
                       height: MediaQuery.of(context).size.height,
-                      child: getAnimation(context, widget.store)),
+                      child: Hero(
+                          tag: "piggy",
+                          child: getAnimation(context, widget.store))),
                 ),
               )),
     );

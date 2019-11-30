@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -106,7 +106,8 @@ class _SavingsPageState extends State<SavingsPage> {
               ),
               Padding(
                   padding: const EdgeInsets.only(top: 20.0),
-                  child: PiggyButton(text: loc.trans("feed_piggy"), onClick: _navigate))
+                  child: PiggyButton(
+                      text: loc.trans("feed_piggy"), onClick: _navigate))
             ],
           ),
         )

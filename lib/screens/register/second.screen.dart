@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/models/store.dart';
 import 'package:piggybanx/screens/register/third.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -17,7 +17,7 @@ class FirstRegisterPage extends StatefulWidget {
 
 class _FirstRegisterPageState extends State<FirstRegisterPage> {
   TextEditingController textEditingController = new TextEditingController();
- 
+
   final _itemFormKey = new GlobalKey<FormState>();
 
   @override
@@ -41,24 +41,28 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
         child: new Center(
           child: new ListView(
             children: <Widget>[
-              !isAlreadyRegistered ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14.0),
-                child: new Text(
-                  loc.trans("welcome"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.title,
-                ),
-              ) : Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-              !isAlreadyRegistered ? Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: new Text(
-                  loc.trans("3_easy_steps"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.display3,
-                ),
-              ) : Container(),
+              !isAlreadyRegistered
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14.0),
+                      child: new Text(
+                        loc.trans("welcome"),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                    )
+                  : Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
+              !isAlreadyRegistered
+                  ? Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        loc.trans("3_easy_steps"),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.display3,
+                      ),
+                    )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(

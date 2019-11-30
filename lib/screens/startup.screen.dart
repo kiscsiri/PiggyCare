@@ -1,20 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/item/item.model.dart';
-import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/services/authentication-service.dart';
 import 'package:redux/redux.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartupPage extends StatefulWidget {
   StartupPage({Key key, this.title, this.store}) : super(key: key);
   final String title;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final Store<AppState> store;
 
   @override
@@ -43,7 +37,6 @@ alert(BuildContext context) {
 }
 
 class _StartupPageState extends State<StartupPage> {
-  final Firestore firestore = new Firestore();
   bool _isLoaded = false;
 
   @override
@@ -56,53 +49,17 @@ class _StartupPageState extends State<StartupPage> {
       }
     });
 
-    (Connectivity().checkConnectivity()).then((value) {
-      if (value == ConnectivityResult.mobile ||
-          value == ConnectivityResult.wifi) {
-        widget._auth.currentUser().then((user) {
-          if (user != null) {
-            firestore
-                .collection('users')
-                .where("uid", isEqualTo: user.uid)
-                .getDocuments()
-                .then((value) async {
-              if (value.documents.length > 0) {
-                UserData u = new UserData.fromFirebaseDocumentSnapshot(
-                    value.documents.first);
-                user.reload();
-
-                await Firestore.instance
-                    .collection("items")
-                    .where("userId", isEqualTo: value.documents[0].documentID)
-                    .getDocuments()
-                    .then((value) {
-                  u.items = fromDocumentSnapshot(value.documents);
-                });
-
-                widget.store.dispatch(InitUserData(u));
-                Navigator.of(context).pushReplacementNamed("home");
-              } else {
-                setState(() {
-                  _isLoaded = true;
-                });
-              }
-            });
-          } else {
-            setState(() {
-              _isLoaded = true;
-            });
-          }
-        });
-      } else if (value == ConnectivityResult.none) {
-        alert(context);
-      }
+    AuthenticationService.splashLogin(widget.store, context).then((success) {
+      setState(() {
+        _isLoaded = true;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: new Center(
         child: new Column(

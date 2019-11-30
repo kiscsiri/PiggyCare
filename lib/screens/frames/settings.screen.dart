@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:piggybanx/Enums/period.dart';
+import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/services/notification-update.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -28,18 +29,53 @@ class _SettingsPageState extends State<SettingsPage> {
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
 
-    NotificationUpdate.updateSettings(_period, widget.store.state.user.id);
+    NotificationServices.updateSettings(_period, widget.store.state.user.id);
     widget.store.dispatch(UpdateUserData(updatedUser));
     final snackBar = SnackBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      content: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(loc.trans("settings_saved_snackbar")),
-        ],
-      ));
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(loc.trans("settings_saved_snackbar")),
+          ],
+        ));
     Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  List<DropdownMenuItem> _getDropDownMenuItems() {
+    var loc = PiggyLocalizations.of(context);
+    return [
+      if (!kReleaseMode)
+        new DropdownMenuItem(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+            child: new Text(loc.trans("demo")),
+          ),
+          value: Period.demo,
+        ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("daily")),
+        ),
+        value: Period.daily,
+      ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("weekly")),
+        ),
+        value: Period.weely,
+      ),
+      new DropdownMenuItem(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20),
+          child: new Text(loc.trans("monthly")),
+        ),
+        value: Period.monthly,
+      )
+    ];
   }
 
   @override
@@ -75,8 +111,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 3, horizontal: 10.0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 3, horizontal: 10.0),
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -90,10 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                   new Text(
                                     loc.trans("feed_piggy_with_this_amount"),
-                                    style: 
-                                    new TextStyle(
-                                      fontSize: 12
-                                    ),
+                                    style: new TextStyle(fontSize: 12),
                                   ),
                                   new Text(
                                     " $_feedPerPeriod \$",
@@ -164,40 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                       },
                       value: _period,
-                      items: [
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("demo")),
-                          ),
-                          value: Period.demo,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("daily")),
-                          ),
-                          value: Period.daily,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("weekly")),
-                          ),
-                          value: Period.weely,
-                        ),
-                        new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, bottom: 8.0, left: 20),
-                            child: new Text(loc.trans("monthly")),
-                          ),
-                          value: Period.monthly,
-                        )
-                      ],
+                      items: _getDropDownMenuItems(),
                     ),
                   ),
                 ),

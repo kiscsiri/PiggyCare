@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
-import 'package:piggybanx/models/store.dart';
+import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
+
+import 'frames/child.chores.screen.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, this.store}) : super(key: key);
@@ -43,23 +47,29 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
+  List<Widget> getFrames() {
+    return [
+      new PiggyPage(store: widget.store),
+      new SavingsPage(
+          store: widget.store, pageController: widget._pageController),
+      widget.store.state.user.userType == UserType.adult
+          ? ParentChoresPage()
+          : ChildChoresPage(),
+      new SettingsPage(store: widget.store)
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      },
+      onWillPop: () =>
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
       child: Scaffold(
           appBar: AppBar(
             title: Text("PiggyBanx"),
           ),
           body: new PageView(
-            children: <Widget>[
-              new PiggyPage(store: widget.store),
-              new SavingsPage(
-                  store: widget.store, pageController: widget._pageController),
-              new SettingsPage(store: widget.store)
-            ],
+            children: getFrames(),
             onPageChanged: (int index) {
               setState(() {
                 widget.navigationStore
@@ -69,9 +79,7 @@ class _MainPageState extends State<MainPage> {
             controller: widget._pageController,
           ),
           bottomNavigationBar: PiggyNavigationBar(
-            onNavigateTap: (index) {
-              _navigate(index);
-            },
+            onNavigateTap: (index) => _navigate(index),
             store: widget.navigationStore,
           )),
     );

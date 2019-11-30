@@ -43,3 +43,23 @@ android/local\.properties
 \.packages
 
 ios/\.DS_Store
+
+
+ios/Pods/
+
+ios/Flutter/
+
+ios/\.symlinks/
+
+android/local\.properties
+
+\.vscode/
+
+\.packages
+
+\.flutter-plugins
+
+.dart_tool/
+
+.idea/
+android/local.properties

@@ -1,18 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/models/store.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/services/notification-update.dart';
+import 'package:piggybanx/services/authentication-service.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -33,8 +26,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String verificationId;
   bool _isCodeSent = false;
-
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   final _telephoneFormKey = new GlobalKey<FormState>();
   final _codeFormKey = new GlobalKey<FormState>();
@@ -118,51 +109,10 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       return null;
     }
-    if(user == null) throw Exception();
-    await Firestore.instance
-        .collection("users")
-        .where("uid", isEqualTo: user.uid)
-        .getDocuments()
-        .then((QuerySnapshot value) async {
-      var registrationData = widget.store.state.registrationData;
-      if (value.documents.length == 0) {
-        UserData userData = new UserData.constructInitial(
-            user.uid, _phoneCodeController.text, registrationData);
-        var token = "";
-        var platfom = "";
-        _firebaseMessaging.getToken().then((val) {
-          token = val;
-          _firebaseMessaging.onTokenRefresh.listen((token) {
-            NotificationUpdate.updateToken(token, user.uid);
-          });
+    if (user == null) throw Exception();
 
-          if (Platform.isAndroid) {
-            platfom = "android";
-          } else if (Platform.isIOS) {
-            platfom = "ios";
-          }
-          NotificationUpdate.register(token, user.uid, platfom);
-        });
-
-        var newDoc =
-            await Firestore.instance.collection('users').add(userData.toJson());
-        Firestore.instance.collection('items').add(Item(
-                currentSaving: 0,
-                item: widget.store.state.registrationData.item,
-                targetPrice: widget.store.state.registrationData.targetPrice)
-            .toJson(newDoc.documentID));
-        widget.store.dispatch(ClearRegisterState());
-        widget.store.dispatch(InitUserData(userData));
-      } else {
-        var data = value.documents[0];
-        UserData userData = new UserData.fromFirebaseDocumentSnapshot(data);
-        widget.store.dispatch(InitUserData(userData));
-      }
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new MainPage(
-                store: widget.store,
-              )));
-    });
+    await AuthenticationService.registerUser(
+        context, widget.store, user, _phoneCodeController.text);
   }
 
   @override
