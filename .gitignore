@@ -47,3 +47,4 @@ android/local\.properties
 .dart_tool/
 
 .idea/
+android/local.properties
