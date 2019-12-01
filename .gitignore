@@ -89,3 +89,5 @@ ios/Podfile\.lock
 android/local.properties
 
 pubspec.lock
+
+ios/Runner/
