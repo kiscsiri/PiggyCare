@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Api {
+abstract class Api {
   final Firestore _db = Firestore.instance;
   final String path;
   CollectionReference ref;

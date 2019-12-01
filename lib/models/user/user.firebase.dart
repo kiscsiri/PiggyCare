@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:piggybanx/firebase/firebase.api.dart';
+import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
 import 'package:piggybanx/firebase/locator.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -76,8 +77,8 @@ feedPiggyDatabase(FeedPiggy action) {
   });
 }
 
-class UserFirebaseService extends ChangeNotifier {
-  Api _api = locator<Api>();
+class UserFirebaseServices extends ChangeNotifier {
+  UsersApi _api = locator<UsersApi>();
 
   List<UserData> users;
 

@@ -164,9 +164,10 @@ class AuthenticationService {
 
         Firestore.instance.collection('items').add(Item(
                 currentSaving: 0,
+                userId: user.uid,
                 item: store.state.registrationData.item,
                 targetPrice: store.state.registrationData.targetPrice)
-            .toJson(newDoc.documentID));
+            .toJson());
         store.dispatch(ClearRegisterState());
         store.dispatch(InitUserData(userData));
       } else {

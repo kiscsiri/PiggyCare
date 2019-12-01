@@ -69,10 +69,8 @@ addItemDatabase(AddItem item, String uid) {
       .getDocuments()
       .then((doc) {
     var user = doc.documents.first;
-
-    Firestore.instance
-        .collection('items')
-        .add(item.item.toJson(user.documentID));
+    item.item.userId = uid;
+    Firestore.instance.collection('items').add(item.item.toJson());
   });
 }
 

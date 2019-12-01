@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/localizations.delegate.dart';
+import 'package:piggybanx/models/item/item.firebase.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/login.screen.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/piggyTryOut.dart';
-import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +19,9 @@ import 'enums/period.dart';
 import 'firebase/locator.dart';
 import 'models/appState.dart';
 import 'models/chore/chore.firebase.dart';
+import 'models/piggy/piggy.export.dart';
+import 'models/user/user.export.dart';
+import 'screens/register/register.screen.dart';
 
 var width = 0.0;
 var height = 0.0;
@@ -74,6 +77,10 @@ class PiggyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             builder: (_) => locator<ChoreFirebaseServices>()),
+        ChangeNotifierProvider(
+            builder: (_) => locator<PiggyFirebaseServices>()),
+        ChangeNotifierProvider(builder: (_) => locator<UserFirebaseServices>()),
+        ChangeNotifierProvider(builder: (_) => locator<ItemFirebaseServices>()),
       ],
       child: MaterialApp(
           supportedLocales: supportedLangs,
@@ -130,7 +137,7 @@ class PiggyApp extends StatelessWidget {
             ),
           ),
           routes: {
-            '': (context) => RegisterPage(store: store),
+            '': (context) => LastPage(store: store),
             'tryOut': (context) => PiggyTestPage(),
             'home': (context) => MainPage(store: store),
             'register': (context) => FirstRegisterPage(store: store),

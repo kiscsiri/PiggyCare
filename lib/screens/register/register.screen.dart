@@ -12,8 +12,8 @@ import 'package:redux/redux.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.store}) : super(key: key);
+class LastPage extends StatefulWidget {
+  LastPage({Key key, this.store}) : super(key: key);
 
   final Store<AppState> store;
 
@@ -21,7 +21,7 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => new _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<LastPage> {
   String _message = '';
 
   String verificationId;

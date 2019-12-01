@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:piggybanx/firebase/firebase.api.dart';
+import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
 import 'package:piggybanx/firebase/locator.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 
 class PiggyFirebaseServices extends ChangeNotifier {
-  Api _api = locator<Api>();
+  PiggiesApi _api = locator<PiggiesApi>();
 
   List<Piggy> chores;
 

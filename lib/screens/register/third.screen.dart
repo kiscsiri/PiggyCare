@@ -9,10 +9,11 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
+
+import 'register.screen.dart';
 
 class SecondRegisterPage extends StatefulWidget {
   SecondRegisterPage({Key key, this.store}) : super(key: key);
@@ -118,7 +119,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        new RegisterPage(
+                                                        new LastPage(
                                                           store: widget.store,
                                                         )));
                                           }

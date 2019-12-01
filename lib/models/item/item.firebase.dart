@@ -2,19 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
 import 'package:piggybanx/firebase/locator.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 
-import 'chore.model.dart';
+class ItemFirebaseServices extends ChangeNotifier {
+  ItemsApi _api = locator<ItemsApi>();
 
-class ChoreFirebaseServices extends ChangeNotifier {
-  ChoreApi _api = locator<ChoreApi>();
+  List<Item> chores;
 
-  List<Chore> chores;
-
-  Future<List<Chore>> fetchChores() async {
+  Future<List<Item>> fetchChores() async {
     var result = await _api.getDataCollection();
-    chores = result.documents
-        .map((doc) => Chore.fromMap(doc.data, doc.documentID))
-        .toList();
+    chores = result.documents.map((doc) => Item.fromSnapshot(doc)).toList();
     return chores;
   }
 
@@ -22,9 +19,9 @@ class ChoreFirebaseServices extends ChangeNotifier {
     return _api.streamDataCollection();
   }
 
-  Future<Chore> getChoreById(String id) async {
+  Future<Item> getChoreById(String id) async {
     var doc = await _api.getDocumentById(id);
-    return Chore.fromMap(doc.data, doc.documentID);
+    return Item.fromMap(doc.data, doc.documentID);
   }
 
   Future removeChore(String id) async {
@@ -32,7 +29,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
     return;
   }
 
-  Future updateChore(Chore data, String id) async {
+  Future updateChore(Item data, String id) async {
     await _api.updateDocument(data.toJson(), id);
     return;
   }
@@ -42,7 +39,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
     return;
   }
 
-  Future addChore(Chore data) async {
+  Future addChore(Item data) async {
     await _api.addDocument(data.toJson());
     return;
   }
