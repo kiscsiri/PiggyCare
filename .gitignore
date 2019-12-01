@@ -32,6 +32,34 @@ android/\.gradle/
 
 ios/Pods/
 
+ios/Flutter/
+
+ios/\.symlinks/
+
+android/local\.properties
+
+\.vscode/
+
+\.packages
+
+ios/\.DS_Store
+
+
+ios/Pods/
+
+ios/Flutter/
+
+ios/\.symlinks/
+
+android/local\.properties
+
+\.vscode/
+
+\.packages
+
+
+ios/Pods/
+
 build/
 
 ios/Flutter/
@@ -49,3 +77,15 @@ android/local\.properties
 .dart_tool/
 
 .idea/
+android/local.properties
+
+*.xcconfig
+
+ios/Runner\.xcodeproj/
+
+ios/Runner\.xcworkspace/
+
+ios/Podfile\.lock
+android/local.properties
+
+pubspec.lock

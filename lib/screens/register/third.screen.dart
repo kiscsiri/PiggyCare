@@ -1,4 +1,3 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/enums/period.dart';
@@ -82,11 +81,6 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                     Container(
                                       height: 30,
                                       width: 30,
-                                      child: FlareActor(
-                                          "assets/piggy_etetes.flr",
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.cover,
-                                          animation: "sleep"),
                                     ),
                                     Flexible(
                                       child: ListTile(

@@ -18,6 +18,10 @@
 	<string>1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

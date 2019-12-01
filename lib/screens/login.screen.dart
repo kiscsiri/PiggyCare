@@ -46,8 +46,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _testVerifyPhoneNumber(BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
-
-    var isExist = await AuthenticationService.verifyPhoneNumber(
+    var isExist = false;
+    isExist = await AuthenticationService.verifyPhoneNumber(
         _phoneCodeController.text, context);
 
     if (!isExist) return;
@@ -103,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
     );
     FirebaseUser user;
     try {
-      user = (await _auth.signInWithCredential(credential))?.user;
+      AuthResult auth = await _auth.signInWithCredential(credential);
+      user = auth?.user;
     } catch (e) {
       setState(() {
         _message = loc.trans("verification_failed");
