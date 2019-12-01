@@ -32,7 +32,7 @@ android/\.gradle/
 
 ios/Pods/
 
-build
+build/
 
 ios/Flutter/
 
