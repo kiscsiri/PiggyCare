@@ -32,6 +32,8 @@ android/\.gradle/
 
 ios/Pods/
 
+build
+
 ios/Flutter/
 
 ios/\.symlinks/
