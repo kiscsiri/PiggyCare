@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
 import 'package:piggybanx/firebase/locator.dart';
-
-import 'chore.model.dart';
+import 'package:piggybanx/models/chore/chore.export.dart';
 
 class ChoreFirebaseServices extends ChangeNotifier {
   ChoreApi _api = locator<ChoreApi>();

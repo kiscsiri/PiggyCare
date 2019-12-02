@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/models/chore/chore.firebase.dart';
+import 'package:piggybanx/services/services.export.dart';
 import 'package:provider/provider.dart';
 
 class ParentChoresPage extends StatefulWidget {

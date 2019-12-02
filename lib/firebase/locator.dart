@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:piggybanx/models/chore/chore.export.dart';
-import 'package:piggybanx/models/item/item.firebase.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/chore.firebase.dart';
+import 'package:piggybanx/services/item.firebase.dart';
+import 'package:piggybanx/services/piggy.firebase.dart';
+import 'package:piggybanx/services/user.firebase.dart';
 
 import 'firebase.implementations.dart/implementations.export.dart';
 
