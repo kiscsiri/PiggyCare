@@ -11,9 +11,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   Future<List<Chore>> fetchChores() async {
     var result = await _api.getDataCollection();
-    chores = result.documents
-        .map((doc) => Chore.fromMap(doc.data, doc.documentID))
-        .toList();
+    chores = result.documents.map((doc) => Chore.fromMap(doc.data)).toList();
     return chores;
   }
 
@@ -23,7 +21,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   Future<Chore> getChoreById(String id) async {
     var doc = await _api.getDocumentById(id);
-    return Chore.fromMap(doc.data, doc.documentID);
+    return Chore.fromMap(doc.data);
   }
 
   Future removeChore(String id) async {

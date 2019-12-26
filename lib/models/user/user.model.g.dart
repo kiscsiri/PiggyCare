@@ -6,7 +6,7 @@ part of 'user.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserData _$UserDataFromJson(Map<String, dynamic> json) {
+UserData _$UserDataFromJson(Map json) {
   return UserData(
     id: json['id'] as String,
     saving: json['saving'] as int,
@@ -14,7 +14,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     feedPerPeriod: json['feedPerPeriod'] as int,
     period: _$enumDecode(_$PeriodEnumMap, json['period']),
     items: (json['items'] as List)
-        .map((e) => Item.fromJson(e as Map<String, dynamic>))
+        .map((e) => Item.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList(),
     piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
     currentFeedTime: json['currentFeedTime'] as int,
@@ -35,7 +35,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'userType': _$UserTypeEnumMap[instance.userType],
       'period': _$PeriodEnumMap[instance.period],
       'feedPerPeriod': instance.feedPerPeriod,
-      'items': instance.items,
+      'items': instance.items.map((f) => f.toJson()).toList(),
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
       'currentFeedTime': instance.currentFeedTime,
       'phoneNumber': instance.phoneNumber,

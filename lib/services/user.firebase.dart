@@ -107,8 +107,7 @@ class UserFirebaseServices extends ChangeNotifier {
   }
 
   Future addChore(UserData data) async {
-    var result = await _api.addDocument(data.toJson());
-
+    await _api.addDocument(data.toJson());
     return;
   }
 }

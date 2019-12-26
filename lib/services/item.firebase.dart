@@ -21,7 +21,7 @@ class ItemFirebaseServices extends ChangeNotifier {
 
   Future<Item> getChoreById(String id) async {
     var doc = await _api.getDocumentById(id);
-    return Item.fromMap(doc.data, doc.documentID);
+    return Item.fromJson(doc.data);
   }
 
   Future removeChore(String id) async {

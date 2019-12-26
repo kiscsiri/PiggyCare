@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'piggy.model.g.dart';
+
+@JsonSerializable(nullable: false)
 class Piggy {
   String id;
   String childId;
@@ -14,23 +19,15 @@ class Piggy {
     doubleUp = another.doubleUp;
   }
 
-  Piggy.fromMap(Map snapshot, String id)
-      : childId = snapshot['childId'],
-        id = snapshot['id'],
-        isFeedAvailable = snapshot['isFeedAvailable'],
-        currentFeedAmount = snapshot['currentFeedAmount'],
-        money = snapshot['money'],
-        doubleUp = snapshot['doubleUp'];
+  factory Piggy.fromMap(Map snapshot, String id) => _$PiggyFromJson(snapshot);
 
-  toJson() {
-    return {
-      'id': id,
-      'isFeedAvailable': isFeedAvailable,
-      'childId': childId,
-      'currentFeedAmount': currentFeedAmount,
-      'isFeedAvailable': isFeedAvailable,
-      'money': money,
-      'doubleUp': doubleUp,
-    };
-  }
+  Map<String, dynamic> toJson() => _$PiggyToJson(this);
+
+  Piggy(
+      {this.id,
+      this.childId,
+      this.currentFeedAmount,
+      this.doubleUp,
+      this.isFeedAvailable,
+      this.money});
 }

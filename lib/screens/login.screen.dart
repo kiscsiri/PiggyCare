@@ -29,10 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   String _message = '';
 
   String verificationId;
-  bool _isCodeSent = false;
 
   final _telephoneFormKey = new GlobalKey<FormState>();
-  final _codeFormKey = new GlobalKey<FormState>();
 
   TextEditingController _phoneCodeController = new TextEditingController();
   TextEditingController _smsCodeController = TextEditingController();

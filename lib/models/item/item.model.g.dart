@@ -6,7 +6,7 @@ part of 'item.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Item _$ItemFromJson(Map<String, dynamic> json) {
+Item _$ItemFromJson(Map json) {
   return Item(
     item: json['item'] as String,
     targetPrice: json['targetPrice'] as int,

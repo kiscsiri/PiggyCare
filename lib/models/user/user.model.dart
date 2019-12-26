@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
@@ -79,44 +78,10 @@ class UserData {
     name = another.name;
   }
 
-  factory UserData.fromFirebaseDocumentSnapshot(Map<String, dynamic> user) {
-    return new UserData(
-        id: user['uid'],
-        userType: UserType.values[user['userType']],
-        phoneNumber: user['phoneNumber'],
-        feedPerPeriod: user['feedPerPeriod'],
-        lastFeed: user['lastFeed'].toDate(),
-        money: user['money'],
-        piggyLevel: PiggyLevel.values[user['piggyLevel']],
-        currentFeedTime: user['currentFeedTime'],
-        created: user['created'].toDate(),
-        saving: user['saving'],
-        isDemoOver: user['isDemoOver'],
-        email: user['email'],
-        name: user['name'],
-        // items: user["items"] as ,
-        pictureUrl: user['pictureUrl'],
-        period: Period.values[user['period']]);
-  }
+  factory UserData.fromFirebaseDocumentSnapshot(Map<String, dynamic> user) =>
+      _$UserDataFromJson(user);
 
-  factory UserData.fromMap(Map user) {
-    return new UserData(
-        id: user['uid'],
-        userType: user['userType'],
-        phoneNumber: user['phoneNumber'],
-        feedPerPeriod: user['feedPerPeriod'],
-        lastFeed: user['lastFeed'].toDate(),
-        money: user['money'],
-        piggyLevel: PiggyLevel.values[user['piggyLevel']],
-        currentFeedTime: user['currentFeedTime'],
-        created: user['created'].toDate(),
-        saving: user['saving'],
-        email: user['email'],
-        name: user['name'],
-        pictureUrl: user['pictureUrl'],
-        isDemoOver: user['isDemoOver'],
-        period: Period.values[user['period']]);
-  }
+  factory UserData.fromMap(Map user) => _$UserDataFromJson(user);
 
   factory UserData.constructInitial(RegistrationData register) {
     return new UserData(
@@ -141,32 +106,6 @@ class UserData {
         pictureUrl: register.pictureUrl,
         isDemoOver: false,
         period: register.schedule.period);
-  }
-
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> result = Map<String, dynamic>();
-
-    result.addAll({
-      "uid": this.id,
-      "saving": this.saving,
-      "userType": this.userType,
-      "feedPerPeriod": this.feedPerPeriod,
-      "phoneNumber": this.phoneNumber,
-      "money": this.money,
-      "period": this.period.index,
-      "lastFeed": this.lastFeed,
-      "created": this.created,
-      "isDemoOver": this.isDemoOver,
-      "userType": this.userType.index,
-      "email": this.email,
-      "name": this.name,
-      "pictureUrl": this.pictureUrl,
-      "piggyLevel": this.piggyLevel.index,
-      "currentFeedTime": this.currentFeedTime,
-      'items': this.items.map((f) => f.toJson()).toList()
-    });
-
-    return result;
   }
 
   UserData(

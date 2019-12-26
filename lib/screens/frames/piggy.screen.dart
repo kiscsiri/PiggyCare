@@ -252,7 +252,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     var loc = PiggyLocalizations.of(context);
     var user = widget.store.state.user;
     Item item;
-    if (user.items != null) item = user.items.last;
+    if (user.items.length != 0) item = user.items.last;
 
     bool _isDisabled =
         user.timeUntilNextFeed > Duration(seconds: 0) ? false : true;

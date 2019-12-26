@@ -33,35 +33,16 @@ class Item {
     userId = another.userId;
   }
 
-  Item.fromMap(Map snapshot, String id)
-      : item = snapshot['item'],
-        targetPrice = snapshot['targetPrice'],
-        id = snapshot['id'],
-        userId = snapshot['userId'],
-        currentSaving = snapshot['currentSaving'];
-}
-
-List<Item> fromDocumentSnapshot(List<DocumentSnapshot> snapshots) {
-  var result = List<Item>();
-  for (final item in snapshots) {
-    result.add(Item(
-        currentSaving: item["currentSaving"],
-        userId: item["userId"],
-        id: item["id"],
-        item: item["item"],
-        targetPrice: item["targetPrice"]));
+  List<Item> fromDocumentSnapshot(List<DocumentSnapshot> snapshots) {
+    var result = List<Item>();
+    for (final item in snapshots) {
+      result.add(Item(
+          currentSaving: item["currentSaving"],
+          userId: item["userId"],
+          id: item["id"],
+          item: item["item"],
+          targetPrice: item["targetPrice"]));
+    }
+    return result;
   }
-  return result;
-}
-
-List<Item> toJson(List<DocumentSnapshot> snapshots) {
-  var result = List<Item>();
-  for (final item in snapshots) {
-    result.add(Item(
-        currentSaving: item["currentSaving"],
-        userId: item["userId"],
-        item: item["item"],
-        targetPrice: item["targetPrice"]));
-  }
-  return result;
 }

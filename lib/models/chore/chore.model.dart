@@ -1,5 +1,9 @@
 import 'package:piggybanx/models/chore/choreType.enum.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'chore.model.g.dart';
+
+@JsonSerializable(nullable: false)
 class Chore {
   String id;
   String childId;
@@ -20,15 +24,9 @@ class Chore {
       this.childId,
       this.id});
 
-  Chore.fromMap(Map snapshot, String id)
-      : choreType = snapshot['choreType'],
-        details = snapshot['details'],
-        id = snapshot['id'],
-        isDone = snapshot['isDone'],
-        isValidated = snapshot['isValidated'],
-        reward = snapshot['reward'],
-        childId = snapshot['childId'],
-        title = snapshot['title'];
+  factory Chore.fromMap(Map snapshot) => _$ChoreFromJson(snapshot);
+
+  Map<String, dynamic> toJson() => _$ChoreToJson(this);
 
   Chore.fromChore(Chore another) {
     childId = another.childId;
@@ -39,18 +37,5 @@ class Chore {
     reward = another.reward;
     title = another.title;
     id = another.id;
-  }
-
-  toJson() {
-    return {
-      'choreType': choreType,
-      'title': title,
-      'details': details,
-      'isDone': isDone,
-      'isValidated': isValidated,
-      'id': id,
-      'reward': reward,
-      'childId': childId,
-    };
   }
 }

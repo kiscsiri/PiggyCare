@@ -59,7 +59,7 @@ class AuthenticationService {
       FirebaseUser user, Store<AppState> store) async {
     QuerySnapshot value = await Firestore.instance
         .collection("users")
-        .where("uid", isEqualTo: user.uid)
+        .where("id", isEqualTo: user.uid)
         .getDocuments();
     if (value.documents.length == 0) {
       throw AuthException("", "No users found!");
@@ -67,13 +67,6 @@ class AuthenticationService {
       var data = value.documents[0];
       UserData userData = UserData.fromFirebaseDocumentSnapshot(data.data);
       userData.id = user.uid;
-      var items = await Firestore.instance
-          .collection("items")
-          .where("userId", isEqualTo: value.documents[0].data['uid'])
-          .orderBy('createdDate', descending: true)
-          .getDocuments();
-
-      userData.items = fromDocumentSnapshot(items.documents);
       store.dispatch(InitUserData(userData));
     }
   }
@@ -95,13 +88,6 @@ class AuthenticationService {
                 UserData u = new UserData.fromFirebaseDocumentSnapshot(
                     value.documents.first.data);
                 user.reload();
-
-                var document = await Firestore.instance
-                    .collection("items")
-                    .where("userId", isEqualTo: value.documents[0].data['uid'])
-                    .getDocuments();
-
-                u.items = fromDocumentSnapshot(document.documents);
 
                 final FirebaseMessaging _firebaseMessaging =
                     FirebaseMessaging();
