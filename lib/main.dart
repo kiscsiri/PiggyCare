@@ -8,7 +8,6 @@ import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/screens/login.screen.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/piggyTryOut.dart';
-import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
@@ -18,6 +17,7 @@ import 'enums/period.dart';
 import 'firebase/locator.dart';
 import 'models/appState.dart';
 import 'models/user/user.export.dart';
+import 'screens/register/first.screen.dart';
 import 'screens/register/register.screen.dart';
 import 'services/services.export.dart';
 

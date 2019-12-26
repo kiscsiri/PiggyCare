@@ -67,8 +67,6 @@ class _RegisterPageState extends State<LastPage> {
   }
 
   testSignInWithPhoneNumber(BuildContext context) async {
-    var loc = PiggyLocalizations.of(context);
-
     var phoneState = SetPhoneNumber(_emailController.text);
     widget.store.dispatch(phoneState);
 

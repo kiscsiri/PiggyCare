@@ -3,20 +3,19 @@ import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/screens/register/third.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 
-class FirstRegisterPage extends StatefulWidget {
-  FirstRegisterPage({Key key, this.store}) : super(key: key);
+class SecondRegisterPage extends StatefulWidget {
+  SecondRegisterPage({Key key, this.store}) : super(key: key);
   final Store<AppState> store;
 
   @override
-  _FirstRegisterPageState createState() => new _FirstRegisterPageState();
+  _SecondRegisterPageState createState() => new _SecondRegisterPageState();
 }
 
-class _FirstRegisterPageState extends State<FirstRegisterPage> {
+class _SecondRegisterPageState extends State<SecondRegisterPage> {
   TextEditingController textEditingController = new TextEditingController();
 
   final _itemFormKey = new GlobalKey<FormState>();

@@ -20,15 +20,14 @@ class _PiggyProgressState extends State<PiggyProgress> {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.22),
                   child: Text(widget.item ?? ""),
                 ),
                 (widget.saving > widget.targetPrice)
@@ -39,9 +38,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
                           Navigator.of(context).pushNamed('register');
                         },
                       )
-                    : Container(
-                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.15),
-                    )
+                    : Container()
               ],
             ),
           ),
