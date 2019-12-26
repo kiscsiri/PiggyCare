@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
+
+import '../firebase/firebase.implementations.dart/implementations.export.dart';
+import '../firebase/locator.dart';
+import '../models/appState.dart';
+import '../models/item/item.model.dart';
+import '../models/user/user.export.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
-import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
-import 'package:piggybanx/firebase/locator.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/item/item.model.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/models/user/user.model.dart';
 
 updateUserDatabase(AppState state, UpdateUserData action) {
   Firestore.instance

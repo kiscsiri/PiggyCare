@@ -22,7 +22,6 @@ class PiggyCoin extends StatefulWidget {
 class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
   double coinX = -1;
 
-
   @override
   void initState() {
     super.initState();
@@ -36,33 +35,36 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
           color: Colors.green,
         ),
         child: Image.asset(
-          "lib/assets/images/coin.png",
+          "assets/animations/coin.gif",
           gaplessPlayback: false,
           width: MediaQuery.of(context).size.width * 0.1 * 1.7,
           height: MediaQuery.of(context).size.width * 0.1 * 1.7,
         ));
 
-    var smallCoin = Image.asset("lib/assets/images/coin.png",
+    var smallCoin = Image.asset("assets/animations/coin.gif",
         width: MediaQuery.of(context).size.width * 0.1,
         height: MediaQuery.of(context).size.width * 0.1);
 
     return Positioned(
-      top: (MediaQuery.of(context).size.width * widget.coinController.value) - 20,
+      top: (MediaQuery.of(context).size.width * widget.coinController.value) -
+          20,
       left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.44 : coinX,
       child: Draggable(
         data: "Coin",
         childWhenDragging: Container(),
-        child: !widget.coinVisible ? Container() : AnimatedBuilder(
-            animation: widget.coinController,
-            builder: (BuildContext context, Widget child) {
-              return Transform(
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001) // perspective
-                    ..rotateX(0)
-                    ..rotateY(0),
-                  alignment: FractionalOffset.center,
-                  child: smallCoin);
-            }),
+        child: !widget.coinVisible
+            ? Container()
+            : AnimatedBuilder(
+                animation: widget.coinController,
+                builder: (BuildContext context, Widget child) {
+                  return Transform(
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001) // perspective
+                        ..rotateX(0)
+                        ..rotateY(0),
+                      alignment: FractionalOffset.center,
+                      child: smallCoin);
+                }),
         feedback: StreamBuilder(
           initialData: false,
           stream: widget.willAcceptStream,

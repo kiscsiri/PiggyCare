@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/services/services.export.dart';
-import 'package:provider/provider.dart';
 
 class ParentChoresPage extends StatefulWidget {
   ParentChoresPage({Key key, this.title}) : super(key: key);
@@ -12,8 +10,6 @@ class ParentChoresPage extends StatefulWidget {
 class _ParentChoresPageState extends State<ParentChoresPage> {
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ChoreFirebaseServices>(context);
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),

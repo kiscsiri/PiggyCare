@@ -7,6 +7,7 @@ import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -249,19 +250,19 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var item = widget.store.state.user.items.last;
+    var user = widget.store.state.user;
+    Item item;
+    if (user.items != null) item = user.items.last;
 
     bool _isDisabled =
-        widget.store.state.user.timeUntilNextFeed > Duration(seconds: 0)
-            ? false
-            : true;
+        user.timeUntilNextFeed > Duration(seconds: 0) ? false : true;
     _coinVisible = !_isDisabled;
     String period;
-    if (widget.store.state.user.period == Period.daily) {
+    if (user.period == Period.daily) {
       period = loc.trans("tomorrow");
-    } else if (widget.store.state.user.period == Period.weely) {
+    } else if (user.period == Period.weely) {
       period = loc.trans("next_week");
-    } else if (widget.store.state.user.period == Period.monthly) {
+    } else if (user.period == Period.monthly) {
       period = loc.trans("next_month");
     }
 
@@ -326,10 +327,12 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
                       onDrop: onCoinDrop,
                       store: widget.store),
                 ),
-                PiggyProgress(
-                    item: item.item,
-                    saving: item.currentSaving.toDouble(),
-                    targetPrice: item.targetPrice.toDouble()),
+                item != null
+                    ? PiggyProgress(
+                        item: item.item,
+                        saving: item.currentSaving.toDouble(),
+                        targetPrice: item.targetPrice.toDouble())
+                    : Container(),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: Container(

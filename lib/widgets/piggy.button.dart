@@ -22,11 +22,10 @@ class PiggyButton extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: new Container(
           alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.7,
-          height: MediaQuery.of(context).size.height * 0.09,
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: MediaQuery.of(context).size.height * 0.07,
           decoration: new BoxDecoration(
-              color:
-                  (disabled) ? Colors.grey : Theme.of(context).primaryColorDark,
+              color: (disabled) ? Colors.grey : Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(70.0)),
           child: FlatButton(
             onPressed: null,
@@ -39,7 +38,7 @@ class PiggyButton extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
             ),

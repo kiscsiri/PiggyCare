@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:856214861570:android:48a28d6bc18ddbdf",
+        "mobilesdk_app_id": "1:856214861570:android:dc266f05a732a62cd2b41b",
         "android_client_info": {
           "package_name": "com.piggybanx"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "856214861570-utnl1dt28o5si1lpvcnmeklmk94fca2i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piggybanx",
+            "certificate_hash": "3b164ab752cd731707e96980a48850d85409865e"
+          }
+        },
         {
           "client_id": "856214861570-t7ki2gghft3rtd2uaq70vcom57fn6q9u.apps.googleusercontent.com",
           "client_type": 3
@@ -32,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "856214861570-aeojlrhr5fv7jfs3ubdrge4teeca06la.apps.googleusercontent.com",
+              "client_id": "856214861570-bdrshh637hj9ncoel1e544c107b5gdhr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "comexamle.piggybanx"
+                "bundle_id": "comexample.piggybanx"
               }
             }
           ]

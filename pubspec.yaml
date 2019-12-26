@@ -14,7 +14,7 @@ environment:
 
 dependencies:
   firebase_core: ^0.4.0+1
-  firebase_auth: ^0.14.0+5
+  firebase_auth: ^0.15.3
   cloud_firestore: ^0.11.0+2
   flutter_redux: ^0.5.3
   flutter_webview_plugin: ^0.3.0+2
@@ -28,8 +28,11 @@ dependencies:
   firebase_messaging: ^5.0.1+1
   provider: ^3.1.0+1
   get_it: ^3.0.3
-  json_serializable: ^3.2.3
+  json_serializable: ^3.2.5
   flare_flutter: ^1.7.3
+  video_player: ^0.10.5
+  google_sign_in: ^4.0.0
+  font_awesome_flutter: ^8.5.0
 
   flutter:
     sdk: flutter
@@ -42,6 +45,7 @@ dependencies:
 
 
 dev_dependencies:
+  build_runner: ^1.0.0
   flutter_test:
     sdk: flutter
 
@@ -88,6 +92,7 @@ flutter:
     - assets/animations/Teen-Feed4.gif
     - assets/animations/Teen-Normal.gif
     - assets/animations/Teen-Sleep.gif
+    - assets/animations/coin.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

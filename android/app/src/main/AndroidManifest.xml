@@ -13,7 +13,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="piggybanx"
+        android:label="Piggybanx"
         android:icon="@mipmap/piggy_launcher">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

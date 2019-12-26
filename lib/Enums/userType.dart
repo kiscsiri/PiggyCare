@@ -1,1 +1,1 @@
-enum UserType { adult, child }
+enum UserType { adult, child, individual }

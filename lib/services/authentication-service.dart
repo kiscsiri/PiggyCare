@@ -7,11 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/item/item.model.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
@@ -20,6 +20,8 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'notification.services.dart';
 
 class AuthenticationService {
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+
   static Future<bool> verifyPhoneNumber(
       String phoneNumber, BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
@@ -54,30 +56,26 @@ class AuthenticationService {
   }
 
   static Future<void> authenticate(
-      FirebaseUser user, BuildContext context, Store<AppState> store) async {
+      FirebaseUser user, Store<AppState> store) async {
     QuerySnapshot value = await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)
         .getDocuments();
     if (value.documents.length == 0) {
+      throw AuthException("", "No users found!");
     } else {
       var data = value.documents[0];
-      UserData userData = UserData.fromFirebaseDocumentSnapshot(data);
+      UserData userData = UserData.fromFirebaseDocumentSnapshot(data.data);
       userData.id = user.uid;
-      await Firestore.instance
+      var items = await Firestore.instance
           .collection("items")
-          .where("userId", isEqualTo: value.documents[0].documentID)
+          .where("userId", isEqualTo: value.documents[0].data['uid'])
           .orderBy('createdDate', descending: true)
-          .getDocuments()
-          .then((value) {
-        userData.items = fromDocumentSnapshot(value.documents);
-      });
+          .getDocuments();
+
+      userData.items = fromDocumentSnapshot(items.documents);
       store.dispatch(InitUserData(userData));
     }
-    Navigator.of(context).pushReplacement(new MaterialPageRoute(
-        builder: (context) => new MainPage(
-              store: store,
-            )));
   }
 
   static Future<void> splashLogin(
@@ -95,16 +93,15 @@ class AuthenticationService {
                 .then((value) async {
               if (value.documents.length > 0) {
                 UserData u = new UserData.fromFirebaseDocumentSnapshot(
-                    value.documents.first);
+                    value.documents.first.data);
                 user.reload();
 
-                await Firestore.instance
+                var document = await Firestore.instance
                     .collection("items")
-                    .where("userId", isEqualTo: value.documents[0].documentID)
-                    .getDocuments()
-                    .then((value) {
-                  u.items = fromDocumentSnapshot(value.documents);
-                });
+                    .where("userId", isEqualTo: value.documents[0].data['uid'])
+                    .getDocuments();
+
+                u.items = fromDocumentSnapshot(document.documents);
 
                 final FirebaseMessaging _firebaseMessaging =
                     FirebaseMessaging();
@@ -125,54 +122,76 @@ class AuthenticationService {
     });
   }
 
-  static Future<void> registerUser(BuildContext context, Store<AppState> store,
-      FirebaseUser user, String phoneNumber) async {
-    await Firestore.instance
+  static Future<void> registerUser(Store<AppState> store) async {
+    var user = store.state.registrationData;
+
+    var value = await Firestore.instance
         .collection("users")
         .where("uid", isEqualTo: user.uid)
-        .getDocuments()
-        .then((QuerySnapshot value) async {
-      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+        .getDocuments();
 
-      var registrationData = store.state.registrationData;
-      if (value.documents.length == 0) {
-        UserData userData = new UserData.constructInitial(
-            user.uid, phoneNumber, registrationData);
-        var platfom = "";
-        _firebaseMessaging.getToken().then((val) {
-          var token = val;
-          _firebaseMessaging.onTokenRefresh.listen((token) {
-            NotificationServices.updateToken(token, user.uid);
-          });
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-          if (Platform.isAndroid) {
-            platfom = "android";
-          } else if (Platform.isIOS) {
-            platfom = "ios";
-          }
-          NotificationServices.register(token, user.uid, platfom);
+    var registrationData = store.state.registrationData;
+    if (value.documents.length == 0) {
+      UserData userData = new UserData.constructInitial(registrationData);
+      var platfom = "";
+      _firebaseMessaging.getToken().then((val) {
+        var token = val;
+        _firebaseMessaging.onTokenRefresh.listen((token) {
+          NotificationServices.updateToken(token, user.uid);
         });
 
-        var newDoc =
-            await Firestore.instance.collection('users').add(userData.toJson());
+        if (Platform.isAndroid) {
+          platfom = "android";
+        } else if (Platform.isIOS) {
+          platfom = "ios";
+        }
+        NotificationServices.register(token, user.uid, platfom);
+      });
 
-        Firestore.instance.collection('items').add(Item(
-                currentSaving: 0,
-                userId: user.uid,
-                item: store.state.registrationData.item,
-                targetPrice: store.state.registrationData.targetPrice)
-            .toJson());
-        store.dispatch(ClearRegisterState());
-        store.dispatch(InitUserData(userData));
-      } else {
-        var data = value.documents[0];
-        UserData userData = new UserData.fromFirebaseDocumentSnapshot(data);
-        store.dispatch(InitUserData(userData));
-      }
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new MainPage(
-                store: store,
-              )));
-    });
+      Firestore.instance.collection('users').add(userData.toJson());
+
+      Firestore.instance.collection('items').add(Item(
+              currentSaving: 0,
+              userId: user.uid,
+              item: user.item,
+              targetPrice: user.targetPrice)
+          .toJson());
+
+      // store.dispatch(ClearRegisterState());
+      // store.dispatch(InitUserData(userData));
+    } else {
+      var data = value.documents[0];
+      UserData userData = new UserData.fromFirebaseDocumentSnapshot(data.data);
+      store.dispatch(InitUserData(userData));
+    }
+  }
+
+  static Future<FirebaseUser> signInWithGoogle(Store<AppState> store) async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    final FirebaseUser user =
+        (await _auth.signInWithCredential(credential)).user;
+    assert(user.email != null);
+    assert(user.displayName != null);
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+    try {
+      return user;
+    } catch (err) {
+      throw Exception();
+    }
   }
 }

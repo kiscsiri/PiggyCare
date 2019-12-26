@@ -87,8 +87,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                         onTap: () {
                                           widget.store
                                               .dispatch(SetSchedule(schedule));
-                                          if (widget
-                                              .store.state.user.id.isNotEmpty) {
+                                          if (!["", null].contains(
+                                              widget.store.state.user.id)) {
                                             var item = Item(
                                                 currentSaving: 0,
                                                 item: widget.store.state
@@ -197,7 +197,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var isAlreadyRegistered = widget.store.state.user.id.isNotEmpty;
+    var isAlreadyRegistered = widget.store.state.user.id != null;
 
     return new Scaffold(
       appBar: new AppBar(

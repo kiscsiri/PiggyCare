@@ -10,6 +10,15 @@ class SetPrice extends RegistrationAction {
   SetPrice(this.price);
 }
 
+class SetFromOauth extends RegistrationAction {
+  final String email;
+  final String username;
+  final String uid;
+  final String pictureUrl;
+
+  SetFromOauth(this.email, this.username, this.uid, this.pictureUrl);
+}
+
 class SetPhoneNumber extends RegistrationAction {
   final String phoneNumber;
 
@@ -42,13 +51,4 @@ class SetSchedule extends RegistrationAction {
 
 class ClearRegisterState extends RegistrationAction {}
 
-class InitRegistration extends RegistrationAction {
-  final String item;
-  final UserType userType;
-  final String phoneNumber;
-  final String price;
-  final Schedule schedule;
-
-  InitRegistration(
-      this.item, this.phoneNumber, this.price, this.schedule, this.userType);
-}
+class InitRegistration extends RegistrationAction {}

@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'item.model.g.dart';
+
+@JsonSerializable(nullable: false)
 class Item {
   String item;
   int targetPrice;
@@ -8,6 +12,9 @@ class Item {
   String userId;
 
   Item({this.item, this.targetPrice, this.currentSaving, this.userId, this.id});
+
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
 
   factory Item.fromSnapshot(DocumentSnapshot snapshot) {
     return Item(
@@ -32,17 +39,6 @@ class Item {
         id = snapshot['id'],
         userId = snapshot['userId'],
         currentSaving = snapshot['currentSaving'];
-
-  Map<String, dynamic> toJson() {
-    return new Map.from({
-      "currentSaving": this.currentSaving,
-      "item": this.item,
-      "targetPrice": this.targetPrice,
-      "id": this.id,
-      "userId": this.userId,
-      "createdDate": DateTime.now()
-    });
-  }
 }
 
 List<Item> fromDocumentSnapshot(List<DocumentSnapshot> snapshots) {

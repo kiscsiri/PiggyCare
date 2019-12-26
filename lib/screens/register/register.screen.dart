@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
+import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggybanx/widgets/google.button.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -25,94 +28,69 @@ class _RegisterPageState extends State<LastPage> {
   String _message = '';
 
   String verificationId;
-  bool _isCodeSent = false;
 
   final _telephoneFormKey = new GlobalKey<FormState>();
-  final _codeFormKey = new GlobalKey<FormState>();
 
-  TextEditingController _phoneCodeController = new TextEditingController();
-  TextEditingController _smsCodeController = TextEditingController();
+  TextEditingController _userNameController = new TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
+    _userNameController.text = widget.store.state.registrationData.username;
+    _emailController.text = widget.store.state.registrationData.email;
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _phoneCodeController.dispose();
-    _smsCodeController.dispose();
+    _userNameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
-  Future<void> _testVerifyPhoneNumber(BuildContext context) async {
-    var loc = PiggyLocalizations.of(context);
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential credentials) {
-      setState(() {
-        _message = 'signInWithPhoneNumber auto succeeded';
-      });
-    };
+  Future<void> _register(BuildContext context) async {
+    var res = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text, password: _passwordController.text);
 
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      setState(() {
-        _message = loc.trans("verification_failed");
-      });
-    };
+    widget.store.dispatch(SetFromOauth(
+        res.user.email, res.user.displayName, res.user.uid, res.user.photoUrl));
 
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      this.verificationId = verificationId;
-    };
+    AuthenticationService.registerUser(widget.store);
 
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      this.verificationId = verificationId;
-    };
-
-    setState(() {
-      _isCodeSent = true;
-    });
-
-    try {
-      await _auth.verifyPhoneNumber(
-          phoneNumber: _phoneCodeController.text,
-          timeout: const Duration(seconds: 0),
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-    } catch (Exception) {
-      setState(() {
-        _message = loc.trans("verification_failed");
-      });
-    }
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(
+        builder: (context) => new MainPage(
+              store: widget.store,
+            )));
   }
 
-  _testSignInWithPhoneNumber(BuildContext context) async {
+  testSignInWithPhoneNumber(BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: _smsCodeController.text,
-    );
 
-    var phoneState = SetPhoneNumber(_phoneCodeController.text);
+    var phoneState = SetPhoneNumber(_emailController.text);
     widget.store.dispatch(phoneState);
 
-    FirebaseUser user;
-    try {
-      user = (await _auth.signInWithCredential(credential))?.user;
-    } catch (Exception) {
-      setState(() {
-        _message = loc.trans("verification_failed");
-      });
-      return null;
-    }
-    if (user == null) throw Exception();
+    await AuthenticationService.registerUser(widget.store);
+  }
 
-    await AuthenticationService.registerUser(
-        context, widget.store, user, _phoneCodeController.text);
+  Future<void> signInAndRegisterGoogle() async {
+    var user = await AuthenticationService.signInWithGoogle(widget.store);
+    widget.store.dispatch(
+        SetFromOauth(user.email, user.displayName, user.uid, user.photoUrl));
+
+    await AuthenticationService.registerUser(widget.store);
+
+    setState(() {
+      _emailController.text = user.email;
+      _userNameController.text = user.displayName;
+    });
+
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(
+        builder: (context) => new MainPage(
+              store: widget.store,
+            )));
   }
 
   @override
@@ -132,16 +110,42 @@ class _RegisterPageState extends State<LastPage> {
                 ),
               ),
               PiggyInput(
-                hintText: "+123456789101",
-                textController: _phoneCodeController,
+                inputIcon: FontAwesomeIcons.user,
+                hintText: loc.trans("user_name"),
+                textController: _userNameController,
                 width: MediaQuery.of(context).size.width * 0.7,
                 onValidate: (value) {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
-                  } else if (value.length < 9) {
-                    return loc.trans("short_number_validation");
-                  } else if (value.length > 15) {
-                    return loc.trans("long_number_validation");
+                  }
+                },
+                onErrorMessage: (error) {
+                  setState(() {});
+                },
+              ),
+              PiggyInput(
+                inputIcon: Icons.mail_outline,
+                hintText: loc.trans("email"),
+                textController: _emailController,
+                width: MediaQuery.of(context).size.width * 0.7,
+                onValidate: (value) {
+                  if (value.isEmpty) {
+                    return loc.trans("required_field");
+                  }
+                },
+                onErrorMessage: (error) {
+                  setState(() {});
+                },
+              ),
+              PiggyInput(
+                inputIcon: Icons.lock_outline,
+                hintText: loc.trans("password"),
+                textController: _passwordController,
+                width: MediaQuery.of(context).size.width * 0.7,
+                obscureText: true,
+                onValidate: (value) {
+                  if (value.isEmpty) {
+                    return loc.trans("required_field");
                   }
                 },
                 onErrorMessage: (error) {
@@ -153,73 +157,18 @@ class _RegisterPageState extends State<LastPage> {
                 style: new TextStyle(color: Colors.redAccent),
               ),
               PiggyButton(
-                  text: loc.trans("send"),
-                  onClick: () {
+                  text: loc.trans("register"),
+                  onClick: () async {
                     if (_telephoneFormKey.currentState.validate()) {
-                      setState(() {
-                        _testVerifyPhoneNumber(context);
-                      });
+                      await _register(context);
                     }
-                  })
+                  }),
+              Text(loc.trans('connect_using')),
+              PiggyGoogleButton(
+                text: "Google",
+                onClick: () async => signInAndRegisterGoogle(),
+              ),
             ]));
-
-    var codeBlock = new Form(
-        key: _codeFormKey,
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-            child: new Text(
-              loc.trans("enter_sms"),
-              style: Theme.of(context).textTheme.display3,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new IconButton(
-                tooltip: loc.trans("go_back_phone_number_tooltip"),
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () {
-                  setState(() {
-                    _isCodeSent = !_isCodeSent;
-                  });
-                },
-              ),
-              PiggyInput(
-                width: MediaQuery.of(context).size.width * 0.49,
-                hintText: loc.trans("sms_code_hint"),
-                textController: _smsCodeController,
-                onValidate: (value) {
-                  if (value.length > 6) {
-                    return loc.trans("long_code_error");
-                  } else if (value.length < 6) {
-                    return loc.trans("short_code_error");
-                  } else if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  }
-                },
-                onErrorMessage: (error) {
-                  _message = error;
-                },
-              ),
-            ],
-          ),
-          Text(
-            _message,
-            style: new TextStyle(color: Colors.redAccent),
-          ),
-          PiggyButton(
-              text: loc.trans("verify"),
-              onClick: () {
-                if (_codeFormKey.currentState.validate()) {
-                  setState(() {
-                    _testSignInWithPhoneNumber(context);
-                  });
-                }
-              })
-        ]));
 
     return new Scaffold(
       appBar: new AppBar(
@@ -239,7 +188,7 @@ class _RegisterPageState extends State<LastPage> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: (_isCodeSent) ? codeBlock : telephoneBlock,
+                child: telephoneBlock,
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),

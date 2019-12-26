@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
@@ -23,7 +24,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var isAlreadyRegistered = widget.store.state.user.id.isNotEmpty;
+    var isAlreadyRegistered = widget.store.state.user.id != null;
 
     return new Scaffold(
       appBar: new AppBar(
@@ -93,6 +94,10 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                   onClick: () {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
+                      var userTypeAction = SetUserType(UserType.individual);
+
+                      widget.store.dispatch(InitRegistration());
+                      widget.store.dispatch(userTypeAction);
                       widget.store.dispatch(action);
                       Navigator.push(
                           context,

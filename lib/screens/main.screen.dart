@@ -1,13 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
+import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -47,6 +51,17 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    widget.store.dispatch(InitUserData(UserData()));
+    Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new StartupPage(
+                  store: widget.store,
+                )));
+  }
+
   List<Widget> getFrames() {
     return [
       new PiggyPage(store: widget.store),
@@ -67,6 +82,39 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
           appBar: AppBar(
             title: Text("PiggyBanx"),
+          ),
+          endDrawer: Drawer(
+            child: Column(
+              children: <Widget>[
+                DrawerHeader(
+                  child: Text(widget.store.state.user.phoneNumber),
+                ),
+                ListTile(
+                  title: Text('ASZF'),
+                  onTap: () {
+                    logout();
+                  },
+                ),
+                ListTile(
+                  title: Text('Profil'),
+                  onTap: () {
+                    logout();
+                  },
+                ),
+                ListTile(
+                  title: Text('Felhasználói feltételek'),
+                  onTap: () {
+                    logout();
+                  },
+                ),
+                ListTile(
+                  title: Text('Kijelentkezés'),
+                  onTap: () {
+                    logout();
+                  },
+                ),
+              ],
+            ),
           ),
           body: new PageView(
             children: getFrames(),

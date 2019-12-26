@@ -2,9 +2,14 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggybanx/widgets/facebook.button.dart';
+import 'package:piggybanx/widgets/google.button.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -44,58 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _testVerifyPhoneNumber(BuildContext context) async {
-    var loc = PiggyLocalizations.of(context);
-    var isExist = false;
-    isExist = await AuthenticationService.verifyPhoneNumber(
-        _phoneCodeController.text, context);
-
-    if (!isExist) return;
-
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential credentials) {
-      setState(() {
-        _message = 'signInWithPhoneNumber auto succeeded';
-      });
-    };
-
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      setState(() {
-        _message = loc.trans("verification_failed");
-      });
-    };
-
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      verificationId = verificationId;
-    };
-
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      this.verificationId = verificationId;
-    };
-
-    setState(() {
-      _isCodeSent = true;
-    });
-
-    try {
-      await _auth.verifyPhoneNumber(
-          phoneNumber: _phoneCodeController.text,
-          timeout: const Duration(seconds: 0),
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-    } catch (Exception) {
-      setState(() {
-        _message = loc.trans("verification_failed");
-      });
-    }
-  }
-
-  _testSignInWithPhoneNumber(BuildContext context) async {
+  _loginWithEmailAndPassword(BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: verificationId,
@@ -113,7 +67,27 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (user == null) throw Exception();
 
-    await AuthenticationService.authenticate(user, context, widget.store);
+    try {
+      await AuthenticationService.authenticate(user, widget.store);
+    } catch (err) {}
+  }
+
+  Future<void> _signInWithGoogle() async {
+    var user = await AuthenticationService.signInWithGoogle(widget.store);
+
+    try {
+      await AuthenticationService.authenticate(user, widget.store);
+
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (context) => new MainPage(
+                store: widget.store,
+              )));
+    } on AuthException {
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (context) => new FirstRegisterPage(
+                store: widget.store,
+              )));
+    }
   }
 
   @override
@@ -122,142 +96,129 @@ class _LoginPageState extends State<LoginPage> {
     var telephoneBlock = new Form(
         key: _telephoneFormKey,
         child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
                 child: new Text(
-                  loc.trans("enter_phone_number"),
+                  loc.trans("login"),
                   style: Theme.of(context).textTheme.display3,
                   textAlign: TextAlign.center,
                 ),
               ),
-              PiggyInput(
-                hintText: "+123456789101",
-                textController: _phoneCodeController,
-                width: MediaQuery.of(context).size.width * 0.7,
-                onValidate: (value) {
-                  if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  } else if (value.length < 9) {
-                    return loc.trans("short_number_validation");
-                  } else if (value.length > 15) {
-                    return loc.trans("long_number_validation");
-                  }
-                },
-                onErrorMessage: (error) {
-                  setState(() {});
-                },
+              Column(
+                children: <Widget>[
+                  PiggyInput(
+                    inputIcon: FontAwesomeIcons.user,
+                    hintText: loc.trans("user_name"),
+                    textController: _phoneCodeController,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    onValidate: (value) {
+                      if (value.isEmpty) {
+                        return loc.trans("required_field");
+                      }
+                      return "";
+                    },
+                    onErrorMessage: (error) {
+                      setState(() {});
+                    },
+                  ),
+                  PiggyInput(
+                    inputIcon: Icons.lock_outline,
+                    hintText: loc.trans("password"),
+                    textController: _phoneCodeController,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    onValidate: (value) {
+                      if (value.isEmpty) {
+                        return loc.trans("required_field");
+                      }
+                    },
+                    onErrorMessage: (error) {
+                      setState(() {});
+                    },
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        GestureDetector(
+                          child: Text(
+                            loc.trans("pw_forgot"),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ]),
+                  Text(
+                    _message,
+                    style: new TextStyle(color: Colors.redAccent),
+                  ),
+                  PiggyButton(
+                      text: loc.trans("login"),
+                      onClick: () {
+                        if (_telephoneFormKey.currentState.validate()) {
+                          setState(() {
+                            _loginWithEmailAndPassword(context);
+                          });
+                        }
+                      }),
+                ],
               ),
-              Text(
-                _message,
-                style: new TextStyle(color: Colors.redAccent),
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.07),
+                    child: Text(loc.trans('connect_using')),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 25.0, top: 5),
+                        child: PiggyFacebookButton(
+                          text: "Facebook",
+                          onClick: () async => await _signInWithGoogle(),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 25.0, top: 5),
+                        child: PiggyGoogleButton(
+                          text: "Google",
+                          onClick: () async => await _signInWithGoogle(),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-              PiggyButton(
-                  text: loc.trans("send"),
-                  onClick: () {
-                    if (_telephoneFormKey.currentState.validate()) {
-                      setState(() {
-                        _testVerifyPhoneNumber(context);
-                      });
-                    }
-                  })
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(loc.trans('dont_have_user')),
+                  GestureDetector(
+                    onTap: () => {
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (context) => new FirstRegisterPage(
+                                store: widget.store,
+                              )))
+                    },
+                    child: Text(
+                      loc.trans('register'),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )
             ]));
-
-    var codeBlock = new Form(
-        key: _codeFormKey,
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-            child: new Text(
-              loc.trans("enter_sms"),
-              style: Theme.of(context).textTheme.display3,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new IconButton(
-                tooltip: loc.trans("go_back_phone_number_tooltip"),
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () {
-                  setState(() {
-                    _isCodeSent = !_isCodeSent;
-                  });
-                },
-              ),
-              PiggyInput(
-                width: MediaQuery.of(context).size.width * 0.49,
-                hintText: loc.trans("sms_code_hint"),
-                textController: _smsCodeController,
-                onValidate: (value) {
-                  if (value.length > 6) {
-                    return loc.trans("long_number_validation");
-                  } else if (value.length < 6) {
-                    return loc.trans("short_number_validation");
-                  } else if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  }
-                },
-                onErrorMessage: (error) {
-                  _message = error;
-                },
-              ),
-            ],
-          ),
-          Text(
-            _message,
-            style: new TextStyle(color: Colors.redAccent),
-          ),
-          PiggyButton(
-              text: loc.trans("verify"),
-              onClick: () {
-                if (_codeFormKey.currentState.validate()) {
-                  setState(() {
-                    _testSignInWithPhoneNumber(context);
-                  });
-                }
-              })
-        ]));
 
     return Scaffold(
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),
-      body: new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: (_isCodeSent) ? codeBlock : telephoneBlock,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        margin: EdgeInsets.only(bottom: 0),
-                        child: Center(
-                          child: new Text(
-                            " ",
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                                color: Colors.white, fontSize: 17),
-                          ),
-                        ))
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Center(child: telephoneBlock),
       ),
     );
   }

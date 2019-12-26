@@ -1,7 +1,6 @@
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/services.export.dart';
-
+import '../services/notification.services.dart';
+import '../services/services.export.dart';
+import 'appState.dart';
 import 'chore/chore.export.dart';
 import 'piggy/piggy.export.dart';
 import 'registration/registration.export.dart';
@@ -61,6 +60,8 @@ AppState handleRegistrationActions(
     return clearRegistrationStore(appState, action);
   } else if (action is SetUserType) {
     return setUserType(appState, action);
+  } else if (action is SetFromOauth) {
+    return setOauthAccount(appState, action);
   } else {
     return null;
   }
