@@ -5,7 +5,7 @@ import 'package:piggybanx/helpers/InputFormatters.dart';
 import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -14,15 +14,15 @@ import 'package:redux/redux.dart';
 
 import 'register.screen.dart';
 
-class SecondRegisterPage extends StatefulWidget {
-  SecondRegisterPage({Key key, this.store}) : super(key: key);
+class ThirdRegisterPage extends StatefulWidget {
+  ThirdRegisterPage({Key key, this.store}) : super(key: key);
   final Store<AppState> store;
 
   @override
-  _SecondRegisterPageState createState() => new _SecondRegisterPageState();
+  _ThirdRegisterPageState createState() => new _ThirdRegisterPageState();
 }
 
-class _SecondRegisterPageState extends State<SecondRegisterPage> {
+class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
   TextEditingController textEditingController = new TextEditingController();
   final _priceFormKey = GlobalKey<FormState>();
 
@@ -89,7 +89,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                               .dispatch(SetSchedule(schedule));
                                           if (!["", null].contains(
                                               widget.store.state.user.id)) {
-                                            var item = Item(
+                                            var item = Piggy(
                                                 currentSaving: 0,
                                                 item: widget.store.state
                                                     .registrationData.item,
@@ -100,7 +100,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                                                     .targetPrice);
 
                                             widget.store
-                                                .dispatch(AddItem(item));
+                                                .dispatch(AddPiggy(item));
                                             Navigator.pushReplacement(
                                                 context,
                                                 new MaterialPageRoute(

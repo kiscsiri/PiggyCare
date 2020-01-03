@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
@@ -44,11 +44,11 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
   bool isAnimationPlaying = false;
   String timeUntilNextFeed = "";
 
-  void onCoinDrop() {
+  void onCoinDrop(id) {
     setState(() {
       isOnTarget = false;
     });
-    _feedPiggy();
+    _feedPiggy(widget.store.state.user.piggies.first.id);
   }
 
   @override
@@ -114,11 +114,11 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
     super.dispose();
   }
 
-  Future<void> _feedPiggy() async {
+  Future<void> _feedPiggy(int piggyId) async {
     var tempLevel = widget.store.state.user.piggyLevel;
     var tempIsDemoOver = widget.store.state.user.isDemoOver;
 
-    widget.store.dispatch(FeedPiggy(widget.store.state.user.id));
+    widget.store.dispatch(FeedPiggy(widget.store.state.user.id, piggyId));
     NotificationServices.feedPiggy(widget.store.state.user.id);
 
     var showDemoAlert = (tempIsDemoOver != widget.store.state.user.isDemoOver);
@@ -136,8 +136,8 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     var user = widget.store.state.user;
-    Item item;
-    if (user.items.length != 0) item = user.items.last;
+    Piggy item;
+    if (user.piggies.length != 0) item = user.piggies.last;
 
     bool _isDisabled =
         user.timeUntilNextFeed > Duration(seconds: 0) ? false : true;
@@ -214,36 +214,9 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                           willAcceptStream: willAcceptStream,
                           isAnimationPlaying: isAnimationPlaying,
                           isDisabled: _isDisabled,
-                          onDrop: onCoinDrop,
-                          store: widget.store),
+                          onDrop: (id) => onCoinDrop(id),
+                          piggy: item),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 23.0),
-                      child: PiggyFeedWidget(
-                          willAcceptStream: willAcceptStream,
-                          isAnimationPlaying: isAnimationPlaying,
-                          isDisabled: _isDisabled,
-                          onDrop: onCoinDrop,
-                          store: widget.store),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 23.0),
-                      child: PiggyFeedWidget(
-                          willAcceptStream: willAcceptStream,
-                          isAnimationPlaying: isAnimationPlaying,
-                          isDisabled: _isDisabled,
-                          onDrop: onCoinDrop,
-                          store: widget.store),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 23.0),
-                      child: PiggyFeedWidget(
-                          willAcceptStream: willAcceptStream,
-                          isAnimationPlaying: isAnimationPlaying,
-                          isDisabled: _isDisabled,
-                          onDrop: onCoinDrop,
-                          store: widget.store),
-                    )
                   ],
                 ),
               ),
@@ -261,7 +234,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                   child: PiggyButton(
                       disabled: _isDisabled,
                       text: loc.trans('feed_piggy'),
-                      onClick: () => _feedPiggy()),
+                      onClick: () => _feedPiggy(user.piggies.first.id)),
                 ),
               ),
               Padding(

@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
 import 'package:piggybanx/widgets/facebook.button.dart';
 import 'package:piggybanx/widgets/google.button.dart';

@@ -9,7 +9,7 @@ class AddNewPiggy extends ChildPiggyAction {
 }
 
 class RemovePiggy extends ChildPiggyAction {
-  final String piggyId;
+  final int piggyId;
 
   RemovePiggy(this.piggyId);
 }
@@ -21,9 +21,19 @@ class GrowPiggy extends ChildPiggyAction {
 }
 
 class FeedChildPiggy extends ChildPiggyAction {
-  final String piggyId;
+  final int piggyId;
   final int amount;
   final bool isDouble;
 
   FeedChildPiggy(this.piggyId, this.amount, this.isDouble);
+}
+
+class CreateTempPiggy extends ChildPiggyAction {
+  final Piggy piggy;
+
+  CreateTempPiggy({this.piggy});
+}
+
+class ClearTempPiggy extends ChildPiggyAction {
+  ClearTempPiggy();
 }

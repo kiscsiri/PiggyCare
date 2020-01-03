@@ -51,8 +51,7 @@ AppState handleRegistrationActions(
     return initRegistrationState(appState, action);
   } else if (action is SetPrice) {
     return setStoreTargetPrice(appState, action);
-  } else if (action is AddItem) {
-    addItemDatabase(action, appState.user.id);
+  } else if (action is AddPiggy) {
     return addItem(appState, action);
   } else if (action is SetSchedule) {
     return setStoreSchedule(appState, action);
@@ -69,7 +68,7 @@ AppState handleRegistrationActions(
 
 AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
   if (action is AddNewPiggy) {
-    NotificationServices.sendNotificationNewPiggy(action.piggy.childId);
+    NotificationServices.sendNotificationNewPiggy(action.piggy.userId);
     PiggyFirebaseServices().addPiggy(action.piggy);
     return addPiggy(appState, action);
   } else if (action is FeedChildPiggy) {
@@ -79,7 +78,9 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
   } else if (action is RemovePiggy) {
     PiggyFirebaseServices().removePiggy(action.piggyId);
     return removePiggy(appState, action);
-  }
+  } else if (action is CreateTempPiggy) {
+    return createPiggyTemp(appState, action);
+  } else if (action is ClearTempPiggy) {}
   return null;
 }
 

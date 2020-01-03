@@ -13,9 +13,8 @@ UserData _$UserDataFromJson(Map json) {
     userType: _$enumDecode(_$UserTypeEnumMap, json['userType']),
     feedPerPeriod: json['feedPerPeriod'] as int,
     period: _$enumDecode(_$PeriodEnumMap, json['period']),
-    items: (json['items'] as List)
-        .map((e) => Item.fromJson(Map<String, dynamic>.from(e as Map)))
-        .toList(),
+    piggies:
+        (json['piggies'] as List).map((e) => Piggy.fromJson(e as Map)).toList(),
     piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
     currentFeedTime: json['currentFeedTime'] as int,
     money: (json['money'] as num).toDouble(),
@@ -35,7 +34,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'userType': _$UserTypeEnumMap[instance.userType],
       'period': _$PeriodEnumMap[instance.period],
       'feedPerPeriod': instance.feedPerPeriod,
-      'items': instance.items.map((f) => f.toJson()).toList(),
+      'piggies': instance.piggies.map((f) => f.toJson()).toList(),
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
       'currentFeedTime': instance.currentFeedTime,
       'phoneNumber': instance.phoneNumber,
@@ -45,7 +44,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'isDemoOver': instance.isDemoOver,
       'email': instance.email,
       'name': instance.name,
-      'pictureUrl': instance.pictureUrl,
+      'pictureUrl': instance.pictureUrl
     };
 
 T _$enumDecode<T>(

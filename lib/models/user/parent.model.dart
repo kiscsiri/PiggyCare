@@ -8,7 +8,6 @@ class Parent extends UserData {
     feedPerPeriod = another.feedPerPeriod;
     id = another.id;
     lastFeed = another.lastFeed;
-    items = another.items;
     money = another.money;
     currentFeedTime = another.currentFeedTime;
     piggyLevel = another.piggyLevel;
@@ -18,5 +17,6 @@ class Parent extends UserData {
     isDemoOver = another.isDemoOver;
     created = another.created;
     children = another.children;
+    piggies = another.piggies;
   }
 }

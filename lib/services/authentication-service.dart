@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
@@ -137,15 +137,8 @@ class AuthenticationService {
 
       Firestore.instance.collection('users').add(userData.toJson());
 
-      Firestore.instance.collection('items').add(Item(
-              currentSaving: 0,
-              userId: user.uid,
-              item: user.item,
-              targetPrice: user.targetPrice)
-          .toJson());
-
-      // store.dispatch(ClearRegisterState());
-      // store.dispatch(InitUserData(userData));
+      store.dispatch(ClearRegisterState());
+      store.dispatch(InitUserData(userData));
     } else {
       var data = value.documents[0];
       UserData userData = new UserData.fromFirebaseDocumentSnapshot(data.data);

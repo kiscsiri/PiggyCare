@@ -1,6 +1,6 @@
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/SavingSchedule.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 
 class RegistrationAction {}
 
@@ -8,6 +8,12 @@ class SetPrice extends RegistrationAction {
   final int price;
 
   SetPrice(this.price);
+}
+
+class AddPiggy extends RegistrationAction {
+  final Piggy piggy;
+
+  AddPiggy(this.piggy);
 }
 
 class SetFromOauth extends RegistrationAction {
@@ -35,12 +41,6 @@ class SetUserType extends RegistrationAction {
   final UserType userType;
 
   SetUserType(this.userType);
-}
-
-class AddItem extends RegistrationAction {
-  final Item item;
-
-  AddItem(this.item);
 }
 
 class SetSchedule extends RegistrationAction {

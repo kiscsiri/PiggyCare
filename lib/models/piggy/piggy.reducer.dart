@@ -24,6 +24,16 @@ AppState feedChildPiggy(AppState state, FeedChildPiggy action) {
   return AppState.fromAppState(state);
 }
 
+AppState createPiggyTemp(AppState state, CreateTempPiggy action) {
+  state.tempPiggy = action.piggy;
+  return AppState.fromAppState(state);
+}
+
+AppState clearTempPiggy(AppState state, ClearTempPiggy action) {
+  state.tempPiggy = null;
+  return AppState.fromAppState(state);
+}
+
 AppState growPiggy(AppState state, action) {
   var user = state.user;
   if (user is Parent) {

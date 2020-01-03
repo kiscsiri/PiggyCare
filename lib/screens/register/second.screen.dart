@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
@@ -93,10 +92,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                   onClick: () {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
-                      var userTypeAction = SetUserType(UserType.individual);
 
                       widget.store.dispatch(InitRegistration());
-                      widget.store.dispatch(userTypeAction);
                       widget.store.dispatch(action);
                       Navigator.push(
                           context,

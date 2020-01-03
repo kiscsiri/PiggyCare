@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
@@ -77,6 +75,10 @@ Future<void> loadAnimation(
   });
   var prefs = await SharedPreferences.getInstance();
   var feedRandom = prefs.getInt("animationCount");
+  if (feedRandom > 4) {
+    prefs.setInt('animationCount', 0);
+    feedRandom = 0;
+  }
   if (isLevelUp) {
     prefs.setInt("animationCount", 1);
   } else {

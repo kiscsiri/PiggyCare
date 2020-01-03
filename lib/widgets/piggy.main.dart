@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:redux/redux.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PiggyFeedWidget extends StatefulWidget {
@@ -12,15 +11,15 @@ class PiggyFeedWidget extends StatefulWidget {
       this.willAcceptStream,
       this.onDrop,
       @required this.isDisabled,
-      this.store,
-      @required this.isAnimationPlaying})
+      @required this.isAnimationPlaying,
+      this.piggy})
       : super(key: key);
 
   final BehaviorSubject<bool> willAcceptStream;
-  final Function onDrop;
+  final Function(int) onDrop;
   final bool isDisabled;
   final bool isAnimationPlaying;
-  final Store<AppState> store;
+  final Piggy piggy;
   @override
   _PiggyFeedWidgetState createState() => new _PiggyFeedWidgetState();
 }
@@ -30,7 +29,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
   bool isRandomGenerated = false;
   int feedRandom = 1;
 
-  Widget getFeedAnimation(BuildContext context, Store<AppState> store) {
+  Widget getFeedAnimation(BuildContext context) {
     if (widget.isAnimationPlaying && !isRandomGenerated) {
       feedRandom = Random().nextInt(3) + 1;
       isRandomGenerated = true;
@@ -40,37 +39,37 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           opacity: 1.0,
           duration: Duration(milliseconds: 1500),
           child: Image.asset(
-              'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+              'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.gif',
               gaplessPlayback: true,
               width: MediaQuery.of(context).size.width * 0.2,
               height: MediaQuery.of(context).size.height * 0.2));
     } catch (err) {
       return Image.asset(
-          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
+          'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.gif',
           gaplessPlayback: true,
           width: MediaQuery.of(context).size.width * 0.2,
           height: MediaQuery.of(context).size.height * 0.2);
     }
   }
 
-  Widget getAnimation(BuildContext context, Store<AppState> store) {
-    if (store == null) {
+  Widget getAnimation(BuildContext context, Piggy piggy) {
+    if (piggy == null) {
       return Image.asset('assets/animations/Baby-Feed1.gif',
           gaplessPlayback: true,
           width: MediaQuery.of(context).size.width * 0.2,
           height: MediaQuery.of(context).size.height * 0.2);
     } else if (widget.isDisabled && !widget.isAnimationPlaying) {
       return Image.asset(
-          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Sleep.gif',
+          'assets/animations/${levelStringValue(piggy.piggyLevel)}-Sleep.gif',
           gaplessPlayback: true,
           width: MediaQuery.of(context).size.width * 0.2,
           height: MediaQuery.of(context).size.height * 0.2);
     } else if (widget.isAnimationPlaying) {
-      return getFeedAnimation(context, store);
+      return getFeedAnimation(context);
     } else {
       isRandomGenerated = false;
       return Image.asset(
-          'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Normal.gif',
+          'assets/animations/${levelStringValue(piggy.piggyLevel)}-Normal.gif',
           gaplessPlayback: true,
           scale: 0.8,
           width: MediaQuery.of(context).size.width * 0.2,
@@ -101,7 +100,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
             });
           },
           onAccept: (data) {
-            widget.onDrop();
+            widget.onDrop(widget.piggy?.id);
           },
           builder: (context, List<String> candidateData, rejectedData) =>
               Padding(
@@ -113,7 +112,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
                       height: MediaQuery.of(context).size.height,
                       child: Hero(
                           tag: "piggy",
-                          child: getAnimation(context, widget.store))),
+                          child: getAnimation(context, widget.piggy))),
                 ),
               )),
     );

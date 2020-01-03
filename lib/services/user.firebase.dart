@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 
 import '../firebase/firebase.implementations.dart/implementations.export.dart';
 import '../firebase/locator.dart';
 import '../models/appState.dart';
-import '../models/item/item.model.dart';
 import '../models/user/user.export.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 updateUserDatabase(AppState state, UpdateUserData action) {
   Firestore.instance
       .collection("users")
-      .where("uid", isEqualTo: state.user.id)
+      .where("id", isEqualTo: state.user.id)
       .getDocuments()
       .then((QuerySnapshot value) {
     var doc = value.documents.first;
@@ -25,54 +26,39 @@ updateUserDatabase(AppState state, UpdateUserData action) {
 feedPiggyDatabase(FeedPiggy action) {
   Firestore.instance
       .collection("users")
-      .where("uid", isEqualTo: action.id)
+      .where("id", isEqualTo: action.id)
       .getDocuments()
       .then((QuerySnapshot value) {
     var doc = value.documents.first;
+    var user = UserData.fromFirebaseDocumentSnapshot(doc.data);
+    var piggy =
+        user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
+    piggy.money = piggy.money + piggy.currentFeedAmount;
 
-    var newMoney = doc.data['money'] - doc.data['feedPerPeriod'];
-    var newSaving = doc.data['saving'] + doc.data['feedPerPeriod'];
-    var newCurrentFeedTime = ++doc.data['currentFeedTime'];
-    var newDemo = doc.data['isDemoOver'];
+    user.saving = user.saving + piggy.currentFeedAmount;
+
+    user.currentFeedTime = ++doc.data['currentFeedTime'];
+    user.isDemoOver = doc.data['isDemoOver'];
 
     var newPiggyLevel = 0;
-    if (newCurrentFeedTime >= 5) {
-      newPiggyLevel = ++doc.data['piggyLevel'];
-      newCurrentFeedTime = 0;
+    if (user.currentFeedTime >= 5) {
+      user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
+      user.currentFeedTime = 0;
     } else {
-      newPiggyLevel = doc.data['piggyLevel'];
+      newPiggyLevel = user.piggyLevel.index;
     }
 
     if (newPiggyLevel > 2) {
       newPiggyLevel = 2;
-      newDemo = true;
+      user.isDemoOver = true;
     }
-
-    var feedDate = DateTime.now();
-    Firestore.instance.collection('users').document(doc.documentID).updateData({
-      'money': newMoney,
-      'saving': newSaving,
-      'lastFeed': feedDate,
-      'piggyLevel': newPiggyLevel,
-      'currentFeedTime': newCurrentFeedTime,
-      'isDemoOver': newDemo
-    });
+    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+    user.lastFeed = DateTime.now();
 
     Firestore.instance
-        .collection('items')
-        .where('userId', isEqualTo: doc.documentID)
-        .orderBy('createdDate', descending: true)
-        .getDocuments()
-        .then((value) {
-      var item = Item.fromSnapshot(value.documents.first);
-      var newValue = item.currentSaving + doc.data['feedPerPeriod'];
-      Firestore.instance
-          .collection('items')
-          .document(value.documents.first.documentID)
-          .updateData({
-        'currentSaving': newValue,
-      });
-    });
+        .collection('users')
+        .document(doc.documentID)
+        .updateData(user.toJson());
   });
 }
 

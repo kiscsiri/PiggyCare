@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,7 +15,6 @@ class UserData {
   UserType userType = UserType.individual;
   Period period;
   int feedPerPeriod;
-  List<Item> items;
   PiggyLevel piggyLevel;
   int currentFeedTime;
   String phoneNumber;
@@ -26,6 +25,7 @@ class UserData {
   String email;
   String name;
   String pictureUrl;
+  List<Piggy> piggies;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {
@@ -63,7 +63,6 @@ class UserData {
     feedPerPeriod = another.feedPerPeriod;
     id = another.id;
     lastFeed = another.lastFeed;
-    items = another.items;
     money = another.money;
     userType = another.userType;
     currentFeedTime = another.currentFeedTime;
@@ -76,6 +75,7 @@ class UserData {
     pictureUrl = another.pictureUrl;
     email = another.email;
     name = another.name;
+    piggies = another.piggies;
   }
 
   factory UserData.fromFirebaseDocumentSnapshot(Map<String, dynamic> user) =>
@@ -88,15 +88,23 @@ class UserData {
         id: register.uid,
         userType: register.userType,
         phoneNumber: "phoneNumber",
-        feedPerPeriod: register.schedule.savingPerPeriod,
+        feedPerPeriod:
+            (register.schedule != null) ? register.schedule.savingPerPeriod : 2,
         lastFeed: DateTime(1995),
         money: 100000,
         currentFeedTime: 0,
-        items: [
-          Item(
-              currentSaving: 0,
-              item: register.item,
-              targetPrice: register.targetPrice)
+        piggies: [
+          if (register.schedule != null)
+            Piggy(
+                piggyLevel: PiggyLevel.Child,
+                currentFeedAmount: 2,
+                doubleUp: false,
+                isFeedAvailable: false,
+                money: 0,
+                userId: register.uid,
+                currentSaving: 0,
+                item: register.item,
+                targetPrice: register.targetPrice)
         ],
         piggyLevel: PiggyLevel.Baby,
         created: DateTime.now(),
@@ -105,7 +113,9 @@ class UserData {
         name: register.username,
         pictureUrl: register.pictureUrl,
         isDemoOver: false,
-        period: register.schedule.period);
+        period: (register.schedule != null)
+            ? register.schedule.period
+            : Period.daily);
   }
 
   UserData(
@@ -114,7 +124,7 @@ class UserData {
       this.userType = UserType.individual,
       this.feedPerPeriod,
       this.period = Period.daily,
-      List<Item> items,
+      List<Piggy> piggies,
       this.piggyLevel,
       this.currentFeedTime,
       this.money,
@@ -125,5 +135,5 @@ class UserData {
       this.email,
       this.name,
       this.pictureUrl})
-      : items = items ?? List<Item>();
+      : piggies = piggies ?? List<Piggy>();
 }

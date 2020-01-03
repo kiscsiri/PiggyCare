@@ -1,5 +1,5 @@
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/item/item.model.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 
@@ -11,7 +11,11 @@ AppState initUser(AppState state, InitUserData action) {
       id: action.user.id,
       lastFeed: action.user.lastFeed,
       money: action.user.money,
-      items: action.user.items,
+      piggies: action.user.piggies,
+      userType: action.user.userType,
+      email: action.user.email,
+      name: action.user.name,
+      pictureUrl: action.user.pictureUrl,
       currentFeedTime: action.user.currentFeedTime,
       piggyLevel: action.user.piggyLevel,
       period: action.user.period,
@@ -28,11 +32,12 @@ AppState updateUser(AppState state, UpdateUserData action) {
       feedPerPeriod: action.user.feedPerPeriod,
       id: state.user.id,
       lastFeed: state.user.lastFeed,
-      items: state.user.items,
+      piggies: state.user.piggies,
       money: state.user.money,
       currentFeedTime: state.user.currentFeedTime,
       piggyLevel: state.user.piggyLevel,
       period: action.user.period,
+      userType: state.user.userType,
       phoneNumber: state.user.phoneNumber,
       saving: state.user.saving,
       isDemoOver: state.user.isDemoOver,
@@ -41,60 +46,42 @@ AppState updateUser(AppState state, UpdateUserData action) {
       user: newUserData, registrationData: state.registrationData);
 }
 
-AppState addNewITem(AppState state, AddNewItem action) {
-  var newUserData = new UserData(
-      feedPerPeriod: state.user.feedPerPeriod,
-      id: state.user.id,
-      lastFeed: state.user.lastFeed,
-      items: state.user.items,
-      money: state.user.money,
-      currentFeedTime: state.user.currentFeedTime,
-      piggyLevel: state.user.piggyLevel,
-      period: state.user.period,
-      phoneNumber: state.user.phoneNumber,
-      saving: state.user.saving,
-      created: state.user.created);
-  return new AppState(
-      user: newUserData, registrationData: state.registrationData);
-}
-
 feedPiggy(AppState state, FeedPiggy action) {
-  var newCurrentFeedTime = state.user.currentFeedTime + 1;
-  var newPiggyLevel = PiggyLevel.Baby;
-  var newDemo = state.user.isDemoOver;
+  state.user.currentFeedTime++;
 
-  if (newCurrentFeedTime >= 5 && state.user.piggyLevel != PiggyLevel.Teen) {
-    newPiggyLevel = PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
-    newCurrentFeedTime = 0;
+  if (state.user.currentFeedTime >= 5 &&
+      state.user.piggyLevel != PiggyLevel.Teen) {
+    state.user.piggyLevel =
+        PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
+    state.user.currentFeedTime = 0;
   } else {
-    newPiggyLevel = state.user.piggyLevel;
+    state.user.piggyLevel = state.user.piggyLevel;
   }
 
-  if (newCurrentFeedTime >= 5 && state.user.piggyLevel == PiggyLevel.Teen) {
-    newDemo = true;
+  if (state.user.currentFeedTime >= 5 &&
+      state.user.piggyLevel == PiggyLevel.Teen) {
+    state.user.isDemoOver = true;
   }
 
-  var activeItem = state.user.items.last;
+  state.user.saving = state.user.saving + state.user.feedPerPeriod;
+  state.user.money = state.user.money - state.user.feedPerPeriod;
+  state.user.lastFeed = DateTime.now();
 
-  var newUserData = new UserData(
-      id: state.user.id,
-      feedPerPeriod: state.user.feedPerPeriod,
-      lastFeed: DateTime.now(),
-      items: state.user.items,
-      money: (state.user.money - state.user.feedPerPeriod),
-      piggyLevel: newPiggyLevel,
-      isDemoOver: newDemo,
-      currentFeedTime: newCurrentFeedTime,
-      period: state.user.period,
-      created: state.user.created,
-      phoneNumber: state.user.phoneNumber,
-      saving: (state.user.saving + state.user.feedPerPeriod));
+  var activeItem = state.user.piggies.last;
 
-  newUserData.items.last = Item(
+  var piggy = state.user.piggies.singleWhere((p) => p.id == action.piggyId);
+
+  piggy = Piggy(
       currentSaving: (activeItem.currentSaving + state.user.feedPerPeriod),
       item: activeItem.item,
+      piggyLevel: activeItem.piggyLevel,
+      currentFeedAmount: activeItem.currentFeedAmount,
+      doubleUp: activeItem.doubleUp,
+      money: activeItem.money,
+      userId: activeItem.userId,
+      isFeedAvailable: activeItem.isFeedAvailable,
+      id: activeItem.id,
       targetPrice: activeItem.targetPrice);
 
-  return new AppState(
-      user: newUserData, registrationData: state.registrationData);
+  return new AppState.fromAppState(state);
 }

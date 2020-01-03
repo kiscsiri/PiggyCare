@@ -97,9 +97,9 @@ class _PiggyPageState extends State<PiggyTestPage>
             child: AnimatedBuilder(
               animation: animation,
               builder: (context, child) => Image.asset(
-                    'lib/assets/animation/animation-piggy.gif',
-                    gaplessPlayback: true,
-                  ),
+                'lib/assets/animation/animation-piggy.gif',
+                gaplessPlayback: true,
+              ),
             ),
           );
         });
@@ -121,58 +121,59 @@ class _PiggyPageState extends State<PiggyTestPage>
       body: Center(
         child: Stack(alignment: Alignment.center, children: <Widget>[
           new Container(
-            color: Color(0xFFcb435b),
+              color: Color(0xFFcb435b),
               child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
-                  ),
-                  PiggyFeedWidget(
-                    willAcceptStream: willAcceptStream,
-                    isDisabled: _isDisabled,
-                    isAnimationPlaying: isAnimationPlaying,
-                    onDrop: () {
-                      setState(() {
-                        _coinVisible = false;
-                        _isDisabled = true;
-                      });
-                      _loadAnimation();
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.13,
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: _isDisabled
-                          ? PiggyButton(
-                              disabled: !_isDisabled,
-                              text: loc.trans("register"),
-                              onClick: () =>
-                                  Navigator.pushNamed(context, 'register'))
-                          : Container(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.13,
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: _isDisabled
-                          ? PiggyButton(
-                              disabled: !_isDisabled,
-                              text: loc.trans("login"),
-                              onClick: () =>
-                                  Navigator.pushNamed(context, 'login'))
-                          : Container(),
-                    ),
-                  ),
-                ]),
-          )),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.2),
+                      ),
+                      PiggyFeedWidget(
+                        willAcceptStream: willAcceptStream,
+                        isDisabled: _isDisabled,
+                        isAnimationPlaying: isAnimationPlaying,
+                        onDrop: (id) {
+                          setState(() {
+                            _coinVisible = false;
+                            _isDisabled = true;
+                          });
+                          _loadAnimation();
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.13,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: _isDisabled
+                              ? PiggyButton(
+                                  disabled: !_isDisabled,
+                                  text: loc.trans("register"),
+                                  onClick: () =>
+                                      Navigator.pushNamed(context, 'register'))
+                              : Container(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.13,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: _isDisabled
+                              ? PiggyButton(
+                                  disabled: !_isDisabled,
+                                  text: loc.trans("login"),
+                                  onClick: () =>
+                                      Navigator.pushNamed(context, 'login'))
+                              : Container(),
+                        ),
+                      ),
+                    ]),
+              )),
           PiggyCoin(
             coinController: _coinAnimation,
             coinVisible: _coinVisible,

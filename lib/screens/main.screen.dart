@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
@@ -76,6 +77,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
+    var user = widget.store.state.user;
+
     return WillPopScope(
       onWillPop: () =>
           SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
@@ -84,36 +88,61 @@ class _MainPageState extends State<MainPage> {
             title: Text("PiggyBanx"),
           ),
           endDrawer: Drawer(
-            child: Column(
-              children: <Widget>[
-                DrawerHeader(
-                  child: Text(widget.store.state.user.phoneNumber),
-                ),
-                ListTile(
-                  title: Text('ASZF'),
-                  onTap: () {
-                    logout();
-                  },
-                ),
-                ListTile(
-                  title: Text('Profil'),
-                  onTap: () {
-                    logout();
-                  },
-                ),
-                ListTile(
-                  title: Text('Felhasználói feltételek'),
-                  onTap: () {
-                    logout();
-                  },
-                ),
-                ListTile(
-                  title: Text('Kijelentkezés'),
-                  onTap: () {
-                    logout();
-                  },
-                ),
-              ],
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                children: <Widget>[
+                  DrawerHeader(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          height: MediaQuery.of(context).size.width * 0.2,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: user.pictureUrl == null
+                                      ? AssetImage(
+                                          "lib/assets/images/piggy_nyito.png")
+                                      : NetworkImage(
+                                          widget.store.state.user.pictureUrl))),
+                        ),
+                        Text(widget.store.state.user.name),
+                      ],
+                    ),
+                  ),
+                  if (widget.store.state.user.userType == UserType.child)
+                    ListTile(
+                      title: Text(loc.trans('add_parent')),
+                      onTap: () {},
+                    ),
+                  if (widget.store.state.user.userType == UserType.adult)
+                    ListTile(
+                      title: Text(loc.trans('add_child')),
+                      onTap: () {},
+                    ),
+                  ListTile(
+                    title: Text(loc.trans('eula_short')),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text('Profil'),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text(loc.trans('terms_use')),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text(loc.trans('logout')),
+                    onTap: () {
+                      logout();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           body: new PageView(

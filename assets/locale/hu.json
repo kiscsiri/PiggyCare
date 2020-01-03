@@ -71,5 +71,22 @@
   "next_week": "jövő héten",
   "next_month": "következő hónapban",
   "demo_over_dialog_title": "Gratulálunk!",
-  "demo_over_dialog_content": "Piggy elérte a tini korszak végét! Folytassa a megtakarítást az éles verzióban, amely jön hamarosan!"
+  "demo_over_dialog_content": "Piggy elérte a tini korszak végét! Folytassa a megtakarítást az éles verzióban, amely jön hamarosan!",
+  "you_are": "Alábbiként regisztrálnék...",
+  "individual": "Egyéni",
+  "adult": "Szülő",
+  "child": "Gyerek",
+  "welcome_on_board": "Üdvözöllek a fedélzeten!",
+  "if_you_dont_have": "Ha nincs még malacperselyed, csinálhatsz egyet, majd ebbe gyűjtheted a pénzed.",
+  "you_can_create": "Annyi malacperselyt készíthetsz amennyit csak akarsz, de egyszerre csak 5 lehet aktív",
+  "create_money_box": "PERSELY KÉSZÍTÉS",
+  "your_money_boxes": "A perselyeid",
+  "choose_money_box": "Válassz egy perselyt!",
+  "add_parent": "Add meg a szülődet!",
+  "add_child": "Add meg a gyerekedet!",
+  "eula_long": "Végfelhasználói nyilatkozat",
+  "eula_short": "ÁSZF",
+  "terms": "Általános felhasználási feltételek",
+  "terms_use": "Felhasználási Feltételek",
+  "logout": "Kijelentkezés"
 }

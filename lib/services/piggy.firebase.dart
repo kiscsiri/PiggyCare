@@ -11,9 +11,7 @@ class PiggyFirebaseServices extends ChangeNotifier {
 
   Future<List<Piggy>> fetchPiggies() async {
     var result = await _api.getDataCollection();
-    chores = result.documents
-        .map((doc) => Piggy.fromMap(doc.data, doc.documentID))
-        .toList();
+    chores = result.documents.map((doc) => Piggy.fromJson(doc.data)).toList();
     return chores;
   }
 
@@ -23,11 +21,11 @@ class PiggyFirebaseServices extends ChangeNotifier {
 
   Future<Piggy> getPiggyById(String id) async {
     var doc = await _api.getDocumentById(id);
-    return Piggy.fromMap(doc.data, doc.documentID);
+    return Piggy.fromJson(doc.data);
   }
 
-  Future removePiggy(String id) async {
-    await _api.removeDocument(id);
+  Future removePiggy(int id) async {
+    await _api.removeDocument(id.toString());
     return;
   }
 
@@ -36,8 +34,8 @@ class PiggyFirebaseServices extends ChangeNotifier {
     return;
   }
 
-  Future updatePiggyProperty(String property, dynamic value, String id) async {
-    await _api.updateDocumentProperty(property, value, id);
+  Future updatePiggyProperty(String property, dynamic value, int id) async {
+    await _api.updateDocumentProperty(property, value, id.toString());
     return;
   }
 
