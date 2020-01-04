@@ -38,26 +38,19 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
         height: MediaQuery.of(context).size.height,
         color: Colors.grey[200],
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-                child: new Text(
-                  loc.trans("your_money_boxes"),
-                  style: Theme.of(context).textTheme.display3,
-                  textAlign: TextAlign.center,
-                )),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-                child: new Text(
-                  loc.trans("choose_money_box"),
-                  textAlign: TextAlign.center,
-                )),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-              child: SavingForWidget(
-                store: widget.store,
-              ),
+            new Text(
+              loc.trans("your_money_boxes"),
+              style: Theme.of(context).textTheme.display3,
+              textAlign: TextAlign.center,
+            ),
+            new Text(
+              loc.trans("choose_money_box"),
+              textAlign: TextAlign.center,
+            ),
+            SavingForWidget(
+              store: widget.store,
             ),
             PiggyButton(
               text: loc.trans('create_money_box'),

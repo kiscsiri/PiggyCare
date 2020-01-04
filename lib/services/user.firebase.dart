@@ -33,7 +33,9 @@ feedPiggyDatabase(FeedPiggy action) {
     var user = UserData.fromFirebaseDocumentSnapshot(doc.data);
     var piggy =
         user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
+
     piggy.money = piggy.money + piggy.currentFeedAmount;
+    piggy.currentSaving = piggy.currentSaving + piggy.currentFeedAmount;
 
     user.saving = user.saving + piggy.currentFeedAmount;
 
@@ -41,18 +43,24 @@ feedPiggyDatabase(FeedPiggy action) {
     user.isDemoOver = doc.data['isDemoOver'];
 
     var newPiggyLevel = 0;
+
     if (user.currentFeedTime >= 5) {
       user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
+      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
       user.currentFeedTime = 0;
     } else {
       newPiggyLevel = user.piggyLevel.index;
+      user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
     }
 
     if (newPiggyLevel > 2) {
       newPiggyLevel = 2;
       user.isDemoOver = true;
+      user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
     }
-    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+
     user.lastFeed = DateTime.now();
 
     Firestore.instance

@@ -47,8 +47,8 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
   void onCoinDrop(int piggyId) {
     setState(() {
       isOnTarget = false;
+      _feedPiggy(piggyId);
     });
-    _feedPiggy(piggyId);
   }
 
   @override
@@ -134,6 +134,11 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     } else {
       await loadAnimation(true, showDemoAlert, this, context, widget.store);
     }
+
+    setState(() {
+      piggy =
+          widget.store.state.user.piggies.singleWhere((p) => p.id == piggy.id);
+    });
   }
 
   _changeCreatePiggyState() {
@@ -154,7 +159,9 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     var user = widget.store.state.user;
 
     bool _isDisabled = piggy == null ? false : !piggy.isFeedAvailable;
-
+    if (piggy == null && user.piggies.length != 0) {
+      piggy = user.piggies.first;
+    }
     _coinVisible = !_isDisabled;
 
     String period;
@@ -230,41 +237,46 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ),
                             ],
                           ),
-                    Stack(children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: PageView(
-                          onPageChanged: (index) => _changePiggyData(index),
-                          scrollDirection: Axis.vertical,
-                          children: List<Widget>.generate(
-                            user.piggies.length,
-                            (i) => Padding(
-                              padding: const EdgeInsets.only(top: 23.0),
-                              child: PiggyFeedWidget(
-                                  willAcceptStream: willAcceptStream,
-                                  isAnimationPlaying: isAnimationPlaying,
-                                  isDisabled: _isDisabled,
-                                  onDrop: onCoinDrop,
-                                  piggy: user.piggies[i]),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width * 0.7,
+                      child: Stack(children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: PageView(
+                            onPageChanged: (index) => _changePiggyData(index),
+                            scrollDirection: Axis.vertical,
+                            children: List<Widget>.generate(
+                              user.piggies.length,
+                              (i) => Padding(
+                                padding: const EdgeInsets.only(top: 23.0),
+                                child: PiggyFeedWidget(
+                                    willAcceptStream: willAcceptStream,
+                                    isAnimationPlaying: isAnimationPlaying,
+                                    isDisabled: _isDisabled,
+                                    onDrop: onCoinDrop,
+                                    piggy: user.piggies[i]),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        right: 25,
-                        top: 25,
-                        child: IconButton(
-                          iconSize: 35,
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            _changeCreatePiggyState();
-                          },
-                        ),
-                      )
-                    ]),
+                        Positioned(
+                          right: 25,
+                          top: 25,
+                          child: IconButton(
+                            iconSize: 35,
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              _changeCreatePiggyState();
+                            },
+                          ),
+                        )
+                      ]),
+                    ),
                     piggy != null
                         ? PiggyProgress(
+                            userType: user.userType,
                             item: piggy.item,
                             saving: piggy.currentSaving.toDouble(),
                             targetPrice: piggy.targetPrice.toDouble())

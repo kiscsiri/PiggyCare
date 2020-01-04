@@ -76,7 +76,7 @@ Future<void> loadAnimation(
   var prefs = await SharedPreferences.getInstance();
   var feedRandom = prefs.getInt("animationCount");
   if (feedRandom > 4) {
-    prefs.setInt('animationCount', 0);
+    prefs.setInt('animationCount', 1);
     feedRandom = 0;
   }
   if (isLevelUp) {

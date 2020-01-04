@@ -1,13 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 
 class PiggyProgress extends StatefulWidget {
-  PiggyProgress({Key key, this.saving, this.targetPrice, this.item})
+  PiggyProgress(
+      {Key key, this.saving, this.targetPrice, this.item, this.userType})
       : super(key: key);
   final double saving;
   final double targetPrice;
   final String item;
+  final UserType userType;
   @override
   _PiggyProgressState createState() => new _PiggyProgressState();
 }
@@ -30,7 +33,8 @@ class _PiggyProgressState extends State<PiggyProgress> {
                 Container(
                   child: Text(widget.item ?? ""),
                 ),
-                (widget.saving > widget.targetPrice)
+                (widget.saving > widget.targetPrice &&
+                        widget.userType != UserType.child)
                     ? IconButton(
                         icon: Icon(Icons.add_shopping_cart,
                             size: 35, color: Theme.of(context).primaryColor),

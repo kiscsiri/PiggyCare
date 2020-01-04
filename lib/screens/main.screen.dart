@@ -68,9 +68,9 @@ class _MainPageState extends State<MainPage> {
       new PiggyPage(store: widget.store),
       new SavingsPage(
           store: widget.store, pageController: widget._pageController),
-      widget.store.state.user.userType == UserType.adult
-          ? ParentChoresPage()
-          : ChildChoresPage(),
+      // widget.store.state.user.userType == UserType.adult
+      //     ? ParentChoresPage()
+      //     : ChildChoresPage(),
       new SettingsPage(store: widget.store)
     ];
   }

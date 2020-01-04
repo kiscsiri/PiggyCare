@@ -66,26 +66,26 @@ class _SavingForWidgetState extends State<SavingForWidget> {
       SavingTypeInput(
         index: 1,
         name: "Harry Potter könyv",
-        coinValue: 5,
+        coinValue: 9,
         selectIndex: (i) => _selectItem(i),
       ),
       SavingTypeInput(
         index: 2,
         name: "Oktatás",
-        coinValue: 1,
+        coinValue: 21,
         selectIndex: (i) => _selectItem(i),
       ),
       SavingTypeInput(
         selected: false,
         index: 3,
         name: "Távirányítós autó",
-        coinValue: 35,
+        coinValue: 33,
         selectIndex: (i) => _selectItem(i),
       ),
       SavingTypeInput(
         index: 4,
         name: "Buli a haverokkal",
-        coinValue: 10,
+        coinValue: 5,
         selectIndex: (i) => _selectItem(i),
       ),
     ];

@@ -67,21 +67,21 @@ feedPiggy(AppState state, FeedPiggy action) {
   state.user.money = state.user.money - state.user.feedPerPeriod;
   state.user.lastFeed = DateTime.now();
 
-  var activeItem = state.user.piggies.last;
+  var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
+  var piggy = state.user.piggies[index];
 
-  var piggy = state.user.piggies.singleWhere((p) => p.id == action.piggyId);
-
-  piggy = Piggy(
-      currentSaving: (activeItem.currentSaving + state.user.feedPerPeriod),
-      item: activeItem.item,
-      piggyLevel: activeItem.piggyLevel,
-      currentFeedAmount: activeItem.currentFeedAmount,
-      doubleUp: activeItem.doubleUp,
-      money: activeItem.money,
-      userId: activeItem.userId,
-      isFeedAvailable: activeItem.isFeedAvailable,
-      id: activeItem.id,
-      targetPrice: activeItem.targetPrice);
+  state.user.piggies[index] = Piggy(
+      currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
+      item: piggy.item,
+      isAproved: piggy.isAproved,
+      piggyLevel: state.user.piggyLevel,
+      currentFeedAmount: state.user.feedPerPeriod,
+      doubleUp: piggy.doubleUp,
+      money: piggy.money,
+      userId: piggy.userId,
+      isFeedAvailable: true,
+      id: piggy.id,
+      targetPrice: piggy.targetPrice);
 
   return new AppState.fromAppState(state);
 }
