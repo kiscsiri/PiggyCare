@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint();
     // set the paint color to be white
     // paint.color = Color(0xffe25979);
     // paint.style = PaintingStyle.fill; // Change this to fill

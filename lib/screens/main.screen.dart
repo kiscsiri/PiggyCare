@@ -8,15 +8,12 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
-
-import 'frames/child.chores.screen.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, this.store}) : super(key: key);
