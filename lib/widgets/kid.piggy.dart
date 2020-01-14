@@ -216,26 +216,45 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ),
                             ],
                           )
-                        : new Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 20),
-                                child: new Text(
-                                  loc.trans("piggy_hungry"),
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.display2,
+                          : new Container(
+                            child: Row(
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 20),
+                                      child: new Text(
+                                        'Name of the money box:',
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 20),
+                                      child: new Text(
+                                        'Test',
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 60.0),
-                                child: new Text(
-                                  loc.trans("you_have_to_feed"),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
+                                Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 10),
+                                      child: new Text(
+                                        'Change money box',
+                                        textAlign: TextAlign.left,
+                                        style:
+                                          Theme.of(context).textTheme.display4,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
                           ),
                     Container(
                       width: MediaQuery.of(context).size.width,

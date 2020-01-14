@@ -47,13 +47,15 @@ class _PiggyProgressState extends State<PiggyProgress> {
             ),
           ),
           Container(
+            height: 20.0,
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 0.5)),
+                    color: Theme.of(context).primaryColor, width: 1.0),
+                    borderRadius: new BorderRadius.all(Radius.circular(10.0))),
             child: LinearProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(
                   Theme.of(context).primaryColor),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey,
               value: widget.saving / widget.targetPrice,
             ),
           ),

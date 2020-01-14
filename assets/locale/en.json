@@ -28,6 +28,8 @@
   "register": "REGISTER",
   "piggy_full": "PIGGY IS FULL FOR TODAY :)",
   "piggy_hungry": "PIGGY IS HUNGRY!",
+  "change_money_box": "Change money box",
+  "money_box_name": "Name of money box:",
   "you_have_to_feed": "You should feed Piggy to make Piggy happy.",
   "how_much_i_earned": "How much money i have saved so far?",
   "check_savings": "You can check your savings!",
