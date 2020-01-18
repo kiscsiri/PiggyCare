@@ -149,8 +149,16 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
 
   _changePiggyData(index) {
     setState(() {
-      piggy = widget.store.state.user.piggies.elementAt(index);
+      piggy = widget.store.state.user.piggies
+          .singleWhere((d) => d.id == index, orElse: null);
     });
+  }
+
+  Future<void> selectPiggy(BuildContext context) async {
+    var newId = await showPiggySelector(context, widget.store);
+    if (newId != null) {
+      _changePiggyData(newId);
+    }
   }
 
   @override
@@ -216,46 +224,50 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ),
                             ],
                           )
-                          : new Container(
+                        : new Container(
                             child: Row(
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 8.0, horizontal: 20),
-                                      child: new Text(
-                                        'Name of the money box:',
-                                        textAlign: TextAlign.left,
-                                      ),
+                                    child: new Text(
+                                      'Name of the money box:',
+                                      textAlign: TextAlign.left,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 8.0, horizontal: 20),
-                                      child: new Text(
-                                        'Test',
-                                        textAlign: TextAlign.left,
-                                      ),
+                                    child: new Text(
+                                      'Test',
+                                      textAlign: TextAlign.left,
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 8.0, horizontal: 10),
+                                    child: GestureDetector(
+                                      onTap: () async =>
+                                          await selectPiggy(context),
                                       child: new Text(
                                         'Change money box',
                                         textAlign: TextAlign.left,
-                                        style:
-                                          Theme.of(context).textTheme.display4,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .display4,
                                       ),
                                     ),
-                                  ],
-                                )
-                              ],
-                            )
-                          ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          )),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.width * 0.7,

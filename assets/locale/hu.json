@@ -90,5 +90,8 @@
   "eula_short": "ÁSZF",
   "terms": "Általános felhasználási feltételek",
   "terms_use": "Felhasználási Feltételek",
-  "logout": "Kijelentkezés"
+  "logout": "Kijelentkezés",
+  "selector_title": "Válassz egy malacperselyt!",
+  "selector_explanation":"Válassz ki egy malacperselyt, melybe pénzt szeretnél rakni!",
+  "selector_lets_see": "Lássuk!"
 }

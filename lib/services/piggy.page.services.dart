@@ -3,9 +3,71 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+
+Future<int> showPiggySelector(
+    BuildContext context, Store<AppState> store) async {
+  var loc = PiggyLocalizations.of(context);
+  final _formKey = GlobalKey<FormState>();
+
+  int id;
+  await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Text(loc.trans('selector_title'),
+                        style: Theme.of(context).textTheme.display2),
+                  ),
+                  Text(loc.trans('selector_explanation')),
+                ],
+              ),
+              Form(
+                key: _formKey,
+                child: DropdownButtonFormField(
+                  onChanged: (value) => id = value,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    } else {
+                      id = value;
+                    }
+                    return null;
+                  },
+                  value: id,
+                  items: store.state.user.piggies
+                      .map((f) => DropdownMenuItem(
+                            value: f.id,
+                            child: Text(f.item),
+                          ))
+                      .toList(),
+                  decoration: InputDecoration(hintText: 'Comment'),
+                ),
+              ),
+              PiggyButton(
+                text: loc.trans('selector_lets_see'),
+                onClick: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
+    },
+  );
+
+  return id;
+}
 
 Widget getFeedAnimation(
     BuildContext context, Store<AppState> store, int feedRandom) {

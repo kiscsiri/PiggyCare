@@ -90,5 +90,8 @@
   "eula_short": "EULA",
   "terms": "General terms and conditions",
   "terms_use": "Terms of Use!",
-  "logout": "Logout"
+  "logout": "Logout",
+  "selector_title": "Change money box",
+  "selector_explanation":"Choose which money boy you want to put money onto!",
+  "selector_lets_see": "LET'S SEE!"
 }
