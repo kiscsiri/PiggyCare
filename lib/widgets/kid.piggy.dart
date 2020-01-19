@@ -241,7 +241,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 8.0, horizontal: 20),
                                     child: new Text(
-                                      'Test',
+                                      '${piggy.item}',
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
@@ -275,21 +275,13 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                         Container(
                           width: MediaQuery.of(context).size.width * 1,
                           height: MediaQuery.of(context).size.height * 0.4,
-                          child: PageView(
-                            onPageChanged: (index) => _changePiggyData(index),
-                            scrollDirection: Axis.vertical,
-                            children: List<Widget>.generate(
-                              user.piggies.length,
-                              (i) => Padding(
-                                padding: const EdgeInsets.only(top: 23.0),
+                          child: Container(
                                 child: PiggyFeedWidget(
                                     willAcceptStream: willAcceptStream,
                                     isAnimationPlaying: isAnimationPlaying,
                                     isDisabled: _isDisabled,
                                     onDrop: onCoinDrop,
-                                    piggy: user.piggies[i]),
-                              ),
-                            ),
+                                    piggy: piggy),
                           ),
                         ),
                         Positioned(

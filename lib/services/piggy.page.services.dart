@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
@@ -17,52 +16,44 @@ Future<int> showPiggySelector(
   await showDialog<String>(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Text(loc.trans('selector_title'),
-                        style: Theme.of(context).textTheme.display2),
-                  ),
-                  Text(loc.trans('selector_explanation')),
-                ],
-              ),
-              Form(
-                key: _formKey,
-                child: DropdownButtonFormField(
-                  onChanged: (value) => id = value,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    } else {
-                      id = value;
-                    }
-                    return null;
-                  },
-                  value: id,
-                  items: store.state.user.piggies
-                      .map((f) => DropdownMenuItem(
-                            value: f.id,
-                            child: Text(f.item),
-                          ))
-                      .toList(),
-                  decoration: InputDecoration(hintText: 'Comment'),
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.2),
+        child: AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Text(loc.trans('selector_title'),
+                          style: Theme.of(context).textTheme.display2),
+                    ),
+                    Text(loc.trans('selector_explanation')),
+                  ],
                 ),
-              ),
-              PiggyButton(
-                text: loc.trans('selector_lets_see'),
-                onClick: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ));
+                Form(
+                  key: _formKey,
+                  child: DropdownButtonFormField(
+                    onChanged: (value) {
+                      id = value;
+                      Navigator.of(context).pop();
+                    },
+                    value: id,
+                    items: store.state.user.piggies
+                        .map((f) => DropdownMenuItem(
+                              value: f.id,
+                              child: Text(f.item),
+                            ))
+                        .toList(),
+                    decoration: InputDecoration(hintText: 'Choose money box'),
+                  ),
+                )
+              ],
+            )),
+      );
     },
   );
 
