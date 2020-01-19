@@ -75,7 +75,7 @@ flutter:
     - assets/animations/Baby-Feed2.gif
     - assets/animations/Baby-Feed3.gif
     - assets/animations/Baby-Feed4.gif
-    - assets/animations/Baby-Normal.gif
+    - assets/images/Baby-Normal.png
     - assets/animations/Baby-Sleep.gif
     - assets/animations/Child-LevelUp.gif
     - assets/animations/Child-Feed1.gif

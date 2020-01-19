@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
@@ -17,7 +18,8 @@ Future<int> showPiggySelector(
     context: context,
     builder: (BuildContext context) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.2),
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.2),
         child: AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -58,6 +60,21 @@ Future<int> showPiggySelector(
   );
 
   return id;
+}
+
+Future<void> showCreatePiggyModal(
+    BuildContext context, Store<AppState> store) async {
+  await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: CreatePiggyWidget(
+              store: store,
+            ),
+          );
+      });
 }
 
 Widget getFeedAnimation(

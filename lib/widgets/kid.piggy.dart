@@ -11,7 +11,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
 
 import 'create.piggy.dart';
-import 'piggy.button.dart';
 import 'piggy.coin.dart';
 import 'piggy.main.dart';
 import 'piggy.progress.dart';
@@ -141,10 +140,8 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     });
   }
 
-  _changeCreatePiggyState() {
-    setState(() {
-      creatingPiggy = !creatingPiggy;
-    });
+  _changeCreatePiggyState() async {
+    await showCreatePiggyModal(context, widget.store);  
   }
 
   _changePiggyData(index) {
@@ -304,17 +301,6 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                             saving: piggy.currentSaving.toDouble(),
                             targetPrice: piggy.targetPrice.toDouble())
                         : Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 0.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: PiggyButton(
-                            disabled: _isDisabled,
-                            text: loc.trans('feed_piggy'),
-                            onClick: () => _feedPiggy(piggy.id)),
-                      ),
-                    )
                   ]),
             )),
             (!_isDisabled)

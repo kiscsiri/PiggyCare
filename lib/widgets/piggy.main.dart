@@ -69,11 +69,11 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
     } else {
       isRandomGenerated = false;
       return Image.asset(
-          'assets/animations/${levelStringValue(piggy.piggyLevel)}-Normal.gif',
+          'assets/images/Baby-Normal.png',
           gaplessPlayback: true,
           scale: 0.8,
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.height * 0.2);
+          width: MediaQuery.of(context).size.width * 0.3,
+          height: MediaQuery.of(context).size.height * 0.3);
     }
   }
 
@@ -104,10 +104,10 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           },
           builder: (context, List<String> candidateData, rejectedData) =>
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 38.0),
+                padding: const EdgeInsets.symmetric(horizontal: 0.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 1.4,
+                  height: MediaQuery.of(context).size.width * 1.4,
                   child: Container(
                       height: MediaQuery.of(context).size.height,
                       child: Hero(

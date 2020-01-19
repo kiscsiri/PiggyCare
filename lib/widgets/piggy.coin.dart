@@ -29,25 +29,24 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var coinSizeBig = MediaQuery.of(context).size.width * 0.2 * 1.7;
+    var coinSizeSmall = MediaQuery.of(context).size.width * 0.2;
+
     var bigcoin = Container(
-        decoration: ShapeDecoration(
-          shape: CircleBorder(side: BorderSide(width: 2, color: Colors.green)),
-          color: Colors.green,
-        ),
         child: Image.asset(
           "assets/animations/coin.gif",
           gaplessPlayback: false,
-          width: MediaQuery.of(context).size.width * 0.1 * 1.7,
-          height: MediaQuery.of(context).size.width * 0.1 * 1.7,
+          width: coinSizeBig,
+          height: coinSizeBig,
         ));
 
     var smallCoin = Image.asset("assets/animations/coin.gif",
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.width * 0.1);
+        width: coinSizeSmall,
+        height: coinSizeSmall);
 
     return Positioned(
       top: (MediaQuery.of(context).size.width * widget.coinController.value) -
-          20,
+          25,
       left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.44 : coinX,
       child: Draggable(
         data: "Coin",

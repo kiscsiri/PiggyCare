@@ -4,6 +4,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/services/piggy.firebase.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 
 import 'piggy.saving.types.dart';
@@ -20,6 +21,9 @@ class CreatePiggyWidget extends StatefulWidget {
 }
 
 class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
+  var item = "";
+  var targetMoney = 1;
+  var moneyPerFeed = 2;
   Future _createPiggy() async {
     var action = AddPiggy(widget.store.state.tempPiggy);
     widget.store.dispatch(action);
@@ -36,12 +40,11 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Colors.grey[200],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             new Text(
-              loc.trans("your_money_boxes"),
+              loc.trans("create_money_box"),
               style: Theme.of(context).textTheme.display3,
               textAlign: TextAlign.center,
             ),
@@ -49,8 +52,30 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
               loc.trans("choose_money_box"),
               textAlign: TextAlign.center,
             ),
-            SavingForWidget(
-              store: widget.store,
+            PiggyInput(
+              hintText: "What do you saving for?",
+            ),
+            new Slider(
+              onChanged: (value) {
+                setState(() {
+                  targetMoney = value.toInt();
+                });
+              },
+              min: 1,
+              max: 10,
+              activeColor: Theme.of(context).primaryColor,
+              value: targetMoney.toDouble(),
+            ),
+            new Slider(
+              onChanged: (value) {
+                setState(() {
+                  moneyPerFeed = value.toInt();
+                });
+              },
+              min: 1,
+              max: 10,
+              activeColor: Theme.of(context).primaryColor,
+              value: moneyPerFeed.toDouble(),
             ),
             PiggyButton(
               text: loc.trans('create_money_box'),
