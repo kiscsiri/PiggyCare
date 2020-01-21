@@ -91,3 +91,7 @@ android/local.properties
 pubspec.lock
 
 \.flutter-plugins-dependencies
+.flutter-plugins-dependencies
+android/local.properties
+ios/Podfile.lock
+ios/Flutter/Generated.xcconfig
