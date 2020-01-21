@@ -136,6 +136,7 @@ class _PiggyPageState extends State<PiggyTestPage>
                         willAcceptStream: willAcceptStream,
                         isDisabled: _isDisabled,
                         isAnimationPlaying: isAnimationPlaying,
+                        scale: 0.5,
                         onDrop: (id) {
                           setState(() {
                             _coinVisible = false;

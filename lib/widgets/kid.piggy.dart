@@ -141,7 +141,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
   }
 
   _changeCreatePiggyState() async {
-    await showCreatePiggyModal(context, widget.store);  
+    await showCreatePiggyModal(context, widget.store);
   }
 
   _changePiggyData(index) {
@@ -273,12 +273,13 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                           width: MediaQuery.of(context).size.width * 1,
                           height: MediaQuery.of(context).size.height * 0.4,
                           child: Container(
-                                child: PiggyFeedWidget(
-                                    willAcceptStream: willAcceptStream,
-                                    isAnimationPlaying: isAnimationPlaying,
-                                    isDisabled: _isDisabled,
-                                    onDrop: onCoinDrop,
-                                    piggy: piggy),
+                            child: PiggyFeedWidget(
+                                scale: 1.4,
+                                willAcceptStream: willAcceptStream,
+                                isAnimationPlaying: isAnimationPlaying,
+                                isDisabled: _isDisabled,
+                                onDrop: onCoinDrop,
+                                piggy: piggy),
                           ),
                         ),
                         Positioned(

@@ -364,7 +364,7 @@ DEPENDENCIES:
   - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - abseil
     - BoringSSL-GRPC
     - Firebase
@@ -478,4 +478,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f7bda6c5ac0c2c0344c3569faba49eaddb0b8996
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5

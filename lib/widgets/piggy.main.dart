@@ -12,7 +12,8 @@ class PiggyFeedWidget extends StatefulWidget {
       this.onDrop,
       @required this.isDisabled,
       @required this.isAnimationPlaying,
-      this.piggy})
+      this.piggy,
+      @required this.scale})
       : super(key: key);
 
   final BehaviorSubject<bool> willAcceptStream;
@@ -20,6 +21,7 @@ class PiggyFeedWidget extends StatefulWidget {
   final bool isDisabled;
   final bool isAnimationPlaying;
   final Piggy piggy;
+  final double scale;
   @override
   _PiggyFeedWidgetState createState() => new _PiggyFeedWidgetState();
 }
@@ -54,26 +56,22 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
 
   Widget getAnimation(BuildContext context, Piggy piggy) {
     if (piggy == null) {
-      return Image.asset('assets/animations/Baby-Feed1.gif',
-          gaplessPlayback: true,
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.height * 0.2);
+      return Image.asset(
+        'assets/animations/Baby-Feed1.gif',
+        gaplessPlayback: true,
+      );
     } else if (widget.isDisabled && !widget.isAnimationPlaying) {
       return Image.asset(
           'assets/animations/${levelStringValue(piggy.piggyLevel)}-Sleep.gif',
-          gaplessPlayback: true,
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.height * 0.2);
+          gaplessPlayback: true);
     } else if (widget.isAnimationPlaying) {
       return getFeedAnimation(context);
     } else {
       isRandomGenerated = false;
       return Image.asset(
-          'assets/images/Baby-Normal.png',
-          gaplessPlayback: true,
-          scale: 0.8,
-          width: MediaQuery.of(context).size.width * 0.3,
-          height: MediaQuery.of(context).size.height * 0.3);
+        'assets/images/Baby-Normal.png',
+        gaplessPlayback: true,
+      );
     }
   }
 
@@ -106,8 +104,8 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 1.4,
-                  height: MediaQuery.of(context).size.width * 1.4,
+                  width: MediaQuery.of(context).size.width * widget.scale,
+                  height: MediaQuery.of(context).size.width * widget.scale,
                   child: Container(
                       height: MediaQuery.of(context).size.height,
                       child: Hero(

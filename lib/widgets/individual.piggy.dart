@@ -211,6 +211,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                     Padding(
                       padding: const EdgeInsets.only(top: 23.0),
                       child: PiggyFeedWidget(
+                          scale: 1.4,
                           willAcceptStream: willAcceptStream,
                           isAnimationPlaying: isAnimationPlaying,
                           isDisabled: _isDisabled,
