@@ -7,6 +7,7 @@ class PiggyCoin extends StatefulWidget {
       this.willAcceptStream,
       this.coinVisible,
       this.coinController,
+      @required this.scale,
       this.isOnTarget})
       : super(key: key);
 
@@ -14,6 +15,7 @@ class PiggyCoin extends StatefulWidget {
   final bool coinVisible;
   final bool isOnTarget;
   final coinController;
+  final double scale;
 
   @override
   _PiggyCoinState createState() => new _PiggyCoinState();
@@ -29,8 +31,8 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var coinSizeBig = MediaQuery.of(context).size.width * 0.2 * 1.7;
-    var coinSizeSmall = MediaQuery.of(context).size.width * 0.2;
+    var coinSizeBig = MediaQuery.of(context).size.width * widget.scale * 1.7;
+    var coinSizeSmall = MediaQuery.of(context).size.width * widget.scale;
 
     var bigcoin = Container(
         child: Image.asset(
@@ -47,7 +49,7 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
     return Positioned(
       top: (MediaQuery.of(context).size.width * widget.coinController.value) -
           25,
-      left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.44 : coinX,
+      left: coinX.isNegative ? MediaQuery.of(context).size.width * 0.42 : coinX,
       child: Draggable(
         data: "Coin",
         childWhenDragging: Container(),

@@ -180,6 +180,7 @@ class _PiggyPageState extends State<PiggyTestPage>
             coinVisible: _coinVisible,
             isOnTarget: isOnTarget,
             willAcceptStream: willAcceptStream,
+            scale: 0.1
           )
         ]),
       ),

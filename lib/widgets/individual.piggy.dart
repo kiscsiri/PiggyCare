@@ -261,6 +261,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
               coinVisible: _coinVisible,
               isOnTarget: isOnTarget,
               willAcceptStream: willAcceptStream,
+              scale:0.2,
             )
           : Container(),
     ]);

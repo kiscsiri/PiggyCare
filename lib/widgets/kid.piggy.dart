@@ -310,6 +310,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                     coinVisible: _coinVisible,
                     isOnTarget: isOnTarget,
                     willAcceptStream: willAcceptStream,
+                    scale: 0.2,
                   )
                 : Container(),
           ]);
