@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/user/user.export.dart';
@@ -37,17 +39,24 @@ class UserServices {
 
   static Future<List<UserData>> getFriendRequests(String userId) async {
     var requests = await Firestore.instance
-        .collection('users')
+        .collection('userRequests')
         .where("toId", isEqualTo: userId)
         .where("isPending", isEqualTo: true)
         .getDocuments();
 
-    var result = List<DocumentSnapshot>();
-    if (requests != null) {
-      result.addAll(requests?.documents ?? List<DocumentSnapshot>());
-    }
+    var result = requests.documents
+        .map((u) => UserRequest().userRequestFromJson(u.data, u.documentID))
+        .toList();
 
-    return result
+    var users = List<DocumentSnapshot>();
+    for (final d in result) {
+      var user = await Firestore.instance
+          .collection('users')
+          .where("id", isEqualTo: d.fromId)
+          .getDocuments();
+      users.add(user.documents.first);
+    }
+    return users
         .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data))
         .toList();
   }
@@ -61,5 +70,56 @@ class UserServices {
         .add(request.userRequestToJson());
 
     //TODO - send notification
+  }
+
+  static Future<void> acceptRequest(
+      String fromId, String toId, UserType currentUserType) async {
+    var result = await Firestore.instance
+        .collection('userRequests')
+        .where('fromId', isEqualTo: fromId)
+        .where('toId', isEqualTo: toId)
+        .where('isPending', isEqualTo: true)
+        .getDocuments();
+
+    if (result.documents.isEmpty) throw HttpException("Not found");
+
+    var userReq = UserRequest().userRequestFromJson(
+        result.documents.first.data, result.documents.first.documentID);
+
+    await Firestore.instance
+        .collection('userRequests')
+        .document(result.documents.first.documentID)
+        .updateData({'isPending': false});
+
+      var data = await Firestore.instance
+          .collection('users')
+          .where('id', isEqualTo: currentUserType == UserType.adult ? fromId : toId)
+          .getDocuments();
+
+      Firestore.instance
+      .collection('users')
+      .document(data.documents.first.documentID)
+      .updateData({'parentId': currentUserType == UserType.adult ? toId : fromId});
+
+    //TODO - send notification
+  }
+
+  static Future<void> declineRequest(String fromId, String toId) async {
+    var result = await Firestore.instance
+        .collection('userRequests')
+        .where('fromId', isEqualTo: fromId)
+        .where('toId', isEqualTo: toId)
+        .where('isPending', isEqualTo: true)
+        .getDocuments();
+
+    if (result.documents.isEmpty) throw HttpException("Not found");
+
+    var userReq = UserRequest().userRequestFromJson(
+        result.documents.first.data, result.documents.first.documentID);
+
+    await Firestore.instance
+        .collection('userRequests')
+        .document(userReq.id)
+        .delete();
   }
 }

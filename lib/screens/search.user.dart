@@ -44,7 +44,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
               case ConnectionState.none:
                 return new Text('Press button to start');
               case ConnectionState.waiting:
-                return new Text('Awaiting result...');
+                return Center(child: Text('Awaiting result...'));
               default:
                 if (snapshot.hasError)
                   return new Text('Error');

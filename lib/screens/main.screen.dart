@@ -147,6 +147,7 @@ class _MainPageState extends State<MainPage> {
                           MaterialPageRoute(
                               builder: (context) => new FirendRequestsScreen(
                                     currentUserId: widget.store.state.user.id,
+                                    userType: widget.store.state.user.userType,
                                   )));
                     },
                   ),
