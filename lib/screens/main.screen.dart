@@ -8,6 +8,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/screens/frames/child.savings.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
@@ -15,6 +16,7 @@ import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -66,11 +68,10 @@ class _MainPageState extends State<MainPage> {
   List<Widget> getFrames() {
     return [
       new PiggyPage(store: widget.store),
-      new SavingsPage(
-          store: widget.store, pageController: widget._pageController),
-      // widget.store.state.user.userType == UserType.adult
-      //     ? ParentChoresPage()
-      //     : ChildChoresPage(),
+      widget.store.state.user.userType == UserType.adult
+          ? new SavingsPage(
+              store: widget.store, pageController: widget._pageController)
+          : ChildSavingScreen(store: widget.store),
       new SettingsPage(store: widget.store)
     ];
   }
@@ -173,7 +174,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
-          body: new PageView(
+          body: PageView(
             children: getFrames(),
             onPageChanged: (int index) {
               setState(() {

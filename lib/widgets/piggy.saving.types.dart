@@ -62,33 +62,16 @@ class _SavingForWidgetState extends State<SavingForWidget> {
 
   @override
   Widget build(BuildContext context) {
-    savingTypeList = [
-      SavingTypeInput(
-        index: 1,
-        name: "Harry Potter könyv",
-        coinValue: 9,
+    int i = 0;
+    savingTypeList = widget.store.state.user.piggies.map((p) {
+      i++;
+      return SavingTypeInput(
+        index: i,
+        name: p.item,
+        coinValue: p.targetPrice,
         selectIndex: (i) => _selectItem(i),
-      ),
-      SavingTypeInput(
-        index: 2,
-        name: "Oktatás",
-        coinValue: 21,
-        selectIndex: (i) => _selectItem(i),
-      ),
-      SavingTypeInput(
-        selected: false,
-        index: 3,
-        name: "Távirányítós autó",
-        coinValue: 33,
-        selectIndex: (i) => _selectItem(i),
-      ),
-      SavingTypeInput(
-        index: 4,
-        name: "Buli a haverokkal",
-        coinValue: 5,
-        selectIndex: (i) => _selectItem(i),
-      ),
-    ];
+      );
+    }).toList();
     if (selectedIndex != null) {
       savingTypeList = savingTypeList.map((f) {
         if (f.index == selectedIndex) {
