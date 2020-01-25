@@ -19,6 +19,8 @@ class FirstRegisterPage extends StatefulWidget {
 
 class _FirstRegisterPageState extends State<FirstRegisterPage> {
   _register(UserType type) {
+    widget.store.dispatch(InitRegistration());
+
     var userTypeAction = SetUserType(type);
     widget.store.dispatch(userTypeAction);
 

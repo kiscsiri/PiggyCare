@@ -22,7 +22,7 @@ Piggy _$PiggyFromJson(Map json) {
 }
 
 Map<String, dynamic> _$PiggyToJson(Piggy instance) => <String, dynamic>{
-      'id': instance.id,
+      'id': instance.id ?? 0,
       'userId': instance.userId,
       'isFeedAvailable': instance.isFeedAvailable,
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],

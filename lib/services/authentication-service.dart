@@ -112,7 +112,7 @@ class AuthenticationService {
 
     var value = await Firestore.instance
         .collection("users")
-        .where("uid", isEqualTo: user.uid)
+        .where("id", isEqualTo: user.uid)
         .getDocuments();
 
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();

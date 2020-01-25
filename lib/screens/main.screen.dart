@@ -11,7 +11,10 @@ import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
 import 'package:piggybanx/screens/frames/settings.screen.dart';
+import 'package:piggybanx/screens/friend.requests.dart';
+import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -113,13 +116,40 @@ class _MainPageState extends State<MainPage> {
                   if (widget.store.state.user.userType == UserType.child)
                     ListTile(
                       title: Text(loc.trans('add_parent')),
-                      onTap: () {},
+                      onTap: () {
+                        showUserAddModal(context, widget.store);
+                      },
                     ),
                   if (widget.store.state.user.userType == UserType.adult)
                     ListTile(
                       title: Text(loc.trans('add_child')),
-                      onTap: () {},
+                      onTap: () async {
+                        var searchString =
+                            await showUserAddModal(context, widget.store);
+                        if (searchString.isNotEmpty)
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new UserSearchScreen(
+                                        currentUserId:
+                                            widget.store.state.user.id,
+                                        userType:
+                                            widget.store.state.user.userType,
+                                        searchString: searchString,
+                                      )));
+                      },
                     ),
+                  ListTile(
+                    title: Text("Requests"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new FirendRequestsScreen(
+                                    currentUserId: widget.store.state.user.id,
+                                  )));
+                    },
+                  ),
                   ListTile(
                     title: Text(loc.trans('eula_short')),
                     onTap: () {},

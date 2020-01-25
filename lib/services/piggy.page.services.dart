@@ -4,6 +4,8 @@ import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
+import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
@@ -68,13 +70,62 @@ Future<void> showCreatePiggyModal(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: CreatePiggyWidget(
-              store: store,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: CreatePiggyWidget(
+            store: store,
+          ),
+        );
+      });
+}
+
+Future<String> showUserAddModal(
+    BuildContext context, Store<AppState> store) async {
+  var textController = new TextEditingController();
+  textController.text = "wicokalevelszemet@gmail.com";
+  
+  try {
+    await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.2),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    "Search with username or e-mail!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.display3,
+                  ),
+                  PiggyInput(
+                    hintText: "Your child...",
+                    onValidate: (val) {
+                      if (val.isEmpty) {
+                        return "Can't be empty!";
+                      }
+                    },
+                    textController: textController,
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                PiggyButton(
+                  text: "Search",
+                  onClick: () => Navigator.of(context).pop(),
+                )
+              ],
+              title: Text("Search user"),
             ),
           );
-      });
+        });
+
+    return textController.text;
+  } on Exception {}
 }
 
 Widget getFeedAnimation(

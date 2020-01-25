@@ -31,7 +31,7 @@ class Piggy {
   Map<String, dynamic> toJson() => _$PiggyToJson(this);
 
   Piggy(
-      {this.id,
+      {this.id = 0,
       this.userId,
       this.currentFeedAmount,
       this.doubleUp,

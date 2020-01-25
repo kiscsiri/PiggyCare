@@ -7,8 +7,6 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 
-import 'piggy.saving.types.dart';
-
 class CreatePiggyWidget extends StatefulWidget {
   CreatePiggyWidget({Key key, this.store, this.navigateToPiggyWidget})
       : super(key: key);

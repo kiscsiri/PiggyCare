@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
+import 'package:piggybanx/screens/register/third.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -92,13 +93,12 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                   onClick: () {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
-
-                      widget.store.dispatch(InitRegistration());
+                   
                       widget.store.dispatch(action);
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new SecondRegisterPage(
+                              builder: (context) => new ThirdRegisterPage(
                                     store: widget.store,
                                   )));
                     }
