@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 
 BoxDecoration piggyBackgroundDecoration(BuildContext context) {
-  var offset = MediaQuery.of(context).size.height * 0.00045;
+  var offset = (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width) * 0.17;
 
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
@@ -24,7 +24,7 @@ BoxDecoration piggyBackgroundDecoration(BuildContext context) {
 }
 
 piggyBabyBackgroundDecoration(BuildContext context) {
-  var offset = MediaQuery.of(context).size.height * 0.0025;
+  var offset = (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width) * 1;
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
     image: DecorationImage(
