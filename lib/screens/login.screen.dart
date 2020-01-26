@@ -9,6 +9,7 @@ import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
 import 'package:piggybanx/widgets/facebook.button.dart';
 import 'package:piggybanx/widgets/google.button.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -217,7 +218,9 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
-        child: Center(child: telephoneBlock),
+        child: Container(
+          decoration: piggyBabyBackgroundDecoration() ,
+          child: Center(child: telephoneBlock)),
       ),
     );
   }

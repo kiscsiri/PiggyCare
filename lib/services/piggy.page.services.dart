@@ -58,11 +58,9 @@ Future<int> showPiggySelector(
                                   child: Text(f.item),
                                 ))
                             .toList(),
-                        decoration:
-                            InputDecoration(
-                              hintText: 'Choose money box',
-                              border: InputBorder.none
-                            ),
+                        decoration: InputDecoration(
+                            hintText: 'Choose money box',
+                            border: InputBorder.none),
                       ),
                     ),
                   ),
@@ -86,8 +84,10 @@ Future<void> showCreatePiggyModal(
           child: AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: CreatePiggyWidget(
-              store: store,
+            content: SingleChildScrollView(
+                          child: CreatePiggyWidget(
+                store: store,
+              ),
             ),
           ),
         );
@@ -97,7 +97,6 @@ Future<void> showCreatePiggyModal(
 Future<String> showUserAddModal(
     BuildContext context, Store<AppState> store) async {
   var textController = new TextEditingController();
-  textController.text = "wicokalevelszemet@gmail.com";
 
   try {
     await showDialog<String>(
@@ -109,24 +108,26 @@ Future<String> showUserAddModal(
             child: AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              content: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    "Search with username or e-mail!",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.display3,
-                  ),
-                  PiggyInput(
-                    hintText: "Your child...",
-                    onValidate: (val) {
-                      if (val.isEmpty) {
-                        return "Can't be empty!";
-                      }
-                    },
-                    textController: textController,
-                  )
-                ],
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      "Search with username or e-mail!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.display3,
+                    ),
+                    PiggyInput(
+                      hintText: "Your child...",
+                      onValidate: (val) {
+                        if (val.isEmpty) {
+                          return "Can't be empty!";
+                        }
+                      },
+                      textController: textController,
+                    )
+                  ],
+                ),
               ),
               actions: <Widget>[
                 PiggyButton(
