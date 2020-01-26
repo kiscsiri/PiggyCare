@@ -66,7 +66,7 @@ class _PiggyInputState extends State<PiggyInput> {
             left: widget.inputIcon == null ? 7 : 3, top: 3, bottom: 2),
         decoration: new BoxDecoration(
           border: new Border.all(color: color),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(35),
         ),
         child: TextFormField(
           focusNode: _focusNode,

@@ -32,6 +32,7 @@ dependencies:
   video_player: ^0.10.5
   google_sign_in: 4.0.6
   font_awesome_flutter: ^8.5.0
+  percent_indicator: ^2.1.1+1
 
   flutter:
     sdk: flutter
@@ -75,6 +76,11 @@ flutter:
     - assets/animations/Baby-Feed2.gif
     - assets/animations/Baby-Feed3.gif
     - assets/animations/Baby-Feed4.gif
+    - assets/images/Baby-Normal.png
+    - assets/images/adult_create.png
+    - assets/images/create_child.png
+    - assets/images/piggybank.png
+    - assets/images/coin.png
     - assets/images/Baby-Normal.png
     - assets/images/adult_profile_4K.png
     - assets/animations/Baby-Sleep.gif

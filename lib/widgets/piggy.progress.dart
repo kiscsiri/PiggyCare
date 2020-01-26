@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:piggybanx/enums/userType.dart';
 
 class PiggyProgress extends StatefulWidget {
@@ -21,7 +22,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
     final currentSavingPadding = (MediaQuery.of(context).size.width *
         (1 - widget.saving / widget.targetPrice));
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, right: 14.0, left: 14.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -46,26 +47,20 @@ class _PiggyProgressState extends State<PiggyProgress> {
               ],
             ),
           ),
-          Container(
-            height: 20.0,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 1.0),
-                    borderRadius: new BorderRadius.all(Radius.circular(10.0))),
-            child: LinearProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).primaryColor),
-              backgroundColor: Colors.grey,
-              value: widget.saving / widget.targetPrice,
-            ),
-          ),
+          LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width * 0.87,
+                    lineHeight: 13.0,
+                    percent: (widget.saving / widget.targetPrice),
+                    backgroundColor: Colors.grey,
+                    progressColor: Theme.of(context).primaryColor,
+                  ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text("${widget.saving.toInt()}\$"),
               Padding(
                 padding: EdgeInsets.only(
-                    left: max(currentSavingPadding - 90, 10), right: 0),
+                    left: max(currentSavingPadding - 110, 10), right: 10),
                 child: Text("${widget.targetPrice.toInt()}\$"),
               )
             ],

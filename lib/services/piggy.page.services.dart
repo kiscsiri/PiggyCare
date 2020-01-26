@@ -40,19 +40,31 @@ Future<int> showPiggySelector(
                 ),
                 Form(
                   key: _formKey,
-                  child: DropdownButtonFormField(
-                    onChanged: (value) {
-                      id = value;
-                      Navigator.of(context).pop();
-                    },
-                    value: id,
-                    items: store.state.user.piggies
-                        .map((f) => DropdownMenuItem(
-                              value: f.id,
-                              child: Text(f.item),
-                            ))
-                        .toList(),
-                    decoration: InputDecoration(hintText: 'Choose money box'),
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      border: new Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField(
+                        onChanged: (value) {
+                          id = value;
+                          Navigator.of(context).pop();
+                        },
+                        value: id,
+                        items: store.state.user.piggies
+                            .map((f) => DropdownMenuItem(
+                                  value: f.id,
+                                  child: Text(f.item),
+                                ))
+                            .toList(),
+                        decoration:
+                            InputDecoration(
+                              hintText: 'Choose money box',
+                              border: InputBorder.none
+                            ),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -69,11 +81,14 @@ Future<void> showCreatePiggyModal(
   await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          content: CreatePiggyWidget(
-            store: store,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 100.0),
+          child: AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: CreatePiggyWidget(
+              store: store,
+            ),
           ),
         );
       });
@@ -83,7 +98,7 @@ Future<String> showUserAddModal(
     BuildContext context, Store<AppState> store) async {
   var textController = new TextEditingController();
   textController.text = "wicokalevelszemet@gmail.com";
-  
+
   try {
     await showDialog<String>(
         context: context,

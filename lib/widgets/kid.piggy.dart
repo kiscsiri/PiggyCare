@@ -201,7 +201,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
               
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-              alignment: AlignmentDirectional(-0.6, 0)
+              alignment: AlignmentDirectional(0.4, 0)
             ),
             ),
             child: Stack(children: <Widget>[
@@ -279,15 +279,14 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ],
                             )),
                       Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width * 0.7,
+                        padding: EdgeInsets.only(top: 200),
+                        width: MediaQuery.of(context).size.width * 1.5,
+                        height: MediaQuery.of(context).size.height / 2,
                         child: Stack(children: [
                           Container(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 0.4,
                             child: Container(
                               child: PiggyFeedWidget(
-                                  scale: 1.4,
+                                  scale: 2,
                                   willAcceptStream: willAcceptStream,
                                   isAnimationPlaying: isAnimationPlaying,
                                   isDisabled: _isDisabled,
@@ -295,17 +294,6 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                   piggy: piggy),
                             ),
                           ),
-                          Positioned(
-                            right: 25,
-                            top: 25,
-                            child: IconButton(
-                              iconSize: 35,
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                _changeCreatePiggyState();
-                              },
-                            ),
-                          )
                         ]),
                       ),
                       piggy != null

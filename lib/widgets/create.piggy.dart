@@ -9,6 +9,8 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 
+import 'piggy.slider.dart';
+
 class CreatePiggyWidget extends StatefulWidget {
   CreatePiggyWidget({Key key, this.store, this.navigateToPiggyWidget})
       : super(key: key);
@@ -22,8 +24,8 @@ class CreatePiggyWidget extends StatefulWidget {
 
 class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
   var item = "";
-  var targetMoney = 1;
-  var moneyPerFeed = 2;
+  double targetMoney = 1;
+  double moneyPerFeed = 2;
   var controller = TextEditingController();
   Future _createPiggy() async {
     var action = CreateTempPiggy(
@@ -35,7 +37,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
       isFeedAvailable: true,
       item: controller.text,
       money: 0,
-      targetPrice: targetMoney,
+      targetPrice: targetMoney.round(),
       piggyLevel: PiggyLevel.Baby,
     ));
 
@@ -61,43 +63,42 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
           children: <Widget>[
             new Text(
               loc.trans("create_money_box"),
-              style: Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.display4,
               textAlign: TextAlign.center,
             ),
             new Text(
-              loc.trans("choose_money_box"),
+              "You can create your first money box!",
               textAlign: TextAlign.center,
             ),
             PiggyInput(
               hintText: "What do you saving for?",
               textController: controller,
+              width: MediaQuery.of(context).size.width,
               onValidate: (val) {
                 setState(() {
                   item = val;
                 });
               },
             ),
-            new Slider(
-              onChanged: (value) {
+            Text("How much money do you want to save?"),
+            PiggySlider(
+              maxMinTextTrailing: Text("s"),
+              value: targetMoney,
+              onChange: (val) {
                 setState(() {
-                  targetMoney = value.toInt();
+                  targetMoney = val;
                 });
               },
-              min: 1,
-              max: 10,
-              activeColor: Theme.of(context).primaryColor,
-              value: targetMoney.toDouble(),
             ),
-            new Slider(
-              onChanged: (value) {
+            Text('How muck money do you want to spendat one feeding?'),
+            PiggySlider(
+              maxMinTextTrailing: Text("s"),
+              value: moneyPerFeed,
+              onChange: (val) {
                 setState(() {
-                  moneyPerFeed = value.toInt();
+                  moneyPerFeed = val;
                 });
               },
-              min: 1,
-              max: 10,
-              activeColor: Theme.of(context).primaryColor,
-              value: moneyPerFeed.toDouble(),
             ),
             PiggyButton(
               text: loc.trans('create_money_box'),

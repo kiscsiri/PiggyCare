@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
 class NoPiggyWidget extends StatefulWidget {
-  NoPiggyWidget({Key key, this.navigateToCreateWidget}) : super(key: key);
+  NoPiggyWidget({Key key, this.navigateToCreateWidget, this.type}) : super(key: key);
 
   final Function navigateToCreateWidget;
-
+  final UserType type;
   @override
   _NoPiggyWidgetState createState() => new _NoPiggyWidgetState();
 }
@@ -44,9 +45,9 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
               textAlign: TextAlign.center,
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.width * 1.2,
               height: MediaQuery.of(context).size.height * 0.25,
-              color: Theme.of(context).primaryColor,
+              child: Image.asset('assets/images/create_child.png'),
             ),
             PiggyButton(
               text: "Create money box",

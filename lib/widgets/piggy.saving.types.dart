@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
+import 'package:piggybanx/screens/saving.details.dart';
 import 'package:redux/redux.dart';
 
 import 'piggy.saving.type.input.dart';
@@ -19,27 +21,35 @@ class _SavingForWidgetState extends State<SavingForWidget> {
   var savingTypeList = List<SavingTypeInput>();
 
   _selectItem(int index) {
-    var selected =
-        savingTypeList.singleWhere((t) => t.index == index, orElse: null);
+    // var selected =
+    //     savingTypeList.singleWhere((t) => t.index == index, orElse: null);
 
-    var action = CreateTempPiggy(
-        piggy: Piggy(
-      currentFeedAmount: 1,
-      currentSaving: 0,
-      doubleUp: false,
-      isAproved: false,
-      isFeedAvailable: true,
-      item: selected.name,
-      money: 0,
-      targetPrice: selected.coinValue,
-      piggyLevel: PiggyLevel.Baby,
-    ));
+    // var action = CreateTempPiggy(
+    //     piggy: Piggy(
+    //   currentFeedAmount: 1,
+    //   currentSaving: 0,
+    //   doubleUp: false,
+    //   isAproved: false,
+    //   isFeedAvailable: true,
+    //   item: selected.name,
+    //   money: 0,
+    //   targetPrice: selected.coinValue,
+    //   piggyLevel: PiggyLevel.Baby,
+    // ));
 
-    widget.store.dispatch(action);
+    // widget.store.dispatch(action);
 
-    setState(() {
-      selectedIndex = index;
-    });
+    // setState(() {
+    //   selectedIndex = index;
+    // });
+
+    var piggy = widget.store.state.user.piggies[index - 1];
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SavingDetails(
+                  piggy: piggy,
+                )));
   }
 
   Piggy getSelected() {

@@ -69,8 +69,10 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
     } else {
       isRandomGenerated = false;
       return Image.asset(
+
         'assets/images/Baby-Normal.png',
         gaplessPlayback: true,
+        fit: BoxFit.fill,
       );
     }
   }
@@ -103,15 +105,11 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           builder: (context, List<String> candidateData, rejectedData) =>
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * widget.scale,
-                  height: MediaQuery.of(context).size.width * widget.scale,
                   child: Container(
-                      height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width * 0.55,
                       child: Hero(
                           tag: "piggy",
                           child: getAnimation(context, widget.piggy))),
-                ),
               )),
     );
   }
