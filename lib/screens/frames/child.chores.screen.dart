@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/chores.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.saving.types.dart';
 import 'package:redux/redux.dart';
 
 class ChildChoresPage extends StatefulWidget {

@@ -26,6 +26,6 @@ piggyBabyBackgroundDecoration(BuildContext context) {
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
         alignment:
-            AlignmentDirectional(MediaQuery.of(context).size.width * 0.017, 0)),
+            AlignmentDirectional(MediaQuery.of(context).size.width * 0.005, 0)),
   );
 }
