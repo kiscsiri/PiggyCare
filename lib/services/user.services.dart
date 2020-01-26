@@ -91,15 +91,17 @@ class UserServices {
         .document(result.documents.first.documentID)
         .updateData({'isPending': false});
 
-      var data = await Firestore.instance
-          .collection('users')
-          .where('id', isEqualTo: currentUserType == UserType.adult ? fromId : toId)
-          .getDocuments();
+    var data = await Firestore.instance
+        .collection('users')
+        .where('id',
+            isEqualTo: currentUserType == UserType.adult ? fromId : toId)
+        .getDocuments();
 
-      Firestore.instance
-      .collection('users')
-      .document(data.documents.first.documentID)
-      .updateData({'parentId': currentUserType == UserType.adult ? toId : fromId});
+    Firestore.instance
+        .collection('users')
+        .document(data.documents.first.documentID)
+        .updateData(
+            {'parentId': currentUserType == UserType.adult ? toId : fromId});
 
     //TODO - send notification
   }

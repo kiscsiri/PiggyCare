@@ -219,8 +219,8 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Container(
-          decoration: piggyBabyBackgroundDecoration() ,
-          child: Center(child: telephoneBlock)),
+            decoration: piggyBabyBackgroundDecoration(context),
+            child: Center(child: telephoneBlock)),
       ),
     );
   }

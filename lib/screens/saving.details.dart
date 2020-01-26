@@ -38,7 +38,8 @@ class _SavingDetailsState extends State<SavingDetails> {
                 Text("Money box"),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text('Start date: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
+                  child: Text(
+                      'Start date: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
                 ),
               ],
             ),
@@ -47,13 +48,15 @@ class _SavingDetailsState extends State<SavingDetails> {
               opacity: 0.8,
               child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   color: Theme.of(context).primaryColor,
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(
-                            right: 45.0, left: 45.0, bottom: 50.0),
+                        padding: EdgeInsets.only(
+                            right: 45.0,
+                            left: 45.0,
+                            bottom: MediaQuery.of(context).size.height * 0.05),
                         child: PiggySlider(
                           maxMinTextTrailing: Text("\$"),
                           value: widget.piggy.currentSaving.toDouble(),
@@ -62,7 +65,9 @@ class _SavingDetailsState extends State<SavingDetails> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.height * 0.05),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -82,10 +87,9 @@ class _SavingDetailsState extends State<SavingDetails> {
                                     " ${_getRemainingCoinsToCollect()}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                    ),
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),

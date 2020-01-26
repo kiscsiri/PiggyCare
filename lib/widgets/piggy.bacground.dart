@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-piggyBackgroundDecoration() {
+piggyBackgroundDecoration(BuildContext context) {
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
     image: DecorationImage(
@@ -10,11 +10,12 @@ piggyBackgroundDecoration() {
         fit: BoxFit.cover,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment: AlignmentDirectional(0.4, 0)),
+        alignment: AlignmentDirectional(
+            MediaQuery.of(context).size.width * 0.0014, 0)),
   );
 }
 
-piggyBabyBackgroundDecoration() {
+piggyBabyBackgroundDecoration(BuildContext context) {
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
     image: DecorationImage(
@@ -24,6 +25,7 @@ piggyBabyBackgroundDecoration() {
         fit: BoxFit.cover,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment: AlignmentDirectional(2, 0)),
+        alignment:
+            AlignmentDirectional(MediaQuery.of(context).size.width * 0.017, 0)),
   );
 }

@@ -11,8 +11,6 @@ import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/frames/child.chores.screen.dart';
 import 'package:piggybanx/screens/frames/child.savings.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
-import 'package:piggybanx/screens/frames/savings.screen.dart';
-import 'package:piggybanx/screens/frames/settings.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';

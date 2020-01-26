@@ -45,7 +45,7 @@ class PiggySlider extends StatelessWidget {
                   Text(
                     value.round().toString() + " " + maxMinTextTrailing.data,
                     style: Theme.of(context).textTheme.display3,
-                  ),             
+                  ),
                 ],
               ),
               Row(

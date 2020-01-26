@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/chores.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.saving.types.dart';
 import 'package:redux/redux.dart';
@@ -72,34 +73,37 @@ class _ChoresPageState extends State<ChildChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        new Text('Active Tasks', style: Theme.of(context).textTheme.display2),
-        ChoresWidget(store: widget.store),
-        PiggyButton(
-          text: "LET'S DOUBLE",
-          disabled: false,
-          onClick: () {},
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Finished tasks",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline,
-            ),
-            Image.asset('assets/images/pink_tick.png')
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: _getFinishedChores(),
-        )
-      ],
-    ));
+    return Container(
+      decoration: piggyBabyBackgroundDecoration(context),
+      child: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          new Text('Active Tasks', style: Theme.of(context).textTheme.display2),
+          ChoresWidget(store: widget.store),
+          PiggyButton(
+            text: "LET'S DOUBLE",
+            disabled: false,
+            onClick: () {},
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Finished tasks",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline,
+              ),
+              Image.asset('assets/images/pink_tick.png')
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: _getFinishedChores(),
+          )
+        ],
+      )),
+    );
   }
 }

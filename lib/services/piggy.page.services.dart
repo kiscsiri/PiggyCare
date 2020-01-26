@@ -79,13 +79,13 @@ Future<void> showCreatePiggyModal(
   await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 100.0),
-          child: AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: SingleChildScrollView(
-                          child: CreatePiggyWidget(
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: CreatePiggyWidget(
                 store: store,
               ),
             ),
@@ -102,14 +102,14 @@ Future<String> showUserAddModal(
     await showDialog<String>(
         context: context,
         builder: (BuildContext context) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.2),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: SingleChildScrollView(
-                child: Column(
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.2),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                content: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
@@ -128,14 +128,14 @@ Future<String> showUserAddModal(
                     )
                   ],
                 ),
+                actions: <Widget>[
+                  PiggyButton(
+                    text: "Search",
+                    onClick: () => Navigator.of(context).pop(),
+                  )
+                ],
+                title: Text("Search user"),
               ),
-              actions: <Widget>[
-                PiggyButton(
-                  text: "Search",
-                  onClick: () => Navigator.of(context).pop(),
-                )
-              ],
-              title: Text("Search user"),
             ),
           );
         });

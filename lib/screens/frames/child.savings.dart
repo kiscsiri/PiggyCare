@@ -21,7 +21,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: piggyBackgroundDecoration(),
+      decoration: piggyBackgroundDecoration(context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -63,7 +63,9 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50.0),
                 child: PiggySlider(
-                  maxMinTextTrailing: Text('\$',),
+                  maxMinTextTrailing: Text(
+                    '\$',
+                  ),
                   value: widget.store.state.user.feedPerPeriod.toDouble(),
                 ),
               ),

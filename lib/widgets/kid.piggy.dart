@@ -194,7 +194,9 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                 navigateToCreateWidget: () => _changeCreatePiggyState(),
               ))
         : Container(
-          decoration: widget.store.state.user.userType == UserType.child ? piggyBabyBackgroundDecoration() : piggyBackgroundDecoration() ,
+            decoration: widget.store.state.user.userType == UserType.child
+                ? piggyBabyBackgroundDecoration(context)
+                : piggyBackgroundDecoration(context),
             child: Stack(children: <Widget>[
               new Container(
                   child: Padding(
@@ -243,7 +245,8 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                           vertical: 8.0, horizontal: 20),
                                       child: new Text(
                                         '${piggy.item}',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                         textAlign: TextAlign.left,
                                       ),
                                     ),
@@ -271,14 +274,15 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ],
                             )),
                       Container(
-                        padding: EdgeInsets.only(top: 200),
-                        width: MediaQuery.of(context).size.width * 1.5,
-                        height: MediaQuery.of(context).size.height / 2,
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.2),
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         child: Stack(children: [
                           Container(
                             child: Container(
                               child: PiggyFeedWidget(
-                                  scale: 2,
+                                  scale: 0.4,
                                   willAcceptStream: willAcceptStream,
                                   isAnimationPlaying: isAnimationPlaying,
                                   isDisabled: _isDisabled,
