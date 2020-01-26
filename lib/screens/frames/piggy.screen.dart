@@ -19,11 +19,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: widget.store.state.user.userType == UserType.child
-            ? KidPiggyWidget(
-                store: widget.store,
-              )
-            : IndividualPiggyWidget(
+        body:  KidPiggyWidget(
                 store: widget.store,
               ));
   }

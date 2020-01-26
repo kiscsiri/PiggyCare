@@ -8,6 +8,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/screens/frames/child.chores.screen.dart';
 import 'package:piggybanx/screens/frames/child.savings.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/savings.screen.dart';
@@ -16,7 +17,6 @@ import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -68,11 +68,8 @@ class _MainPageState extends State<MainPage> {
   List<Widget> getFrames() {
     return [
       new PiggyPage(store: widget.store),
-      widget.store.state.user.userType == UserType.adult
-          ? new SavingsPage(
-              store: widget.store, pageController: widget._pageController)
-          : ChildSavingScreen(store: widget.store),
-      new SettingsPage(store: widget.store)
+      ChildChoresPage(store: widget.store),
+      ChildSavingScreen(store: widget.store),
     ];
   }
 
@@ -117,8 +114,20 @@ class _MainPageState extends State<MainPage> {
                   if (widget.store.state.user.userType == UserType.child)
                     ListTile(
                       title: Text(loc.trans('add_parent')),
-                      onTap: () {
-                        showUserAddModal(context, widget.store);
+                      onTap: () async {
+                        var searchString =
+                            await showUserAddModal(context, widget.store);
+                        if (searchString.isNotEmpty)
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new UserSearchScreen(
+                                        currentUserId:
+                                            widget.store.state.user.id,
+                                        userType:
+                                            widget.store.state.user.userType,
+                                        searchString: searchString,
+                                      )));
                       },
                     ),
                   if (widget.store.state.user.userType == UserType.adult)

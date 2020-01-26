@@ -3,27 +3,25 @@ import 'package:flutter/widgets.dart';
 
 import 'saving.type.input.curve.dart';
 
-class SavingTypeInput extends StatefulWidget {
-  const SavingTypeInput(
+class ChoreInput extends StatefulWidget {
+  const ChoreInput(
       {Key key,
       @required this.index,
       @required this.name,
-      @required this.coinValue,
       this.selected,
       this.selectIndex})
       : super(key: key);
 
   final int index;
   final String name;
-  final int coinValue;
   final bool selected;
   final Function(int) selectIndex;
 
   @override
-  _SavingTypeInputState createState() => _SavingTypeInputState();
+  _ChoreInputState createState() => _ChoreInputState();
 }
 
-class _SavingTypeInputState extends State<SavingTypeInput> {
+class _ChoreInputState extends State<ChoreInput> {
   bool selected = false;
   _selectType() {
     widget.selectIndex(widget.index);
@@ -79,7 +77,6 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(widget.coinValue.toString(), style: textStyle),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.12,
                         height: MediaQuery.of(context).size.height * 0.12,

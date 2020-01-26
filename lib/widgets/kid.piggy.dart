@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/period.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -11,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
 
 import 'create.piggy.dart';
+import 'piggy.bacground.dart';
 import 'piggy.coin.dart';
 import 'piggy.main.dart';
 import 'piggy.progress.dart';
@@ -192,18 +194,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                 navigateToCreateWidget: () => _changeCreatePiggyState(),
               ))
         : Container(
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 0, 0, 255),
-                image: DecorationImage(
-              image: AssetImage( 
-                'assets/images/adult_profile_4K.png',
-              ),
-              
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-              alignment: AlignmentDirectional(0.4, 0)
-            ),
-            ),
+          decoration: widget.store.state.user.userType == UserType.child ? piggyBabyBackgroundDecoration() : piggyBackgroundDecoration() ,
             child: Stack(children: <Widget>[
               new Container(
                   child: Padding(
@@ -252,6 +243,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                           vertical: 8.0, horizontal: 20),
                                       child: new Text(
                                         '${piggy.item}',
+                                        style: TextStyle(fontWeight: FontWeight.bold),
                                         textAlign: TextAlign.left,
                                       ),
                                     ),
@@ -311,7 +303,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                       coinVisible: _coinVisible,
                       isOnTarget: isOnTarget,
                       willAcceptStream: willAcceptStream,
-                      scale: 0.2,
+                      scale: 0.25,
                     )
                   : Container(),
             ]),

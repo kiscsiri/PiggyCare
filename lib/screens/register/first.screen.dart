@@ -37,7 +37,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage(
+                builder: (context) => new LastPage(
                       store: widget.store,
                     )));
         break;

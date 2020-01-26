@@ -11,7 +11,7 @@ class PiggySlider extends StatelessWidget {
 
   final double value;
   final Function(double) onChange;
-  final Widget maxMinTextTrailing;
+  final Text maxMinTextTrailing;
   final Color trackColor;
 
   @override
@@ -36,18 +36,22 @@ class PiggySlider extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text("0"),
-                  Image.asset('assets/images/coin.png'),
+                  Text("0 "),
+                  maxMinTextTrailing ?? Image.asset('assets/images/coin.png'),
                 ],
-              ),
-              Text(
-                value.round().toString(),
-                style: Theme.of(context).textTheme.display4,
               ),
               Row(
                 children: <Widget>[
-                  Text("100"),
-                  Image.asset('assets/images/coin.png'),
+                  Text(
+                    value.round().toString() + " " + maxMinTextTrailing.data,
+                    style: Theme.of(context).textTheme.display3,
+                  ),             
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("100 ", style: Theme.of(context).textTheme.subtitle),
+                  maxMinTextTrailing ?? Image.asset('assets/images/coin.png'),
                 ],
               )
             ],

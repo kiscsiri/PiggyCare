@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/enums/period.dart';
 
 import '../firebase/firebase.implementations.dart/implementations.export.dart';
 import '../firebase/locator.dart';
@@ -15,10 +16,11 @@ updateUserDatabase(AppState state, UpdateUserData action) {
       .getDocuments()
       .then((QuerySnapshot value) {
     var doc = value.documents.first;
-    var newPeriod = action.user.period;
+    var newPeriod = $PeriodEnumMap[action.user.period];
+
     var newFeedPerPeriod = action.user.feedPerPeriod;
     Firestore.instance.collection('users').document(doc.documentID).updateData(
-        {'period': newPeriod.index, 'feedPerPeriod': newFeedPerPeriod.toInt()});
+        {'period': newPeriod, 'feedPerPeriod': newFeedPerPeriod.toInt()});
   });
 }
 

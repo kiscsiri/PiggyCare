@@ -80,8 +80,9 @@ flutter:
     - assets/images/adult_create.png
     - assets/images/create_child.png
     - assets/images/piggybank.png
+    - assets/images/pink_tick.png
+    - assets/images/yellow_tick.png
     - assets/images/coin.png
-    - assets/images/Baby-Normal.png
     - assets/images/adult_profile_4K.png
     - assets/animations/Baby-Sleep.gif
     - assets/animations/Child-LevelUp.gif

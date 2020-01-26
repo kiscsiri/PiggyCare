@@ -82,7 +82,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
             ),
             Text("How much money do you want to save?"),
             PiggySlider(
-              maxMinTextTrailing: Text("s"),
+              maxMinTextTrailing: Text("\$"),
               value: targetMoney,
               onChange: (val) {
                 setState(() {
@@ -92,7 +92,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
             ),
             Text('How muck money do you want to spendat one feeding?'),
             PiggySlider(
-              maxMinTextTrailing: Text("s"),
+              maxMinTextTrailing: Text("\$"),
               value: moneyPerFeed,
               onChange: (val) {
                 setState(() {

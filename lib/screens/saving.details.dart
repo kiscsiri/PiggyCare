@@ -38,7 +38,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                 Text("Money box"),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text('Start date: ${DateTime.now().toLocal()}'),
+                  child: Text('Start date: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
                 ),
               ],
             ),
@@ -52,7 +52,8 @@ class _SavingDetailsState extends State<SavingDetails> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 45.0),
+                        padding: const EdgeInsets.only(
+                            right: 45.0, left: 45.0, bottom: 50.0),
                         child: PiggySlider(
                           maxMinTextTrailing: Text("\$"),
                           value: widget.piggy.currentSaving.toDouble(),
@@ -60,12 +61,44 @@ class _SavingDetailsState extends State<SavingDetails> {
                           trackColor: Colors.white,
                         ),
                       ),
-                      Text(
-                        "You have to collect ${_getRemainingCoinsToCollect()} Piggy Coin to reach your goal!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'You have to collect ',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    " ${_getRemainingCoinsToCollect()}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "Piggy Coin to reach your goal!",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

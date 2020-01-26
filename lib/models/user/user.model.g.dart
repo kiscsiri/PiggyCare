@@ -12,7 +12,7 @@ UserData _$UserDataFromJson(Map json) {
     saving: json['saving'] as int,
     userType: _$enumDecode(_$UserTypeEnumMap, json['userType']),
     feedPerPeriod: json['feedPerPeriod'] as int,
-    period: _$enumDecode(_$PeriodEnumMap, json['period']),
+    period: _$enumDecode($PeriodEnumMap, json['period']),
     piggies:
         (json['piggies'] as List).map((e) => Piggy.fromJson(e as Map)).toList(),
     piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
@@ -32,7 +32,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'id': instance.id,
       'saving': instance.saving,
       'userType': _$UserTypeEnumMap[instance.userType],
-      'period': _$PeriodEnumMap[instance.period],
+      'period': $PeriodEnumMap[instance.period],
       'feedPerPeriod': instance.feedPerPeriod,
       'piggies': instance.piggies.map((f) => f.toJson()).toList(),
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
@@ -74,7 +74,7 @@ const _$UserTypeEnumMap = {
   UserType.individual: 'individual',
 };
 
-const _$PeriodEnumMap = {
+const $PeriodEnumMap = {
   Period.demo: 'demo',
   Period.daily: 'daily',
   Period.weely: 'weely',

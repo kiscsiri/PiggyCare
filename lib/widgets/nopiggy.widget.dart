@@ -47,7 +47,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
             Container(
               width: MediaQuery.of(context).size.width * 1.2,
               height: MediaQuery.of(context).size.height * 0.25,
-              child: Image.asset('assets/images/create_child.png'),
+              child: widget.type == UserType.child ? Image.asset('assets/images/create_child.png') : Image.asset('assets/images/adult_create.png'),
             ),
             PiggyButton(
               text: "Create money box",

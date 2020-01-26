@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 
@@ -20,6 +21,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: piggyBackgroundDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -32,22 +34,43 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                   style: Theme.of(context).textTheme.display2,
                 ),
               ),
-              Text("Choose a money box", style: Theme.of(context).textTheme.subtitle,),
+              Text(
+                "Choose a money box!",
+                style: Theme.of(context).textTheme.subtitle,
+              ),
             ],
           ),
           ChildSavingsWidget(
             store: widget.store,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: PiggySlider(
-                maxMinTextTrailing: Text('%'),
-                
-                value: widget.store.state.user.feedPerPeriod.toDouble(),
-            ),
+          Column(
+            children: <Widget>[
+              Opacity(
+                opacity: 0.9,
+                child: Container(
+                    color: Colors.grey[300],
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                            '${widget.store.state.user.feedPerPeriod} \$ = 1 '),
+                        Image.asset('assets/images/coin.png')
+                      ],
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child: PiggySlider(
+                  maxMinTextTrailing: Text('\$',),
+                  value: widget.store.state.user.feedPerPeriod.toDouble(),
+                ),
+              ),
+            ],
           ),
           PiggyButton(
-            text: "Create",
+            text: "CREATE A MONEY BOX",
             disabled: false,
             onClick: () async =>
                 await showCreatePiggyModal(context, widget.store),

@@ -21,10 +21,10 @@ class PiggyNavigationBar extends StatelessWidget {
         new BottomNavigationBarItem(
             title: new Text(loc.trans('home')), icon: Icon(Icons.home)),
         new BottomNavigationBarItem(
+            title: new Text(loc.trans('settings')), icon: Icon(Icons.settings)),
+        new BottomNavigationBarItem(
             title: new Text(loc.trans('savings')),
             icon: Icon(Icons.attach_money)),
-        new BottomNavigationBarItem(
-            title: new Text(loc.trans('settings')), icon: Icon(Icons.settings))
       ],
       currentIndex: store.state.index,
     );
