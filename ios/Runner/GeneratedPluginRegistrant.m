@@ -16,8 +16,8 @@
 @import cloud_firestore;
 #endif
 
-#if __has_include(<connectivity/FLTConnectivityPlugin.h>)
-#import <connectivity/FLTConnectivityPlugin.h>
+#if __has_include(<connectivity/ConnectivityPlugin.h>)
+#import <connectivity/ConnectivityPlugin.h>
 #else
 @import connectivity;
 #endif
@@ -28,8 +28,8 @@
 @import firebase_auth;
 #endif
 
-#if __has_include(<firebase_core/FLTFirebaseCorePlugin.h>)
-#import <firebase_core/FLTFirebaseCorePlugin.h>
+#if __has_include(<firebase_core/FirebaseCorePlugin.h>)
+#import <firebase_core/FirebaseCorePlugin.h>
 #else
 @import firebase_core;
 #endif
@@ -52,14 +52,14 @@
 @import google_sign_in;
 #endif
 
-#if __has_include(<path_provider/FLTPathProviderPlugin.h>)
-#import <path_provider/FLTPathProviderPlugin.h>
+#if __has_include(<path_provider/PathProviderPlugin.h>)
+#import <path_provider/PathProviderPlugin.h>
 #else
 @import path_provider;
 #endif
 
-#if __has_include(<shared_preferences/FLTSharedPreferencesPlugin.h>)
-#import <shared_preferences/FLTSharedPreferencesPlugin.h>
+#if __has_include(<shared_preferences/SharedPreferencesPlugin.h>)
+#import <shared_preferences/SharedPreferencesPlugin.h>
 #else
 @import shared_preferences;
 #endif
