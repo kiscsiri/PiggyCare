@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter/material.dart';
 
-piggyBackgroundDecoration(BuildContext context) {
-  var offset = MediaQuery.of(context).size.width * 0.005;
+BoxDecoration piggyBackgroundDecoration(BuildContext context) {
+  var offset = MediaQuery.of(context).size.height * 0.00045;
 
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
@@ -9,7 +13,7 @@ piggyBackgroundDecoration(BuildContext context) {
         image: AssetImage(
           'assets/images/adult_profile_4K.png',
         ),
-        fit: BoxFit.cover,
+        fit: BoxFit.fitHeight,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
         alignment: AlignmentDirectional(
@@ -20,17 +24,37 @@ piggyBackgroundDecoration(BuildContext context) {
 }
 
 piggyBabyBackgroundDecoration(BuildContext context) {
-  var offset = MediaQuery.of(context).size.width * 0.005;
+  var offset = MediaQuery.of(context).size.height * 0.0025;
   return BoxDecoration(
     color: Color.fromRGBO(255, 0, 0, 255),
     image: DecorationImage(
         image: AssetImage(
           'assets/images/Baby-Normal.png',
         ),
-        fit: BoxFit.cover,
+        fit: BoxFit.fitHeight,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
         alignment:
             AlignmentDirectional(offset, 0)),
   );
 }
+
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
+}
+
+Future<File> get _localFile async {
+  final path = await _localPath;
+  return File('$path/counter.txt');
+}
+
+Future<File> writeCounter(int counter) async {
+  final file = await _localFile;
+
+  // Write the file.
+  return file.writeAsString('$counter');
+}
+
+
