@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 
 class SavingDetails extends StatefulWidget {
@@ -25,6 +27,7 @@ class _SavingDetailsState extends State<SavingDetails> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.piggy.item)),
       body: Container(
+        decoration: coinBackground(context, UserType.adult),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

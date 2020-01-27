@@ -4,6 +4,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
 import 'package:piggybanx/screens/register/second.screen.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
@@ -65,33 +66,36 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
     var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       appBar: new AppBar(),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
-                child: new Text(
-                  loc.trans("you_are"),
-                  style: Theme.of(context).textTheme.display3,
-                  textAlign: TextAlign.center,
-                )),
-            PiggyButton(
-              text: "Individual",
-              disabled: false,
-              onClick: () => _register(UserType.individual),
-            ),
-            PiggyButton(
-              text: "Parent",
-              disabled: false,
-              onClick: () => _register(UserType.adult),
-            ),
-            PiggyButton(
-              text: "Child",
-              disabled: false,
-              onClick: () => _register(UserType.child),
-            ),
-          ],
+      body: Container(
+        decoration: coinBackground(context, UserType.child),
+        child: new Center(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
+                  child: new Text(
+                    loc.trans("you_are"),
+                    style: Theme.of(context).textTheme.display3,
+                    textAlign: TextAlign.center,
+                  )),
+              PiggyButton(
+                text: "Individual",
+                disabled: true,
+                onClick: () => _register(UserType.individual),
+              ),
+              PiggyButton(
+                text: "Parent",
+                disabled: false,
+                onClick: () => _register(UserType.adult),
+              ),
+              PiggyButton(
+                text: "Child",
+                disabled: false,
+                onClick: () => _register(UserType.child),
+              ),
+            ],
+          ),
         ),
       ),
     );

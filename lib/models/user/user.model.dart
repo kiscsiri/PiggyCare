@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -26,6 +27,7 @@ class UserData {
   String name;
   String pictureUrl;
   List<Piggy> piggies;
+  List<Chore> chores;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {
@@ -75,6 +77,7 @@ class UserData {
     pictureUrl = another.pictureUrl;
     email = another.email;
     name = another.name;
+    chores = another.chores;
     piggies = another.piggies;
   }
 
@@ -132,6 +135,7 @@ class UserData {
       this.isDemoOver,
       this.phoneNumber,
       this.created,
+      this.chores,
       this.email,
       this.name,
       this.pictureUrl})

@@ -9,6 +9,7 @@ import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
 import 'package:piggybanx/widgets/google.button.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -179,39 +180,43 @@ class _RegisterPageState extends State<LastPage> {
           },
         ),
       ),
-      body: new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: telephoneBlock,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        margin: EdgeInsets.only(bottom: 0),
-                        child: Center(
-                          child: new Text(
-                            " ",
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                                color: Colors.white, fontSize: 17),
-                          ),
-                        ))
-                  ],
+      body: Container(
+        decoration: piggyBackgroundDecoration(context, widget.store.state.registrationData.userType),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: telephoneBlock,
                 ),
-              )
-            ],
-          ),
-        ],
-      ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          margin: EdgeInsets.only(bottom: 0),
+                          child: Center(
+                            child: new Text(
+                              " ",
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                  color: Colors.white, fontSize: 17),
+                            ),
+                          ))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      )
+      ,
     );
   }
 }

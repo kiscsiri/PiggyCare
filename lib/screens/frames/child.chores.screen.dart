@@ -19,10 +19,10 @@ class _ChoresPageState extends State<ChildChoresPage> {
     int i = 1;
     return [
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text('${i++}.  '),
               Text('1 óra sport'),
@@ -35,7 +35,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +51,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -95,10 +95,15 @@ class _ChoresPageState extends State<ChildChoresPage> {
               Image.asset('assets/images/pink_tick.png')
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: _getFinishedChores(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 60.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _getFinishedChores(),
+              ),
+            ),
           )
         ],
       )),

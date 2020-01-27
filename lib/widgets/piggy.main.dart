@@ -42,15 +42,11 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           duration: Duration(milliseconds: 1500),
           child: Image.asset(
               'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
-              gaplessPlayback: true,
-              width: MediaQuery.of(context).size.width * 0.2,
-              height: MediaQuery.of(context).size.height * 0.2));
+              gaplessPlayback: true,));
     } catch (err) {
       return Image.asset(
           'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
-          gaplessPlayback: true,
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.height * 0.2);
+          gaplessPlayback: true,);
     }
   }
 
@@ -71,7 +67,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
       return Image.asset(
         'assets/images/Baby-Normal.png',
         gaplessPlayback: true,
-        fit: BoxFit.fill,
+        fit: BoxFit.fitWidth,
       );
     }
   }
@@ -105,7 +101,8 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0.0),
                 child: Container(
-                    width: MediaQuery.of(context).size.width * 0.55,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.8,
                     child: Hero(
                         tag: "piggy",
                         child: getAnimation(context, widget.piggy))),

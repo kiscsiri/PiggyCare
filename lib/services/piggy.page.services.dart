@@ -85,7 +85,6 @@ Future<void> showCreatePiggyModal(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40.0),
             child: AlertDialog(
-
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: CreatePiggyWidget(
@@ -245,12 +244,59 @@ Future<void> loadAnimation(
                         gaplessPlayback: true,
                       )
                     : (Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index])}-Feed$feedRandom.mov')),
+                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
               ),
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Color(0xFFce475e),
+            color: store.state.user.piggyLevel == PiggyLevel.Baby ? Colors.grey[50] : Color(0xFFce475e),
+          ),
+        );
+      });
+}
+
+Future<void> exitStartAnimation(
+    TickerProviderStateMixin tickerProviderStateMixin,
+    bool isExit,
+    BuildContext context) async {
+  AnimationController _controller = AnimationController(
+      duration: const Duration(milliseconds: 7500),
+      vsync: tickerProviderStateMixin)
+    ..forward();
+
+  var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
+    ..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        imageCache.clear();
+        Navigator.of(context).pop();
+        _controller.dispose();
+      }
+    });
+
+  await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () {
+            _controller.dispose();
+            imageCache.clear();
+          },
+          child: Container(
+            child: AnimatedBuilder(
+              animation: animation,
+              builder: (context, child) => Hero(
+                tag: "piggy",
+                child: (isExit)
+                    ? Image.asset(
+                        'assets/animations/Baby-Exit.gif',
+                        gaplessPlayback: true,
+                      )
+                    : (Image.asset('assets/animations/Baby-Start.gif')),
+              ),
+            ),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.grey[50],
           ),
         );
       });

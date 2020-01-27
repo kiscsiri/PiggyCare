@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
@@ -18,10 +19,19 @@ class ChildSavingScreen extends StatefulWidget {
 }
 
 class _ChildSavingScreenState extends State<ChildSavingScreen> {
+  var savingPerFeed = 0;
+
+  @override
+  void initState() {
+    savingPerFeed = widget.store.state.user.feedPerPeriod;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: piggyBackgroundDecoration(context, widget.store.state.user.userType),
+      decoration:
+          piggyBackgroundDecoration(context, widget.store.state.user.userType),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -62,12 +72,19 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child: PiggySlider(
-                  maxMinTextTrailing: Text(
-                    '\$',
-                  ),
-                  value: widget.store.state.user.feedPerPeriod.toDouble(),
-                ),
+                child: widget.store.state.user.userType == UserType.child
+                    ? Container()
+                    : PiggySlider(
+                        maxMinTextTrailing: Text(
+                          '\$',
+                        ),
+                        onChange: (val) {
+                          setState(() {
+                            savingPerFeed = val.toInt();                            
+                          });
+                        },
+                        value: savingPerFeed.toDouble(),
+                      ),
               ),
             ],
           ),

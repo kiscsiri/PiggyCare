@@ -62,17 +62,14 @@ class _PiggyPageState extends State<PiggyTestPage>
                     Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: Image.asset('assets/images/Baby-Normal.png')),
+                        child: Image.asset('assets/images/Piggy-Normal-Login.png')),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Column(
                         children: <Widget>[
                           Text(
                             loc.trans('welcome'),
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          Text(
-                            "Let's ...",
+                            textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ],
@@ -80,6 +77,13 @@ class _PiggyPageState extends State<PiggyTestPage>
                     ),
                     Column(
                       children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              "Let's ...",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )),
                         Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Container(

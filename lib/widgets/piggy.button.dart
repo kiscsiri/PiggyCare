@@ -4,12 +4,15 @@ typedef void OnClick();
 
 class PiggyButton extends StatelessWidget {
   PiggyButton(
-      {Key key, @required this.text, this.onClick, this.disabled = false})
+      {Key key,
+      @required this.text,
+      this.onClick,
+      this.disabled = false})
       : super(key: key);
   final String text;
   final OnClick onClick;
   final bool disabled;
-
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

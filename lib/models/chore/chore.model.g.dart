@@ -15,7 +15,7 @@ Chore _$ChoreFromJson(Map json) {
     title: json['title'] as String,
     isValidated: json['isValidated'] as bool,
     childId: json['childId'] as String,
-    id: json['id'] as String,
+    id: json['id'] as int,
   );
 }
 

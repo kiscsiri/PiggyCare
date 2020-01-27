@@ -5,7 +5,7 @@ part 'chore.model.g.dart';
 
 @JsonSerializable(nullable: false)
 class Chore {
-  String id;
+  int id;
   String childId;
   ChoreType choreType;
   String title;

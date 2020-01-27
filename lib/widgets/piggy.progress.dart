@@ -26,32 +26,11 @@ class _PiggyProgressState extends State<PiggyProgress> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Text(widget.item ?? ""),
-                ),
-                (widget.saving > widget.targetPrice &&
-                        widget.userType != UserType.child)
-                    ? IconButton(
-                        icon: Icon(Icons.add_shopping_cart,
-                            size: 35, color: Theme.of(context).primaryColor),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('register');
-                        },
-                      )
-                    : Container()
-              ],
-            ),
-          ),
           LinearPercentIndicator(
             width: MediaQuery.of(context).size.width * 0.87,
             lineHeight: 13.0,
             percent:
-                (max(widget.saving, widget.targetPrice) / widget.targetPrice),
+                (widget.saving > widget.targetPrice ? widget.targetPrice : widget.saving / widget.targetPrice),
             backgroundColor: Colors.grey,
             progressColor: Theme.of(context).primaryColor,
           ),

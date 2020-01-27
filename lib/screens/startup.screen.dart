@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +30,7 @@ alert(BuildContext context) {
           FlatButton(
             child: Text('Ok'),
             onPressed: () {
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              exit(0);
             },
           ),
         ],
@@ -36,7 +39,7 @@ alert(BuildContext context) {
   );
 }
 
-class _StartupPageState extends State<StartupPage> {
+class _StartupPageState extends State<StartupPage> with TickerProviderStateMixin{
   bool _isLoaded = false;
 
   @override
@@ -100,6 +103,7 @@ class _StartupPageState extends State<StartupPage> {
                           borderRadius: BorderRadius.circular(70.0)),
                       child: new FlatButton(
                         onPressed: () async {
+                          await exitStartAnimation(this, false, context);
                           Navigator.of(context).pushReplacementNamed('tryOut');
                         },
                         child: new Text(

@@ -15,6 +15,7 @@ UserData _$UserDataFromJson(Map json) {
     period: _$enumDecode($PeriodEnumMap, json['period']),
     piggies:
         (json['piggies'] as List).map((e) => Piggy.fromJson(e as Map)).toList(),
+    chores: (json['chores'] as List).map((e) => Chore.fromMap(e as Map)).toList(),
     piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
     currentFeedTime: json['currentFeedTime'] as int,
     money: (json['money'] as num).toDouble(),
@@ -42,6 +43,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'created': instance.created.toIso8601String(),
       'money': instance.money,
       'isDemoOver': instance.isDemoOver,
+      'chores': instance.chores.map((f) => f.toJson()).toList(),
       'email': instance.email,
       'name': instance.name,
       'pictureUrl': instance.pictureUrl

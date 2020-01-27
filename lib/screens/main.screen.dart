@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/frames/child.chores.screen.dart';
 import 'package:piggybanx/screens/frames/child.savings.dart';
+import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
@@ -35,7 +38,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   _navigate(int index) {
     widget._pageController.animateToPage(index,
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
@@ -66,7 +69,11 @@ class _MainPageState extends State<MainPage> {
   List<Widget> getFrames() {
     return [
       new PiggyPage(store: widget.store),
-      ChildChoresPage(store: widget.store),
+      widget.store.state.user.userType == UserType.child
+          ? ChildChoresPage(store: widget.store)
+          : ParentChoresPage(
+              store: widget.store,
+            ),
       ChildSavingScreen(store: widget.store),
     ];
   }
@@ -77,8 +84,11 @@ class _MainPageState extends State<MainPage> {
     var user = widget.store.state.user;
 
     return WillPopScope(
-      onWillPop: () =>
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+      onWillPop: () async {
+        await exitStartAnimation(this, true, context);
+        exit(0);
+        return true;
+      },
       child: Scaffold(
           appBar: AppBar(
             title: Text("PiggyBanx"),

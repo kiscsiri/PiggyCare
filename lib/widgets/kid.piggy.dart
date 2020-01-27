@@ -195,8 +195,24 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                 navigateToCreateWidget: () => _changeCreatePiggyState(),
               ))
         : Container(
-            decoration: piggyBackgroundDecoration(
-                context, widget.store.state.user.userType),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [
+                  0.5,
+                  0.8,
+                  0.85,
+                  1
+                ],
+                    colors: [
+                  Colors.white,
+                  Colors.grey[400],
+                  Colors.white,
+                  Colors.grey[100]
+                ])),
             child: Stack(children: <Widget>[
               new Container(
                   child: Padding(
@@ -228,40 +244,30 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                               ],
                             )
                           : new Container(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).size.height * 0.18),
                               child: Row(
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 20),
-                                      child: new Text(
-                                        'Name of the money box:',
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 20),
-                                      child: new Text(
-                                        '${piggy.item}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 10),
-                                      child: GestureDetector(
-                                        onTap: () async =>
-                                            await selectPiggy(context),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 0.0, horizontal: 20),
                                         child: new Text(
-                                          'Change money box',
+                                          loc.trans('money_box_name'),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 0.0, horizontal: 20),
+                                        child: new Text(
+                                          '${piggy.item}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             decoration:
@@ -269,36 +275,59 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            )),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 0.0, horizontal: 10),
+                                        child: GestureDetector(
+                                          onTap: () async =>
+                                              await selectPiggy(context),
+                                          child: new Text(
+                                              loc.trans('change_box'),
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  color: Theme.of(context)
+                                                      .primaryColor)),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )),
                       Container(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.2),
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: MediaQuery.of(context).size.height * 0.5,
                         child: Stack(children: [
                           Container(
-                            child: Container(
-                              child: PiggyFeedWidget(
-                                  scale: 0.4,
-                                  willAcceptStream: willAcceptStream,
-                                  isAnimationPlaying: isAnimationPlaying,
-                                  isDisabled: _isDisabled,
-                                  onDrop: onCoinDrop,
-                                  piggy: piggy),
-                            ),
+                            padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.13),
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                            child: PiggyFeedWidget(
+                                scale: 1,
+                                willAcceptStream: willAcceptStream,
+                                isAnimationPlaying: isAnimationPlaying,
+                                isDisabled: _isDisabled,
+                                onDrop: onCoinDrop,
+                                piggy: piggy),
                           ),
                         ]),
                       ),
                       piggy != null
-                          ? PiggyProgress(
-                              userType: user.userType,
-                              item: piggy.item,
-                              saving: piggy.currentSaving.toDouble(),
-                              targetPrice: piggy.targetPrice.toDouble())
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0),
+                              child: PiggyProgress(
+                                  userType: user.userType,
+                                  item: piggy.item,
+                                  saving: piggy.currentSaving.toDouble(),
+                                  targetPrice: piggy.targetPrice.toDouble()),
+                            )
                           : Container(),
                     ]),
               )),

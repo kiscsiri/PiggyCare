@@ -5,6 +5,12 @@ import 'package:piggybanx/widgets/chore.field.dart';
 
 import 'package:redux/redux.dart';
 
+const tasks = {
+  1 : "Autó lemosás",
+  2 : "Házi feladat írás",
+  3 : "Hólapátolás" 
+};
+
 class ChoresWidget extends StatefulWidget {
   final Store<AppState> store;
 
@@ -47,12 +53,14 @@ class _ChoresWidgetState extends State<ChoresWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var dummyList = ["auto", "mosogatas", "szemetkivitel"];
+
     int i = 0;
-    savingTypeList = widget.store.state.user.piggies.map((p) {
+    savingTypeList = dummyList.take(3).map((p) {
       i++;
       return ChoreInput(
         index: i,
-        name: 'Task$i',
+        name: tasks[i],
         selectIndex: (i) => _selectItem(i),
       );
     }).toList();
@@ -73,7 +81,7 @@ class _ChoresWidgetState extends State<ChoresWidget> {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.width * 0.5,
+      height: MediaQuery.of(context).size.width * 0.6,
       child: ListView(
         children: savingTypeList,
       ),
