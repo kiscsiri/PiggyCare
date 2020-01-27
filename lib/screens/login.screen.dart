@@ -14,6 +14,7 @@ import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
+import 'package:video_player/video_player.dart';
 
 import 'register/first.screen.dart';
 
@@ -37,15 +38,20 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController _phoneCodeController = new TextEditingController();
   TextEditingController _smsCodeController = TextEditingController();
+  VideoPlayerController _videoPlayerController;
 
   @override
   void initState() {
+    _videoPlayerController =
+        VideoPlayerController.asset('assets/animations/Baby-Feed1.mp4');
+
     super.initState();
   }
 
   @override
   void dispose() {
     _phoneCodeController.dispose();
+    _videoPlayerController.dispose();
     _smsCodeController.dispose();
     super.dispose();
   }
@@ -89,6 +95,12 @@ class _LoginPageState extends State<LoginPage> {
                 store: widget.store,
               )));
     }
+  }
+
+  Future<bool> started() async {
+    await _videoPlayerController.initialize();
+    await _videoPlayerController.play();
+    return true;
   }
 
   @override

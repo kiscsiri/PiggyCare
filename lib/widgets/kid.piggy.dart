@@ -263,9 +263,10 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                         child: new Text(
                                           'Change money box',
                                           textAlign: TextAlign.left,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display4,
+                                          style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -307,7 +308,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                       coinVisible: _coinVisible,
                       isOnTarget: isOnTarget,
                       willAcceptStream: willAcceptStream,
-                      scale: 0.25,
+                      scale: 0.3,
                     )
                   : Container(),
             ]),
