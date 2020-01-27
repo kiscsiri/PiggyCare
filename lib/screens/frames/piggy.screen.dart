@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/individual.piggy.dart';
 import 'package:piggybanx/widgets/kid.piggy.dart';
 import 'package:redux/redux.dart';
 
@@ -19,8 +17,8 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body:  KidPiggyWidget(
-                store: widget.store,
-              ));
+        body: KidPiggyWidget(
+      store: widget.store,
+    ));
   }
 }

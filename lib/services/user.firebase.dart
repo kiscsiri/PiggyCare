@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/period.dart';
 
 import '../firebase/firebase.implementations.dart/implementations.export.dart';
 import '../firebase/locator.dart';

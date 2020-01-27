@@ -4,7 +4,8 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
 class NoPiggyWidget extends StatefulWidget {
-  NoPiggyWidget({Key key, this.navigateToCreateWidget, this.type}) : super(key: key);
+  NoPiggyWidget({Key key, this.navigateToCreateWidget, @required this.type})
+      : super(key: key);
 
   final Function navigateToCreateWidget;
   final UserType type;
@@ -47,7 +48,9 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
             Container(
               width: MediaQuery.of(context).size.width * 1.2,
               height: MediaQuery.of(context).size.height * 0.25,
-              child: widget.type == UserType.child ? Image.asset('assets/images/create_child.png') : Image.asset('assets/images/adult_create.png'),
+              child: widget.type == UserType.child
+                  ? Image.asset('assets/images/create_child.png')
+                  : Image.asset('assets/images/adult_create.png'),
             ),
             PiggyButton(
               text: "Create money box",
