@@ -18,6 +18,7 @@ Future<int> showPiggySelector(
   int id;
   await showDialog<String>(
     context: context,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return Padding(
         padding: EdgeInsets.symmetric(
@@ -78,11 +79,13 @@ Future<void> showCreatePiggyModal(
     BuildContext context, Store<AppState> store) async {
   await showDialog<String>(
       context: context,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40.0),
             child: AlertDialog(
+
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: CreatePiggyWidget(
@@ -101,6 +104,7 @@ Future<String> showUserAddModal(
   try {
     await showDialog<String>(
         context: context,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return SingleChildScrollView(
             child: Padding(

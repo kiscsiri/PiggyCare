@@ -3,39 +3,22 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 
-BoxDecoration piggyBackgroundDecoration(BuildContext context) {
+BoxDecoration piggyBackgroundDecoration(BuildContext context, UserType userType) {
   var offset = (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width) * 0.17;
-
+var assett = userType == UserType.child ? 'assets/images/Baby-Normal.png' : 'assets/images/adult_profile_4K.png';
   return BoxDecoration(
-    color: Color.fromRGBO(255, 0, 0, 255),
+    color: Color.fromRGBO(255, 255, 0, 0),
     image: DecorationImage(
         image: AssetImage(
-          'assets/images/adult_profile_4K.png',
+          assett,
         ),
-        fit: BoxFit.fitHeight,
-        colorFilter: ColorFilter.mode(
-            Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment: AlignmentDirectional(
-          offset,
-          0,
-        )),
-  );
-}
 
-piggyBabyBackgroundDecoration(BuildContext context) {
-  var offset = (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width) * 1;
-  return BoxDecoration(
-    color: Color.fromRGBO(255, 0, 0, 255),
-    image: DecorationImage(
-        image: AssetImage(
-          'assets/images/Baby-Normal.png',
-        ),
-        fit: BoxFit.fitHeight,
+        fit: BoxFit.fitWidth,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment:
-            AlignmentDirectional(offset, 0)),
+        alignment: Alignment.bottomRight),
   );
 }
 

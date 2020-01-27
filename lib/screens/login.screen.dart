@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/main.screen.dart';
@@ -216,10 +217,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Container(
-            decoration: piggyBabyBackgroundDecoration(context),
+            decoration: piggyBackgroundDecoration(context, UserType.child),
             child: Center(child: telephoneBlock)),
       ),
     );
