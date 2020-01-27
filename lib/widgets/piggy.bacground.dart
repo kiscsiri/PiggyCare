@@ -11,7 +11,7 @@ BoxDecoration piggyBackgroundDecoration(
       ? 'assets/images/piggy_half.png'
       : 'assets/images/adult_profile_4K.png';
   return BoxDecoration(
-    color: Color.fromRGBO(255, 0, 0, 255),
+    color: Color.fromRGBO(255, 255, 0, 0),
     image: DecorationImage(
         image: AssetImage(
           assettName,
@@ -19,21 +19,17 @@ BoxDecoration piggyBackgroundDecoration(
         fit: BoxFit.fitHeight,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment: Alignment.centerLeft),
+        alignment: AlignmentDirectional(
+          offset,
+          0,
+        )),
   );
 }
 
-piggyBabyBackgroundDecoration(BuildContext context, UserType userType) {
-  return BoxDecoration(
-    color: Color.fromRGBO(255, 0, 0, 255),
-    image: DecorationImage(
-        image: AssetImage(
-          'assets/images/piggy_half.png',
-        ),
-        fit: BoxFit.fitHeight,
+        fit: BoxFit.fitWidth,
         colorFilter: ColorFilter.mode(
             Color.fromRGBO(255, 255, 255, 0.6), BlendMode.lighten),
-        alignment: Alignment.centerLeft),
+        alignment: Alignment.bottomRight),
   );
 }
 

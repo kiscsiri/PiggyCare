@@ -217,10 +217,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: new AppBar(
         title: new Text("PiggyBanx"),
       ),
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Container(
-            decoration: piggyBabyBackgroundDecoration(context, UserType.child),
+            decoration: piggyBackgroundDecoration(context, UserType.child),
             child: Center(child: telephoneBlock)),
       ),
     );

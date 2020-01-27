@@ -25,7 +25,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('${i++}.  '),
-              Text('Do the shopping'),
+              Text('1 óra sport'),
             ],
           ),
           Row(
@@ -41,7 +41,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('${i++}.  '),
-              Text('Do the shopping'),
+              Text('5-ös matematika témazáró'),
             ],
           ),
           Row(
@@ -57,7 +57,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('${i++}.  '),
-              Text('Do the shopping'),
+              Text('Nappali felporszívózása'),
             ],
           ),
           Row(
@@ -72,8 +72,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:
-          piggyBackgroundDecoration(context, widget.store.state.user.userType),
+      decoration: piggyBackgroundDecoration(context, widget.store.state.user.userType),
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

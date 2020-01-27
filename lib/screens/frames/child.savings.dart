@@ -21,6 +21,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: piggyBackgroundDecoration(context, widget.store.state.user.userType),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

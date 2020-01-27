@@ -8,6 +8,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/main.screen.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -211,73 +212,76 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
           )),
       body: Form(
         key: _priceFormKey,
-        child: new Center(
-          child: new ListView(
-            children: <Widget>[
-              !isAlreadyRegistered
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                      child: new Text(
-                        loc.trans("welcome"),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.title,
+        child: Container(
+          decoration: piggyBackgroundDecoration(context, widget.store.state.registrationData.userType),
+          child: new Center(
+            child: new ListView(
+              children: <Widget>[
+                !isAlreadyRegistered
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 14.0),
+                        child: new Text(
+                          loc.trans("welcome"),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      )
+                    : Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
                       ),
-                    )
-                  : Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                    ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new Text(
-                  loc.trans("how_much_it_cost"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.display3,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Text(
+                    loc.trans("how_much_it_cost"),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.display3,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80.0),
-                child: PiggyInput(
-                  hintText: loc.trans("how_much_it_cost_hint"),
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  inputFormatters: [
-                    WhitelistingTextInputFormatter.digitsOnly,
-                    EuroOnTheInputEndFormatter()
-                  ],
-                  textController: textEditingController,
-                  keyboardType: TextInputType.number,
-                  onValidate: (value) {
-                    try {
-                      if (value.length > 1 && value.startsWith("0"))
-                        return loc.trans("price_start_zero_validation");
-                      int price = int.parse(
-                          value.substring(0, value.length - 2),
-                          radix: 10);
-                      if (price.isNegative) {
-                        return loc.trans("price_positive_validation");
-                      } else if (price == 0) {
-                        return loc.trans("price_non_zero_validation");
+                Padding(
+                  padding: const EdgeInsets.only(top: 80.0),
+                  child: PiggyInput(
+                    hintText: loc.trans("how_much_it_cost_hint"),
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly,
+                      EuroOnTheInputEndFormatter()
+                    ],
+                    textController: textEditingController,
+                    keyboardType: TextInputType.number,
+                    onValidate: (value) {
+                      try {
+                        if (value.length > 1 && value.startsWith("0"))
+                          return loc.trans("price_start_zero_validation");
+                        int price = int.parse(
+                            value.substring(0, value.length - 2),
+                            radix: 10);
+                        if (price.isNegative) {
+                          return loc.trans("price_positive_validation");
+                        } else if (price == 0) {
+                          return loc.trans("price_non_zero_validation");
+                        }
+                      } catch (e) {
+                        return loc.trans("price_must_be_number_validation");
                       }
-                    } catch (e) {
-                      return loc.trans("price_must_be_number_validation");
+                    },
+                    onErrorMessage: null,
+                  ),
+                ),
+                PiggyButton(
+                  text: loc.trans("next_step"),
+                  disabled: false,
+                  onClick: () {
+                    if (_priceFormKey.currentState.validate()) {
+                      var action = SetPrice(int.parse(textEditingController.text
+                          .substring(0, textEditingController.text.length - 2)));
+                      widget.store.dispatch(action);
+                      scheduleChooser();
                     }
                   },
-                  onErrorMessage: null,
-                ),
-              ),
-              PiggyButton(
-                text: loc.trans("next_step"),
-                disabled: false,
-                onClick: () {
-                  if (_priceFormKey.currentState.validate()) {
-                    var action = SetPrice(int.parse(textEditingController.text
-                        .substring(0, textEditingController.text.length - 2)));
-                    widget.store.dispatch(action);
-                    scheduleChooser();
-                  }
-                },
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

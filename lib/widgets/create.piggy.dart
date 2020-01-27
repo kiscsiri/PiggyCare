@@ -57,9 +57,9 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height * 0.7,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             new Text(
               loc.trans("create_money_box"),
