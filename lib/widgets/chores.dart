@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/widgets/chore.field.dart';
 
-import 'piggy.saving.type.input.dart';
 import 'package:redux/redux.dart';
 
 class ChoresWidget extends StatefulWidget {
@@ -22,22 +20,6 @@ class _ChoresWidgetState extends State<ChoresWidget> {
   _selectItem(int index) {
     var selected =
         savingTypeList.singleWhere((t) => t.index == index, orElse: null);
-
-    // var action = CreateTempPiggy(
-    //     piggy: Piggy(
-    //   currentFeedAmount: 1,
-    //   currentSaving: 0,
-    //   doubleUp: false,
-    //   isAproved: false,
-    //   isFeedAvailable: true,
-    //   item: selected.name,
-    //   money: 0,
-    //   targetPrice: selected.coinValue,
-    //   piggyLevel: PiggyLevel.Baby,
-    // ));
-
-    // widget.store.dispatch(action);
-
     setState(() {
       selectedIndex = index;
     });
@@ -89,10 +71,12 @@ class _ChoresWidgetState extends State<ChoresWidget> {
       }).toList();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: savingTypeList,
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.width * 0.5,
+      child: ListView(
+        children: savingTypeList,
+      ),
     );
   }
 }

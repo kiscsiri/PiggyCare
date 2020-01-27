@@ -191,12 +191,12 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                 ),
               )
             : NoPiggyWidget(
+                type: widget.store.state.user.userType,
                 navigateToCreateWidget: () => _changeCreatePiggyState(),
               ))
         : Container(
-            decoration: widget.store.state.user.userType == UserType.child
-                ? piggyBabyBackgroundDecoration(context)
-                : piggyBackgroundDecoration(context),
+            decoration: piggyBackgroundDecoration(
+                context, widget.store.state.user.userType),
             child: Stack(children: <Widget>[
               new Container(
                   child: Padding(

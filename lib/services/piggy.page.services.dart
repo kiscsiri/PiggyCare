@@ -241,7 +241,7 @@ Future<void> loadAnimation(
                         gaplessPlayback: true,
                       )
                     : (Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index])}-Feed$feedRandom.mov')),
               ),
             ),
             width: MediaQuery.of(context).size.width,

@@ -48,12 +48,13 @@ class _PiggyProgressState extends State<PiggyProgress> {
             ),
           ),
           LinearPercentIndicator(
-                    width: MediaQuery.of(context).size.width * 0.87,
-                    lineHeight: 13.0,
-                    percent: (widget.saving / widget.targetPrice),
-                    backgroundColor: Colors.grey,
-                    progressColor: Theme.of(context).primaryColor,
-                  ),
+            width: MediaQuery.of(context).size.width * 0.87,
+            lineHeight: 13.0,
+            percent:
+                (max(widget.saving, widget.targetPrice) / widget.targetPrice),
+            backgroundColor: Colors.grey,
+            progressColor: Theme.of(context).primaryColor,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

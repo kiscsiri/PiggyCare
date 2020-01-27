@@ -72,7 +72,8 @@ class _ChoresPageState extends State<ChildChoresPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: piggyBabyBackgroundDecoration(context),
+      decoration:
+          piggyBackgroundDecoration(context, widget.store.state.user.userType),
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

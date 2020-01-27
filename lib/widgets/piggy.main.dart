@@ -41,13 +41,13 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           opacity: 1.0,
           duration: Duration(milliseconds: 1500),
           child: Image.asset(
-              'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.gif',
+              'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
               gaplessPlayback: true,
               width: MediaQuery.of(context).size.width * 0.2,
               height: MediaQuery.of(context).size.height * 0.2));
     } catch (err) {
       return Image.asset(
-          'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.gif',
+          'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
           gaplessPlayback: true,
           width: MediaQuery.of(context).size.width * 0.2,
           height: MediaQuery.of(context).size.height * 0.2);
@@ -69,7 +69,6 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
     } else {
       isRandomGenerated = false;
       return Image.asset(
-
         'assets/images/Baby-Normal.png',
         gaplessPlayback: true,
         fit: BoxFit.fill,
@@ -105,11 +104,11 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           builder: (context, List<String> candidateData, rejectedData) =>
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                  child: Container(
+                child: Container(
                     width: MediaQuery.of(context).size.width * 0.55,
-                      child: Hero(
-                          tag: "piggy",
-                          child: getAnimation(context, widget.piggy))),
+                    child: Hero(
+                        tag: "piggy",
+                        child: getAnimation(context, widget.piggy))),
               )),
     );
   }

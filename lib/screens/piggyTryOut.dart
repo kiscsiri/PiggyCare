@@ -1,13 +1,7 @@
-import 'dart:async';
-
-import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.coin.dart';
-import 'package:piggybanx/widgets/piggy.main.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:vibration/vibration.dart';
 
 class PiggyTestPage extends StatefulWidget {
   PiggyTestPage({Key key}) : super(key: key);
