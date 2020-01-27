@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/period.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -12,7 +11,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
 
 import 'create.piggy.dart';
-import 'piggy.bacground.dart';
 import 'piggy.coin.dart';
 import 'piggy.main.dart';
 import 'piggy.progress.dart';
@@ -245,10 +243,12 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                             )
                           : new Container(
                               padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).size.height * 0.18),
+                                  bottom: MediaQuery.of(context).size.height *
+                                      0.16),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -269,16 +269,12 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -304,9 +300,9 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                         child: Stack(children: [
                           Container(
                             padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.13),
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: MediaQuery.of(context).size.height * 0.5,
+                                top: MediaQuery.of(context).size.height * 0.13),
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * 0.48,
                             child: PiggyFeedWidget(
                                 scale: 1,
                                 willAcceptStream: willAcceptStream,
@@ -320,8 +316,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                       piggy != null
                           ? Padding(
                               padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height *
-                                      0),
+                                  top: MediaQuery.of(context).size.height * 0),
                               child: PiggyProgress(
                                   userType: user.userType,
                                   item: piggy.item,
@@ -337,7 +332,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                       coinVisible: _coinVisible,
                       isOnTarget: isOnTarget,
                       willAcceptStream: willAcceptStream,
-                      scale: 0.3,
+                      scale: MediaQuery.of(context).size.height * 0.0003,
                     )
                   : Container(),
             ]),

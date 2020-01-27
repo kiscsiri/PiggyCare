@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
 
@@ -14,7 +13,8 @@ BoxDecoration piggyBackgroundDecoration(
           assettName,
         ),
         fit: BoxFit.scaleDown,
-        colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+        colorFilter:
+            ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
         alignment: align),
   );
 }

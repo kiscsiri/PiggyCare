@@ -9,7 +9,8 @@ class ChildSavingInputWidget extends StatefulWidget {
       @required this.index,
       @required this.name,
       this.selected,
-      this.selectIndex, this.price})
+      this.selectIndex,
+      this.price})
       : super(key: key);
 
   final int index;
@@ -37,8 +38,8 @@ class _SavingTypeInputState extends State<ChildSavingInputWidget> {
   @override
   Widget build(BuildContext context) {
     selected = widget.selected ?? false;
-    Color color = selected ? Colors.yellow : Colors.white;
-    Color textColor = selected ? Colors.yellow : Colors.grey;
+    Color color = selected ? Colors.yellow[600] : Colors.white;
+    Color textColor = selected ? Colors.yellow[600] : Colors.grey;
 
     TextStyle textStyle =
         TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 17);

@@ -64,7 +64,6 @@ class _SavingTypeInputState extends State<TaskInputWidget> {
                       Text(
                         "${widget.index.toString()}.",
                         style: textStyle,
-
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),

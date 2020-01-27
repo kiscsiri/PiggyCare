@@ -231,11 +231,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: Container(
-            decoration: piggyBackgroundDecoration(context, UserType.child),
-            child: Center(child: telephoneBlock)),
-      ),
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  decoration:
+                      piggyBackgroundDecoration(context, UserType.adult),
+                ),
+              ],
+            ),
+            Container(child: Center(child: telephoneBlock)),
+          ])),
     );
   }
 }

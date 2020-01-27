@@ -170,53 +170,63 @@ class _RegisterPageState extends State<LastPage> {
             ]));
 
     return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.pink,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        appBar: new AppBar(
+          title: Text(loc.trans('registration')),
+          backgroundColor: Theme.of(context).primaryColor,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
-      ),
-      body: Container(
-        decoration: piggyBackgroundDecoration(context, widget.store.state.registrationData.userType),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Column(
+        body: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                decoration: piggyBackgroundDecoration(
+                    context, widget.store.state.user.userType),
+              ),
+            ],
+          ),
+          Container(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: telephoneBlock,
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: telephoneBlock,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              margin: EdgeInsets.only(bottom: 0),
+                              child: Center(
+                                child: new Text(
+                                  " ",
+                                  textAlign: TextAlign.center,
+                                  style: new TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
+                              ))
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          margin: EdgeInsets.only(bottom: 0),
-                          child: Center(
-                            child: new Text(
-                              " ",
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                  color: Colors.white, fontSize: 17),
-                            ),
-                          ))
-                    ],
-                  ),
-                )
               ],
             ),
-          ],
-        ),
-      )
-      ,
-    );
+          ),
+        ]));
   }
 }

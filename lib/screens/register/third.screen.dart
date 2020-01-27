@@ -203,6 +203,10 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
     return new Scaffold(
       appBar: new AppBar(
           backgroundColor: Colors.white,
+          title: Text(
+            loc.trans('registration'),
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             color: Colors.pink,
@@ -213,7 +217,8 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
       body: Form(
         key: _priceFormKey,
         child: Container(
-          decoration: piggyBackgroundDecoration(context, widget.store.state.registrationData.userType),
+          decoration: piggyBackgroundDecoration(
+              context, widget.store.state.registrationData.userType),
           child: new Center(
             child: new ListView(
               children: <Widget>[
@@ -274,7 +279,8 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                   onClick: () {
                     if (_priceFormKey.currentState.validate()) {
                       var action = SetPrice(int.parse(textEditingController.text
-                          .substring(0, textEditingController.text.length - 2)));
+                          .substring(
+                              0, textEditingController.text.length - 2)));
                       widget.store.dispatch(action);
                       scheduleChooser();
                     }

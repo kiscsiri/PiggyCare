@@ -128,6 +128,7 @@ class UserData {
       this.feedPerPeriod,
       this.period = Period.daily,
       List<Piggy> piggies,
+      List<Chore> chores,
       this.piggyLevel,
       this.currentFeedTime,
       this.money,
@@ -135,9 +136,9 @@ class UserData {
       this.isDemoOver,
       this.phoneNumber,
       this.created,
-      this.chores,
       this.email,
       this.name,
       this.pictureUrl})
-      : piggies = piggies ?? List<Piggy>();
+      : piggies = piggies ?? List<Piggy>(),
+        chores = chores ?? List<Chore>();
 }

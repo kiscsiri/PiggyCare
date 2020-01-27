@@ -34,9 +34,13 @@ Future<int> showPiggySelector(
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Text(loc.trans('selector_title'),
+                          textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.display2),
                     ),
-                    Text(loc.trans('selector_explanation')),
+                    Text(
+                      loc.trans('selector_explanation'),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
                 Form(
@@ -60,7 +64,75 @@ Future<int> showPiggySelector(
                                 ))
                             .toList(),
                         decoration: InputDecoration(
-                            hintText: 'Choose money box',
+                            hintText: "  " + loc.trans('choose_money_box'),
+                            border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )),
+      );
+    },
+  );
+
+  return id;
+}
+
+Future<int> showCreateTask(BuildContext context, Store<AppState> store) async {
+  var loc = PiggyLocalizations.of(context);
+  final _formKey = GlobalKey<FormState>();
+
+  int id;
+  await showDialog<String>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.2),
+        child: AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Text(loc.trans('selector_title'),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.display2),
+                    ),
+                    Text(
+                      loc.trans('selector_explanation'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      border: new Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField(
+                        onChanged: (value) {
+                          id = value;
+                          Navigator.of(context).pop();
+                        },
+                        value: id,
+                        items: store.state.user.piggies
+                            .map((f) => DropdownMenuItem(
+                                  value: f.id,
+                                  child: Text(f.item),
+                                ))
+                            .toList(),
+                        decoration: InputDecoration(
+                            hintText: loc.trans('choose_money_box'),
                             border: InputBorder.none),
                       ),
                     ),
@@ -116,12 +188,12 @@ Future<String> showUserAddModal(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
-                      "Search with username or e-mail!",
+                      "Keresés e-mail vagy név alapján",
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.display3,
                     ),
                     PiggyInput(
-                      hintText: "Your child...",
+                      hintText: "A családtag...",
                       onValidate: (val) {
                         if (val.isEmpty) {
                           return "Can't be empty!";
@@ -133,7 +205,7 @@ Future<String> showUserAddModal(
                 ),
                 actions: <Widget>[
                   PiggyButton(
-                    text: "Search",
+                    text: "Keresés",
                     onClick: () => Navigator.of(context).pop(),
                   )
                 ],
@@ -215,9 +287,9 @@ Future<void> loadAnimation(
   });
   var prefs = await SharedPreferences.getInstance();
   var feedRandom = prefs.getInt("animationCount");
-  if (feedRandom > 4) {
+  if (feedRandom > 5) {
     prefs.setInt('animationCount', 1);
-    feedRandom = 0;
+    feedRandom = 1;
   }
   if (isLevelUp) {
     prefs.setInt("animationCount", 1);
@@ -240,16 +312,16 @@ Future<void> loadAnimation(
                 tag: "piggy",
                 child: (isLevelUp)
                     ? Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index - 1])}-LevelUp.gif',
+                        'assets/animations/Baby-Feed$feedRandom.gif',
                         gaplessPlayback: true,
                       )
                     : (Image.asset(
-                        'assets/animations/${levelStringValue(PiggyLevel.values[store.state.user.piggyLevel.index])}-Feed$feedRandom.gif')),
+                        'assets/animations/Baby-Feed$feedRandom.gif')),
               ),
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: store.state.user.piggyLevel == PiggyLevel.Baby ? Colors.grey[50] : Color(0xFFce475e),
+            color: Colors.grey[50],
           ),
         );
       });

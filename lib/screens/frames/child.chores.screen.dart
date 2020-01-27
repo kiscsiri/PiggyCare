@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/chores.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
@@ -71,42 +72,55 @@ class _ChoresPageState extends State<ChildChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: piggyBackgroundDecoration(context, widget.store.state.user.userType),
-      child: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Stack(children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          new Text('Active Tasks', style: Theme.of(context).textTheme.display2),
-          ChoresWidget(store: widget.store),
-          PiggyButton(
-            text: "LET'S DOUBLE",
-            disabled: false,
-            onClick: () {},
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: piggyBackgroundDecoration(context, UserType.adult),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Finished tasks",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline,
-              ),
-              Image.asset('assets/images/pink_tick.png')
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _getFinishedChores(),
-              ),
-            ),
-          )
         ],
-      )),
-    );
+      ),
+      Container(
+        decoration: piggyBackgroundDecoration(
+            context, widget.store.state.user.userType),
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Text('Active Tasks',
+                style: Theme.of(context).textTheme.display2),
+            ChoresWidget(store: widget.store),
+            PiggyButton(
+              text: "LET'S DOUBLE",
+              disabled: false,
+              onClick: () {},
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Finished tasks",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline,
+                ),
+                Image.asset('assets/images/pink_tick.png')
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: _getFinishedChores(),
+                ),
+              ),
+            )
+          ],
+        )),
+      )
+    ]);
   }
 }

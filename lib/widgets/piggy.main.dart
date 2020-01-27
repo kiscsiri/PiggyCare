@@ -41,12 +41,14 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
           opacity: 1.0,
           duration: Duration(milliseconds: 1500),
           child: Image.asset(
-              'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
-              gaplessPlayback: true,));
+            'assets/animations/Baby-Feed$feedRandom.mov',
+            gaplessPlayback: true,
+          ));
     } catch (err) {
       return Image.asset(
-          'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
-          gaplessPlayback: true,);
+        'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
+        gaplessPlayback: true,
+      );
     }
   }
 
@@ -67,7 +69,6 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
       return Image.asset(
         'assets/images/Baby-Normal.png',
         gaplessPlayback: true,
-        fit: BoxFit.fitWidth,
       );
     }
   }

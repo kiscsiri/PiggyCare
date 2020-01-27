@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -69,12 +69,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   List<Widget> getFrames() {
     return [
       new PiggyPage(store: widget.store),
+      ChildSavingScreen(store: widget.store),
       widget.store.state.user.userType == UserType.child
           ? ChildChoresPage(store: widget.store)
           : ParentChoresPage(
               store: widget.store,
+              pageController: widget._pageController,
             ),
-      ChildSavingScreen(store: widget.store),
     ];
   }
 

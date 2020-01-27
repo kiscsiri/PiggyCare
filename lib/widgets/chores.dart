@@ -5,11 +5,7 @@ import 'package:piggybanx/widgets/chore.field.dart';
 
 import 'package:redux/redux.dart';
 
-const tasks = {
-  1 : "Autó lemosás",
-  2 : "Házi feladat írás",
-  3 : "Hólapátolás" 
-};
+const tasks = {1: "Autó lemosás", 2: "Házi feladat írás", 3: "Hólapátolás"};
 
 class ChoresWidget extends StatefulWidget {
   final Store<AppState> store;

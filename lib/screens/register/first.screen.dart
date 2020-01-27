@@ -65,35 +65,54 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     return new Scaffold(
-      appBar: new AppBar(),
+      appBar: new AppBar(title: Text(loc.trans('registration'))),
       body: Container(
-        decoration: coinBackground(context, UserType.child),
         child: new Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
-                  child: new Text(
-                    loc.trans("you_are"),
-                    style: Theme.of(context).textTheme.display3,
-                    textAlign: TextAlign.center,
-                  )),
-              PiggyButton(
-                text: "Individual",
-                disabled: true,
-                onClick: () => _register(UserType.individual),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.5,
+                decoration: coinBackground(context, UserType.child),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
+                        child: new Text(
+                          loc.trans("you_are"),
+                          style: Theme.of(context).textTheme.display3,
+                          textAlign: TextAlign.center,
+                        )),
+                    PiggyButton(
+                      text: loc.trans('individual'),
+                      disabled: true,
+                      onClick: () => _register(UserType.individual),
+                    ),
+                  ],
+                ),
               ),
-              PiggyButton(
-                text: "Parent",
-                disabled: false,
-                onClick: () => _register(UserType.adult),
-              ),
-              PiggyButton(
-                text: "Child",
-                disabled: false,
-                onClick: () => _register(UserType.child),
-              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.35,
+                decoration: coinBackground(context, UserType.child),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    PiggyButton(
+                      text: loc.trans('adult'),
+                      disabled: false,
+                      onClick: () => _register(UserType.adult),
+                    ),
+                    PiggyButton(
+                      text: loc.trans('child'),
+                      disabled: false,
+                      onClick: () => _register(UserType.child),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

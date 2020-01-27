@@ -7,12 +7,16 @@ class PiggyButton extends StatelessWidget {
       {Key key,
       @required this.text,
       this.onClick,
-      this.disabled = false})
+      this.disabled = false,
+      this.color,
+      this.trailing})
       : super(key: key);
   final String text;
   final OnClick onClick;
   final bool disabled;
-  
+  final Color color;
+  final Widget trailing;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -28,7 +32,9 @@ class PiggyButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.height * 0.09,
           decoration: new BoxDecoration(
-              color: (disabled) ? Colors.grey : Theme.of(context).primaryColor,
+              color: (disabled)
+                  ? Colors.grey
+                  : color ?? Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(70.0)),
           child: FlatButton(
             onPressed: null,
@@ -40,9 +46,12 @@ class PiggyButton extends StatelessWidget {
                 text,
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                    color: Colors.white,
+                    color:
+                        color == Colors.white ? Colors.black87 : Colors.white,
                     fontSize: 22,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: color == Colors.white
+                        ? FontWeight.normal
+                        : FontWeight.bold),
               ),
             ),
           ),

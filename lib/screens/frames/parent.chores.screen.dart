@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
@@ -7,7 +8,8 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
 class ParentChoresPage extends StatefulWidget {
-  ParentChoresPage({Key key, this.store, this.pageController}) : super(key: key);
+  ParentChoresPage({Key key, this.store, this.pageController})
+      : super(key: key);
 
   final Store<AppState> store;
   final PageController pageController;
@@ -20,7 +22,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
   var selectedIndex = 0;
 
   void _navigate() {
-    widget.pageController.animateToPage(2,
+    widget.pageController.animateToPage(1,
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
   }
 
@@ -33,31 +35,51 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    isChildSelected ? ChildDetailsWidget(id: selectedIndex.toString()) :
-    Container(
-      decoration: piggyBackgroundDecoration(context, UserType.adult),
-      child: Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Savings"),
-            Text(""),
-            PiggyButton(
-              text: "Saját megtakarítások",
-              onClick: () => _navigate(),
+    var loc = PiggyLocalizations.of(context);
+    return isChildSelected
+        ? ChildDetailsWidget(id: selectedIndex.toString())
+        : Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  decoration:
+                      piggyBackgroundDecoration(context, UserType.adult),
+                ),
+              ],
             ),
-            PiggyButton(
-              text: "Petike megtakarításai",
-              onClick: () => _navigateToChild(0),
+            Container(
+              child: Center(
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40.0),
+                      child: Text(
+                        loc.trans('savings'),
+                        style: Theme.of(context).textTheme.display2,
+                      ),
+                    ),
+                    PiggyButton(
+                      color: Colors.white,
+                      text: "Saját megtakarítások",
+                      onClick: () => _navigate(),
+                    ),
+                    PiggyButton(
+                      color: Colors.white,
+                      text: "Petike megtakarításai",
+                      onClick: () => _navigateToChild(0),
+                    ),
+                    PiggyButton(
+                      color: Colors.white,
+                      text: "Kitti megtakarításai",
+                      onClick: () => _navigateToChild(1),
+                    )
+                  ],
+                ),
+              ),
             ),
-            PiggyButton(
-              text: "Kitti megtakarításai",
-              onClick: () => _navigateToChild(1),
-            )
-          ],
-        ),
-      ),
-    );
+          ]);
   }
 }

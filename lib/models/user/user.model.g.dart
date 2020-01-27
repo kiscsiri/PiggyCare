@@ -15,7 +15,8 @@ UserData _$UserDataFromJson(Map json) {
     period: _$enumDecode($PeriodEnumMap, json['period']),
     piggies:
         (json['piggies'] as List).map((e) => Piggy.fromJson(e as Map)).toList(),
-    chores: (json['chores'] as List).map((e) => Chore.fromMap(e as Map)).toList(),
+    chores:
+        (json['chores'] as List).map((e) => Chore.fromMap(e as Map)).toList(),
     piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
     currentFeedTime: json['currentFeedTime'] as int,
     money: (json['money'] as num).toDouble(),

@@ -29,8 +29,9 @@ class _PiggyProgressState extends State<PiggyProgress> {
           LinearPercentIndicator(
             width: MediaQuery.of(context).size.width * 0.87,
             lineHeight: 13.0,
-            percent:
-                (widget.saving > widget.targetPrice ? widget.targetPrice : widget.saving / widget.targetPrice),
+            percent: (widget.saving > widget.targetPrice
+                ? widget.targetPrice
+                : widget.saving / widget.targetPrice),
             backgroundColor: Colors.grey,
             progressColor: Theme.of(context).primaryColor,
           ),
@@ -40,7 +41,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
               Text("${widget.saving.toInt()}\$"),
               Padding(
                 padding: EdgeInsets.only(
-                    left: max(currentSavingPadding - 110, 10), right: 10),
+                    left: max(currentSavingPadding - 90, 10), right: 10),
                 child: Text("${widget.targetPrice.toInt()}\$"),
               )
             ],

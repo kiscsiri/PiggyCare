@@ -66,12 +66,8 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
               style: Theme.of(context).textTheme.display4,
               textAlign: TextAlign.center,
             ),
-            new Text(
-              "You can create your first money box!",
-              textAlign: TextAlign.center,
-            ),
             PiggyInput(
-              hintText: "What do you saving for?",
+              hintText: loc.trans('how_much_it_cost_hint'),
               textController: controller,
               width: MediaQuery.of(context).size.width,
               onValidate: (val) {
@@ -80,7 +76,12 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                 });
               },
             ),
-            Text("How much money do you want to save?"),
+            Text(
+              loc.trans(
+                'how_much_it_cost',
+              ),
+              textAlign: TextAlign.center,
+            ),
             PiggySlider(
               maxMinTextTrailing: Text("\$"),
               value: targetMoney,
@@ -90,7 +91,10 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                 });
               },
             ),
-            Text('How muck money do you want to spendat one feeding?'),
+            Text(
+              loc.trans('how_much_per_feed_question'),
+              textAlign: TextAlign.center,
+            ),
             PiggySlider(
               maxMinTextTrailing: Text("\$"),
               value: moneyPerFeed,

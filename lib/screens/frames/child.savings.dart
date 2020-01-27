@@ -29,73 +29,85 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:
-          piggyBackgroundDecoration(context, widget.store.state.user.userType),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Stack(children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  "Savings",
-                  style: Theme.of(context).textTheme.display2,
-                ),
-              ),
-              Text(
-                "Choose a money box!",
-                style: Theme.of(context).textTheme.subtitle,
-              ),
-            ],
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: piggyBackgroundDecoration(context, UserType.adult),
           ),
-          ChildSavingsWidget(
-            store: widget.store,
-          ),
-          Column(
-            children: <Widget>[
-              Opacity(
-                opacity: 0.9,
-                child: Container(
-                    color: Colors.grey[300],
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                            '${widget.store.state.user.feedPerPeriod} \$ = 1 '),
-                        Image.asset('assets/images/coin.png')
-                      ],
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child: widget.store.state.user.userType == UserType.child
-                    ? Container()
-                    : PiggySlider(
-                        maxMinTextTrailing: Text(
-                          '\$',
-                        ),
-                        onChange: (val) {
-                          setState(() {
-                            savingPerFeed = val.toInt();                            
-                          });
-                        },
-                        value: savingPerFeed.toDouble(),
-                      ),
-              ),
-            ],
-          ),
-          PiggyButton(
-            text: "CREATE A MONEY BOX",
-            disabled: false,
-            onClick: () async =>
-                await showCreatePiggyModal(context, widget.store),
-          )
         ],
       ),
-    );
+      Container(
+        height: MediaQuery.of(context).size.height * 1,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    "Savings",
+                    style: Theme.of(context).textTheme.display2,
+                  ),
+                ),
+                Text(
+                  "Choose a money box!",
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+              ],
+            ),
+            ChildSavingsWidget(
+              store: widget.store,
+            ),
+            Column(
+              children: <Widget>[
+                Opacity(
+                  opacity: 0.9,
+                  child: Container(
+                      color: Colors.grey[300],
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            '${savingPerFeed} \$ = 1 ',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Image.asset('assets/images/coin.png')
+                        ],
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: widget.store.state.user.userType == UserType.child
+                      ? Container()
+                      : PiggySlider(
+                          maxMinTextTrailing: Text(
+                            '\$',
+                          ),
+                          onChange: (val) {
+                            setState(() {
+                              savingPerFeed = val.toInt();
+                            });
+                          },
+                          value: savingPerFeed.toDouble(),
+                        ),
+                ),
+              ],
+            ),
+            PiggyButton(
+              text: "CREATE A MONEY BOX",
+              disabled: false,
+              onClick: () async =>
+                  await showCreatePiggyModal(context, widget.store),
+            )
+          ],
+        ),
+      )
+    ]);
   }
 }

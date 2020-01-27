@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/childsaving.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.saving.type.input.dart';
-import 'package:piggybanx/widgets/piggy.saving.types.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 import 'package:piggybanx/widgets/task.widget.dart';
+import 'package:redux/redux.dart';
 
 var children = [
   ChildDto(feedPerCoin: 3, name: "Petike", id: "0", savings: [
@@ -30,10 +32,10 @@ var children = [
 ];
 
 class ChildDetailsWidget extends StatefulWidget {
-  const ChildDetailsWidget({Key key, this.id}) : super(key: key);
+  const ChildDetailsWidget({Key key, this.id, this.store}) : super(key: key);
 
   final String id;
-
+  final Store<AppState> store;
   @override
   _ChildDetailsWidgetState createState() => _ChildDetailsWidgetState();
 }
@@ -52,6 +54,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     var tasks = List<TaskInputWidget>();
     var savings = List<ChildSavingInputWidget>();
 
@@ -166,7 +169,8 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.15),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.15),
                     child: PiggySlider(
                       value: child.feedPerCoin.toDouble(),
                       maxMinTextTrailing: Text('\$'),
@@ -180,7 +184,8 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
-                      text: "CREATE NEW MONEY BOX",
+                      text: loc.trans('create_money_box_button'),
+                      onClick: () async => await _showCreateModal(),
                     ),
                   )
                 ],
@@ -211,6 +216,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
                       text: "+ FELADAT HOZZÁADÁS",
+                      onClick: () async => await _showAddTaskModal(),
                     ),
                   )
                 ],
@@ -220,6 +226,14 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         ],
       ),
     ]));
+  }
+
+  Future<void> _showCreateModal() async {
+    await showCreatePiggyModal(context, widget.store);
+  }
+
+  Future<void> _showAddTaskModal() async {
+    await showCreatePiggyModal(context, widget.store);
   }
 }
 

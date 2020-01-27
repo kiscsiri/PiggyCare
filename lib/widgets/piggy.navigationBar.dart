@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:redux/redux.dart';
@@ -21,10 +23,11 @@ class PiggyNavigationBar extends StatelessWidget {
         new BottomNavigationBarItem(
             title: new Text(loc.trans('home')), icon: Icon(Icons.home)),
         new BottomNavigationBarItem(
-            title: new Text(loc.trans('settings')), icon: Icon(Icons.settings)),
-        new BottomNavigationBarItem(
-            title: new Text(loc.trans('savings')),
+            title: new Text(loc.trans('saving')),
             icon: Icon(Icons.attach_money)),
+        new BottomNavigationBarItem(
+            title: new Text(loc.trans('tasks')),
+            icon: Icon(FontAwesomeIcons.clipboardCheck)),
       ],
       currentIndex: store.state.index,
     );
