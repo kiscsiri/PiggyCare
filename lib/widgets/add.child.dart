@@ -73,25 +73,30 @@ class _AddChildWidgetState extends State<AddChildWidget> {
               },
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Opacity(
                   opacity: 0.9,
                   child: Container(
                       color: Colors.grey[300],
-                      width: MediaQuery.of(context).size.width * 0.65,
+                      width: MediaQuery.of(context).size.width * 0.67,
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${feedPerDay} € = 1 ',
+                            '${feedPerDay.toInt()} € = 1 ',
                             style: TextStyle(fontSize: 20),
                           ),
                           Image.asset('assets/images/coin.png')
                         ],
                       )),
                 ),
-                Text('Add meg, hogy mennyi legyen az értéke egy PiggyCoin-nak'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(
+                      'Add meg, hogy mennyi legyen az értéke egy PiggyCoin-nak'),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: PiggySlider(

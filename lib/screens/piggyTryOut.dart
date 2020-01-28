@@ -62,8 +62,7 @@ class _PiggyPageState extends State<PiggyTestPage>
                     Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: Image.asset(
-                            'assets/images/Child-Normal.png')),
+                        child: Image.asset('assets/images/Child-Login.png')),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 30),

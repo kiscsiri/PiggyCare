@@ -6,17 +6,19 @@ Future<bool> showExitModal(BuildContext context) async {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-            child: Center(
-          child: Container(
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Container(
+            color: Colors.white,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 new Text(
                   "Valóban kilépsz?",
-                  style: Theme.of(context).textTheme.display4,
+                  style: Theme.of(context).textTheme.display3,
                   textAlign: TextAlign.center,
                 ),
                 Padding(
@@ -40,6 +42,6 @@ Future<bool> showExitModal(BuildContext context) async {
               ],
             ),
           ),
-        ));
+        );
       });
 }

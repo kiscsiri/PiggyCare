@@ -85,6 +85,7 @@ flutter:
     - assets/animations/Baby-Start.gif
     - assets/animations/Baby-Exit.gif
     - assets/images/Baby-Normal.png
+    - assets/images/Child-Login.png
     - assets/images/Piggy-Normal-Login.png
     - assets/images/adult_create.png
     - assets/images/create_child.png

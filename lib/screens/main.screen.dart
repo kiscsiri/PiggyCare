@@ -90,9 +90,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     return WillPopScope(
       onWillPop: () async {
-        await exitStartAnimation(this, true, context);
-        exit(0);
-        return true;
+        var isExitTrue = await showExitModal(context);
+        if (isExitTrue) {
+          exit(0);
+        }
+        return false;
       },
       child: Scaffold(
           appBar: AppBar(
@@ -163,7 +165,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       },
                     ),
                   ListTile(
-                    title: Text("Requests"),
+                    title: Text("Felkérések"),
                     onTap: () {
                       Navigator.push(
                           context,

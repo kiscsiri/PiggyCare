@@ -18,7 +18,7 @@ class _SavingDetailsState extends State<SavingDetails> {
     if (widget.piggy.currentFeedAmount != null)
       return ((widget.piggy.targetPrice - widget.piggy.currentSaving) /
               widget.piggy.currentFeedAmount)
-              .toInt()
+          .toInt()
           .toString();
     return '0';
   }
@@ -29,15 +29,19 @@ class _SavingDetailsState extends State<SavingDetails> {
       appBar: AppBar(title: Text(widget.piggy.item)),
       body: Container(
         decoration: coinBackground(context, UserType.adult),
+        height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(
-                  widget.piggy.item,
-                  style: Theme.of(context).textTheme.display2,
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    widget.piggy.item,
+                    style: Theme.of(context).textTheme.display2,
+                  ),
                 ),
                 Text("Malacpersely"),
                 Padding(
@@ -52,7 +56,7 @@ class _SavingDetailsState extends State<SavingDetails> {
               opacity: 0.8,
               child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   color: Theme.of(context).primaryColor,
                   child: Column(
                     children: <Widget>[
@@ -60,7 +64,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                         padding: EdgeInsets.only(
                             right: 45.0,
                             left: 45.0,
-                            bottom: MediaQuery.of(context).size.height * 0.05),
+                            bottom: MediaQuery.of(context).size.height * 0.04),
                         child: PiggySlider(
                           maxMinTextTrailing: Text("€"),
                           value: widget.piggy.currentSaving.toDouble(),

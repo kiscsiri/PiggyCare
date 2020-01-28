@@ -288,11 +288,11 @@ Future<void> exitStartAnimation(
     bool isExit,
     BuildContext context) async {
   AnimationController _controller = AnimationController(
-      duration: const Duration(milliseconds: 7500),
+      duration: Duration(milliseconds: !isExit ? 4500 : 6500),
       vsync: tickerProviderStateMixin)
     ..forward();
 
-  var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
+  var animation = new Tween<double>(begin: 0, end: 250).animate(_controller)
     ..addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         imageCache.clear();

@@ -139,7 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                   PiggyInput(
                     inputIcon: Icons.lock_outline,
                     hintText: loc.trans("password"),
-                    textController: _phoneCodeController,
+                    textController: _smsCodeController,
+                    obscureText: true,
                     width: MediaQuery.of(context).size.width * 0.7,
                     onValidate: (value) {
                       if (value.isEmpty) {
