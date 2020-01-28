@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
+import 'package:piggybanx/widgets/create.task.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:piggybanx/widgets/add.child.dart';
 
 Future<int> showPiggySelector(
     BuildContext context, Store<AppState> store) async {
@@ -79,77 +83,31 @@ Future<int> showPiggySelector(
   return id;
 }
 
-Future<int> showCreateTask(BuildContext context, Store<AppState> store) async {
-  var loc = PiggyLocalizations.of(context);
-  final _formKey = GlobalKey<FormState>();
-
-  int id;
-  await showDialog<String>(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      return Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: MediaQuery.of(context).size.height * 0.2),
-        child: AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Text(loc.trans('selector_title'),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display2),
-                    ),
-                    Text(
-                      loc.trans('selector_explanation'),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                Form(
-                  key: _formKey,
-                  child: Container(
-                    decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField(
-                        onChanged: (value) {
-                          id = value;
-                          Navigator.of(context).pop();
-                        },
-                        value: id,
-                        items: store.state.user.piggies
-                            .map((f) => DropdownMenuItem(
-                                  value: f.id,
-                                  child: Text(f.item),
-                                ))
-                            .toList(),
-                        decoration: InputDecoration(
-                            hintText: loc.trans('choose_money_box'),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )),
-      );
-    },
-  );
-
-  return id;
+Future<int> showCreateTask(
+    BuildContext context, Store<AppState> store, ChildDto child) async {
+  await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: CreateTaskWidget(
+                child: child,
+                store: store,
+              ),
+            ),
+          ),
+        );
+      });
 }
 
 Future<void> showCreatePiggyModal(
     BuildContext context, Store<AppState> store) async {
-  await showDialog<String>(
+  await showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
@@ -160,6 +118,27 @@ Future<void> showCreatePiggyModal(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: CreatePiggyWidget(
+                store: store,
+              ),
+            ),
+          ),
+        );
+      });
+}
+
+Future<void> showAddNewChildModal(
+    BuildContext context, Store<AppState> store) async {
+  await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: AddChildWidget(
                 store: store,
               ),
             ),

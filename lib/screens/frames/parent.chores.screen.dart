@@ -3,6 +3,7 @@ import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
@@ -31,6 +32,10 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
       selectedIndex = id;
       isChildSelected = true;
     });
+  }
+
+  _showAddChild() async {
+    await showAddNewChildModal(context, widget.store);
   }
 
   @override
@@ -75,6 +80,16 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                       color: Colors.white,
                       text: "Kitti megtakarításai",
                       onClick: () => _navigateToChild(1),
+                    ),
+                    GestureDetector(
+                      onTap: () async => await _showAddChild(),
+                      child: Text(
+                        "Gyerek hozzáadás",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
                     )
                   ],
                 ),

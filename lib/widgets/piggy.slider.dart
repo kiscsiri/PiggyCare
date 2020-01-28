@@ -20,6 +20,7 @@ class PiggySlider extends StatelessWidget {
       data: SliderThemeData(
           trackShape: CustomTrackShape(), thumbColor: Colors.black),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Slider(
             onChanged: (value) => onChange(value),

@@ -67,7 +67,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
               textAlign: TextAlign.center,
             ),
             PiggyInput(
-              hintText: loc.trans('how_much_it_cost_hint'),
+              hintText: loc.trans('what_do_you_saving'),
               textController: controller,
               width: MediaQuery.of(context).size.width,
               onValidate: (val) {
@@ -76,37 +76,48 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                 });
               },
             ),
-            Text(
-              loc.trans(
-                'how_much_it_cost',
+            Column(
+              children: <Widget>[
+                Text(
+                  loc.trans(
+                    'how_much_it_cost',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                PiggySlider(
+                  maxMinTextTrailing: Text("\$"),
+                  value: targetMoney,
+                  onChange: (val) {
+                    setState(() {
+                      targetMoney = val;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  loc.trans('how_much_per_feed_question'),
+                  textAlign: TextAlign.center,
+                ),
+                PiggySlider(
+                  maxMinTextTrailing: Text("\$"),
+                  value: moneyPerFeed,
+                  onChange: (val) {
+                    setState(() {
+                      moneyPerFeed = val;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: PiggyButton(
+                text: loc.trans('create_money_box'),
+                onClick: () async => await _createPiggy(),
               ),
-              textAlign: TextAlign.center,
-            ),
-            PiggySlider(
-              maxMinTextTrailing: Text("\$"),
-              value: targetMoney,
-              onChange: (val) {
-                setState(() {
-                  targetMoney = val;
-                });
-              },
-            ),
-            Text(
-              loc.trans('how_much_per_feed_question'),
-              textAlign: TextAlign.center,
-            ),
-            PiggySlider(
-              maxMinTextTrailing: Text("\$"),
-              value: moneyPerFeed,
-              onChange: (val) {
-                setState(() {
-                  moneyPerFeed = val;
-                });
-              },
-            ),
-            PiggyButton(
-              text: loc.trans('create_money_box'),
-              onClick: () async => await _createPiggy(),
             )
           ],
         ),

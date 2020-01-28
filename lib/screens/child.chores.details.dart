@@ -52,6 +52,14 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     super.initState();
   }
 
+  Future<void> _showCreateModal() async {
+    await showCreatePiggyModal(context, widget.store);
+  }
+
+  Future<void> _showAddTaskModal() async {
+    await showCreateTask(context, widget.store, child);
+  }
+
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
@@ -226,14 +234,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         ],
       ),
     ]));
-  }
-
-  Future<void> _showCreateModal() async {
-    await showCreatePiggyModal(context, widget.store);
-  }
-
-  Future<void> _showAddTaskModal() async {
-    await showCreatePiggyModal(context, widget.store);
   }
 }
 
