@@ -83,7 +83,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                   opacity: 0.9,
                   child: Container(
                       color: Colors.grey[300],
-                      width: MediaQuery.of(context).size.width * 0.8,
+                      width: MediaQuery.of(context).size.width * 0.65,
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,8 +96,9 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                         ],
                       )),
                 ),
+                Text('Megadhatod, hogy mennyit for érni 1 coins'),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: PiggySlider(
                     maxMinTextTrailing: Text(
                       '€',
@@ -116,7 +117,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: PiggyButton(
-                text: loc.trans("GYEREK HOZZÁADÁS"),
+                text: "GYEREK HOZZÁADÁS",
                 onClick: () async => await _createPiggy(),
               ),
             )
