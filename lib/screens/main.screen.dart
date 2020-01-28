@@ -18,6 +18,7 @@ import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/widgets/exit.dialog.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
@@ -56,14 +57,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
-    widget.store.dispatch(InitUserData(UserData()));
-    Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new StartupPage(
-                  store: widget.store,
-                )));
+    var isExit = await showExitModal(context);
+    if (isExit) {
+      await FirebaseAuth.instance.signOut();
+      widget.store.dispatch(InitUserData(UserData()));
+      Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new StartupPage(
+                    store: widget.store,
+                  )));
+    }
   }
 
   List<Widget> getFrames() {

@@ -18,6 +18,7 @@ class _SavingDetailsState extends State<SavingDetails> {
     if (widget.piggy.currentFeedAmount != null)
       return ((widget.piggy.targetPrice - widget.piggy.currentSaving) /
               widget.piggy.currentFeedAmount)
+              .toInt()
           .toString();
     return '0';
   }
@@ -38,11 +39,11 @@ class _SavingDetailsState extends State<SavingDetails> {
                   widget.piggy.item,
                   style: Theme.of(context).textTheme.display2,
                 ),
-                Text("Money box"),
+                Text("Malacpersely"),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                      'Start date: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
+                      'Gyűjtés kezdete: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
                 ),
               ],
             ),
@@ -80,15 +81,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'You have to collect ',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    " ${_getRemainingCoinsToCollect()}",
+                                    "${_getRemainingCoinsToCollect()}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.white,
@@ -98,7 +91,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                                 ],
                               ),
                               Text(
-                                "Piggy Coin to reach your goal!",
+                                "Eurót kell még gyűjtened, hogy elérd a célodat!",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,

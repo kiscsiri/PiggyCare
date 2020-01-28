@@ -76,7 +76,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${savingPerFeed} \$ = 1 ',
+                            '${savingPerFeed} € = 1 ',
                             style: TextStyle(fontSize: 20),
                           ),
                           Image.asset('assets/images/coin.png')

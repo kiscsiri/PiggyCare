@@ -64,6 +64,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                       child: Text(
                         "Gyerek Megtakarítások",
                         style: Theme.of(context).textTheme.display2,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     PiggyButton(

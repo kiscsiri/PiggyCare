@@ -5,7 +5,7 @@ BoxDecoration piggyBackgroundDecoration(
     BuildContext context, UserType userType) {
   var align = Alignment.bottomRight;
 
-  var assettName = 'assets/images/piggy_half.png';
+  var assettName = 'assets/images/child_half.png';
 
   return BoxDecoration(
     image: DecorationImage(
@@ -14,7 +14,7 @@ BoxDecoration piggyBackgroundDecoration(
         ),
         fit: BoxFit.scaleDown,
         colorFilter:
-            ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+            ColorFilter.mode(Colors.white.withOpacity(0.4), BlendMode.dstATop),
         alignment: align),
   );
 }
@@ -31,7 +31,7 @@ BoxDecoration piggyChildBackgroundDecoration(BuildContext context) {
         ),
         fit: BoxFit.scaleDown,
         colorFilter:
-            ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+            ColorFilter.mode(Colors.white.withOpacity(0.3), BlendMode.dstATop),
         alignment: align),
   );
 }

@@ -74,6 +74,7 @@ flutter:
     - assets/coin_sound.mp3
     - assets/task-ikon.svg
     - assets/images/child_half.png
+    - assets/images/Child-Normal.png
     - assets/animations/Baby-LevelUp.gif
     - assets/animations/Baby-Feed1.gif
     - assets/animations/Baby-Feed1.mp4

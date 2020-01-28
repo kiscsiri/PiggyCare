@@ -148,8 +148,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     child.name + " megtakarításai",
                     style: Theme.of(context).textTheme.display3,
                   ),
-                  Text("Válassz malacperselyt",
-                      style: Theme.of(context).textTheme.subtitle),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: Column(
@@ -170,7 +168,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text('${child.feedPerCoin} \$ = 1 '),
+                              Text('${child.feedPerCoin} € = 1 '),
                               Image.asset('assets/images/coin.png')
                             ],
                           )),

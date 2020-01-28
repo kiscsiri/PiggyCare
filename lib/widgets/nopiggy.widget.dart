@@ -35,14 +35,11 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
             new Text(
               loc.trans("if_you_dont_have"),
               textAlign: TextAlign.center,
-            ),
-            new Text(
-              loc.trans("you_can_create"),
-              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20),
             ),
             new Text(
               loc.trans("lets_start"),
-              style: Theme.of(context).textTheme.display4,
+              style: Theme.of(context).textTheme.display3,
               textAlign: TextAlign.center,
             ),
             Container(

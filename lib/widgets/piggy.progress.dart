@@ -22,7 +22,7 @@ class _PiggyProgressState extends State<PiggyProgress> {
     final currentSavingPadding = (MediaQuery.of(context).size.width *
         (1 - widget.saving / widget.targetPrice));
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 14.0, left: 14.0),
+      padding: const EdgeInsets.only(top: 8.0, right: 0.0, left: 14.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -38,11 +38,11 @@ class _PiggyProgressState extends State<PiggyProgress> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Text("${widget.saving.toInt()}\$"),
+              Text("${widget.saving.toInt()}€"),
               Padding(
                 padding: EdgeInsets.only(
-                    left: max(currentSavingPadding - 90, 10), right: 10),
-                child: Text("${widget.targetPrice.toInt()}\$"),
+                    left: max(currentSavingPadding - 100, 10), right: 0),
+                child: Text("${widget.targetPrice.toInt()}€"),
               )
             ],
           )

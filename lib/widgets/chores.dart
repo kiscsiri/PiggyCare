@@ -66,7 +66,7 @@ class _ChoresWidgetState extends State<ChoresWidget> {
           return ChoreInput(
             index: f.index,
             selected: true,
-            name: 'Task${f.index}',
+            name: '${tasks[i]}',
             selectIndex: (i) => _selectItem(i),
           );
         } else {

@@ -50,7 +50,7 @@ class PiggyFacebookButton extends StatelessWidget {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold),
                   ),
                 ),

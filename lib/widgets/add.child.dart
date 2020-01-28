@@ -58,13 +58,8 @@ class _AddChildWidgetState extends State<AddChildWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             new Text(
-              '+ Add meg a gyereked',
+              '+ Vedd fel a gyereked',
               style: Theme.of(context).textTheme.display2,
-              textAlign: TextAlign.center,
-            ),
-            new Text(
-              'Hozzáadhatod a gyereked',
-              style: Theme.of(context).textTheme.subtitle,
               textAlign: TextAlign.center,
             ),
             PiggyInput(
@@ -89,14 +84,14 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${feedPerDay} \$ = 1 ',
+                            '${feedPerDay} € = 1 ',
                             style: TextStyle(fontSize: 20),
                           ),
                           Image.asset('assets/images/coin.png')
                         ],
                       )),
                 ),
-                Text('Megadhatod, hogy mennyit for érni 1 coins'),
+                Text('Add meg, hogy mennyi legyen az értéke egy PiggyCoin-nak'),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: PiggySlider(
@@ -117,7 +112,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: PiggyButton(
-                text: "GYEREK HOZZÁADÁS",
+                text: "GYEREK HOZZÁADÁSA",
                 onClick: () async => await _createPiggy(),
               ),
             )
