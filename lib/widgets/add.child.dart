@@ -69,7 +69,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
             ),
             new Text(
               'Hozzáadhatod a gyereked',
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle,
               textAlign: TextAlign.center,
             ),
             PiggyInput(
