@@ -6,13 +6,15 @@ class PiggySlider extends StatelessWidget {
       this.value,
       this.onChange,
       this.maxMinTextTrailing,
-      this.trackColor})
+      this.trackColor,
+      this.maxVal})
       : super(key: key);
 
   final double value;
   final Function(double) onChange;
   final Text maxMinTextTrailing;
   final Color trackColor;
+  final double maxVal;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,10 @@ class PiggySlider extends StatelessWidget {
           Slider(
             onChanged: (value) => onChange(value),
             min: 0,
-            max: 100,
+            max: maxVal ?? 100,
             activeColor: trackColor ?? Theme.of(context).primaryColor,
             inactiveColor: trackColor ?? Theme.of(context).primaryColor,
-            divisions: 100,
+            divisions: maxVal.toInt() ?? 100,
             label: value.round().toString(),
             value: value,
           ),
@@ -51,7 +53,8 @@ class PiggySlider extends StatelessWidget {
               ),
               Row(
                 children: <Widget>[
-                  Text("100 ", style: Theme.of(context).textTheme.subtitle),
+                  Text("${maxVal.toInt() ?? 100} ",
+                      style: Theme.of(context).textTheme.subtitle),
                   maxMinTextTrailing ?? Image.asset('assets/images/coin.png'),
                 ],
               )

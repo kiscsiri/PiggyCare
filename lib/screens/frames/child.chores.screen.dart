@@ -83,17 +83,15 @@ class _ChoresPageState extends State<ChildChoresPage> {
         ],
       ),
       Container(
-        decoration: piggyBackgroundDecoration(
-            context, widget.store.state.user.userType),
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Text('Active Tasks',
+            new Text('Elvégzendő feladatok',
                 style: Theme.of(context).textTheme.display2),
             ChoresWidget(store: widget.store),
             PiggyButton(
-              text: "LET'S DOUBLE",
+              text: "DUPLÁZÁS",
               disabled: false,
               onClick: () {},
             ),
@@ -101,7 +99,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Finished tasks",
+                  "Elvégzett feladatok",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline,
                 ),

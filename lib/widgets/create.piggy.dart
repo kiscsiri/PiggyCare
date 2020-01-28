@@ -85,8 +85,9 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                   textAlign: TextAlign.center,
                 ),
                 PiggySlider(
-                  maxMinTextTrailing: Text("\$"),
+                  maxMinTextTrailing: Text("€"),
                   value: targetMoney,
+                  maxVal: 1000,
                   onChange: (val) {
                     setState(() {
                       targetMoney = val;
@@ -102,8 +103,9 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                   textAlign: TextAlign.center,
                 ),
                 PiggySlider(
-                  maxMinTextTrailing: Text("\$"),
+                  maxMinTextTrailing: Text("€"),
                   value: moneyPerFeed,
+                  maxVal: 10,
                   onChange: (val) {
                     setState(() {
                       moneyPerFeed = val;

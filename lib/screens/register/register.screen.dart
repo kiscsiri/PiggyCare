@@ -162,7 +162,7 @@ class _RegisterPageState extends State<LastPage> {
                       await _register(context);
                     }
                   }),
-              Text(loc.trans('connect_using')),
+              Text('Vagy regisztráljon másképp:'),
               PiggyGoogleButton(
                 text: "Google",
                 onClick: () async => signInAndRegisterGoogle(),

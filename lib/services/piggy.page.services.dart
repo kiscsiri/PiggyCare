@@ -39,7 +39,7 @@ Future<int> showPiggySelector(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Text(loc.trans('selector_title'),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display2),
+                          style: Theme.of(context).textTheme.display3),
                     ),
                     Text(
                       loc.trans('selector_explanation'),
@@ -218,31 +218,8 @@ Widget getFeedAnimation(
   }
 }
 
-showDemoOverDialog(BuildContext context) async {
-  var loc = PiggyLocalizations.of(context);
-
-  await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(loc.trans("congratulations"),
-              style: Theme.of(context).textTheme.display3),
-          content: Text(loc.trans("demo_over_dialog_content")),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      });
-}
-
 Future<void> loadAnimation(
     bool isLevelUp,
-    bool showDemoOverAlert,
     TickerProviderStateMixin tickerProviderStateMixin,
     BuildContext context,
     Store<AppState> store) async {

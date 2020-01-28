@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/services/piggy.firebase.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -105,8 +100,9 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   child: PiggySlider(
                     maxMinTextTrailing: Text(
-                      '\$',
+                      '€',
                     ),
+                    maxVal: 10,
                     onChange: (val) {
                       setState(() {
                         feedPerDay = val;

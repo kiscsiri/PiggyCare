@@ -62,14 +62,9 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 40.0),
                       child: Text(
-                        loc.trans('savings'),
+                        "Gyerek Megtakarítások",
                         style: Theme.of(context).textTheme.display2,
                       ),
-                    ),
-                    PiggyButton(
-                      color: Colors.white,
-                      text: "Saját megtakarítások",
-                      onClick: () => _navigate(),
                     ),
                     PiggyButton(
                       color: Colors.white,

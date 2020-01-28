@@ -116,19 +116,14 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
 
   Future<void> _feedPiggy(int piggyId) async {
     var tempLevel = widget.store.state.user.piggyLevel;
-    var tempIsDemoOver = widget.store.state.user.isDemoOver;
 
     widget.store.dispatch(FeedPiggy(widget.store.state.user.id, piggyId));
     NotificationServices.feedPiggy(widget.store.state.user.id);
 
-    var showDemoAlert = (tempIsDemoOver != widget.store.state.user.isDemoOver);
-    if (showDemoAlert) {
-      showDemoOverDialog(context);
-    }
     if (tempLevel.index == widget.store.state.user.piggyLevel.index) {
-      await loadAnimation(false, showDemoAlert, this, context, widget.store);
+      await loadAnimation(false, this, context, widget.store);
     } else {
-      await loadAnimation(true, showDemoAlert, this, context, widget.store);
+      await loadAnimation(true, this, context, widget.store);
     }
   }
 
@@ -261,7 +256,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
               coinVisible: _coinVisible,
               isOnTarget: isOnTarget,
               willAcceptStream: willAcceptStream,
-              scale:0.2,
+              scale: 0.2,
             )
           : Container(),
     ]);

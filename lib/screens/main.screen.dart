@@ -205,6 +205,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           bottomNavigationBar: PiggyNavigationBar(
             onNavigateTap: (index) => _navigate(index),
             store: widget.navigationStore,
+            userType: widget.store.state.user.userType,
           )),
     );
   }

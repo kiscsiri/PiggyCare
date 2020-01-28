@@ -19,6 +19,23 @@ BoxDecoration piggyBackgroundDecoration(
   );
 }
 
+BoxDecoration piggyChildBackgroundDecoration(BuildContext context) {
+  var align = Alignment.bottomRight;
+
+  var assettName = 'assets/images/child_half.png';
+
+  return BoxDecoration(
+    image: DecorationImage(
+        image: AssetImage(
+          assettName,
+        ),
+        fit: BoxFit.scaleDown,
+        colorFilter:
+            ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+        alignment: align),
+  );
+}
+
 BoxDecoration coinBackground(BuildContext context, UserType userType) {
   var assettName = 'assets/images/coins.png';
   return BoxDecoration(

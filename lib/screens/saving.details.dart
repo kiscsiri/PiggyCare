@@ -61,9 +61,10 @@ class _SavingDetailsState extends State<SavingDetails> {
                             left: 45.0,
                             bottom: MediaQuery.of(context).size.height * 0.05),
                         child: PiggySlider(
-                          maxMinTextTrailing: Text("\$"),
+                          maxMinTextTrailing: Text("€"),
                           value: widget.piggy.currentSaving.toDouble(),
                           onChange: (val) {},
+                          maxVal: 1000,
                           trackColor: Colors.white,
                         ),
                       ),

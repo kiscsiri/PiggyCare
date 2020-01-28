@@ -53,7 +53,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
                   : Image.asset('assets/images/adult_create.png'),
             ),
             PiggyButton(
-              text: "Create money box",
+              text: loc.trans('create_money_box'),
               onClick: () => _createPiggy(),
             ),
           ],

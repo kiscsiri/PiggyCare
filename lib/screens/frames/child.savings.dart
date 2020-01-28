@@ -35,7 +35,9 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.7,
-            decoration: piggyBackgroundDecoration(context, UserType.adult),
+            decoration: widget.store.state.user.userType == UserType.child
+                ? piggyBackgroundDecoration(context, UserType.adult)
+                : piggyChildBackgroundDecoration(context),
           ),
         ],
       ),
@@ -49,12 +51,12 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    "Savings",
+                    "Megtakarítások",
                     style: Theme.of(context).textTheme.display2,
                   ),
                 ),
                 Text(
-                  "Choose a money box!",
+                  "Válassz malacperselyt!",
                   style: Theme.of(context).textTheme.subtitle,
                 ),
               ],
@@ -87,8 +89,9 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                       ? Container()
                       : PiggySlider(
                           maxMinTextTrailing: Text(
-                            '\$',
+                            '€',
                           ),
+                          maxVal: 10.toDouble(),
                           onChange: (val) {
                             setState(() {
                               savingPerFeed = val.toInt();
@@ -100,7 +103,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
               ],
             ),
             PiggyButton(
-              text: "CREATE A MONEY BOX",
+              text: "MALACPERSELY LÉTREHOZÁSA",
               disabled: false,
               onClick: () async =>
                   await showCreatePiggyModal(context, widget.store),

@@ -153,7 +153,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: Column(
-                      children: tasks,
+                      children: savings,
                     ),
                   ),
                   Padding(
@@ -181,7 +181,8 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                         horizontal: MediaQuery.of(context).size.width * 0.15),
                     child: PiggySlider(
                       value: child.feedPerCoin.toDouble(),
-                      maxMinTextTrailing: Text('\$'),
+                      maxMinTextTrailing: Text('€'),
+                      maxVal: 10,
                       onChange: (val) {
                         setState(() {
                           child.feedPerCoin = val.toInt();
@@ -217,7 +218,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: Column(
-                      children: savings,
+                      children: tasks,
                     ),
                   ),
                   Padding(
@@ -230,7 +231,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     ]));
