@@ -67,7 +67,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
     } else {
       isRandomGenerated = false;
       return Image.asset(
-        'assets/images/Baby-Normal.png',
+        'assets/images/Child-Normal.png',
         gaplessPlayback: true,
       );
     }

@@ -224,7 +224,7 @@ Future<void> loadAnimation(
     BuildContext context,
     Store<AppState> store) async {
   AnimationController _controller = AnimationController(
-      duration: const Duration(milliseconds: 7500),
+      duration: const Duration(milliseconds: 8000),
       vsync: tickerProviderStateMixin)
     ..forward();
 
@@ -243,7 +243,7 @@ Future<void> loadAnimation(
   });
   var prefs = await SharedPreferences.getInstance();
   var feedRandom = prefs.getInt("animationCount");
-  if (feedRandom > 5) {
+  if (feedRandom > 2) {
     prefs.setInt('animationCount', 1);
     feedRandom = 1;
   }
@@ -277,7 +277,7 @@ Future<void> loadAnimation(
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Colors.grey[50],
+            color: Color(0xFFe25997),
           ),
         );
       });
@@ -288,7 +288,7 @@ Future<void> exitStartAnimation(
     bool isExit,
     BuildContext context) async {
   AnimationController _controller = AnimationController(
-      duration: Duration(milliseconds: !isExit ? 4500 : 6500),
+      duration: Duration(milliseconds: !isExit ? 6500 : 6500),
       vsync: tickerProviderStateMixin)
     ..forward();
 
@@ -324,7 +324,7 @@ Future<void> exitStartAnimation(
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Colors.grey[50],
+            color: Color(0xFFe25997),
           ),
         );
       });

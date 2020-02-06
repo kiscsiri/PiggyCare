@@ -25,8 +25,6 @@ class _ChoresWidgetState extends State<ChoresWidget> {
     setState(() {
       selectedIndex = index;
     });
-
-    var piggy = widget.store.state.user.piggies[index - 1];
   }
 
   Piggy getSelected() {
@@ -66,7 +64,7 @@ class _ChoresWidgetState extends State<ChoresWidget> {
           return ChoreInput(
             index: f.index,
             selected: true,
-            name: '${tasks[i]}',
+            name: '${tasks[f.index]}',
             selectIndex: (i) => _selectItem(i),
           );
         } else {
