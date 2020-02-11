@@ -224,7 +224,7 @@ Future<void> loadAnimation(
     BuildContext context,
     Store<AppState> store) async {
   AnimationController _controller = AnimationController(
-      duration: const Duration(milliseconds: 8000),
+      duration: const Duration(milliseconds: 6000),
       vsync: tickerProviderStateMixin)
     ..forward();
 
@@ -288,7 +288,7 @@ Future<void> exitStartAnimation(
     bool isExit,
     BuildContext context) async {
   AnimationController _controller = AnimationController(
-      duration: Duration(milliseconds: !isExit ? 6500 : 6500),
+      duration: Duration(milliseconds: !isExit ? 6000 : 6000),
       vsync: tickerProviderStateMixin)
     ..forward();
 
