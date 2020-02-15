@@ -28,6 +28,7 @@ class UserData {
   String pictureUrl;
   List<Piggy> piggies;
   List<Chore> chores;
+  List<UserData> children;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {
@@ -79,6 +80,7 @@ class UserData {
     name = another.name;
     chores = another.chores;
     piggies = another.piggies;
+    children = another.children;
   }
 
   factory UserData.fromFirebaseDocumentSnapshot(Map<String, dynamic> user) =>
@@ -129,6 +131,7 @@ class UserData {
       this.period = Period.daily,
       List<Piggy> piggies,
       List<Chore> chores,
+      List<UserData> children,
       this.piggyLevel,
       this.currentFeedTime,
       this.money,
@@ -140,5 +143,6 @@ class UserData {
       this.name,
       this.pictureUrl})
       : piggies = piggies ?? List<Piggy>(),
+        children = children ?? List<UserData>(),
         chores = chores ?? List<Chore>();
 }

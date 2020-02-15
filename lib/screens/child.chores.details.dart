@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/childsaving.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
@@ -41,15 +42,37 @@ class ChildDetailsWidget extends StatefulWidget {
 }
 
 class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
+  var children = List<UserData>();
+
   ChildDto child;
   var selectedTaskIndex = 0;
   var selectedSavingIndex = 0;
 
   @override
   void initState() {
+    var children =
+        mapChildrenToChilDto(widget.store.state.user.children).toList();
+
     child = children.singleWhere((t) => t.id == widget.id, orElse: null);
 
     super.initState();
+  }
+
+  List<ChildDto> mapChildrenToChilDto(List<UserData> children) {
+    int i = 0;
+    return children
+        .map((e) => ChildDto(
+            feedPerCoin: e.feedPerPeriod,
+            id: e.id,
+            name: e.name ?? e.email,
+            savings: e.piggies
+                .map((p) =>
+                    SavingDto(index: i++, name: p.item, price: p.targetPrice))
+                .toList(),
+            taks: e.chores
+                .map((c) => TaskDto(index: i++, name: c.title))
+                .toList()))
+        .toList();
   }
 
   Future<void> _showCreateModal() async {

@@ -93,7 +93,7 @@ class PiggyApp extends StatelessWidget {
             fontFamily: 'Montserrat',
             primaryColorDark: primaryDark,
             primaryTextTheme: TextTheme(
-              display1: TextStyle(
+              headline4: TextStyle(
                   color: primaryColor,
                   fontSize: 72.0,
                   fontWeight: FontWeight.bold),
@@ -112,7 +112,7 @@ class PiggyApp extends StatelessWidget {
             ),
             backgroundColor: Color(0xffd2576b),
             textTheme: TextTheme(
-              display1: TextStyle(
+              headline4: TextStyle(
                   color: primaryColor,
                   fontSize: 45.0,
                   fontWeight: FontWeight.bold),

@@ -80,6 +80,7 @@ class _PiggyInputState extends State<PiggyInput> {
               if (widget.onErrorMessage != null) widget.onErrorMessage(result);
               return result;
             }
+            return null;
           },
           decoration: InputDecoration(
               errorStyle: TextStyle(fontSize: 14),

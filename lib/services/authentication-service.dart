@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
@@ -54,8 +55,42 @@ class AuthenticationService {
     }
   }
 
-  static Future<void> authenticate(
+  static Future<void> _loginUser(
       FirebaseUser user, Store<AppState> store) async {
+    if (user != null) {
+      var value = await Firestore.instance
+          .collection('users')
+          .where("id", isEqualTo: user.uid)
+          .getDocuments();
+      if (value.documents.length > 0) {
+        UserData u = new UserData.fromFirebaseDocumentSnapshot(
+            value.documents.first.data);
+        user.reload();
+
+        final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+        _firebaseMessaging.getToken().then((val) {
+          var token = val;
+          NotificationServices.updateToken(token, user.uid);
+        });
+
+        if (u.userType == UserType.adult) {
+          var children = await Firestore.instance
+              .collection('users')
+              .where("parentId", isEqualTo: user.uid)
+              .getDocuments();
+          for (var childSnapshot in children.documents) {
+            u.children
+                .add(UserData.fromFirebaseDocumentSnapshot(childSnapshot.data));
+          }
+        }
+
+        store.dispatch(InitUserData(u));
+      }
+    }
+  }
+
+  static Future<void> authenticate(
+      FirebaseUser user, Store<AppState> store, BuildContext context) async {
     QuerySnapshot value = await Firestore.instance
         .collection("users")
         .where("id", isEqualTo: user.uid)
@@ -63,48 +98,25 @@ class AuthenticationService {
     if (value.documents.length == 0) {
       throw AuthException("", "No users found!");
     } else {
-      var data = value.documents[0];
-      UserData userData = UserData.fromFirebaseDocumentSnapshot(data.data);
-      userData.id = user.uid;
-      store.dispatch(InitUserData(userData));
+      await _loginUser(user, store);
+      Navigator.of(context).pushReplacementNamed("home");
     }
   }
 
   static Future<void> splashLogin(
       Store<AppState> store, BuildContext context) async {
-    (Connectivity().checkConnectivity()).then((value) {
-      if (value == ConnectivityResult.mobile ||
-          value == ConnectivityResult.wifi) {
-        var _auth = FirebaseAuth.instance;
-        _auth.currentUser().then((user) {
-          if (user != null) {
-            Firestore.instance
-                .collection('users')
-                .where("uid", isEqualTo: user.uid)
-                .getDocuments()
-                .then((value) async {
-              if (value.documents.length > 0) {
-                UserData u = new UserData.fromFirebaseDocumentSnapshot(
-                    value.documents.first.data);
-                user.reload();
-
-                final FirebaseMessaging _firebaseMessaging =
-                    FirebaseMessaging();
-                _firebaseMessaging.getToken().then((val) {
-                  var token = val;
-                  NotificationServices.updateToken(token, user.uid);
-                });
-
-                store.dispatch(InitUserData(u));
-                Navigator.of(context).pushReplacementNamed("home");
-              }
-            });
-          }
-        });
-      } else if (value == ConnectivityResult.none) {
-        alert(context);
+    var value = await Connectivity().checkConnectivity();
+    if (value == ConnectivityResult.mobile ||
+        value == ConnectivityResult.wifi) {
+      var _auth = FirebaseAuth.instance;
+      var user = await _auth.currentUser();
+      if (user != null) {
+        await _loginUser(user, store);
+        Navigator.of(context).pushReplacementNamed("home");
       }
-    });
+    } else if (value == ConnectivityResult.none) {
+      alert(context);
+    }
   }
 
   static Future<void> registerUser(Store<AppState> store) async {

@@ -22,6 +22,7 @@ AppState initUser(AppState state, InitUserData action) {
       isDemoOver: action.user.isDemoOver,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
+      children: action.user.children,
       created: action.user.created);
   return new AppState(
       user: newUserData, registrationData: state.registrationData);

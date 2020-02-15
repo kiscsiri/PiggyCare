@@ -83,6 +83,32 @@ Future<int> showPiggySelector(
   return id;
 }
 
+Future<void> showAlert(BuildContext context, String errorMessage) async {
+  await showDialog<String>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.2),
+        child: AlertDialog(
+            title: Text("Hiba!"),
+            actions: <Widget>[
+              PiggyButton(
+                text: "OK",
+                onClick: () => Navigator.pop(context),
+              )
+            ],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: Center(
+              child: Text(errorMessage ?? ""),
+            )),
+      );
+    },
+  );
+}
+
 Future<int> showCreateTask(
     BuildContext context, Store<AppState> store, ChildDto child) async {
   await showDialog<void>(

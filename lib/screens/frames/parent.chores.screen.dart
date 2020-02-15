@@ -6,6 +6,7 @@ import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 
 class ParentChoresPage extends StatefulWidget {
@@ -20,18 +21,38 @@ class ParentChoresPage extends StatefulWidget {
 
 class _ParentChoresPageState extends State<ParentChoresPage> {
   var isChildSelected = false;
-  var selectedIndex = 0;
+  var selectedId = "";
 
-  void _navigate() {
-    widget.pageController.animateToPage(1,
-        curve: Curves.linear, duration: new Duration(milliseconds: 350));
-  }
-
-  void _navigateToChild(int id) {
+  void _navigateToChild(String id) {
     setState(() {
-      selectedIndex = id;
+      selectedId = id;
       isChildSelected = true;
     });
+  }
+
+  Widget getGyerekMegtakaritasok(BuildContext context) {
+    var children = widget.store.state.user.children;
+    var gyerekLista = List.generate(
+        children.length,
+        (int i) => PiggyButton(
+              text: children[i].name ?? children[i].email + " megtakarításai",
+              onClick: () => _navigateToChild(children[i].id),
+              color: Colors.white,
+            ));
+    if (gyerekLista.length != 0) {
+      return Column(
+        children: gyerekLista,
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "Vedd fel a gyerekeidet ismerősnek, hogy lásd a megtakarításaikat!",
+          style: Theme.of(context).textTheme.headline2,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
   }
 
   _showAddChild() async {
@@ -42,7 +63,10 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     return isChildSelected
-        ? ChildDetailsWidget(id: selectedIndex.toString())
+        ? ChildDetailsWidget(
+            id: selectedId.toString(),
+            store: widget.store,
+          )
         : Stack(children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -67,16 +91,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    PiggyButton(
-                      color: Colors.white,
-                      text: "Petike megtakarításai",
-                      onClick: () => _navigateToChild(0),
-                    ),
-                    PiggyButton(
-                      color: Colors.white,
-                      text: "Kitti megtakarításai",
-                      onClick: () => _navigateToChild(1),
-                    ),
+                    getGyerekMegtakaritasok(context),
                     GestureDetector(
                       onTap: () async => await _showAddChild(),
                       child: Text(

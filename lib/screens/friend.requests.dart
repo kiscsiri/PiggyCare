@@ -4,7 +4,8 @@ import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/user.services.dart';
 
 class FirendRequestsScreen extends StatefulWidget {
-  const FirendRequestsScreen({Key key, @required this.currentUserId, this.userType})
+  const FirendRequestsScreen(
+      {Key key, @required this.currentUserId, this.userType})
       : super(key: key);
 
   final String currentUserId;
@@ -21,7 +22,8 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
   }
 
   _accept(String fromId) async {
-    await UserServices.acceptRequest(fromId, widget.currentUserId, widget.userType);
+    await UserServices.acceptRequest(
+        fromId, widget.currentUserId, widget.userType);
     Navigator.of(context).pop();
   }
 
@@ -57,10 +59,18 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
                               trailing: Container(
                                 height: MediaQuery.of(context).size.height / 4,
                                 width: MediaQuery.of(context).size.width / 4,
-                                child: Row(children: <Widget>[
-                                  IconButton(icon: Icon(Icons.clear, color: Colors.red), onPressed: () => _refuse(u.id)),
-                                  IconButton(icon: Icon(Icons.done, color:Colors.green), onPressed: () => _accept(u.id))
-                                ],),
+                                child: Row(
+                                  children: <Widget>[
+                                    IconButton(
+                                        icon: Icon(Icons.clear,
+                                            color: Colors.red),
+                                        onPressed: () => _refuse(u.id)),
+                                    IconButton(
+                                        icon: Icon(Icons.done,
+                                            color: Colors.green),
+                                        onPressed: () => _accept(u.id))
+                                  ],
+                                ),
                               )))
                           .toList());
             }

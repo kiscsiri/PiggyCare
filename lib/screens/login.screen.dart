@@ -36,8 +36,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final _telephoneFormKey = new GlobalKey<FormState>();
 
-  TextEditingController _phoneCodeController = new TextEditingController();
-  TextEditingController _smsCodeController = TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _pwController = TextEditingController();
   VideoPlayerController _videoPlayerController;
 
   @override
@@ -50,18 +50,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _phoneCodeController.dispose();
+    _emailController.dispose();
     _videoPlayerController.dispose();
-    _smsCodeController.dispose();
+    _pwController.dispose();
     super.dispose();
   }
 
   _loginWithEmailAndPassword(BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: _smsCodeController.text,
-    );
+    final AuthCredential credential = EmailAuthProvider.getCredential(
+        email: _emailController.text, password: _pwController.text);
     FirebaseUser user;
     try {
       AuthResult auth = await _auth.signInWithCredential(credential);
@@ -75,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user == null) throw Exception();
 
     try {
-      await AuthenticationService.authenticate(user, widget.store);
+      await AuthenticationService.authenticate(user, widget.store, context);
     } catch (err) {}
   }
 
@@ -83,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
     var user = await AuthenticationService.signInWithGoogle(widget.store);
 
     try {
-      await AuthenticationService.authenticate(user, widget.store);
+      await AuthenticationService.authenticate(user, widget.store, context);
 
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (context) => new MainPage(
@@ -123,14 +121,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   PiggyInput(
                     inputIcon: FontAwesomeIcons.user,
-                    hintText: loc.trans("user_name"),
-                    textController: _phoneCodeController,
+                    hintText: loc.trans("email"),
+                    textController: _emailController,
                     width: MediaQuery.of(context).size.width * 0.7,
                     onValidate: (value) {
                       if (value.isEmpty) {
                         return loc.trans("required_field");
                       }
-                      return "";
+                      return null;
                     },
                     onErrorMessage: (error) {
                       setState(() {});
@@ -139,13 +137,14 @@ class _LoginPageState extends State<LoginPage> {
                   PiggyInput(
                     inputIcon: Icons.lock_outline,
                     hintText: loc.trans("password"),
-                    textController: _smsCodeController,
+                    textController: _pwController,
                     obscureText: true,
                     width: MediaQuery.of(context).size.width * 0.7,
                     onValidate: (value) {
                       if (value.isEmpty) {
                         return loc.trans("required_field");
                       }
+                      return null;
                     },
                     onErrorMessage: (error) {
                       setState(() {});

@@ -8,6 +8,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/google.button.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -53,18 +54,22 @@ class _RegisterPageState extends State<LastPage> {
   }
 
   Future<void> _register(BuildContext context) async {
-    var res = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text, password: _passwordController.text);
+    try {
+      var res = await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
 
-    widget.store.dispatch(SetFromOauth(
-        res.user.email, res.user.displayName, res.user.uid, res.user.photoUrl));
+      widget.store.dispatch(SetFromOauth(res.user.email, res.user.displayName,
+          res.user.uid, res.user.photoUrl));
 
-    AuthenticationService.registerUser(widget.store);
+      AuthenticationService.registerUser(widget.store);
 
-    Navigator.of(context).pushReplacement(new MaterialPageRoute(
-        builder: (context) => new MainPage(
-              store: widget.store,
-            )));
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (context) => new MainPage(
+                store: widget.store,
+              )));
+    } on Exception catch (err) {
+      await showAlert(context, "Létezik már az adott e-mail cím");
+    }
   }
 
   testSignInWithPhoneNumber(BuildContext context) async {

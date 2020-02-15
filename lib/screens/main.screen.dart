@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async {
         var isExitTrue = await showExitModal(context);
-        if (isExitTrue) {
+        if (isExitTrue ?? false) {
           exit(0);
         }
         return false;
@@ -122,7 +122,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       : NetworkImage(
                                           widget.store.state.user.pictureUrl))),
                         ),
-                        Text(widget.store.state.user.name),
+                        Text(widget.store.state.user.name ?? ""),
                       ],
                     ),
                   ),
