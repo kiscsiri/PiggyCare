@@ -44,7 +44,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
               title: Text(
                 "${loc.trans("piggy_offer_some_plans")} ${widget.store.state.registrationData.item}" +
                     ((loc.locale.languageCode == "hu") ? "-t!" : "!"),
-                style: Theme.of(context).textTheme.display3,
+                style: Theme.of(context).textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
               content: Container(
@@ -228,7 +228,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                         child: new Text(
                           loc.trans("welcome"),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.title,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                       )
                     : Container(
@@ -239,7 +239,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                   child: new Text(
                     loc.trans("how_much_it_cost"),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.display3,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                 ),
                 Padding(
@@ -269,6 +269,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                       } catch (e) {
                         return loc.trans("price_must_be_number_validation");
                       }
+                      return null;
                     },
                     onErrorMessage: null,
                   ),

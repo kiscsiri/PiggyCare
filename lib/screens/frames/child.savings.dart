@@ -52,12 +52,12 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     "Megtakarítások",
-                    style: Theme.of(context).textTheme.display2,
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
                 Text(
                   "Válassz malacperselyt!",
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],
             ),
@@ -76,7 +76,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${savingPerFeed} € = 1 ',
+                            '$savingPerFeed € = 1 ',
                             style: TextStyle(fontSize: 20),
                           ),
                           Image.asset('assets/images/coin.png')

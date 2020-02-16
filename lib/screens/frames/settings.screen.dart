@@ -98,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
             height: boxHeight,
             child: Center(
                 child: new Text(loc.trans("feeding_settings"),
-                    style: Theme.of(context).textTheme.display2)),
+                    style: Theme.of(context).textTheme.headline3)),
           ),
           new ConstrainedBox(
             constraints: const BoxConstraints(
@@ -132,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     " $_feedPerPeriod \$",
                                     style: Theme.of(context)
                                         .primaryTextTheme
-                                        .display3,
+                                        .headline2,
                                   )
                                 ],
                               ),
@@ -158,11 +158,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                   new Text('1 \$',
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .display4),
+                                          .headline1),
                                   new Text("10 \$",
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .display4)
+                                          .headline1)
                                 ],
                               ),
                             )

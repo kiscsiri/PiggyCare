@@ -18,7 +18,7 @@ Future<bool> showExitModal(BuildContext context) async {
               children: <Widget>[
                 new Text(
                   "Valóban kilépsz?",
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.headline2,
                   textAlign: TextAlign.center,
                 ),
                 Padding(

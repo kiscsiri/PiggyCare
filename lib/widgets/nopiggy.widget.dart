@@ -29,7 +29,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
           children: <Widget>[
             new Text(
               loc.trans("welcome_on_board"),
-              style: Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center,
             ),
             new Text(
@@ -39,7 +39,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
             ),
             new Text(
               loc.trans("lets_start"),
-              style: Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center,
             ),
             Container(

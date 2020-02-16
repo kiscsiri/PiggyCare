@@ -86,17 +86,16 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
 
 AppState handleChoresActions(AppState appState, ChoreAction action) {
   if (action is AddChore) {
-    ChoreFirebaseServices().addChore(action.chore);
+    ChoreFirebaseServices.createChoreForUser(action.chore);
     return addChore(appState, action);
   } else if (action is RemoveChore) {
-    ChoreFirebaseServices().removeChore(action.choreId);
+    // TODO firebase service
     return removeChore(appState, action);
   } else if (action is FinishChore) {
-    ChoreFirebaseServices().updateChoreProperty('isDone', true, action.choreId);
+    // TODO - Firebase service
     return finishChore(appState, action);
   } else if (action is AcceptChore) {
-    ChoreFirebaseServices()
-        .updateChoreProperty('isValidated', true, action.choreId);
+    // TODO - firebase service
     return validateChore(appState, action);
   }
   return null;

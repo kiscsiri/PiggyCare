@@ -1,3 +1,4 @@
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/user/child.model.dart';
@@ -5,8 +6,9 @@ import 'package:piggybanx/models/user/parent.model.dart';
 
 AppState addChore(AppState state, AddChore action) {
   var user = state.user;
-  if (user is Parent) {
-    var child = user.children.singleWhere((d) => d.id == action.chore.childId);
+  if (user.userType == UserType.adult) {
+    var child =
+        user.children.singleWhere((d) => d.documentId == action.chore.childId);
     child.chores.add(action.chore);
   }
 
@@ -28,7 +30,7 @@ AppState removeChore(AppState state, RemoveChore action) {
 AppState finishChore(AppState state, FinishChore action) {
   var user = state.user;
   if (user is Child) {
-    var chore = user.chores.singleWhere((d) => d.id == action.childId);
+    var chore = user.chores.singleWhere((d) => d.id == action.choreId);
     chore.isDone = true;
   }
 

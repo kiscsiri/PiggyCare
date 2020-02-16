@@ -12,6 +12,7 @@ part 'user.model.g.dart';
 @JsonSerializable(nullable: false)
 class UserData {
   String id;
+  String documentId;
   int saving;
   UserType userType = UserType.individual;
   Period period;
@@ -53,8 +54,8 @@ class UserData {
     }
   }
 
-  factory UserData.fromJson(Map<String, dynamic> json) =>
-      _$UserDataFromJson(json);
+  factory UserData.fromJson(Map<String, dynamic> json, String documentId) =>
+      _$UserDataFromJson(json, documentId);
 
   Map<String, dynamic> toJson() => _$UserDataToJson(this);
 
@@ -65,6 +66,7 @@ class UserData {
   UserData.fromUserData(UserData another) {
     feedPerPeriod = another.feedPerPeriod;
     id = another.id;
+    documentId = another.documentId;
     lastFeed = another.lastFeed;
     money = another.money;
     userType = another.userType;
@@ -83,10 +85,12 @@ class UserData {
     children = another.children;
   }
 
-  factory UserData.fromFirebaseDocumentSnapshot(Map<String, dynamic> user) =>
-      _$UserDataFromJson(user);
+  factory UserData.fromFirebaseDocumentSnapshot(
+          Map<String, dynamic> user, String documentId) =>
+      _$UserDataFromJson(user, documentId);
 
-  factory UserData.fromMap(Map user) => _$UserDataFromJson(user);
+  factory UserData.fromMap(Map user, String documentId) =>
+      _$UserDataFromJson(user, documentId);
 
   factory UserData.constructInitial(RegistrationData register) {
     return new UserData(
@@ -125,6 +129,7 @@ class UserData {
 
   UserData(
       {this.id,
+      this.documentId,
       this.saving,
       this.userType = UserType.individual,
       this.feedPerPeriod,

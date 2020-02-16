@@ -223,7 +223,8 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                   child: new Text(
                                     loc.trans("piggy_full"),
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.display2,
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
                                   ),
                                 ),
                                 Padding(

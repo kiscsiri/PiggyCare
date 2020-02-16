@@ -80,6 +80,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _signInWithGoogle() async {
     var user = await AuthenticationService.signInWithGoogle(widget.store);
 
+    if (user == null) {
+      return;
+    }
+
     try {
       await AuthenticationService.authenticate(user, widget.store, context);
 
@@ -113,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
                 child: new Text(
                   loc.trans("login"),
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.headline2,
                   textAlign: TextAlign.center,
                 ),
               ),

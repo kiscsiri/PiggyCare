@@ -14,7 +14,6 @@ class _PiggyPageState extends State<PiggyTestPage>
     with TickerProviderStateMixin {
   BehaviorSubject<bool> willAcceptStream;
 
-  Tween<double> _tween;
   AnimationController _animationController;
 
   int counter = 0;
@@ -26,7 +25,6 @@ class _PiggyPageState extends State<PiggyTestPage>
   void initState() {
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _tween = Tween(begin: 0.15, end: 0.25);
     _animationController.forward();
 
     willAcceptStream = new BehaviorSubject<bool>();

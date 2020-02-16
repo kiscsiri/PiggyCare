@@ -6,9 +6,10 @@ part of 'user.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserData _$UserDataFromJson(Map json) {
+UserData _$UserDataFromJson(Map json, String documentId) {
   return UserData(
     id: json['id'] as String,
+    documentId: documentId,
     saving: json['saving'] as int,
     userType: _$enumDecode(_$UserTypeEnumMap, json['userType']),
     feedPerPeriod: json['feedPerPeriod'] as int,
@@ -32,6 +33,7 @@ UserData _$UserDataFromJson(Map json) {
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'id': instance.id,
+      'documentId': instance.documentId,
       'saving': instance.saving,
       'userType': _$UserTypeEnumMap[instance.userType],
       'period': $PeriodEnumMap[instance.period],

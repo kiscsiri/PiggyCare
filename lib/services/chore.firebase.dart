@@ -1,46 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:piggybanx/firebase/firebase.implementations.dart/implementations.export.dart';
-import 'package:piggybanx/firebase/locator.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
+import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/screens/child.chores.details.dart';
+import 'package:piggybanx/services/user.services.dart';
 
 class ChoreFirebaseServices extends ChangeNotifier {
-  ChoreApi _api = locator<ChoreApi>();
+  static Future<void> createChoreForUser(Chore chore) async {
+    try {
+      var user = await UserServices.getUserById(chore.childId);
 
-  List<Chore> chores;
+      user.chores.add(chore);
 
-  Future<List<Chore>> fetchChores() async {
-    var result = await _api.getDataCollection();
-    chores = result.documents.map((doc) => Chore.fromMap(doc.data)).toList();
-    return chores;
+      Firestore.instance
+          .collection('users')
+          .document(user.documentId)
+          .updateData(user.toJson());
+    } catch (err) {
+      throw Exception("Felhasználó nem található!");
+    }
   }
 
-  Stream<QuerySnapshot> fetchChoresAsStream() {
-    return _api.streamDataCollection();
-  }
+  static Future<void> createChildChore(String childId, TaskDto task) async {
+    var result =
+        await Firestore.instance.collection('users').document(childId).get();
 
-  Future<Chore> getChoreById(String id) async {
-    var doc = await _api.getDocumentById(id);
-    return Chore.fromMap(doc.data);
-  }
+    var user =
+        UserData.fromFirebaseDocumentSnapshot(result.data, result.documentID);
 
-  Future removeChore(String id) async {
-    await _api.removeDocument(id);
-    return;
-  }
+    user.chores.add(Chore(
+        isDone: false,
+        childId: childId,
+        details: task.name,
+        isValidated: false,
+        reward: "2",
+        title: task.name,
+        id: user.chores.length++));
 
-  Future updateChore(Chore data, String id) async {
-    await _api.updateDocument(data.toJson(), id);
-    return;
-  }
-
-  Future updateChoreProperty(String property, dynamic value, String id) async {
-    await _api.updateDocumentProperty(property, value, id);
-    return;
-  }
-
-  Future addChore(Chore data) async {
-    await _api.addDocument(data.toJson());
-    return;
+    await Firestore.instance.collection('users').add(user.toJson());
   }
 }

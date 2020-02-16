@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/models/userRequest/user.request.dart';
+import 'package:piggybanx/services/notification.services.dart';
 
 class UserServices {
   static Future<List<UserData>> getUsers(
@@ -33,7 +34,7 @@ class UserServices {
     }
 
     return result
-        .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data))
+        .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data, u.documentID))
         .toList();
   }
 
@@ -57,7 +58,7 @@ class UserServices {
       users.add(user.documents.first);
     }
     return users
-        .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data))
+        .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data, u.documentID))
         .toList();
   }
 
@@ -69,7 +70,7 @@ class UserServices {
         .collection('userRequests')
         .add(request.userRequestToJson());
 
-    //TODO - send notification
+    NotificationServices.newFriendRequest(toId);
   }
 
   static Future<void> acceptRequest(
@@ -82,9 +83,6 @@ class UserServices {
         .getDocuments();
 
     if (result.documents.isEmpty) throw HttpException("Not found");
-
-    var userReq = UserRequest().userRequestFromJson(
-        result.documents.first.data, result.documents.first.documentID);
 
     await Firestore.instance
         .collection('userRequests')
@@ -123,5 +121,15 @@ class UserServices {
         .collection('userRequests')
         .document(userReq.id)
         .delete();
+  }
+
+  static Future<UserData> getUserById(String id) async {
+    var value = await Firestore.instance.collection('users').document(id).get();
+    if (value.data != null) {
+      return UserData.fromFirebaseDocumentSnapshot(
+          value.data, value.documentID);
+    } else {
+      throw Exception("User not found!");
+    }
   }
 }

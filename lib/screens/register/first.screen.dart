@@ -82,7 +82,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                         padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
                         child: new Text(
                           loc.trans("you_are"),
-                          style: Theme.of(context).textTheme.display3,
+                          style: Theme.of(context).textTheme.headline2,
                           textAlign: TextAlign.center,
                         )),
                     PiggyButton(

@@ -19,7 +19,6 @@ import 'models/appState.dart';
 import 'models/user/user.export.dart';
 import 'screens/register/first.screen.dart';
 import 'screens/register/register.screen.dart';
-import 'services/services.export.dart';
 
 var width = 0.0;
 var height = 0.0;
@@ -72,14 +71,7 @@ class PiggyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            builder: (_) => locator<ChoreFirebaseServices>()),
-        ChangeNotifierProvider(
-            builder: (_) => locator<PiggyFirebaseServices>()),
-        ChangeNotifierProvider(builder: (_) => locator<UserFirebaseServices>()),
-        ChangeNotifierProvider(builder: (_) => locator<ItemFirebaseServices>()),
-      ],
+      providers: [],
       child: MaterialApp(
           supportedLocales: supportedLangs,
           localizationsDelegates: localizationDelegates,
@@ -97,15 +89,15 @@ class PiggyApp extends StatelessWidget {
                   color: primaryColor,
                   fontSize: 72.0,
                   fontWeight: FontWeight.bold),
-              display2: TextStyle(
+              headline3: TextStyle(
                   color: primaryColor,
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold),
-              display3: TextStyle(
+              headline2: TextStyle(
                   color: primaryColor,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold),
-              display4: TextStyle(
+              headline1: TextStyle(
                   color: primaryColor,
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold),
@@ -116,19 +108,19 @@ class PiggyApp extends StatelessWidget {
                   color: primaryColor,
                   fontSize: 45.0,
                   fontWeight: FontWeight.bold),
-              display2: TextStyle(
+              headline3: TextStyle(
                   color: primaryColor,
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold),
-              display3: TextStyle(
+              headline2: TextStyle(
                   color: primaryColor,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold),
-              display4: TextStyle(
+              headline1: TextStyle(
                   color: primaryColor,
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold),
-              title: TextStyle(
+              headline6: TextStyle(
                   color: primaryDark,
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold),

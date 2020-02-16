@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
@@ -39,7 +38,7 @@ Future<int> showPiggySelector(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Text(loc.trans('selector_title'),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display3),
+                          style: Theme.of(context).textTheme.headline2),
                     ),
                     Text(
                       loc.trans('selector_explanation'),
@@ -109,7 +108,7 @@ Future<void> showAlert(BuildContext context, String errorMessage) async {
   );
 }
 
-Future<int> showCreateTask(
+Future<void> showCreateTask(
     BuildContext context, Store<AppState> store, ChildDto child) async {
   await showDialog<void>(
       context: context,
@@ -195,7 +194,7 @@ Future<String> showUserAddModal(
                     Text(
                       "Keresés e-mail vagy név alapján",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.display3,
+                      style: Theme.of(context).textTheme.headline2,
                     ),
                     PiggyInput(
                       hintText: "A családtag...",
@@ -203,6 +202,7 @@ Future<String> showUserAddModal(
                         if (val.isEmpty) {
                           return "Can't be empty!";
                         }
+                        return null;
                       },
                       textController: textController,
                     )
@@ -221,7 +221,9 @@ Future<String> showUserAddModal(
         });
 
     return textController.text;
-  } on Exception {}
+  } on Exception {
+    return "";
+  }
 }
 
 Widget getFeedAnimation(
@@ -283,9 +285,10 @@ Future<void> loadAnimation(
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             _controller.dispose();
             imageCache.clear();
+            return true;
           },
           child: Container(
             child: AnimatedBuilder(
@@ -331,9 +334,10 @@ Future<void> exitStartAnimation(
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             _controller.dispose();
             imageCache.clear();
+            return true;
           },
           child: Container(
             child: AnimatedBuilder(

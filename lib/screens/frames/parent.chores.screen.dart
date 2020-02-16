@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 
 class ParentChoresPage extends StatefulWidget {
@@ -35,8 +33,8 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
     var gyerekLista = List.generate(
         children.length,
         (int i) => PiggyButton(
-              text: children[i].name ?? children[i].email + " megtakarításai",
-              onClick: () => _navigateToChild(children[i].id),
+              text: (children[i].name ?? children[i].email) + " megtakarításai",
+              onClick: () => _navigateToChild(children[i].documentId),
               color: Colors.white,
             ));
     if (gyerekLista.length != 0) {
@@ -61,10 +59,9 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    var loc = PiggyLocalizations.of(context);
     return isChildSelected
         ? ChildDetailsWidget(
-            id: selectedId.toString(),
+            documentId: selectedId.toString(),
             store: widget.store,
           )
         : Stack(children: [
@@ -87,7 +84,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                       padding: const EdgeInsets.symmetric(vertical: 40.0),
                       child: Text(
                         "Gyerek Megtakarítások",
-                        style: Theme.of(context).textTheme.display2,
+                        style: Theme.of(context).textTheme.headline3,
                         textAlign: TextAlign.center,
                       ),
                     ),

@@ -16,9 +16,8 @@ class SavingDetails extends StatefulWidget {
 class _SavingDetailsState extends State<SavingDetails> {
   String _getRemainingCoinsToCollect() {
     if (widget.piggy.currentFeedAmount != null)
-      return ((widget.piggy.targetPrice - widget.piggy.currentSaving) /
+      return ((widget.piggy.targetPrice - widget.piggy.currentSaving) ~/
               widget.piggy.currentFeedAmount)
-          .toInt()
           .toString();
     return '0';
   }
@@ -40,7 +39,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
                     widget.piggy.item,
-                    style: Theme.of(context).textTheme.display2,
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
                 Text("Malacpersely"),

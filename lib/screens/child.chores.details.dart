@@ -11,31 +11,11 @@ import 'package:piggybanx/widgets/piggy.slider.dart';
 import 'package:piggybanx/widgets/task.widget.dart';
 import 'package:redux/redux.dart';
 
-var children = [
-  ChildDto(feedPerCoin: 3, name: "Petike", id: "0", savings: [
-    SavingDto(name: "Play station", price: 600),
-    SavingDto(name: "Focilabda", price: 5),
-    SavingDto(name: "Bulizás", price: 10)
-  ], taks: [
-    TaskDto(name: "Takarítsd ki a szobád!"),
-    TaskDto(name: "Vidd ki a szemetet!"),
-    TaskDto(name: "Csináld meg a házifeladatot!"),
-  ]),
-  ChildDto(feedPerCoin: 7, id: "1", name: "Kitti", savings: [
-    SavingDto(name: "Görkorcsolya", price: 10),
-    SavingDto(name: "Telefon", price: 150),
-    SavingDto(name: "Ruha", price: 20)
-  ], taks: [
-    TaskDto(name: "Segíts az ebédet elkészíteni!"),
-    TaskDto(name: "Csináld meg a házifeladatot!"),
-    TaskDto(name: "Szerezz egy 5-öst a suliban!"),
-  ])
-];
-
 class ChildDetailsWidget extends StatefulWidget {
-  const ChildDetailsWidget({Key key, this.id, this.store}) : super(key: key);
+  const ChildDetailsWidget({Key key, this.documentId, this.store})
+      : super(key: key);
 
-  final String id;
+  final String documentId;
   final Store<AppState> store;
   @override
   _ChildDetailsWidgetState createState() => _ChildDetailsWidgetState();
@@ -53,7 +33,8 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     var children =
         mapChildrenToChilDto(widget.store.state.user.children).toList();
 
-    child = children.singleWhere((t) => t.id == widget.id, orElse: null);
+    child = children.singleWhere((t) => t.documentId == widget.documentId,
+        orElse: null);
 
     super.initState();
   }
@@ -64,6 +45,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         .map((e) => ChildDto(
             feedPerCoin: e.feedPerPeriod,
             id: e.id,
+            documentId: e.documentId,
             name: e.name ?? e.email,
             savings: e.piggies
                 .map((p) =>
@@ -81,6 +63,13 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
   Future<void> _showAddTaskModal() async {
     await showCreateTask(context, widget.store, child);
+    setState(() {
+      var children =
+          mapChildrenToChilDto(widget.store.state.user.children).toList();
+
+      child = children.singleWhere((t) => t.documentId == widget.documentId,
+          orElse: null);
+    });
   }
 
   @override
@@ -169,7 +158,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 children: <Widget>[
                   Text(
                     child.name + " megtakarításai",
-                    style: Theme.of(context).textTheme.display3,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
@@ -232,10 +221,10 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 children: <Widget>[
                   Text(
                     child.name + " feladatai",
-                    style: Theme.of(context).textTheme.display3,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   Text("Válassz malacperselyt",
-                      style: Theme.of(context).textTheme.subtitle),
+                      style: Theme.of(context).textTheme.subtitle2),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: Column(
@@ -265,9 +254,17 @@ class ChildDto {
 
   String name;
   int feedPerCoin;
-  String id;
 
-  ChildDto({this.taks, this.id, this.savings, this.name, this.feedPerCoin});
+  String id;
+  String documentId;
+
+  ChildDto(
+      {this.taks,
+      this.id,
+      this.documentId,
+      this.savings,
+      this.name,
+      this.feedPerCoin});
 }
 
 class TaskDto {

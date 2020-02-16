@@ -16,58 +16,45 @@ class ChildChoresPage extends StatefulWidget {
 }
 
 class _ChoresPageState extends State<ChildChoresPage> {
-  List<Widget> _getFinishedChores() {
+  Widget _getFinishedChores() {
+    var finishedChores =
+        widget.store.state.user.chores.where((element) => element.isDone);
     int i = 1;
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text('${i++}.  '),
-              Text('1 óra sport'),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Image.asset('assets/images/yellow_tick.png')],
+
+    var result;
+
+    if (finishedChores.length != 0) {
+      result = finishedChores
+          .map(
+            (e) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text('${i++}.  '),
+                    Text(e.title),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/images/yellow_tick.png')
+                  ],
+                )
+              ],
+            ),
           )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('${i++}.  '),
-              Text('5-ös matematika témazáró'),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Image.asset('assets/images/yellow_tick.png')],
-          )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('${i++}.  '),
-              Text('Nappali felporszívózása'),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Image.asset('assets/images/yellow_tick.png')],
-          )
-        ],
-      )
-    ];
+          .toList();
+    } else {
+      result = Text("Nincs befejezett feladatod :(");
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[result],
+    );
   }
 
   @override
@@ -88,7 +75,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             new Text('Elvégzendő feladatok',
-                style: Theme.of(context).textTheme.display2),
+                style: Theme.of(context).textTheme.headline3),
             ChoresWidget(store: widget.store),
             PiggyButton(
               text: "DUPLÁZÁS",
@@ -101,7 +88,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
                 Text(
                   "Elvégzett feladatok",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
                 Image.asset('assets/images/pink_tick.png')
               ],
@@ -109,11 +96,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60.0),
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _getFinishedChores(),
-                ),
+                child: _getFinishedChores(),
               ),
             )
           ],

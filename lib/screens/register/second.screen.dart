@@ -47,7 +47,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                       child: new Text(
                         loc.trans("welcome"),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                     )
                   : Container(
@@ -59,7 +59,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                       child: new Text(
                         loc.trans("3_easy_steps"),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.display3,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     )
                   : Container(),
@@ -68,7 +68,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                 child: new Text(
                   loc.trans("register_saving_for"),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.headline2,
                 ),
               ),
               Padding(
@@ -85,6 +85,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                     if (value.isEmpty) {
                       return loc.trans("required_field");
                     }
+                    return null;
                   },
                 ),
               ),
@@ -93,7 +94,7 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                   onClick: () {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
-                   
+
                       widget.store.dispatch(action);
                       Navigator.push(
                           context,

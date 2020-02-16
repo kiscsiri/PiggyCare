@@ -39,7 +39,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(loc.trans("how_much_i_earned"),
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).primaryTextTheme.display3)),
+                      style: Theme.of(context).primaryTextTheme.headline2)),
               Text(
                 loc.trans("check_savings"),
                 textAlign: TextAlign.center,

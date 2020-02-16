@@ -5,7 +5,7 @@ import 'package:piggybanx/enums/period.dart';
 
 class NotificationServices {
   //Debug
-  // static String url = "http://localhost:8080";
+  // static String url = "http://localhost:8080/";
 
   //Release
   static String url = "https://piggybanx.herokuapp.com/";
@@ -70,16 +70,36 @@ class NotificationServices {
     });
   }
 
-  static updateToken(String token, String uid) async {
+  static updateToken(String token, String uid, String platform) async {
     Map<String, Object> mappedData = {
-      'userId': uid,
+      "userId": uid,
       "device_id": token,
+      "platform": platform
     };
 
     var jsonString = json.encode(mappedData);
 
     await http
         .put(url + "updateToken",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static newFriendRequest(String uid) async {
+    Map<String, Object> mappedData = {
+      "userId": uid,
+    };
+
+    var jsonString = json.encode(mappedData);
+
+    await http
+        .put(url + "sendFriendRequest",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"

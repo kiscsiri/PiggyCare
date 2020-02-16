@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -49,7 +48,6 @@ class _AddChildWidgetState extends State<AddChildWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var loc = PiggyLocalizations.of(context);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -59,7 +57,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
           children: <Widget>[
             new Text(
               '+ Vedd fel a gyereked',
-              style: Theme.of(context).textTheme.display2,
+              style: Theme.of(context).textTheme.headline3,
               textAlign: TextAlign.center,
             ),
             PiggyInput(
@@ -70,6 +68,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                 setState(() {
                   name = val;
                 });
+                return null;
               },
             ),
             Column(

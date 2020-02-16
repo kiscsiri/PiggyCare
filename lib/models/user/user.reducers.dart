@@ -22,32 +22,19 @@ AppState initUser(AppState state, InitUserData action) {
       isDemoOver: action.user.isDemoOver,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
+      chores: action.user.chores,
+      documentId: action.user.documentId,
       children: action.user.children,
       created: action.user.created);
-  return new AppState(
-      user: newUserData, registrationData: state.registrationData);
+
+  return AppState(user: newUserData, registrationData: state.registrationData);
 }
 
 AppState updateUser(AppState state, UpdateUserData action) {
-  var newUserData = new UserData(
-      feedPerPeriod: action.user.feedPerPeriod,
-      id: state.user.id,
-      lastFeed: state.user.lastFeed,
-      piggies: state.user.piggies,
-      money: state.user.money,
-      currentFeedTime: state.user.currentFeedTime,
-      piggyLevel: state.user.piggyLevel,
-      period: action.user.period,
-      name: state.user.name,
-      email: state.user.email,
-      pictureUrl: state.user.pictureUrl,
-      userType: state.user.userType,
-      phoneNumber: state.user.phoneNumber,
-      saving: state.user.saving,
-      isDemoOver: state.user.isDemoOver,
-      created: state.user.created);
-  return new AppState(
-      user: newUserData, registrationData: state.registrationData);
+  state.user.period = action.user.period;
+  state.user.feedPerPeriod = action.user.feedPerPeriod;
+
+  return AppState.fromAppState(state);
 }
 
 feedPiggy(AppState state, FeedPiggy action) {

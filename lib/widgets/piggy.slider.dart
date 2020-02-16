@@ -47,14 +47,14 @@ class PiggySlider extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     value.round().toString() + " " + maxMinTextTrailing.data,
-                    style: Theme.of(context).textTheme.display3,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                 ],
               ),
               Row(
                 children: <Widget>[
                   Text("${maxVal.toInt() ?? 100} ",
-                      style: Theme.of(context).textTheme.subtitle),
+                      style: Theme.of(context).textTheme.subtitle2),
                   maxMinTextTrailing ?? Image.asset('assets/images/coin.png'),
                 ],
               )

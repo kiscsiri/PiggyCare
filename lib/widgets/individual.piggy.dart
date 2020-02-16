@@ -165,7 +165,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                           child: new Text(
                             loc.trans("piggy_full"),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.display2,
+                            style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
                         Padding(
@@ -185,7 +185,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                           child: new Text(
                             loc.trans("piggy_hungry"),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.display2,
+                            style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
                         Padding(
@@ -241,7 +241,7 @@ class _IndividualPiggyWidgetState extends State<IndividualPiggyWidget>
                         children: <Widget>[
                           Text(
                             loc.trans("next_feed_in"),
-                            style: Theme.of(context).textTheme.display4,
+                            style: Theme.of(context).textTheme.headline1,
                           ),
                           Text(timeUntilNextFeed),
                         ],

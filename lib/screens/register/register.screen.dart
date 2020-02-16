@@ -67,7 +67,7 @@ class _RegisterPageState extends State<LastPage> {
           builder: (context) => new MainPage(
                 store: widget.store,
               )));
-    } on Exception catch (err) {
+    } on Exception {
       await showAlert(context, "Létezik már az adott e-mail cím");
     }
   }
@@ -109,7 +109,7 @@ class _RegisterPageState extends State<LastPage> {
                 padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
                 child: new Text(
                   loc.trans("final_step"),
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.headline2,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -122,6 +122,7 @@ class _RegisterPageState extends State<LastPage> {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
                   }
+                  return null;
                 },
                 onErrorMessage: (error) {
                   setState(() {});
@@ -136,6 +137,7 @@ class _RegisterPageState extends State<LastPage> {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
                   }
+                  return null;
                 },
                 onErrorMessage: (error) {
                   setState(() {});
@@ -151,6 +153,7 @@ class _RegisterPageState extends State<LastPage> {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
                   }
+                  return null;
                 },
                 onErrorMessage: (error) {
                   setState(() {});

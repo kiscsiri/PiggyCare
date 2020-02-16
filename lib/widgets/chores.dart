@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/widgets/chore.field.dart';
 
 import 'package:redux/redux.dart';
-
-const tasks = {1: "Autó lemosás", 2: "Házi feladat írás", 3: "Hólapátolás"};
 
 class ChoresWidget extends StatefulWidget {
   final Store<AppState> store;
@@ -20,51 +17,32 @@ class _ChoresWidgetState extends State<ChoresWidget> {
   var savingTypeList = List<ChoreInput>();
 
   _selectItem(int index) {
-    var selected =
-        savingTypeList.singleWhere((t) => t.index == index, orElse: null);
     setState(() {
       selectedIndex = index;
     });
   }
 
-  Piggy getSelected() {
-    // var selected = savingTypeList.singleWhere((t) => t.selected == true);
-
-    // // var piggy = new Piggy(
-    // //   currentFeedAmount: 1,
-    // //   currentSaving: 0,
-    // //   doubleUp: false,
-    // //   isAproved: false,
-    // //   isFeedAvailable: false,
-    // //   item: selected.name,
-    // //   money: 0,
-    // //   targetPrice: selected.coinValue,
-    // //   piggyLevel: PiggyLevel.Baby,
-    // // );
-
-    // return piggy;
-  }
-
   @override
   Widget build(BuildContext context) {
-    var dummyList = ["auto", "mosogatas", "szemetkivitel"];
+    var user = widget.store.state.user;
 
     int i = 0;
-    savingTypeList = dummyList.take(3).map((p) {
+    savingTypeList = user.chores.where((c) => !c.isDone).take(3).map((p) {
       i++;
       return ChoreInput(
         index: i,
-        name: tasks[i],
+        name: p.title,
         selectIndex: (i) => _selectItem(i),
       );
     }).toList();
+
     if (selectedIndex != null) {
       savingTypeList = savingTypeList.map((f) {
         if (f.index == selectedIndex) {
           return ChoreInput(
             index: f.index,
             selected: true,
-            name: '${tasks[f.index]}',
+            name: '${f.name}',
             selectIndex: (i) => _selectItem(i),
           );
         } else {

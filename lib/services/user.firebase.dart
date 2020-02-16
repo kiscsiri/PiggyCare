@@ -1,8 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:piggybanx/enums/level.dart';
 
-import '../firebase/firebase.implementations.dart/implementations.export.dart';
-import '../firebase/locator.dart';
 import '../models/appState.dart';
 import '../models/user/user.export.dart';
 
@@ -30,7 +27,7 @@ feedPiggyDatabase(FeedPiggy action) {
       .getDocuments()
       .then((QuerySnapshot value) {
     var doc = value.documents.first;
-    var user = UserData.fromFirebaseDocumentSnapshot(doc.data);
+    var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
     var piggy =
         user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
 
@@ -68,40 +65,4 @@ feedPiggyDatabase(FeedPiggy action) {
         .document(doc.documentID)
         .updateData(user.toJson());
   });
-}
-
-class UserFirebaseServices extends ChangeNotifier {
-  UsersApi _api = locator<UsersApi>();
-
-  List<UserData> users;
-
-  Future<List<UserData>> fetchChores() async {
-    var result = await _api.getDataCollection();
-    users = result.documents.map((doc) => UserData.fromMap(doc.data)).toList();
-    return users;
-  }
-
-  Stream<QuerySnapshot> fetchChoresAsStream() {
-    return _api.streamDataCollection();
-  }
-
-  Future<UserData> getChoreById(String id) async {
-    var doc = await _api.getDocumentById(id);
-    return UserData.fromMap(doc.data);
-  }
-
-  Future removeChore(String id) async {
-    await _api.removeDocument(id);
-    return;
-  }
-
-  Future updateChore(UserData data, String id) async {
-    await _api.updateDocument(data.toJson(), id);
-    return;
-  }
-
-  Future addChore(UserData data) async {
-    await _api.addDocument(data.toJson());
-    return;
-  }
 }

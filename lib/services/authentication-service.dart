@@ -64,14 +64,13 @@ class AuthenticationService {
           .getDocuments();
       if (value.documents.length > 0) {
         UserData u = new UserData.fromFirebaseDocumentSnapshot(
-            value.documents.first.data);
+            value.documents.first.data, value.documents.first.documentID);
         user.reload();
 
         final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-        _firebaseMessaging.getToken().then((val) {
-          var token = val;
-          NotificationServices.updateToken(token, user.uid);
-        });
+        var val = await _firebaseMessaging.getToken();
+        NotificationServices.updateToken(
+            val, user.uid, Platform.isAndroid ? "android" : "ios");
 
         if (u.userType == UserType.adult) {
           var children = await Firestore.instance
@@ -79,8 +78,8 @@ class AuthenticationService {
               .where("parentId", isEqualTo: user.uid)
               .getDocuments();
           for (var childSnapshot in children.documents) {
-            u.children
-                .add(UserData.fromFirebaseDocumentSnapshot(childSnapshot.data));
+            u.children.add(UserData.fromFirebaseDocumentSnapshot(
+                childSnapshot.data, childSnapshot.documentID));
           }
         }
 
@@ -136,7 +135,8 @@ class AuthenticationService {
       _firebaseMessaging.getToken().then((val) {
         var token = val;
         _firebaseMessaging.onTokenRefresh.listen((token) {
-          NotificationServices.updateToken(token, user.uid);
+          NotificationServices.updateToken(
+              token, user.uid, Platform.isAndroid ? "android" : "ios");
         });
 
         if (Platform.isAndroid) {
@@ -153,7 +153,8 @@ class AuthenticationService {
       store.dispatch(InitUserData(userData));
     } else {
       var data = value.documents[0];
-      UserData userData = new UserData.fromFirebaseDocumentSnapshot(data.data);
+      UserData userData =
+          new UserData.fromFirebaseDocumentSnapshot(data.data, data.documentID);
       store.dispatch(InitUserData(userData));
     }
   }
@@ -162,6 +163,8 @@ class AuthenticationService {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return null;
+
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 

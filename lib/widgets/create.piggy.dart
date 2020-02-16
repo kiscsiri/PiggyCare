@@ -63,7 +63,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
           children: <Widget>[
             new Text(
               loc.trans("create_money_box"),
-              style: Theme.of(context).textTheme.display4,
+              style: Theme.of(context).textTheme.headline1,
               textAlign: TextAlign.center,
             ),
             PiggyInput(
@@ -74,6 +74,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                 setState(() {
                   item = val;
                 });
+                return null;
               },
             ),
             Column(
