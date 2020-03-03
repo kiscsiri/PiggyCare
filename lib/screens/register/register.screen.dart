@@ -58,16 +58,19 @@ class _RegisterPageState extends State<LastPage> {
       var res = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
 
-      widget.store.dispatch(SetFromOauth(res.user.email, res.user.displayName,
-          res.user.uid, res.user.photoUrl));
+      widget.store.dispatch(SetFromOauth(
+          res.user.email,
+          res.user.displayName ?? _userNameController.text,
+          res.user.uid,
+          res.user.photoUrl));
 
-      AuthenticationService.registerUser(widget.store);
+      await AuthenticationService.registerUser(widget.store);
 
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (context) => new MainPage(
                 store: widget.store,
               )));
-    } on Exception {
+    } on Exception catch (err) {
       await showAlert(context, "Létezik már az adott e-mail cím");
     }
   }

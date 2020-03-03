@@ -29,8 +29,8 @@ class PiggyButton extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: new Container(
           alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.09,
+          width: MediaQuery.of(context).size.width * 0.7,
+          height: MediaQuery.of(context).size.height * 0.07,
           decoration: new BoxDecoration(
               color: (disabled)
                   ? Colors.grey

@@ -7,8 +7,7 @@ import 'package:piggybanx/models/user/parent.model.dart';
 AppState addChore(AppState state, AddChore action) {
   var user = state.user;
   if (user.userType == UserType.adult) {
-    var child =
-        user.children.singleWhere((d) => d.documentId == action.chore.childId);
+    var child = user.children.singleWhere((d) => d.id == action.chore.childId);
     child.chores.add(action.chore);
   }
 
@@ -29,7 +28,7 @@ AppState removeChore(AppState state, RemoveChore action) {
 
 AppState finishChore(AppState state, FinishChore action) {
   var user = state.user;
-  if (user is Child) {
+  if (user.userType == UserType.child) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
     chore.isDone = true;
   }
@@ -40,11 +39,24 @@ AppState finishChore(AppState state, FinishChore action) {
 
 AppState validateChore(AppState state, AcceptChore action) {
   var user = state.user;
-  if (user is Parent) {
-    var child = user.children.singleWhere((d) => d.id == action.childId);
+  if (user.userType == UserType.child) {
+    var chore = user.chores.singleWhere((d) => d.id == action.choreId);
 
-    var chore = child.chores.singleWhere((ch) => ch.id == action.choreId);
     chore.isDone = true;
+    chore.isValidated = true;
+  }
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState refuseChore(AppState state, RefuseChore action) {
+  var user = state.user;
+  if (user.userType == UserType.child) {
+    var chore = user.chores.singleWhere((d) => d.id == action.choreId);
+
+    chore.isDone = false;
+    chore.isValidated = false;
   }
 
   var newUserData = user;

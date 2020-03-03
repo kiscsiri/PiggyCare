@@ -34,37 +34,84 @@ AppState setUserType(AppState state, SetUserType action) {
 }
 
 AppState addItem(AppState state, AddPiggy action) {
-  var newItems = state.user.piggies;
+  var newUser = state.user;
 
-  newItems.add(Piggy(
-      currentSaving: 0,
-      piggyLevel: PiggyLevel.Baby,
-      currentFeedAmount: 2,
-      doubleUp: false,
-      id: state.user.piggies.length + 1,
-      isFeedAvailable: true,
-      money: 0,
-      userId: state.user.id,
-      item: action.piggy.item,
-      isAproved: false,
-      targetPrice: action.piggy.targetPrice));
+  if (action.piggy.userId == state.user.id) {
+    var newItems = state.user.piggies;
 
-  var newUser = UserData(
-      created: state.user.created,
-      currentFeedTime: state.user.currentFeedTime,
-      feedPerPeriod: state.user.feedPerPeriod,
-      userType: state.user.userType,
-      id: state.user.id,
-      piggies: state.user.piggies,
-      lastFeed: state.user.lastFeed,
-      money: state.user.money,
-      email: state.user.email,
-      name: state.user.name,
-      pictureUrl: state.user.pictureUrl,
-      period: state.user.period,
-      phoneNumber: state.user.phoneNumber,
-      piggyLevel: state.user.piggyLevel,
-      saving: state.user.saving);
+    newItems.add(Piggy(
+        currentSaving: 0,
+        piggyLevel: PiggyLevel.Baby,
+        currentFeedAmount: 2,
+        doubleUp: false,
+        id: state.user.piggies.length + 1,
+        isFeedAvailable: true,
+        money: 0,
+        userId: state.user.id,
+        item: action.piggy.item,
+        isAproved: false,
+        targetPrice: action.piggy.targetPrice));
+
+    newUser = UserData(
+        created: state.user.created,
+        currentFeedTime: state.user.currentFeedTime,
+        feedPerPeriod: state.user.feedPerPeriod,
+        userType: state.user.userType,
+        id: state.user.id,
+        piggies: state.user.piggies,
+        lastFeed: state.user.lastFeed,
+        money: state.user.money,
+        children: state.user.children,
+        documentId: state.user.documentId,
+        parentId: state.user.parentId,
+        email: state.user.email,
+        name: state.user.name,
+        isDemoOver: state.user.isDemoOver,
+        chores: state.user.chores,
+        pictureUrl: state.user.pictureUrl,
+        period: state.user.period,
+        phoneNumber: state.user.phoneNumber,
+        piggyLevel: state.user.piggyLevel,
+        saving: state.user.saving);
+  } else {
+    var child = state.user.children
+        .singleWhere((element) => element.id == action.piggy.userId);
+
+    child.piggies.add(Piggy(
+        currentSaving: 0,
+        piggyLevel: PiggyLevel.Baby,
+        currentFeedAmount: 2,
+        doubleUp: false,
+        id: state.user.piggies.length + 1,
+        isFeedAvailable: true,
+        money: 0,
+        userId: state.user.id,
+        item: action.piggy.item,
+        isAproved: false,
+        targetPrice: action.piggy.targetPrice));
+
+    newUser = UserData(
+        created: state.user.created,
+        currentFeedTime: state.user.currentFeedTime,
+        feedPerPeriod: state.user.feedPerPeriod,
+        userType: state.user.userType,
+        id: state.user.id,
+        piggies: state.user.piggies,
+        lastFeed: state.user.lastFeed,
+        money: state.user.money,
+        children: state.user.children,
+        documentId: state.user.documentId,
+        parentId: state.user.parentId,
+        email: state.user.email,
+        name: state.user.name,
+        isDemoOver: state.user.isDemoOver,
+        chores: state.user.chores,
+        pictureUrl: state.user.pictureUrl,
+        period: state.user.period,
+        phoneNumber: state.user.phoneNumber,
+        piggyLevel: state.user.piggyLevel,
+        saving: state.user.saving);
+  }
 
   return new AppState(user: newUser, registrationData: new RegistrationData());
 }

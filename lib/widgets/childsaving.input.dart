@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'saving.type.input.curve.dart';
-
 class ChildSavingInputWidget extends StatefulWidget {
   const ChildSavingInputWidget(
       {Key key,
@@ -85,10 +83,6 @@ class _SavingTypeInputState extends State<ChildSavingInputWidget> {
                         height: MediaQuery.of(context).size.height * 0.12,
                         child: Image.asset("assets/coin.png"),
                       ),
-                      CustomPaint(
-                        painter: CurvePainter(),
-                        child: Container(),
-                      )
                     ],
                   ),
                 )

@@ -20,6 +20,7 @@ AppState initUser(AppState state, InitUserData action) {
       piggyLevel: action.user.piggyLevel,
       period: action.user.period,
       isDemoOver: action.user.isDemoOver,
+      parentId: action.user.parentId,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
       chores: action.user.chores,
@@ -33,7 +34,6 @@ AppState initUser(AppState state, InitUserData action) {
 AppState updateUser(AppState state, UpdateUserData action) {
   state.user.period = action.user.period;
   state.user.feedPerPeriod = action.user.feedPerPeriod;
-
   return AppState.fromAppState(state);
 }
 
@@ -54,19 +54,20 @@ feedPiggy(AppState state, FeedPiggy action) {
     state.user.isDemoOver = true;
   }
 
-  state.user.saving = state.user.saving + state.user.feedPerPeriod;
-  state.user.money = state.user.money - state.user.feedPerPeriod;
-  state.user.lastFeed = DateTime.now();
-
   var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
   var piggy = state.user.piggies[index];
 
+  state.user.saving = state.user.saving + state.user.feedPerPeriod;
+
+  state.user.money = state.user.money - state.user.feedPerPeriod;
+  state.user.lastFeed = DateTime.now();
+
   state.user.piggies[index] = Piggy(
-      currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
+      currentSaving: (piggy.currentSaving + piggy.currentFeedAmount),
       item: piggy.item,
       isAproved: piggy.isAproved,
       piggyLevel: state.user.piggyLevel,
-      currentFeedAmount: state.user.feedPerPeriod,
+      currentFeedAmount: piggy.currentFeedAmount,
       doubleUp: piggy.doubleUp,
       money: piggy.money,
       userId: piggy.userId,

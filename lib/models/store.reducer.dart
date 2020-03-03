@@ -97,6 +97,8 @@ AppState handleChoresActions(AppState appState, ChoreAction action) {
   } else if (action is AcceptChore) {
     // TODO - firebase service
     return validateChore(appState, action);
+  } else if (action is RefuseChore) {
+    return refuseChore(appState, action);
   }
   return null;
 }

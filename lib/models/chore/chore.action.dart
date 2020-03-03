@@ -34,3 +34,10 @@ class AcceptChore extends ChoreAction {
 
   AcceptChore(this.childId, this.choreId);
 }
+
+class RefuseChore extends ChoreAction {
+  final int choreId;
+  final String childId;
+
+  RefuseChore(this.childId, this.choreId);
+}

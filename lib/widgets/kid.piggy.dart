@@ -4,6 +4,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/nopiggy.widget.dart';
@@ -96,7 +97,6 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller.duration = new Duration(seconds: 60);
-
           setState(() {
             tween.begin =
                 widget.store.state.user.timeUntilNextFeed.inSeconds % 60;

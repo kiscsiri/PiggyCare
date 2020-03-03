@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/services/notification.modals.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/chores.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -17,8 +19,9 @@ class ChildChoresPage extends StatefulWidget {
 
 class _ChoresPageState extends State<ChildChoresPage> {
   Widget _getFinishedChores() {
-    var finishedChores =
-        widget.store.state.user.chores.where((element) => element.isDone);
+    var finishedChores = widget.store.state.user.chores
+        .where((element) => element.isDone && element.isValidated)
+        .toList();
     int i = 1;
 
     var result;
@@ -36,24 +39,19 @@ class _ChoresPageState extends State<ChildChoresPage> {
                     Text(e.title),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/images/yellow_tick.png')
-                  ],
-                )
+                Image.asset('assets/images/yellow_tick.png', scale: 3.5)
               ],
             ),
           )
           .toList();
     } else {
-      result = Text("Nincs befejezett feladatod :(");
+      result = [Text("Nincs befejezett feladatod :(")];
     }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[result],
+      children: result,
     );
   }
 
@@ -80,7 +78,17 @@ class _ChoresPageState extends State<ChildChoresPage> {
             PiggyButton(
               text: "DUPLÁZÁS",
               disabled: false,
-              onClick: () {},
+              onClick: () async {
+                var user = widget.store.state.user;
+                if (user.parentId != null) {
+                  if (await showChildrenAskDoubleSubmit(context) ?? false) {
+                    NotificationServices.sendNotificationDouble(
+                        widget.store.state.user.parentId,
+                        widget.store.state.user.name,
+                        widget.store.state.user.id);
+                  }
+                }
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

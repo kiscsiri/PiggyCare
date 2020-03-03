@@ -15,13 +15,13 @@ class UserServices {
     var searchByName = await Firestore.instance
         .collection('users')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
-        .where("name", isEqualTo: searchString)
+        .where("name", isEqualTo: searchString.trim().toLowerCase())
         .getDocuments();
 
     var searchByEmail = await Firestore.instance
         .collection('users')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
-        .where("email", isEqualTo: searchString)
+        .where("email", isEqualTo: searchString.trim().toLowerCase())
         .getDocuments();
 
     var result = List<DocumentSnapshot>();
@@ -66,11 +66,34 @@ class UserServices {
     UserRequest request =
         UserRequest(fromId: fromId, isPending: true, toId: toId);
 
-    await Firestore.instance
+    var result = await Firestore.instance
         .collection('userRequests')
-        .add(request.userRequestToJson());
+        .where('fromId', isEqualTo: fromId)
+        .where('toId', isEqualTo: toId)
+        .getDocuments();
 
-    NotificationServices.newFriendRequest(toId);
+    var sender = await Firestore.instance
+        .collection('users')
+        .where('id', isEqualTo: fromId)
+        .getDocuments();
+
+    if (result.documents.length == 0) {
+      try {
+        await Firestore.instance
+            .collection('userRequests')
+            .add(request.userRequestToJson());
+      } catch (err) {
+        throw Exception("Hiba történt!");
+      }
+
+      if (sender.documents.length != 0) {
+        var user = UserData.fromFirebaseDocumentSnapshot(
+            sender.documents.first.data, sender.documents.first.documentID);
+        NotificationServices.newFriendRequest(toId, user.name);
+      }
+    } else {
+      throw Exception("Már elküldted az ismerős kérelmet az adott embernek!");
+    }
   }
 
   static Future<void> acceptRequest(
@@ -100,8 +123,6 @@ class UserServices {
         .document(data.documents.first.documentID)
         .updateData(
             {'parentId': currentUserType == UserType.adult ? toId : fromId});
-
-    //TODO - send notification
   }
 
   static Future<void> declineRequest(String fromId, String toId) async {
@@ -124,12 +145,25 @@ class UserServices {
   }
 
   static Future<UserData> getUserById(String id) async {
-    var value = await Firestore.instance.collection('users').document(id).get();
-    if (value.data != null) {
-      return UserData.fromFirebaseDocumentSnapshot(
-          value.data, value.documentID);
-    } else {
-      throw Exception("User not found!");
+    var value;
+    try {
+      value = await Firestore.instance.collection('users').document(id).get();
+    } catch (err) {} finally {
+      if (value.data != null) {
+        return UserData.fromFirebaseDocumentSnapshot(
+            value.data, value.documentID);
+      } else {
+        var res = await Firestore.instance
+            .collection('users')
+            .where('id', isEqualTo: id)
+            .getDocuments();
+
+        if (res.documents.length != 0) {
+          value = res.documents.first;
+          return UserData.fromFirebaseDocumentSnapshot(
+              value.data, value.documentID);
+        }
+      }
     }
   }
 }

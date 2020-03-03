@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggybanx/services/notification.handler.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,26 +40,28 @@ alert(BuildContext context) {
   );
 }
 
+alertNoCon() {
+  return AlertDialog(
+    title: Text("asd"),
+    content: Text("asd"),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('Ok'),
+        onPressed: () {
+          exit(0);
+        },
+      ),
+    ],
+  );
+}
+
 class _StartupPageState extends State<StartupPage>
     with TickerProviderStateMixin {
   bool _isLoaded = false;
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
     SharedPreferences.getInstance().then((prefs) {
       if (!prefs.containsKey("animationCount")) {
         prefs.setInt("animationCount", 1);

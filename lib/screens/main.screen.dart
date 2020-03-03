@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
@@ -16,6 +17,7 @@ import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/notification.handler.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/exit.dialog.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
@@ -44,8 +46,21 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
   }
 
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async =>
+            await onResumeNotificationHandler(
+                message, context, widget.store, widget._pageController),
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+        },
+        onResume: (Map<String, dynamic> message) async =>
+            await onResumeNotificationHandler(
+                message, context, widget.store, widget._pageController),
+        onBackgroundMessage: myBackgroundMessageHandler);
     super.initState();
   }
 

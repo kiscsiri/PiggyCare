@@ -9,6 +9,7 @@ part of 'user.model.dart';
 UserData _$UserDataFromJson(Map json, String documentId) {
   return UserData(
     id: json['id'] as String,
+    parentId: json['parentId'] as String,
     documentId: documentId,
     saving: json['saving'] as int,
     userType: _$enumDecode(_$UserTypeEnumMap, json['userType']),
@@ -42,6 +43,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
       'currentFeedTime': instance.currentFeedTime,
       'phoneNumber': instance.phoneNumber,
+      'parentId': instance.parentId,
       'lastFeed': instance.lastFeed.toIso8601String(),
       'created': instance.created.toIso8601String(),
       'money': instance.money,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'saving.type.input.curve.dart';
-
 class TaskInputWidget extends StatefulWidget {
   const TaskInputWidget(
       {Key key,
@@ -82,10 +80,6 @@ class _SavingTypeInputState extends State<TaskInputWidget> {
                         height: MediaQuery.of(context).size.height * 0.10,
                         child: Image.asset("assets/coin.png"),
                       ),
-                      CustomPaint(
-                        painter: CurvePainter(),
-                        child: Container(),
-                      )
                     ],
                   ),
                 )

@@ -3,7 +3,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
-
+import 'package:piggybanx/screens/search.user.dart';
 import 'piggy.slider.dart';
 
 class AddChildWidget extends StatefulWidget {
@@ -23,27 +23,20 @@ class _AddChildWidgetState extends State<AddChildWidget> {
 
   var controller = TextEditingController();
   Future _createPiggy() async {
-    // var action = CreateTempPiggy(
-    //     piggy: Piggy(
-    //   currentFeedAmount: 1,
-    //   currentSaving: 0,
-    //   doubleUp: false,
-    //   isAproved: false,
-    //   isFeedAvailable: true,
-    //   item: controller.text,
-    //   money: 0,
-    //   targetPrice: targetMoney.round(),
-    //   piggyLevel: PiggyLevel.Baby,
-    // ));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => UserSearchScreen(
+                  currentUserId: widget.store.state.user.id,
+                  userType: widget.store.state.user.userType,
+                  searchString: controller.text,
+                )));
+  }
 
-    // widget.store.dispatch(action);
-
-    // var add = AddPiggy(widget.store.state.tempPiggy);
-    // widget.store.dispatch(add);
-
-    // await PiggyServices.createPiggyForUser(
-    //     action.piggy, widget.store.state.user.id);
-    Navigator.of(context).pop();
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override

@@ -51,27 +51,81 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
               default:
                 if (snapshot.hasError)
                   return new Text('Error');
+                else if (snapshot.data.length == 0)
+                  return Center(
+                      child: Text(
+                    "Nem küldött senki se ismerős felkérést az utóbbi időben",
+                    textAlign: TextAlign.center,
+                  ));
                 else
                   return ListView(
                       children: snapshot.data
-                          .map((u) => ListTile(
-                              title: Text(u.name ?? ""),
-                              trailing: Container(
-                                height: MediaQuery.of(context).size.height / 4,
-                                width: MediaQuery.of(context).size.width / 4,
-                                child: Row(
-                                  children: <Widget>[
-                                    IconButton(
-                                        icon: Icon(Icons.clear,
-                                            color: Colors.red),
-                                        onPressed: () => _refuse(u.id)),
-                                    IconButton(
-                                        icon: Icon(Icons.done,
-                                            color: Colors.green),
-                                        onPressed: () => _accept(u.id))
-                                  ],
+                          .map((u) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 5),
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 2.0,
+                                          spreadRadius: 0.5,
+                                          offset: Offset(
+                                            0.5,
+                                            0.5,
+                                          ),
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius: new BorderRadius.all(
+                                        Radius.circular(15.0),
+                                      )),
+                                  child: ListTile(
+                                      leading: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.3,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: u.pictureUrl == null
+                                                      ? AssetImage(
+                                                          "lib/assets/images/piggy_nyito.png")
+                                                      : NetworkImage(
+                                                          u.pictureUrl))),
+                                        ),
+                                      ),
+                                      title: Text(u.name ?? u.email),
+                                      trailing: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                4,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4,
+                                        child: Row(
+                                          children: <Widget>[
+                                            IconButton(
+                                                icon: Icon(Icons.clear,
+                                                    color: Colors.red),
+                                                onPressed: () => _refuse(u.id)),
+                                            IconButton(
+                                                icon: Icon(Icons.done,
+                                                    color: Colors.green),
+                                                onPressed: () => _accept(u.id))
+                                          ],
+                                        ),
+                                      )),
                                 ),
-                              )))
+                              ))
                           .toList());
             }
           },

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef String OnValidate(String value);
 typedef void OnErrorMessage(String value);
+typedef String OnValidate(String value);
+typedef String OnSubmit(String value);
 
 class PiggyInput extends StatefulWidget {
   PiggyInput(
@@ -16,11 +17,13 @@ class PiggyInput extends StatefulWidget {
       this.keyboardType,
       this.inputFormatters,
       this.inputIcon,
+      this.onSubmit,
       this.obscureText = false})
       : super(key: key);
   final String hintText;
   final TextEditingController textController;
   final OnValidate onValidate;
+  final OnSubmit onSubmit;
   final List<TextInputFormatter> inputFormatters;
   final OnErrorMessage onErrorMessage;
   final TextInputType keyboardType;
@@ -70,6 +73,7 @@ class _PiggyInputState extends State<PiggyInput> {
         ),
         child: TextFormField(
           focusNode: _focusNode,
+          onFieldSubmitted: (String val) => widget.onSubmit(val),
           obscureText: widget.obscureText,
           controller: widget.textController,
           keyboardType: widget.keyboardType ?? TextInputType.text,

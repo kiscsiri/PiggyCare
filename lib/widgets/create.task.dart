@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
@@ -26,15 +27,20 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   var controller = TextEditingController();
 
   Future _createTask() async {
-    widget.store.dispatch(AddChore(Chore(
-        childId: widget.child.documentId,
-        choreType: ChoreType.haziMunka,
-        details: "",
-        isDone: false,
-        isValidated: false,
-        reward: "",
-        title: item)));
-    Navigator.of(context).pop();
+    try {
+      widget.store.dispatch(AddChore(Chore(
+          childId: widget.child.id,
+          choreType: ChoreType.haziMunka,
+          details: "",
+          isDone: false,
+          isValidated: false,
+          reward: "",
+          title: item)));
+      NotificationServices.sendNotificationNewTask(
+          widget.child.id, widget.store.state.user.name);
+    } finally {
+      Navigator.of(context).pop();
+    }
   }
 
   @override

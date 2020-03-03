@@ -82,7 +82,8 @@ Future<int> showPiggySelector(
   return id;
 }
 
-Future<void> showAlert(BuildContext context, String errorMessage) async {
+Future<void> showAlert(BuildContext context, String errorMessage,
+    [String title]) async {
   await showDialog<String>(
     context: context,
     barrierDismissible: true,
@@ -91,7 +92,7 @@ Future<void> showAlert(BuildContext context, String errorMessage) async {
         padding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).size.height * 0.2),
         child: AlertDialog(
-            title: Text("Hiba!"),
+            title: Text(title ?? "Hiba!"),
             actions: <Widget>[
               PiggyButton(
                 text: "OK",
@@ -102,6 +103,44 @@ Future<void> showAlert(BuildContext context, String errorMessage) async {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             content: Center(
               child: Text(errorMessage ?? ""),
+            )),
+      );
+    },
+  );
+}
+
+Future<bool> showAckDialog(BuildContext context, Widget message,
+    [Widget title]) async {
+  return await showDialog<bool>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.2),
+        child: AlertDialog(
+            title: title ?? Text(""),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Column(
+                  children: <Widget>[
+                    PiggyButton(
+                      text: "Igen",
+                      onClick: () => Navigator.of(context).pop(true),
+                    ),
+                    PiggyButton(
+                      text: "Nem",
+                      onClick: () => Navigator.of(context).pop(false),
+                    )
+                  ],
+                ),
+              ),
+            ],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: Center(
+              child: message ?? Text(""),
             )),
       );
     },
@@ -130,8 +169,8 @@ Future<void> showCreateTask(
       });
 }
 
-Future<void> showCreatePiggyModal(
-    BuildContext context, Store<AppState> store) async {
+Future<void> showCreatePiggyModal(BuildContext context, Store<AppState> store,
+    [String childId]) async {
   await showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -144,6 +183,7 @@ Future<void> showCreatePiggyModal(
                   borderRadius: BorderRadius.circular(20)),
               content: CreatePiggyWidget(
                 store: store,
+                childId: childId,
               ),
             ),
           ),

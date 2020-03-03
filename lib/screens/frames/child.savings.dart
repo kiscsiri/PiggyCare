@@ -103,11 +103,12 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
               ],
             ),
             PiggyButton(
-              text: "MALACPERSELY LÉTREHOZÁSA",
-              disabled: false,
-              onClick: () async =>
-                  await showCreatePiggyModal(context, widget.store),
-            )
+                text: "MALACPERSELY LÉTREHOZÁSA",
+                disabled: false,
+                onClick: () async {
+                  await showCreatePiggyModal(context, widget.store);
+                  setState(() {});
+                })
           ],
         ),
       )

@@ -12,11 +12,13 @@ import 'package:redux/redux.dart';
 import 'piggy.slider.dart';
 
 class CreatePiggyWidget extends StatefulWidget {
-  CreatePiggyWidget({Key key, this.store, this.navigateToPiggyWidget})
+  CreatePiggyWidget(
+      {Key key, this.store, this.navigateToPiggyWidget, this.childId})
       : super(key: key);
 
   final Function navigateToPiggyWidget;
   final Store<AppState> store;
+  final String childId;
 
   @override
   _CreatePiggyWidgetState createState() => new _CreatePiggyWidgetState();
@@ -27,6 +29,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
   double targetMoney = 1;
   double moneyPerFeed = 2;
   var controller = TextEditingController();
+
   Future _createPiggy() async {
     var action = CreateTempPiggy(
         piggy: Piggy(
@@ -36,6 +39,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
       isAproved: false,
       isFeedAvailable: true,
       item: controller.text,
+      userId: widget.childId ?? widget.store.state.user.id,
       money: 0,
       targetPrice: targetMoney.round(),
       piggyLevel: PiggyLevel.Baby,
@@ -47,7 +51,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
     widget.store.dispatch(add);
 
     await PiggyServices.createPiggyForUser(
-        action.piggy, widget.store.state.user.id);
+        action.piggy, widget.childId ?? widget.store.state.user.id);
     Navigator.of(context).pop();
   }
 

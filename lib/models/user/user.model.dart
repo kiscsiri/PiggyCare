@@ -27,6 +27,7 @@ class UserData {
   String email;
   String name;
   String pictureUrl;
+  String parentId;
   List<Piggy> piggies;
   List<Chore> chores;
   List<UserData> children;
@@ -80,6 +81,7 @@ class UserData {
     pictureUrl = another.pictureUrl;
     email = another.email;
     name = another.name;
+    parentId = another.parentId;
     chores = another.chores;
     piggies = another.piggies;
     children = another.children;
@@ -141,6 +143,7 @@ class UserData {
       this.currentFeedTime,
       this.money,
       this.lastFeed,
+      this.parentId,
       this.isDemoOver,
       this.phoneNumber,
       this.created,

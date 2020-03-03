@@ -58,7 +58,15 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
   }
 
   Future<void> _showCreateModal() async {
-    await showCreatePiggyModal(context, widget.store);
+    await showCreatePiggyModal(context, widget.store, child.id);
+
+    setState(() {
+      var children =
+          mapChildrenToChilDto(widget.store.state.user.children).toList();
+
+      child = children.singleWhere((t) => t.documentId == widget.documentId,
+          orElse: null);
+    });
   }
 
   Future<void> _showAddTaskModal() async {
@@ -159,6 +167,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                   Text(
                     child.name + " megtakarításai",
                     style: Theme.of(context).textTheme.headline2,
+                    textAlign: TextAlign.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),

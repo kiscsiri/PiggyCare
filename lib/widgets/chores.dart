@@ -27,12 +27,17 @@ class _ChoresWidgetState extends State<ChoresWidget> {
     var user = widget.store.state.user;
 
     int i = 0;
-    savingTypeList = user.chores.where((c) => !c.isDone).take(3).map((p) {
+    savingTypeList = user.chores.where((c) => !c.isValidated).take(3).map((p) {
       i++;
       return ChoreInput(
         index: i,
+        store: widget.store,
+        isDone: p.isDone,
+        taskId: p.id,
         name: p.title,
-        selectIndex: (i) => _selectItem(i),
+        selectIndex: (i) => p.isDone ? null : _selectItem(i),
+        parentId: widget.store.state.user.parentId,
+        userId: widget.store.state.user.documentId,
       );
     }).toList();
 
@@ -40,10 +45,15 @@ class _ChoresWidgetState extends State<ChoresWidget> {
       savingTypeList = savingTypeList.map((f) {
         if (f.index == selectedIndex) {
           return ChoreInput(
+            taskId: f.taskId,
             index: f.index,
+            isDone: f.isDone,
+            store: widget.store,
             selected: true,
             name: '${f.name}',
-            selectIndex: (i) => _selectItem(i),
+            selectIndex: (i) => f.isDone ? null : _selectItem(i),
+            parentId: widget.store.state.user.parentId,
+            userId: widget.store.state.user.documentId,
           );
         } else {
           return f;
@@ -55,7 +65,9 @@ class _ChoresWidgetState extends State<ChoresWidget> {
       width: MediaQuery.of(context).size.width * 0.8,
       height: MediaQuery.of(context).size.width * 0.6,
       child: ListView(
-        children: savingTypeList,
+        children: savingTypeList.length == 0
+            ? [Center(child: Text("Nincs feladatod!"))]
+            : savingTypeList,
       ),
     );
   }

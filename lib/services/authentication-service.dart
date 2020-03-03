@@ -144,10 +144,18 @@ class AuthenticationService {
         } else if (Platform.isIOS) {
           platfom = "ios";
         }
-        NotificationServices.register(token, user.uid, platfom);
+        NotificationServices.register(token, userData.documentId, platfom);
       });
 
-      Firestore.instance.collection('users').add(userData.toJson());
+      var userRef =
+          await Firestore.instance.collection('users').add(userData.toJson());
+
+      userData.documentId = userRef.documentID;
+
+      await Firestore.instance
+          .collection('users')
+          .document(userData.documentId)
+          .updateData(userData.toJson());
 
       store.dispatch(ClearRegisterState());
       store.dispatch(InitUserData(userData));

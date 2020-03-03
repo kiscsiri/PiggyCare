@@ -91,11 +91,8 @@ class NotificationServices {
     });
   }
 
-  static newFriendRequest(String uid) async {
-    Map<String, Object> mappedData = {
-      "userId": uid,
-    };
-
+  static newFriendRequest(String uid, String userName) async {
+    Map<String, Object> mappedData = {"targetId": uid, 'userName': userName};
     var jsonString = json.encode(mappedData);
 
     await http
@@ -110,12 +107,16 @@ class NotificationServices {
     });
   }
 
-  static sendNotificationFinishedTask(String parentId) async {
-    Map<String, Object> data = {
-      'parentId': parentId,
+  static sendNotificationFinishedTask(String parentId, String name,
+      String taskName, int taskId, String userId) async {
+    Map<String, Object> mappedData = {
+      "targetId": parentId,
+      'userName': name,
+      'taskName': taskName,
+      'taskId': taskId,
+      'senderId': userId
     };
-
-    var jsonString = json.encode(data);
+    var jsonString = json.encode(mappedData);
 
     await http
         .put(url + "finishedTask",
@@ -129,11 +130,25 @@ class NotificationServices {
     });
   }
 
-  static sendNotificationValidatedTask(String childId) async {
-    Map<String, Object> data = {
-      'childId': childId,
-    };
+  static sendNotificationNewTask(String parentId, String userName) async {
+    Map<String, Object> data = {'targetId': parentId, 'userName': userName};
 
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "newTask",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationValidatedTask(String childId, int taskId) async {
+    Map<String, Object> data = {'targetId': childId, 'taskId': taskId};
     var jsonString = json.encode(data);
 
     await http
@@ -152,11 +167,47 @@ class NotificationServices {
     Map<String, Object> data = {
       'childId': childId,
     };
-
     var jsonString = json.encode(data);
 
     await http
         .put(url + "newPiggy",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationDouble(
+      String targetId, String userName, String fromId) async {
+    Map<String, Object> data = {
+      'targetId': targetId,
+      'fromId': fromId,
+      'userName': userName
+    };
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "double",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static Future<void> sendNotificationRefusedTask(childId, taskId) async {
+    Map<String, Object> data = {'targetId': childId, 'taskId': taskId};
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "refusedTask",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"

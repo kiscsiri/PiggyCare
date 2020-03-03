@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'saving.type.input.curve.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/chore/chore.action.dart';
+import 'package:piggybanx/services/chore.firebase.dart';
+import 'package:piggybanx/services/notification.modals.dart';
+import 'package:redux/redux.dart';
 
 class ChoreInput extends StatefulWidget {
   const ChoreInput(
@@ -9,12 +13,22 @@ class ChoreInput extends StatefulWidget {
       @required this.index,
       @required this.name,
       this.selected,
-      this.selectIndex})
+      this.selectIndex,
+      this.userId,
+      this.parentId,
+      @required this.taskId,
+      this.isDone,
+      @required this.store})
       : super(key: key);
 
   final int index;
+  final int taskId;
   final String name;
+  final String userId;
+  final String parentId;
   final bool selected;
+  final bool isDone;
+  final Store<AppState> store;
   final Function(int) selectIndex;
 
   @override
@@ -27,6 +41,18 @@ class _ChoreInputState extends State<ChoreInput> {
     widget.selectIndex(widget.index);
   }
 
+  Future<void> _askFinishChore(BuildContext context) async {
+    var ack = await showChildrenFinishTaskSubmit(context);
+
+    if (ack) {
+      await ChoreFirebaseServices.finishChildChore(
+          widget.userId, widget.taskId, widget.parentId);
+      widget.store.dispatch(FinishChore(widget.userId, widget.taskId));
+    }
+
+    widget.selectIndex(null);
+  }
+
   @override
   void initState() {
     selected = widget.selected ?? false;
@@ -36,21 +62,44 @@ class _ChoreInputState extends State<ChoreInput> {
   @override
   Widget build(BuildContext context) {
     selected = widget.selected ?? false;
-    Color color = selected ? Theme.of(context).primaryColor : Colors.white;
-    Color textColor = selected ? Theme.of(context).primaryColor : Colors.grey;
+    var width = MediaQuery.of(context).size.width;
+
+    final Color background = Colors.white;
+    final Color fill = Theme.of(context).primaryColor;
+    final List<Color> gradient = [
+      background,
+      background,
+      fill,
+      fill,
+    ];
+    final double fillPercent = width * 0.05;
+    final double fillStop = (100 - (selected ? fillPercent : 0)) / 100;
+    final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+
+    Color color;
+    Color textColor;
+
+    if (!widget.isDone) {
+      color = selected ? Theme.of(context).primaryColor : Colors.white;
+      textColor = selected ? Theme.of(context).primaryColor : Colors.grey;
+    } else {
+      color = Colors.green;
+      textColor = Colors.green;
+    }
 
     TextStyle textStyle =
         TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 17);
     return GestureDetector(
-      onTap: () => _selectType(),
+      onTap: () async => selected ? _askFinishChore(context) : _selectType(),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Container(
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: width * 0.8,
             height: MediaQuery.of(context).size.height * 0.08,
             decoration: new BoxDecoration(
                 border: new Border.all(color: color),
                 color: Colors.white,
+                gradient: LinearGradient(colors: gradient, stops: stops),
                 borderRadius: BorderRadius.circular(70.0)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,22 +121,31 @@ class _ChoreInputState extends State<ChoreInput> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.12,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        child: Image.asset("assets/coin.png"),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            width: width * 0.12,
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            child: Image.asset("assets/coin.png"),
+                          )
+                        ],
                       ),
-                      CustomPaint(
-                        painter: CurvePainter(),
-                        child: Container(),
-                      )
-                    ],
-                  ),
+                    ),
+                    selected
+                        ? Container(
+                            width: width * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            child: Center(
+                                child: Icon(FontAwesomeIcons.check,
+                                    color: Colors.white)),
+                          )
+                        : Container()
+                  ],
                 )
               ],
             )),
