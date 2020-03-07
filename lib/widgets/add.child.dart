@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -7,11 +8,9 @@ import 'package:piggybanx/screens/search.user.dart';
 import 'piggy.slider.dart';
 
 class AddChildWidget extends StatefulWidget {
-  AddChildWidget({Key key, this.store, this.navigateToPiggyWidget})
-      : super(key: key);
+  AddChildWidget({Key key, this.navigateToPiggyWidget}) : super(key: key);
 
   final Function navigateToPiggyWidget;
-  final Store<AppState> store;
 
   @override
   _AddChildWidgetState createState() => new _AddChildWidgetState();
@@ -22,13 +21,13 @@ class _AddChildWidgetState extends State<AddChildWidget> {
   double feedPerDay = 1;
 
   var controller = TextEditingController();
-  Future _createPiggy() async {
+  Future _createPiggy(Store<AppState> store) async {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => UserSearchScreen(
-                  currentUserId: widget.store.state.user.id,
-                  userType: widget.store.state.user.userType,
+                  currentUserId: store.state.user.id,
+                  userType: store.state.user.userType,
                   searchString: controller.text,
                 )));
   }
@@ -41,6 +40,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -110,7 +110,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
               padding: const EdgeInsets.only(top: 20.0),
               child: PiggyButton(
                 text: "GYEREK HOZZÁADÁSA",
-                onClick: () async => await _createPiggy(),
+                onClick: () async => await _createPiggy(store),
               ),
             )
           ],

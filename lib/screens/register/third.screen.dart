@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/helpers/InputFormatters.dart';
 import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
@@ -11,14 +12,11 @@ import 'package:piggybanx/screens/main.screen.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:redux/redux.dart';
 
 import 'register.screen.dart';
 
 class ThirdRegisterPage extends StatefulWidget {
-  ThirdRegisterPage({Key key, this.store}) : super(key: key);
-  final Store<AppState> store;
-
+  ThirdRegisterPage({Key key}) : super(key: key);
   @override
   _ThirdRegisterPageState createState() => new _ThirdRegisterPageState();
 }
@@ -35,6 +33,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
     return showDialog(
         context: context,
         builder: (context) {
+          var store = StoreProvider.of<AppState>(context);
           var loc = PiggyLocalizations.of(context);
           return Container(
             height: MediaQuery.of(context).size.height * 0.3,
@@ -42,7 +41,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
             padding: EdgeInsets.all(1.0),
             child: AlertDialog(
               title: Text(
-                "${loc.trans("piggy_offer_some_plans")} ${widget.store.state.registrationData.item}" +
+                "${loc.trans("piggy_offer_some_plans")} ${store.state.registrationData.item}" +
                     ((loc.locale.languageCode == "hu") ? "-t!" : "!"),
                 style: Theme.of(context).textTheme.headline2,
                 textAlign: TextAlign.center,
@@ -86,37 +85,37 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                                     Flexible(
                                       child: ListTile(
                                         onTap: () {
-                                          widget.store
-                                              .dispatch(SetSchedule(schedule));
-                                          if (!["", null].contains(
-                                              widget.store.state.user.id)) {
+                                          store.dispatch(SetSchedule(schedule));
+                                          if (!["", null]
+                                              .contains(store.state.user.id)) {
                                             var item = Piggy(
                                                 currentSaving: 0,
-                                                item: widget.store.state
+                                                item: store.state
                                                     .registrationData.item,
-                                                targetPrice: widget
-                                                    .store
+                                                targetPrice: store
                                                     .state
                                                     .registrationData
                                                     .targetPrice);
-
-                                            widget.store
-                                                .dispatch(AddPiggy(item));
+                                            store.dispatch(AddPiggy(item));
                                             Navigator.pushReplacement(
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        new MainPage(
-                                                          store: widget.store,
-                                                        )));
+                                                        new MainPage()));
                                           } else {
                                             Navigator.pushReplacement(
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
                                                         new LastPage(
-                                                          store: widget.store,
-                                                        )));
+                                                            initEmail: store
+                                                                .state
+                                                                .registrationData
+                                                                .email,
+                                                            initUserName: store
+                                                                .state
+                                                                .registrationData
+                                                                .username)));
                                           }
                                         },
                                         trailing: SizedBox(
@@ -198,7 +197,8 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var isAlreadyRegistered = widget.store.state.user.id != null;
+    var store = StoreProvider.of<AppState>(context);
+    var isAlreadyRegistered = store.state.user.id != null;
 
     return new Scaffold(
       appBar: new AppBar(
@@ -218,7 +218,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
         key: _priceFormKey,
         child: Container(
           decoration: piggyBackgroundDecoration(
-              context, widget.store.state.registrationData.userType),
+              context, store.state.registrationData.userType),
           child: new Center(
             child: new ListView(
               children: <Widget>[
@@ -282,7 +282,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
                       var action = SetPrice(int.parse(textEditingController.text
                           .substring(
                               0, textEditingController.text.length - 2)));
-                      widget.store.dispatch(action);
+                      store.dispatch(action);
                       scheduleChooser();
                     }
                   },

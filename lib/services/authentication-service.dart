@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/enums/userType.dart';
@@ -102,8 +103,8 @@ class AuthenticationService {
     }
   }
 
-  static Future<void> splashLogin(
-      Store<AppState> store, BuildContext context) async {
+  static Future<void> splashLogin(BuildContext context) async {
+    var store = StoreProvider.of<AppState>(context);
     var value = await Connectivity().checkConnectivity();
     if (value == ConnectivityResult.mobile ||
         value == ConnectivityResult.wifi) {

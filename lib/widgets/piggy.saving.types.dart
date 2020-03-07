@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -9,9 +10,8 @@ import 'package:redux/redux.dart';
 import 'piggy.saving.type.input.dart';
 
 class SavingForWidget extends StatefulWidget {
-  const SavingForWidget({Key key, this.store}) : super(key: key);
+  const SavingForWidget({Key key}) : super(key: key);
 
-  final Store<AppState> store;
   @override
   _SavingForWidgetState createState() => _SavingForWidgetState();
 }
@@ -20,8 +20,8 @@ class _SavingForWidgetState extends State<SavingForWidget> {
   int selectedIndex;
   var savingTypeList = List<SavingTypeInput>();
 
-  _selectItem(int index) {
-    var piggy = widget.store.state.user.piggies[index - 1];
+  _selectItem(int index, Store<AppState> store) {
+    var piggy = store.state.user.piggies[index - 1];
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -50,14 +50,16 @@ class _SavingForWidgetState extends State<SavingForWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
+
     int i = 0;
-    savingTypeList = widget.store.state.user.piggies.map((p) {
+    savingTypeList = store.state.user.piggies.map((p) {
       i++;
       return SavingTypeInput(
         index: i,
         name: p.item,
         coinValue: p.targetPrice,
-        selectIndex: (i) => _selectItem(i),
+        selectIndex: (i) => _selectItem(i, store),
       );
     }).toList();
     if (selectedIndex != null) {
@@ -68,7 +70,7 @@ class _SavingForWidgetState extends State<SavingForWidget> {
             index: f.index,
             selected: true,
             name: f.name,
-            selectIndex: (i) => _selectItem(i),
+            selectIndex: (i) => _selectItem(i, store),
           );
         } else {
           return f;

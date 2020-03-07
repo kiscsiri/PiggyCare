@@ -1,19 +1,14 @@
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/authentication-service.dart';
-import 'package:piggybanx/services/notification.handler.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartupPage extends StatefulWidget {
-  StartupPage({Key key, this.title, this.store}) : super(key: key);
+  StartupPage({Key key, this.title}) : super(key: key);
   final String title;
-  final Store<AppState> store;
 
   @override
   _StartupPageState createState() => new _StartupPageState();
@@ -40,21 +35,6 @@ alert(BuildContext context) {
   );
 }
 
-alertNoCon() {
-  return AlertDialog(
-    title: Text("asd"),
-    content: Text("asd"),
-    actions: <Widget>[
-      FlatButton(
-        child: Text('Ok'),
-        onPressed: () {
-          exit(0);
-        },
-      ),
-    ],
-  );
-}
-
 class _StartupPageState extends State<StartupPage>
     with TickerProviderStateMixin {
   bool _isLoaded = false;
@@ -67,16 +47,15 @@ class _StartupPageState extends State<StartupPage>
         prefs.setInt("animationCount", 1);
       }
     });
-
-    AuthenticationService.splashLogin(widget.store, context).then((success) {
-      setState(() {
-        _isLoaded = true;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationService.splashLogin(context).then((success) {
+      setState(() {
+        _isLoaded = true;
+      });
+    });
     var loc = PiggyLocalizations.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -12,12 +13,10 @@ import 'package:redux/redux.dart';
 import 'piggy.slider.dart';
 
 class CreatePiggyWidget extends StatefulWidget {
-  CreatePiggyWidget(
-      {Key key, this.store, this.navigateToPiggyWidget, this.childId})
+  CreatePiggyWidget({Key key, this.navigateToPiggyWidget, this.childId})
       : super(key: key);
 
   final Function navigateToPiggyWidget;
-  final Store<AppState> store;
   final String childId;
 
   @override
@@ -30,7 +29,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
   double moneyPerFeed = 2;
   var controller = TextEditingController();
 
-  Future _createPiggy() async {
+  Future _createPiggy(Store<AppState> store) async {
     var action = CreateTempPiggy(
         piggy: Piggy(
       currentFeedAmount: 1,
@@ -39,25 +38,26 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
       isAproved: false,
       isFeedAvailable: true,
       item: controller.text,
-      userId: widget.childId ?? widget.store.state.user.id,
+      userId: widget.childId ?? store.state.user.id,
       money: 0,
       targetPrice: targetMoney.round(),
       piggyLevel: PiggyLevel.Baby,
     ));
 
-    widget.store.dispatch(action);
+    store.dispatch(action);
 
-    var add = AddPiggy(widget.store.state.tempPiggy);
-    widget.store.dispatch(add);
+    var add = AddPiggy(store.state.tempPiggy);
+    store.dispatch(add);
 
     await PiggyServices.createPiggyForUser(
-        action.piggy, widget.childId ?? widget.store.state.user.id);
+        action.piggy, widget.childId ?? store.state.user.id);
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -123,7 +123,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
               padding: const EdgeInsets.only(top: 20.0),
               child: PiggyButton(
                 text: loc.trans('create_money_box'),
-                onClick: () async => await _createPiggy(),
+                onClick: () async => await _createPiggy(store),
               ),
             )
           ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
@@ -13,7 +14,6 @@ import 'package:piggybanx/widgets/google.button.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:redux/redux.dart';
 import 'package:video_player/video_player.dart';
 
 import 'register/first.screen.dart';
@@ -21,9 +21,7 @@ import 'register/first.screen.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.store}) : super(key: key);
-
-  final Store<AppState> store;
+  LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -57,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _loginWithEmailAndPassword(BuildContext context) async {
+    var store = StoreProvider.of<AppState>(context);
     var loc = PiggyLocalizations.of(context);
     final AuthCredential credential = EmailAuthProvider.getCredential(
         email: _emailController.text, password: _pwController.text);
@@ -73,29 +72,26 @@ class _LoginPageState extends State<LoginPage> {
     if (user == null) throw Exception();
 
     try {
-      await AuthenticationService.authenticate(user, widget.store, context);
+      await AuthenticationService.authenticate(user, store, context);
     } catch (err) {}
   }
 
   Future<void> _signInWithGoogle() async {
-    var user = await AuthenticationService.signInWithGoogle(widget.store);
+    var store = StoreProvider.of<AppState>(context);
+    var user = await AuthenticationService.signInWithGoogle(store);
 
     if (user == null) {
       return;
     }
 
     try {
-      await AuthenticationService.authenticate(user, widget.store, context);
+      await AuthenticationService.authenticate(user, store, context);
 
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new MainPage(
-                store: widget.store,
-              )));
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new MainPage()));
     } on AuthException {
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new FirstRegisterPage(
-                store: widget.store,
-              )));
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new FirstRegisterPage()));
     }
   }
 
@@ -214,9 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () => {
                       Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (context) => new FirstRegisterPage(
-                                store: widget.store,
-                              )))
+                          builder: (context) => new FirstRegisterPage()))
                     },
                     child: Text(
                       loc.trans('register'),

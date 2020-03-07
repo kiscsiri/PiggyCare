@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:redux/redux.dart';
 
 class SavingsPage extends StatefulWidget {
-  SavingsPage({Key key, this.title, this.store, this.pageController})
-      : super(key: key);
+  SavingsPage({Key key, this.title, this.pageController}) : super(key: key);
 
   final String title;
-  final Store<AppState> store;
   final PageController pageController;
 
   @override
@@ -24,6 +21,7 @@ class _SavingsPageState extends State<SavingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of(context);
     var loc = PiggyLocalizations.of(context);
     return new Scaffold(
         body: Container(
@@ -59,7 +57,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   ),
                   child: new Center(
                       child: new Text(
-                    "${widget.store.state.user.saving.toInt()} \$",
+                    "${store.state.user.saving.toInt()} \$",
                     style: TextStyle(
                         fontSize: 50,
                         color: Colors.white,
@@ -82,7 +80,7 @@ class _SavingsPageState extends State<SavingsPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         new Text(
-                          "${widget.store.state.user.created.year}.${widget.store.state.user.created.month}.${widget.store.state.user.created.day}",
+                          "${store.state.user.created.year}.${store.state.user.created.month}.${store.state.user.created.day}",
                           style: new TextStyle(fontWeight: FontWeight.bold),
                         )
                       ]),

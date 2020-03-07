@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
 import 'package:piggybanx/screens/register/third.screen.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:redux/redux.dart';
 
 class SecondRegisterPage extends StatefulWidget {
-  SecondRegisterPage({Key key, this.store}) : super(key: key);
-  final Store<AppState> store;
+  SecondRegisterPage({Key key}) : super(key: key);
 
   @override
   _SecondRegisterPageState createState() => new _SecondRegisterPageState();
@@ -23,7 +22,8 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var isAlreadyRegistered = widget.store.state.user.id != null;
+    var store = StoreProvider.of<AppState>(context);
+    var isAlreadyRegistered = store.state.user.id != null;
 
     return new Scaffold(
       appBar: new AppBar(
@@ -95,13 +95,11 @@ class _SecondRegisterPageState extends State<SecondRegisterPage> {
                     if (_itemFormKey.currentState.validate()) {
                       var action = SetItem(textEditingController.text);
 
-                      widget.store.dispatch(action);
+                      store.dispatch(action);
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new ThirdRegisterPage(
-                                    store: widget.store,
-                                  )));
+                              builder: (context) => new ThirdRegisterPage()));
                     }
                   })
             ],

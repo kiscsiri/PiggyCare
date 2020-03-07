@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/services/chore.firebase.dart';
 import 'package:piggybanx/services/notification.modals.dart';
-import 'package:redux/redux.dart';
 
 class ChoreInput extends StatefulWidget {
   const ChoreInput(
@@ -17,8 +17,7 @@ class ChoreInput extends StatefulWidget {
       this.userId,
       this.parentId,
       @required this.taskId,
-      this.isDone,
-      @required this.store})
+      this.isDone})
       : super(key: key);
 
   final int index;
@@ -28,7 +27,6 @@ class ChoreInput extends StatefulWidget {
   final String parentId;
   final bool selected;
   final bool isDone;
-  final Store<AppState> store;
   final Function(int) selectIndex;
 
   @override
@@ -47,7 +45,8 @@ class _ChoreInputState extends State<ChoreInput> {
     if (ack) {
       await ChoreFirebaseServices.finishChildChore(
           widget.userId, widget.taskId, widget.parentId);
-      widget.store.dispatch(FinishChore(widget.userId, widget.taskId));
+      StoreProvider.of<AppState>(context)
+          .dispatch(FinishChore(widget.userId, widget.taskId));
     }
 
     widget.selectIndex(null);

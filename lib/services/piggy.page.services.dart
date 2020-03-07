@@ -161,7 +161,6 @@ Future<void> showCreateTask(
                   borderRadius: BorderRadius.circular(20)),
               content: CreateTaskWidget(
                 child: child,
-                store: store,
               ),
             ),
           ),
@@ -182,7 +181,6 @@ Future<void> showCreatePiggyModal(BuildContext context, Store<AppState> store,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: CreatePiggyWidget(
-                store: store,
                 childId: childId,
               ),
             ),
@@ -203,9 +201,7 @@ Future<void> showAddNewChildModal(
             child: AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              content: AddChildWidget(
-                store: store,
-              ),
+              content: AddChildWidget(),
             ),
           ),
         );

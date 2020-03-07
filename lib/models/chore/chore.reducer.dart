@@ -1,7 +1,6 @@
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
-import 'package:piggybanx/models/user/child.model.dart';
 import 'package:piggybanx/models/user/parent.model.dart';
 
 AppState addChore(AppState state, AddChore action) {

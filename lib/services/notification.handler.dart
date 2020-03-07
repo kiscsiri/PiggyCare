@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
@@ -7,22 +8,17 @@ import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/services/chore.firebase.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:redux/redux.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/notification.modals.dart';
-
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {}
 
 _navigate(int index, PageController _pageController) {
   _pageController.animateToPage(index,
       curve: Curves.linear, duration: new Duration(milliseconds: 350));
 }
 
-Future<dynamic> onResumeNotificationHandler(
-    Map<String, dynamic> message,
-    BuildContext context,
-    Store<AppState> store,
-    PageController _pageController) async {
+Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
+    BuildContext context, PageController _pageController) async {
+  var store = StoreProvider.of<AppState>(context);
   if (message.containsKey('data')) {
     final dynamic data = message['data'];
     switch (data['modalType']) {

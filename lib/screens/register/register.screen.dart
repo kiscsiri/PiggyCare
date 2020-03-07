@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -18,10 +19,11 @@ import 'package:redux/redux.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LastPage extends StatefulWidget {
-  LastPage({Key key, this.store}) : super(key: key);
+  LastPage({Key key, @required this.initUserName, @required this.initEmail})
+      : super(key: key);
 
-  final Store<AppState> store;
-
+  final String initUserName;
+  final String initEmail;
   @override
   _RegisterPageState createState() => new _RegisterPageState();
 }
@@ -39,8 +41,8 @@ class _RegisterPageState extends State<LastPage> {
 
   @override
   void initState() {
-    _userNameController.text = widget.store.state.registrationData.username;
-    _emailController.text = widget.store.state.registrationData.email;
+    _userNameController.text = widget.initUserName;
+    _emailController.text = widget.initEmail;
 
     super.initState();
   }
@@ -53,56 +55,53 @@ class _RegisterPageState extends State<LastPage> {
     super.dispose();
   }
 
-  Future<void> _register(BuildContext context) async {
+  Future<void> _register(BuildContext context, Store<AppState> store) async {
     try {
       var res = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
 
-      widget.store.dispatch(SetFromOauth(
+      store.dispatch(SetFromOauth(
           res.user.email,
           res.user.displayName ?? _userNameController.text,
           res.user.uid,
           res.user.photoUrl));
 
-      await AuthenticationService.registerUser(widget.store);
+      await AuthenticationService.registerUser(store);
 
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (context) => new MainPage(
-                store: widget.store,
-              )));
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new MainPage()));
     } on Exception catch (err) {
       await showAlert(context, "Létezik már az adott e-mail cím");
     }
   }
 
-  testSignInWithPhoneNumber(BuildContext context) async {
+  testSignInWithPhoneNumber(BuildContext context, Store<AppState> store) async {
     var phoneState = SetPhoneNumber(_emailController.text);
-    widget.store.dispatch(phoneState);
+    store.dispatch(phoneState);
 
-    await AuthenticationService.registerUser(widget.store);
+    await AuthenticationService.registerUser(store);
   }
 
-  Future<void> signInAndRegisterGoogle() async {
-    var user = await AuthenticationService.signInWithGoogle(widget.store);
-    widget.store.dispatch(
+  Future<void> signInAndRegisterGoogle(Store<AppState> store) async {
+    var user = await AuthenticationService.signInWithGoogle(store);
+    store.dispatch(
         SetFromOauth(user.email, user.displayName, user.uid, user.photoUrl));
 
-    await AuthenticationService.registerUser(widget.store);
+    await AuthenticationService.registerUser(store);
 
     setState(() {
       _emailController.text = user.email;
       _userNameController.text = user.displayName;
     });
 
-    Navigator.of(context).pushReplacement(new MaterialPageRoute(
-        builder: (context) => new MainPage(
-              store: widget.store,
-            )));
+    Navigator.of(context).pushReplacement(
+        new MaterialPageRoute(builder: (context) => new MainPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
     var telephoneBlock = new Form(
         key: _telephoneFormKey,
         child: new Column(
@@ -170,13 +169,13 @@ class _RegisterPageState extends State<LastPage> {
                   text: loc.trans("register"),
                   onClick: () async {
                     if (_telephoneFormKey.currentState.validate()) {
-                      await _register(context);
+                      await _register(context, store);
                     }
                   }),
               Text('Vagy regisztráljon másképp:'),
               PiggyGoogleButton(
                 text: "Google",
-                onClick: () async => signInAndRegisterGoogle(),
+                onClick: () async => signInAndRegisterGoogle(store),
               ),
             ]));
 
@@ -199,7 +198,7 @@ class _RegisterPageState extends State<LastPage> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.7,
                 decoration: piggyBackgroundDecoration(
-                    context, widget.store.state.user.userType),
+                    context, store.state.user.userType),
               ),
             ],
           ),

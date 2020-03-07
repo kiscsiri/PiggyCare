@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
@@ -7,12 +8,10 @@ import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 
-import 'package:redux/redux.dart';
-
 class ChildSavingScreen extends StatefulWidget {
-  const ChildSavingScreen({Key key, this.store}) : super(key: key);
-
-  final Store<AppState> store;
+  ChildSavingScreen({Key key, @required this.initFeedPerPeriod})
+      : super(key: key);
+  final int initFeedPerPeriod;
 
   @override
   _ChildSavingScreenState createState() => _ChildSavingScreenState();
@@ -23,19 +22,20 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
 
   @override
   void initState() {
-    savingPerFeed = widget.store.state.user.feedPerPeriod;
+    savingPerFeed = widget.initFeedPerPeriod;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     return Stack(children: [
       Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.7,
-            decoration: widget.store.state.user.userType == UserType.child
+            decoration: store.state.user.userType == UserType.child
                 ? piggyBackgroundDecoration(context, UserType.adult)
                 : piggyChildBackgroundDecoration(context),
           ),
@@ -61,9 +61,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 ),
               ],
             ),
-            ChildSavingsWidget(
-              store: widget.store,
-            ),
+            ChildSavingsWidget(),
             Column(
               children: <Widget>[
                 Opacity(
@@ -85,7 +83,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: widget.store.state.user.userType == UserType.child
+                  child: store.state.user.userType == UserType.child
                       ? Container()
                       : PiggySlider(
                           maxMinTextTrailing: Text(
@@ -106,7 +104,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 text: "MALACPERSELY LÉTREHOZÁSA",
                 disabled: false,
                 onClick: () async {
-                  await showCreatePiggyModal(context, widget.store);
+                  await showCreatePiggyModal(context, store);
                   setState(() {});
                 })
           ],

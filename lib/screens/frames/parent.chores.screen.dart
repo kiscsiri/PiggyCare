@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
@@ -8,11 +9,8 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
 class ParentChoresPage extends StatefulWidget {
-  ParentChoresPage({Key key, this.store, this.pageController})
-      : super(key: key);
+  ParentChoresPage({Key key}) : super(key: key);
 
-  final Store<AppState> store;
-  final PageController pageController;
   @override
   _ParentChoresPageState createState() => new _ParentChoresPageState();
 }
@@ -28,8 +26,8 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
     });
   }
 
-  Widget getGyerekMegtakaritasok(BuildContext context) {
-    var children = widget.store.state.user.children;
+  Widget getGyerekMegtakaritasok(BuildContext context, Store<AppState> store) {
+    var children = store.state.user.children;
     var gyerekLista = List.generate(
         children.length,
         (int i) => PiggyButton(
@@ -53,16 +51,18 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
     }
   }
 
-  _showAddChild() async {
-    await showAddNewChildModal(context, widget.store);
+  _showAddChild(Store<AppState> store) async {
+    await showAddNewChildModal(context, store);
   }
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
+
     return isChildSelected
         ? ChildDetailsWidget(
             documentId: selectedId.toString(),
-            store: widget.store,
+            initChildren: store.state.user.children,
           )
         : Stack(children: [
             Column(
@@ -88,9 +88,9 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    getGyerekMegtakaritasok(context),
+                    getGyerekMegtakaritasok(context, store),
                     GestureDetector(
-                      onTap: () async => await _showAddChild(),
+                      onTap: () async => await _showAddChild(store),
                       child: Text(
                         "Gyerek hozzáadás",
                         style: TextStyle(

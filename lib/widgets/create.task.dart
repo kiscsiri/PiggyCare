@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
@@ -8,12 +9,10 @@ import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
 
 class CreateTaskWidget extends StatefulWidget {
-  CreateTaskWidget(
-      {Key key, this.store, this.navigateToTaskWidget, @required this.child})
+  CreateTaskWidget({Key key, this.navigateToTaskWidget, @required this.child})
       : super(key: key);
 
   final Function navigateToTaskWidget;
-  final Store<AppState> store;
   final ChildDto child;
   @override
   _CreateTaskWidgetState createState() => new _CreateTaskWidgetState();
@@ -26,9 +25,9 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   double moneyPerFeed = 2;
   var controller = TextEditingController();
 
-  Future _createTask() async {
+  Future _createTask(Store<AppState> store) async {
     try {
-      widget.store.dispatch(AddChore(Chore(
+      store.dispatch(AddChore(Chore(
           childId: widget.child.id,
           choreType: ChoreType.haziMunka,
           details: "",
@@ -37,7 +36,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
           reward: "",
           title: item)));
       NotificationServices.sendNotificationNewTask(
-          widget.child.id, widget.store.state.user.name);
+          widget.child.id, store.state.user.name);
     } finally {
       Navigator.of(context).pop();
     }
@@ -45,6 +44,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -80,7 +80,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               text: 'LÉTREHOZÁS',
               onClick: () async {
                 if (_formKey.currentState.validate()) {
-                  await _createTask();
+                  await _createTask(store);
                 }
               },
             )

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -10,11 +11,11 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key, this.title, this.store}) : super(key: key);
+  SettingsPage({Key key, this.initialPeriod, this.initialFeedPerPeriod})
+      : super(key: key);
 
-  final String title;
-
-  final Store<AppState> store;
+  final Period initialPeriod;
+  final int initialFeedPerPeriod;
 
   @override
   _SettingsPageState createState() => new _SettingsPageState();
@@ -24,13 +25,13 @@ class _SettingsPageState extends State<SettingsPage> {
   Period _period;
   int _feedPerPeriod;
 
-  _saveUserSettings(BuildContext context) {
+  _saveUserSettings(BuildContext context, Store<AppState> store) {
     var loc = PiggyLocalizations.of(context);
     var updatedUser =
         new UserData(feedPerPeriod: _feedPerPeriod, period: _period);
 
-    NotificationServices.updateSettings(_period, widget.store.state.user.id);
-    widget.store.dispatch(UpdateUserData(updatedUser));
+    NotificationServices.updateSettings(_period, store.state.user.id);
+    store.dispatch(UpdateUserData(updatedUser));
     final snackBar = SnackBar(
         backgroundColor: Theme.of(context).primaryColor,
         content: Row(
@@ -81,13 +82,14 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _period = widget.store.state.user.period;
-    _feedPerPeriod = widget.store.state.user.feedPerPeriod;
+    _period = widget.initialPeriod;
+    _feedPerPeriod = widget.initialFeedPerPeriod;
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
     final boxHeight = MediaQuery.of(context).size.height * 0.2;
     return new Scaffold(
       body: new Container(
@@ -209,7 +211,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: new PiggyButton(
               text: loc.trans("save_settings"),
               onClick: () async {
-                _saveUserSettings(context);
+                _saveUserSettings(context, store);
               },
             ),
           )

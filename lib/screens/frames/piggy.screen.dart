@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/kid.piggy.dart';
-import 'package:redux/redux.dart';
 
 class PiggyPage extends StatefulWidget {
-  PiggyPage({Key key, this.title, this.store}) : super(key: key);
+  PiggyPage({Key key, this.title}) : super(key: key);
 
   final String title;
-  final Store<AppState> store;
 
   @override
   _PiggyPageState createState() => new _PiggyPageState();
@@ -16,9 +15,14 @@ class PiggyPage extends StatefulWidget {
 class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
+
     return new Scaffold(
         body: KidPiggyWidget(
-      store: widget.store,
+      initialPiggy: store.state.user.piggies.length != 0
+          ? store.state.user.piggies.first
+          : null,
+      timeUntilNextFeed: store.state.user.timeUntilNextFeed,
     ));
   }
 }

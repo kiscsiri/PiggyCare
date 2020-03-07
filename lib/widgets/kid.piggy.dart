@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/nopiggy.widget.dart';
@@ -17,9 +17,12 @@ import 'piggy.main.dart';
 import 'piggy.progress.dart';
 
 class KidPiggyWidget extends StatefulWidget {
-  KidPiggyWidget({Key key, this.store}) : super(key: key);
+  KidPiggyWidget(
+      {Key key, @required this.initialPiggy, @required this.timeUntilNextFeed})
+      : super(key: key);
 
-  final Store<AppState> store;
+  final Piggy initialPiggy;
+  final Duration timeUntilNextFeed;
 
   @override
   _KidPiggyWidgetState createState() => new _KidPiggyWidgetState();
@@ -44,18 +47,18 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
   bool creatingPiggy = false;
   Piggy piggy;
 
-  void onCoinDrop(int piggyId) {
+  void onCoinDrop(int piggyId, Store<AppState> store) {
     setState(() {
       isOnTarget = false;
-      _feedPiggy(piggyId);
+      _feedPiggy(piggyId, store);
     });
   }
 
   @override
   void initState() {
-    if (widget.store.state.user.piggies.length != 0) {
-      piggy = widget.store.state.user.piggies.first;
-    }
+    super.initState();
+
+    piggy = widget.initialPiggy;
 
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
@@ -73,33 +76,26 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
       })
       ..addListener(() {
         setState(() {
-          timeUntilNextFeed = (widget.store.state.user.timeUntilNextFeed * -1)
+          timeUntilNextFeed = (widget.timeUntilNextFeed * -1)
               .toString()
               .replaceRange(
-                  widget.store.state.user.timeUntilNextFeed
-                      .toString()
-                      .lastIndexOf('.'),
-                  (widget.store.state.user.timeUntilNextFeed * -1)
-                      .toString()
-                      .length,
+                  widget.timeUntilNextFeed.toString().lastIndexOf('.'),
+                  (widget.timeUntilNextFeed * -1).toString().length,
                   '');
         });
       });
     _animationController.forward();
 
-    super.initState();
     willAcceptStream = new BehaviorSubject<bool>();
     willAcceptStream.add(false);
     _controller = new AnimationController(
       vsync: this,
-      duration: new Duration(
-          seconds: widget.store.state.user.timeUntilNextFeed.inSeconds % 60),
+      duration: new Duration(seconds: widget.timeUntilNextFeed.inSeconds % 60),
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller.duration = new Duration(seconds: 60);
           setState(() {
-            tween.begin =
-                widget.store.state.user.timeUntilNextFeed.inSeconds % 60;
+            tween.begin = widget.timeUntilNextFeed.inSeconds % 60;
           });
 
           _controller.reset();
@@ -117,46 +113,47 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     super.dispose();
   }
 
-  Future<void> _feedPiggy(int piggyId) async {
-    var tempLevel = widget.store.state.user.piggyLevel;
+  Future<void> _feedPiggy(int piggyId, Store<AppState> store) async {
+    var tempLevel = store.state.user.piggyLevel;
 
-    widget.store.dispatch(FeedPiggy(widget.store.state.user.id, piggyId));
-    NotificationServices.feedPiggy(widget.store.state.user.id);
+    store.dispatch(FeedPiggy(store.state.user.id, piggyId));
+    NotificationServices.feedPiggy(store.state.user.id);
 
-    if (tempLevel.index == widget.store.state.user.piggyLevel.index) {
-      await loadAnimation(false, this, context, widget.store);
+    if (tempLevel.index == store.state.user.piggyLevel.index) {
+      await loadAnimation(false, this, context, store);
     } else {
-      await loadAnimation(true, this, context, widget.store);
+      await loadAnimation(true, this, context, store);
     }
 
     setState(() {
-      piggy =
-          widget.store.state.user.piggies.singleWhere((p) => p.id == piggy.id);
+      piggy = store.state.user.piggies.singleWhere((p) => p.id == piggy.id);
     });
   }
 
   _changeCreatePiggyState() async {
-    await showCreatePiggyModal(context, widget.store);
+    await showCreatePiggyModal(context, StoreProvider.of<AppState>(context));
   }
 
-  _changePiggyData(index) {
+  _changePiggyData(index, Store<AppState> store) {
     setState(() {
-      piggy = widget.store.state.user.piggies
+      piggy = store.state.user.piggies
           .singleWhere((d) => d.id == index, orElse: null);
     });
   }
 
-  Future<void> selectPiggy(BuildContext context) async {
-    var newId = await showPiggySelector(context, widget.store);
+  Future<void> selectPiggy(BuildContext context, Store<AppState> store) async {
+    var newId = await showPiggySelector(context, store);
     if (newId != null) {
-      _changePiggyData(newId);
+      _changePiggyData(newId, store);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var user = widget.store.state.user;
+    var store = StoreProvider.of<AppState>(context);
+
+    var user = store.state.user;
 
     bool _isDisabled = piggy == null ? false : !piggy.isFeedAvailable;
     if (piggy == null && user.piggies.length != 0) {
@@ -179,12 +176,11 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                 opacity: creatingPiggy ? 1.0 : 0.0,
                 duration: Duration(milliseconds: 500),
                 child: CreatePiggyWidget(
-                  store: widget.store,
                   navigateToPiggyWidget: () => _changeCreatePiggyState(),
                 ),
               )
             : NoPiggyWidget(
-                type: widget.store.state.user.userType,
+                type: store.state.user.userType,
                 navigateToCreateWidget: () => _changeCreatePiggyState(),
               ))
         : Container(
@@ -277,7 +273,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                             vertical: 0.0, horizontal: 10),
                                         child: GestureDetector(
                                           onTap: () async =>
-                                              await selectPiggy(context),
+                                              await selectPiggy(context, store),
                                           child: new Text(
                                               loc.trans('change_box'),
                                               textAlign: TextAlign.left,
@@ -304,7 +300,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                 willAcceptStream: willAcceptStream,
                                 isAnimationPlaying: isAnimationPlaying,
                                 isDisabled: _isDisabled,
-                                onDrop: onCoinDrop,
+                                onDrop: (val) => onCoinDrop(val, store),
                                 piggy: piggy),
                           ),
                         ]),

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -24,16 +25,10 @@ import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.store}) : super(key: key);
-
-  final String title = "Piggybanx";
-
-  final Store<AppState> store;
+  MainPage({Key key}) : super(key: key);
 
   final navigationStore = new Store<NavigationState>(navigationReducer,
       initialState: new NavigationState(index: 0));
-
-  final swipeKey = GlobalKey();
   final _pageController = new PageController(initialPage: 0, keepPage: true);
 
   @override
@@ -53,14 +48,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async =>
             await onResumeNotificationHandler(
-                message, context, widget.store, widget._pageController),
+                message, context, widget._pageController),
         onLaunch: (Map<String, dynamic> message) async {
           print("onLaunch: $message");
         },
         onResume: (Map<String, dynamic> message) async =>
             await onResumeNotificationHandler(
-                message, context, widget.store, widget._pageController),
-        onBackgroundMessage: myBackgroundMessageHandler);
+                message, context, widget._pageController));
     super.initState();
   }
 
@@ -70,37 +64,34 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  Future<void> logout() async {
+  Future<void> logout(Store<AppState> store) async {
     var isExit = await showExitModal(context);
     if (isExit) {
       await FirebaseAuth.instance.signOut();
-      widget.store.dispatch(InitUserData(UserData()));
-      Navigator.pushReplacement(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new StartupPage(
-                    store: widget.store,
-                  )));
+      store.dispatch(InitUserData(UserData()));
+      Navigator.pushReplacement(context,
+          new MaterialPageRoute(builder: (context) => new StartupPage()));
     }
   }
 
-  List<Widget> getFrames() {
+  List<Widget> getFrames(Store<AppState> store) {
+    var store = StoreProvider.of<AppState>(context);
     return [
-      new PiggyPage(store: widget.store),
-      ChildSavingScreen(store: widget.store),
-      widget.store.state.user.userType == UserType.child
-          ? ChildChoresPage(store: widget.store)
-          : ParentChoresPage(
-              store: widget.store,
-              pageController: widget._pageController,
-            ),
+      new PiggyPage(),
+      ChildSavingScreen(
+        initFeedPerPeriod: store.state.user.feedPerPeriod,
+      ),
+      store.state.user.userType == UserType.child
+          ? ChildChoresPage()
+          : ParentChoresPage(),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var user = widget.store.state.user;
+    var store = StoreProvider.of<AppState>(context);
+    var user = store.state.user;
 
     return WillPopScope(
       onWillPop: () async {
@@ -134,46 +125,42 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       ? AssetImage(
                                           "lib/assets/images/piggy_nyito.png")
                                       : NetworkImage(
-                                          widget.store.state.user.pictureUrl))),
+                                          store.state.user.pictureUrl))),
                         ),
-                        Text(widget.store.state.user.name ?? ""),
+                        Text(store.state.user.name ?? ""),
                       ],
                     ),
                   ),
-                  if (widget.store.state.user.userType == UserType.child)
+                  if (store.state.user.userType == UserType.child)
                     ListTile(
                       title: Text(loc.trans('add_parent')),
                       onTap: () async {
                         var searchString =
-                            await showUserAddModal(context, widget.store);
+                            await showUserAddModal(context, store);
                         if (searchString.isNotEmpty)
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => new UserSearchScreen(
-                                        currentUserId:
-                                            widget.store.state.user.id,
-                                        userType:
-                                            widget.store.state.user.userType,
+                                        currentUserId: store.state.user.id,
+                                        userType: store.state.user.userType,
                                         searchString: searchString,
                                       )));
                       },
                     ),
-                  if (widget.store.state.user.userType == UserType.adult)
+                  if (store.state.user.userType == UserType.adult)
                     ListTile(
                       title: Text(loc.trans('add_child')),
                       onTap: () async {
                         var searchString =
-                            await showUserAddModal(context, widget.store);
+                            await showUserAddModal(context, store);
                         if (searchString.isNotEmpty)
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => new UserSearchScreen(
-                                        currentUserId:
-                                            widget.store.state.user.id,
-                                        userType:
-                                            widget.store.state.user.userType,
+                                        currentUserId: store.state.user.id,
+                                        userType: store.state.user.userType,
                                         searchString: searchString,
                                       )));
                       },
@@ -185,8 +172,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           context,
                           MaterialPageRoute(
                               builder: (context) => new FirendRequestsScreen(
-                                    currentUserId: widget.store.state.user.id,
-                                    userType: widget.store.state.user.userType,
+                                    currentUserId: store.state.user.id,
+                                    userType: store.state.user.userType,
                                   )));
                     },
                   ),
@@ -205,7 +192,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   ListTile(
                     title: Text(loc.trans('logout')),
                     onTap: () {
-                      logout();
+                      logout(store);
                     },
                   ),
                 ],
@@ -213,7 +200,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ),
           ),
           body: PageView(
-            children: getFrames(),
+            children: getFrames(store),
             onPageChanged: (int index) {
               setState(() {
                 widget.navigationStore
@@ -225,7 +212,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           bottomNavigationBar: PiggyNavigationBar(
             onNavigateTap: (index) => _navigate(index),
             store: widget.navigationStore,
-            userType: widget.store.state.user.userType,
+            userType: store.state.user.userType,
           )),
     );
   }

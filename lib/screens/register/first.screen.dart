@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
@@ -11,35 +12,33 @@ import 'package:redux/redux.dart';
 import '../../models/appState.dart';
 
 class FirstRegisterPage extends StatefulWidget {
-  FirstRegisterPage({Key key, this.store}) : super(key: key);
+  FirstRegisterPage({Key key}) : super(key: key);
 
-  final Store<AppState> store;
   @override
   _FirstRegisterPageState createState() => new _FirstRegisterPageState();
 }
 
 class _FirstRegisterPageState extends State<FirstRegisterPage> {
-  _register(UserType type) {
-    widget.store.dispatch(InitRegistration());
+  _register(UserType type, Store<AppState> store) {
+    store.dispatch(InitRegistration());
 
     var userTypeAction = SetUserType(type);
-    widget.store.dispatch(userTypeAction);
+    store.dispatch(userTypeAction);
 
     switch (type) {
       case UserType.individual:
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage(
-                      store: widget.store,
-                    )));
+                builder: (context) => new SecondRegisterPage()));
         break;
       case UserType.adult:
         Navigator.push(
             context,
             new MaterialPageRoute(
                 builder: (context) => new LastPage(
-                      store: widget.store,
+                      initEmail: store.state.registrationData.email,
+                      initUserName: store.state.registrationData.username,
                     )));
         break;
       case UserType.child:
@@ -47,22 +46,22 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
             context,
             new MaterialPageRoute(
                 builder: (context) => new LastPage(
-                      store: widget.store,
+                      initEmail: store.state.registrationData.email,
+                      initUserName: store.state.registrationData.username,
                     )));
         break;
       default:
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage(
-                      store: widget.store,
-                    )));
+                builder: (context) => new SecondRegisterPage()));
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     var loc = PiggyLocalizations.of(context);
     return new Scaffold(
       appBar: new AppBar(title: Text(loc.trans('registration'))),
@@ -88,7 +87,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                     PiggyButton(
                       text: loc.trans('individual'),
                       disabled: true,
-                      onClick: () => _register(UserType.individual),
+                      onClick: () => _register(UserType.individual, store),
                     ),
                   ],
                 ),
@@ -103,12 +102,12 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                     PiggyButton(
                       text: loc.trans('adult'),
                       disabled: false,
-                      onClick: () => _register(UserType.adult),
+                      onClick: () => _register(UserType.adult, store),
                     ),
                     PiggyButton(
                       text: loc.trans('child'),
                       disabled: false,
-                      onClick: () => _register(UserType.child),
+                      onClick: () => _register(UserType.child, store),
                     ),
                   ],
                 ),

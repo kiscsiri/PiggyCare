@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/notification.modals.dart';
@@ -9,17 +10,15 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
 
 class ChildChoresPage extends StatefulWidget {
-  ChildChoresPage({Key key, this.store}) : super(key: key);
-
-  final Store<AppState> store;
+  ChildChoresPage({Key key}) : super(key: key);
 
   @override
   _ChoresPageState createState() => new _ChoresPageState();
 }
 
 class _ChoresPageState extends State<ChildChoresPage> {
-  Widget _getFinishedChores() {
-    var finishedChores = widget.store.state.user.chores
+  Widget _getFinishedChores(AppState state) {
+    var finishedChores = state.user.chores
         .where((element) => element.isDone && element.isValidated)
         .toList();
     int i = 1;
@@ -57,59 +56,64 @@ class _ChoresPageState extends State<ChildChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            decoration: piggyBackgroundDecoration(context, UserType.adult),
-          ),
-        ],
-      ),
-      Container(
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    var store = StoreProvider.of<AppState>(context);
+    return ListView(children: <Widget>[
+      Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            new Text('Elvégzendő feladatok',
-                style: Theme.of(context).textTheme.headline3),
-            ChoresWidget(store: widget.store),
-            PiggyButton(
-              text: "DUPLÁZÁS",
-              disabled: false,
-              onClick: () async {
-                var user = widget.store.state.user;
-                if (user.parentId != null) {
-                  if (await showChildrenAskDoubleSubmit(context) ?? false) {
-                    NotificationServices.sendNotificationDouble(
-                        widget.store.state.user.parentId,
-                        widget.store.state.user.name,
-                        widget.store.state.user.id);
-                  }
-                }
-              },
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              decoration: piggyBackgroundDecoration(context, UserType.adult),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Elvégzett feladatok",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                Image.asset('assets/images/pink_tick.png')
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60.0),
-              child: Center(
-                child: _getFinishedChores(),
-              ),
-            )
           ],
-        )),
-      )
+        ),
+        Container(
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new Text('Elvégzendő feladatok',
+                  style: Theme.of(context).textTheme.headline3),
+              ChoresWidget(),
+              PiggyButton(
+                text: "DUPLÁZÁS",
+                disabled: false,
+                onClick: () async {
+                  var user = store.state.user;
+                  if (user.parentId != null) {
+                    if (await showChildrenAskDoubleSubmit(context) ?? false) {
+                      NotificationServices.sendNotificationDouble(
+                          store.state.user.parentId,
+                          store.state.user.name,
+                          store.state.user.id);
+                    }
+                  }
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Elvégzett feladatok",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  Image.asset('assets/images/pink_tick.png')
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                child: Center(
+                  child: StoreConnector<AppState, AppState>(
+                      converter: (store) => store.state,
+                      builder: (context, state) => _getFinishedChores(state)),
+                ),
+              )
+            ],
+          )),
+        ),
+      ])
     ]);
   }
 }

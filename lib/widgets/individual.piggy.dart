@@ -14,6 +14,7 @@ import 'package:piggybanx/widgets/piggy.progress.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 
+@deprecated
 class IndividualPiggyWidget extends StatefulWidget {
   IndividualPiggyWidget({
     Key key,

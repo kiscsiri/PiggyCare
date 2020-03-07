@@ -89,13 +89,10 @@ AppState handleChoresActions(AppState appState, ChoreAction action) {
     ChoreFirebaseServices.createChoreForUser(action.chore);
     return addChore(appState, action);
   } else if (action is RemoveChore) {
-    // TODO firebase service
     return removeChore(appState, action);
   } else if (action is FinishChore) {
-    // TODO - Firebase service
     return finishChore(appState, action);
   } else if (action is AcceptChore) {
-    // TODO - firebase service
     return validateChore(appState, action);
   } else if (action is RefuseChore) {
     return refuseChore(appState, action);

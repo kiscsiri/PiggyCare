@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -12,11 +13,13 @@ import 'package:piggybanx/widgets/task.widget.dart';
 import 'package:redux/redux.dart';
 
 class ChildDetailsWidget extends StatefulWidget {
-  const ChildDetailsWidget({Key key, this.documentId, this.store})
+  const ChildDetailsWidget(
+      {Key key, this.documentId, @required this.initChildren})
       : super(key: key);
 
   final String documentId;
-  final Store<AppState> store;
+  final List<UserData> initChildren;
+
   @override
   _ChildDetailsWidgetState createState() => _ChildDetailsWidgetState();
 }
@@ -30,8 +33,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
   @override
   void initState() {
-    var children =
-        mapChildrenToChilDto(widget.store.state.user.children).toList();
+    var children = mapChildrenToChilDto(widget.initChildren).toList();
 
     child = children.singleWhere((t) => t.documentId == widget.documentId,
         orElse: null);
@@ -57,23 +59,21 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         .toList();
   }
 
-  Future<void> _showCreateModal() async {
-    await showCreatePiggyModal(context, widget.store, child.id);
+  Future<void> _showCreateModal(Store<AppState> store) async {
+    await showCreatePiggyModal(context, store, child.id);
 
     setState(() {
-      var children =
-          mapChildrenToChilDto(widget.store.state.user.children).toList();
+      var children = mapChildrenToChilDto(store.state.user.children).toList();
 
       child = children.singleWhere((t) => t.documentId == widget.documentId,
           orElse: null);
     });
   }
 
-  Future<void> _showAddTaskModal() async {
-    await showCreateTask(context, widget.store, child);
+  Future<void> _showAddTaskModal(Store<AppState> store) async {
+    await showCreateTask(context, store, child);
     setState(() {
-      var children =
-          mapChildrenToChilDto(widget.store.state.user.children).toList();
+      var children = mapChildrenToChilDto(store.state.user.children).toList();
 
       child = children.singleWhere((t) => t.documentId == widget.documentId,
           orElse: null);
@@ -85,6 +85,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     var loc = PiggyLocalizations.of(context);
     var tasks = List<TaskInputWidget>();
     var savings = List<ChildSavingInputWidget>();
+    var store = StoreProvider.of<AppState>(context);
 
     _selectTaskItem(int i) {
       setState(() {
@@ -213,7 +214,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
                       text: loc.trans('create_money_box_button'),
-                      onClick: () async => await _showCreateModal(),
+                      onClick: () async => await _showCreateModal(store),
                     ),
                   )
                 ],
@@ -244,7 +245,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
                       text: "+ FELADAT HOZZÁADÁS",
-                      onClick: () async => await _showAddTaskModal(),
+                      onClick: () async => await _showAddTaskModal(store),
                     ),
                   )
                 ],
