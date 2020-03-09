@@ -81,9 +81,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       ChildSavingScreen(
         initFeedPerPeriod: store.state.user.feedPerPeriod,
       ),
-      store.state.user.userType == UserType.child
-          ? ChildChoresPage()
-          : ParentChoresPage(),
+      if (store.state.user.userType != UserType.individual)
+        store.state.user.userType == UserType.child
+            ? ChildChoresPage()
+            : ParentChoresPage(),
     ];
   }
 

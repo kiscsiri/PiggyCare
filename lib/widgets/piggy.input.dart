@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 typedef void OnErrorMessage(String value);
 typedef String OnValidate(String value);
-typedef String OnSubmit(String value);
+typedef Future<String> OnSubmit(String value);
 
 class PiggyInput extends StatefulWidget {
   PiggyInput(
@@ -18,7 +18,9 @@ class PiggyInput extends StatefulWidget {
       this.inputFormatters,
       this.inputIcon,
       this.onSubmit,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.focusNode,
+      this.textInputAction})
       : super(key: key);
   final String hintText;
   final TextEditingController textController;
@@ -31,30 +33,30 @@ class PiggyInput extends StatefulWidget {
   final double height;
   final IconData inputIcon;
   final bool obscureText;
+  final FocusNode focusNode;
+  final TextInputAction textInputAction;
 
   @override
   _PiggyInputState createState() => new _PiggyInputState();
 }
 
 class _PiggyInputState extends State<PiggyInput> {
-  final FocusNode _focusNode = FocusNode();
-
   bool isFocused = false;
   Color color = Color(0xffe25979);
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
+    widget.focusNode?.addListener(() {
       setState(() {
-        isFocused = _focusNode.hasFocus;
+        isFocused = widget.focusNode.hasFocus;
       });
     });
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    widget.focusNode.dispose();
     super.dispose();
   }
 
@@ -72,11 +74,12 @@ class _PiggyInputState extends State<PiggyInput> {
           borderRadius: BorderRadius.circular(35),
         ),
         child: TextFormField(
-          focusNode: _focusNode,
+          focusNode: widget.focusNode,
           onFieldSubmitted: (String val) => widget.onSubmit(val),
           obscureText: widget.obscureText,
           controller: widget.textController,
           keyboardType: widget.keyboardType ?? TextInputType.text,
+          textInputAction: widget.textInputAction ?? TextInputAction.done,
           inputFormatters: widget.inputFormatters,
           validator: (value) {
             var result = widget.onValidate(value);

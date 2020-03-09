@@ -30,11 +30,12 @@ class PiggyNavigationBar extends StatelessWidget {
         new BottomNavigationBarItem(
             title: new Text(loc.trans('saving')),
             icon: Icon(Icons.attach_money)),
-        new BottomNavigationBarItem(
-            title: userType == UserType.adult
-                ? Text('Gyerek')
-                : Text(loc.trans('tasks')),
-            icon: Icon(FontAwesomeIcons.clipboardCheck)),
+        if (userType != UserType.individual)
+          new BottomNavigationBarItem(
+              title: userType == UserType.adult
+                  ? Text('Gyerek')
+                  : Text(loc.trans('tasks')),
+              icon: Icon(FontAwesomeIcons.clipboardCheck)),
       ],
       currentIndex: store.state.index,
     );

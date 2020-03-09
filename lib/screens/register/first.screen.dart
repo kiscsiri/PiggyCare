@@ -30,7 +30,10 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage()));
+                builder: (context) => new LastPage(
+                      initEmail: store.state.registrationData.email,
+                      initUserName: store.state.registrationData.username,
+                    )));
         break;
       case UserType.adult:
         Navigator.push(
@@ -86,7 +89,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                         )),
                     PiggyButton(
                       text: loc.trans('individual'),
-                      disabled: true,
+                      disabled: false,
                       onClick: () => _register(UserType.individual, store),
                     ),
                   ],

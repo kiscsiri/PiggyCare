@@ -99,7 +99,11 @@ class _ChoresPageState extends State<ChildChoresPage> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline5,
                   ),
-                  Image.asset('assets/images/pink_tick.png')
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.04),
+                    child: Image.asset('assets/images/pink_tick.png'),
+                  )
                 ],
               ),
               Padding(

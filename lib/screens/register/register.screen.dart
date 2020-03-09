@@ -35,6 +35,9 @@ class _RegisterPageState extends State<LastPage> {
 
   final _telephoneFormKey = new GlobalKey<FormState>();
 
+  final focusEmail = FocusNode();
+  final focusPassword = FocusNode();
+
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -119,6 +122,10 @@ class _RegisterPageState extends State<LastPage> {
                 inputIcon: FontAwesomeIcons.user,
                 hintText: loc.trans("user_name"),
                 textController: _userNameController,
+                textInputAction: TextInputAction.go,
+                onSubmit: (val) {
+                  FocusScope.of(context).requestFocus(focusEmail);
+                },
                 width: MediaQuery.of(context).size.width * 0.7,
                 onValidate: (value) {
                   if (value.isEmpty) {
@@ -133,8 +140,13 @@ class _RegisterPageState extends State<LastPage> {
               PiggyInput(
                 inputIcon: Icons.mail_outline,
                 hintText: loc.trans("email"),
+                focusNode: focusEmail,
+                textInputAction: TextInputAction.go,
                 textController: _emailController,
                 width: MediaQuery.of(context).size.width * 0.7,
+                onSubmit: (val) {
+                  FocusScope.of(context).requestFocus(focusPassword);
+                },
                 onValidate: (value) {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
@@ -149,8 +161,14 @@ class _RegisterPageState extends State<LastPage> {
                 inputIcon: Icons.lock_outline,
                 hintText: loc.trans("password"),
                 textController: _passwordController,
+                focusNode: focusPassword,
                 width: MediaQuery.of(context).size.width * 0.7,
                 obscureText: true,
+                onSubmit: (value) async {
+                  if (_telephoneFormKey.currentState.validate()) {
+                    await _register(context, store);
+                  }
+                },
                 onValidate: (value) {
                   if (value.isEmpty) {
                     return loc.trans("required_field");
@@ -178,7 +196,6 @@ class _RegisterPageState extends State<LastPage> {
                 onClick: () async => signInAndRegisterGoogle(store),
               ),
             ]));
-
     return new Scaffold(
         appBar: new AppBar(
           title: Text(loc.trans('registration')),
@@ -191,52 +208,55 @@ class _RegisterPageState extends State<LastPage> {
             },
           ),
         ),
-        body: Stack(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-                decoration: piggyBackgroundDecoration(
-                    context, store.state.user.userType),
-              ),
-            ],
-          ),
-          Container(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: ListView(children: <Widget>[
+          Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: telephoneBlock,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              margin: EdgeInsets.only(bottom: 0),
-                              child: Center(
-                                child: new Text(
-                                  " ",
-                                  textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                ),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  decoration: piggyBackgroundDecoration(
+                      context, store.state.user.userType),
                 ),
               ],
             ),
-          ),
+            Container(
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 0.0),
+                        child: telephoneBlock,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                margin: EdgeInsets.only(bottom: 0),
+                                child: Center(
+                                  child: new Text(
+                                    " ",
+                                    textAlign: TextAlign.center,
+                                    style: new TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ]),
         ]));
   }
 }

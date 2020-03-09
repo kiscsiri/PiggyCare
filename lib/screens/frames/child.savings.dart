@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 
 class ChildSavingScreen extends StatefulWidget {
@@ -24,6 +26,32 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   void initState() {
     savingPerFeed = widget.initFeedPerPeriod;
     super.initState();
+  }
+
+  Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) => PiggyModal(
+          title: Column(
+            children: <Widget>[
+              Text(
+                "Are you sure you want to double?",
+                style: Theme.of(context).textTheme.headline2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            PiggyButton(
+              text: "YES",
+              onClick: () => Navigator.of(context).pop(true),
+            ),
+            PiggyButton(
+              text: "NO",
+              onClick: () => Navigator.of(context).pop(false),
+            )
+          ]),
+    );
   }
 
   @override
@@ -99,6 +127,23 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                         ),
                 ),
               ],
+            ),
+            PiggyButton(
+              text: "DUPLÁZÁS",
+              disabled: false,
+              onClick: () async {
+                var user = store.state.user;
+                if (user.parentId != null) {
+                  if (await showChildrenAskDoubleSubmit(context) ?? false) {
+                    if (user.userType != UserType.individual) {
+                      NotificationServices.sendNotificationDouble(
+                          store.state.user.parentId,
+                          store.state.user.name,
+                          store.state.user.id);
+                    }
+                  }
+                }
+              },
             ),
             PiggyButton(
                 text: "MALACPERSELY LÉTREHOZÁSA",
