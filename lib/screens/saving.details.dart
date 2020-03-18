@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
@@ -15,15 +18,17 @@ class SavingDetails extends StatefulWidget {
 
 class _SavingDetailsState extends State<SavingDetails> {
   String _getRemainingCoinsToCollect() {
-    if (widget.piggy.currentFeedAmount != null)
+    var store = StoreProvider.of<AppState>(context);
+    if (widget.piggy != null)
       return ((widget.piggy.targetPrice - widget.piggy.currentSaving) ~/
-              widget.piggy.currentFeedAmount)
+              store.state.user.feedPerPeriod)
           .toString();
     return '0';
   }
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.piggy.item)),
       body: Container(
@@ -42,11 +47,11 @@ class _SavingDetailsState extends State<SavingDetails> {
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
-                Text("Malacpersely"),
+                Text(loc.trans('home')),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                      'Gyűjtés kezdete: ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
+                      '${loc.trans('collecting_start_date')} ${DateTime.now().year}.${DateTime.now().month}.${DateTime.now().day}'),
                 ),
               ],
             ),
@@ -68,7 +73,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                           maxMinTextTrailing: Text("€"),
                           value: widget.piggy.currentSaving.toDouble(),
                           onChange: (val) {},
-                          maxVal: 1000,
+                          maxVal: widget.piggy.targetPrice.toDouble(),
                           trackColor: Colors.white,
                         ),
                       ),
@@ -94,7 +99,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                                 ],
                               ),
                               Text(
-                                "Eurót kell még gyűjtened, hogy elérd a célodat!",
+                                loc.trans('money_to_your_goal'),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,

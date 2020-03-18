@@ -34,6 +34,7 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   percent_indicator: ^2.1.1+1
   flutter_svg: ^0.17.0
+  flutter_facebook_login: ^3.0.0
 
   flutter:
     sdk: flutter
@@ -98,6 +99,7 @@ flutter:
     - assets/images/coin.png
     - assets/images/coins.png
     - assets/images/adult_profile_4K.png
+    - assets/images/piggy_business_half_left_b.png
     - assets/animations/Baby-Sleep.gif
     # - assets/animations/Child-LevelUp.gif
     # - assets/animations/Child-Feed1.gif

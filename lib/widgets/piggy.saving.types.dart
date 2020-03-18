@@ -34,7 +34,6 @@ class _SavingForWidgetState extends State<SavingForWidget> {
     var selected = savingTypeList.singleWhere((t) => t.selected == true);
 
     var piggy = new Piggy(
-      currentFeedAmount: 1,
       currentSaving: 0,
       doubleUp: false,
       isAproved: false,

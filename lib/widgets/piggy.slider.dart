@@ -7,11 +7,13 @@ class PiggySlider extends StatelessWidget {
       this.onChange,
       this.maxMinTextTrailing,
       this.trackColor,
-      this.maxVal})
+      this.maxVal,
+      this.onChangeEnd})
       : super(key: key);
 
   final double value;
   final Function(double) onChange;
+  final Function(double) onChangeEnd;
   final Text maxMinTextTrailing;
   final Color trackColor;
   final double maxVal;
@@ -27,6 +29,7 @@ class PiggySlider extends StatelessWidget {
           Slider(
             onChanged: (value) => onChange(value),
             min: 0,
+            onChangeEnd: (value) => onChangeEnd(value),
             max: maxVal ?? 100,
             activeColor: trackColor ?? Theme.of(context).primaryColor,
             inactiveColor: trackColor ?? Theme.of(context).primaryColor,

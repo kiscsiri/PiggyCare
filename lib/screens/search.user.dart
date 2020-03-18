@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
@@ -40,9 +41,10 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text("Családtag hozzáadás"),
+          title: Text(loc.trans('add_family')),
         ),
         body: Stack(children: [
           Column(
@@ -84,10 +86,10 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                             return Center(child: CircularProgressIndicator());
                           default:
                             if (snapshot.hasError)
-                              return new Text('Error');
+                              return new Text(loc.trans('error'));
                             else if (snapshot.data.length == 0)
                               return Center(
-                                  child: Text("Nem találtunk felhasználót"));
+                                  child: Text(loc.trans('no_user_found')));
                             else
                               return ListView(
                                   children: snapshot.data

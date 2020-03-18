@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/chore.field.dart';
 
@@ -23,6 +24,7 @@ class _ChoresWidgetState extends State<ChoresWidget> {
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
     var user = store.state.user;
+    var loc = PiggyLocalizations.of(context);
 
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
@@ -66,7 +68,7 @@ class _ChoresWidgetState extends State<ChoresWidget> {
             height: MediaQuery.of(context).size.width * 0.6,
             child: ListView(
               children: savingTypeList.length == 0
-                  ? [Center(child: Text("Nincs feladatod!"))]
+                  ? [Center(child: Text(loc.trans('no_task')))]
                   : savingTypeList,
             ),
           );

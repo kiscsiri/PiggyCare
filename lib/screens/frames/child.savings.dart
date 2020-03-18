@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
@@ -29,13 +31,14 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   }
 
   Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
+    var loc = PiggyLocalizations.of(context);
     return await showDialog<bool>(
       context: context,
       builder: (context) => PiggyModal(
           title: Column(
             children: <Widget>[
               Text(
-                "Are you sure you want to double?",
+                loc.trans('wants_to_double_ask'),
                 style: Theme.of(context).textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
@@ -43,11 +46,11 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
           ),
           actions: <Widget>[
             PiggyButton(
-              text: "YES",
+              text: loc.trans('yes'),
               onClick: () => Navigator.of(context).pop(true),
             ),
             PiggyButton(
-              text: "NO",
+              text: loc.trans('no'),
               onClick: () => Navigator.of(context).pop(false),
             )
           ]),
@@ -57,6 +60,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   @override
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
+    var loc = PiggyLocalizations.of(context);
     return Stack(children: [
       Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -65,7 +69,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: store.state.user.userType == UserType.child
                 ? piggyBackgroundDecoration(context, UserType.adult)
-                : piggyChildBackgroundDecoration(context),
+                : piggyBusinessBackgroundDecoration(context),
           ),
         ],
       ),
@@ -79,12 +83,12 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    "Megtakarítások",
+                    loc.trans('savings'),
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
                 Text(
-                  "Válassz malacperselyt!",
+                  loc.trans('choose_money_box'),
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],
@@ -123,27 +127,18 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                               savingPerFeed = val.toInt();
                             });
                           },
+                          onChangeEnd: (val) async {
+                            store.dispatch(UpdateUserData(UserData(
+                                period: store.state.user.period,
+                                feedPerPeriod: val.toInt())));
+                            setState(() {
+                              savingPerFeed = val.toInt();
+                            });
+                          },
                           value: savingPerFeed.toDouble(),
                         ),
                 ),
               ],
-            ),
-            PiggyButton(
-              text: "DUPLÁZÁS",
-              disabled: false,
-              onClick: () async {
-                var user = store.state.user;
-                if (user.parentId != null) {
-                  if (await showChildrenAskDoubleSubmit(context) ?? false) {
-                    if (user.userType != UserType.individual) {
-                      NotificationServices.sendNotificationDouble(
-                          store.state.user.parentId,
-                          store.state.user.name,
-                          store.state.user.id);
-                    }
-                  }
-                }
-              },
             ),
             PiggyButton(
                 text: "MALACPERSELY LÉTREHOZÁSA",

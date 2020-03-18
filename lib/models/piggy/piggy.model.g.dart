@@ -10,7 +10,6 @@ Piggy _$PiggyFromJson(Map json) {
   return Piggy(
     id: json['id'] as int,
     userId: json['userId'] as String,
-    currentFeedAmount: json['currentFeedAmount'] as int,
     doubleUp: json['doubleUp'] as bool,
     isFeedAvailable: json['isFeedAvailable'] as bool,
     money: json['money'] as int,
@@ -26,7 +25,6 @@ Map<String, dynamic> _$PiggyToJson(Piggy instance) => <String, dynamic>{
       'userId': instance.userId,
       'isFeedAvailable': instance.isFeedAvailable,
       'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
-      'currentFeedAmount': instance.currentFeedAmount,
       'money': instance.money,
       'doubleUp': instance.doubleUp,
       'item': instance.item,

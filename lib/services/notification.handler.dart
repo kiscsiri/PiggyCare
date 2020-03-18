@@ -21,58 +21,60 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
   var store = StoreProvider.of<AppState>(context);
   if (message.containsKey('data')) {
     final dynamic data = message['data'];
-    switch (data['modalType']) {
-      case "ParentNewTask":
-        var res = await showAskedForNewTask(
-            context, data['userName'], data['userId']);
-        if (res ?? false) {
-          _navigate(2, _pageController);
-          await showCreateTask(context, store,
-              ChildDto(id: data['userId'], name: data['userName']));
-        } else {
-          Navigator.of(context).pop();
-        }
-        break;
-      case "ChildrenNewTask":
-        await showChildrenNewTask(context, data['userName']);
-        break;
-      case "AproveTaskCompleted":
-        bool ack = await showCompletedTask(context, data['userName']);
-        if (ack ?? false) {
-          await ChoreFirebaseServices.validateChildChore(
-              data['senderId'], int.tryParse(data['taskId']));
-          await NotificationServices.sendNotificationValidatedTask(
-              data['senderId'], int.tryParse(data['taskId']));
-        } else {
-          await NotificationServices.sendNotificationRefusedTask(
-              data['senderId'], int.tryParse(data['taskId']));
-          await ChoreFirebaseServices.refuseChildChore(
-              data['senderId'], int.tryParse(data['taskId']));
-        }
+    if (store.state.user.id == data['userId'] || data['userId'] == null) {
+      switch (data['modalType']) {
+        case "ParentNewTask":
+          var res = await showAskedForNewTask(
+              context, data['userName'], data['userId']);
+          if (res ?? false) {
+            _navigate(2, _pageController);
+            await showCreateTask(context, store,
+                ChildDto(id: data['userId'], name: data['userName']));
+          } else {
+            Navigator.of(context).pop();
+          }
+          break;
+        case "ChildrenNewTask":
+          await showChildrenNewTask(context, data['userName']);
+          break;
+        case "AproveTaskCompleted":
+          bool ack = await showCompletedTask(context, data['userName']);
+          if (ack ?? false) {
+            await ChoreFirebaseServices.validateChildChore(
+                data['senderId'], int.tryParse(data['taskId']));
+            await NotificationServices.sendNotificationValidatedTask(
+                data['senderId'], int.tryParse(data['taskId']));
+          } else {
+            await NotificationServices.sendNotificationRefusedTask(
+                data['senderId'], int.tryParse(data['taskId']));
+            await ChoreFirebaseServices.refuseChildChore(
+                data['senderId'], int.tryParse(data['taskId']));
+          }
 
-        break;
-      case "TaskValidated":
-        await showValidatedTask(context, data['userName']);
-        store.dispatch(
-            AcceptChore(data['userId'], int.tryParse(data['taskId'])));
-        break;
-      case "TaskRefused":
-        await showRefusedTask(context, data['userName']);
-        store.dispatch(
-            RefuseChore(data['userId'], int.tryParse(data['taskId'])));
-        break;
-      case "NewTask":
-        await showChildrenNewTask(context, data['userName']);
-        _navigate(2, _pageController);
-        break;
-      case "FriendRequest":
-        Navigator.of(context).push(new MaterialPageRoute(
-            builder: (context) => new FirendRequestsScreen(
-                  currentUserId: store.state.user.id,
-                )));
-        break;
-      default:
-        break;
+          break;
+        case "TaskValidated":
+          await showValidatedTask(context, data['userName']);
+          store.dispatch(
+              AcceptChore(data['userId'], int.tryParse(data['taskId'])));
+          break;
+        case "TaskRefused":
+          await showRefusedTask(context, data['userName']);
+          store.dispatch(
+              RefuseChore(data['userId'], int.tryParse(data['taskId'])));
+          break;
+        case "NewTask":
+          await showChildrenNewTask(context, data['userName']);
+          _navigate(2, _pageController);
+          break;
+        case "FriendRequest":
+          Navigator.of(context).push(new MaterialPageRoute(
+              builder: (context) => new FirendRequestsScreen(
+                    currentUserId: store.state.user.id,
+                  )));
+          break;
+        default:
+          break;
+      }
     }
   }
 }

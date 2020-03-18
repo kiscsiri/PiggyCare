@@ -103,5 +103,7 @@
   "finished_tasks": "Finished tasks",
   "tasks": "Tasks",
   "lets_double": "LET'S DOUBLE",
-  "how_much_per_feed_question": "How much oney do you want to spend on feeding?"
+  "how_much_per_feed_question": "How much oney do you want to spend on feeding?",
+  "yes": "Yes",
+  "no": "No"
 }

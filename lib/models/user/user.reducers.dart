@@ -63,11 +63,10 @@ feedPiggy(AppState state, FeedPiggy action) {
   state.user.lastFeed = DateTime.now();
 
   state.user.piggies[index] = Piggy(
-      currentSaving: (piggy.currentSaving + piggy.currentFeedAmount),
+      currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
       item: piggy.item,
       isAproved: piggy.isAproved,
       piggyLevel: state.user.piggyLevel,
-      currentFeedAmount: piggy.currentFeedAmount,
       doubleUp: piggy.doubleUp,
       money: piggy.money,
       userId: piggy.userId,

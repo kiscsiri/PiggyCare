@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggybanx/enums/userType.dart';
@@ -80,6 +81,37 @@ class _LoginPageState extends State<LoginPage> {
     var store = StoreProvider.of<AppState>(context);
     var user = await AuthenticationService.signInWithGoogle(store);
 
+    if (user == null) {
+      return;
+    }
+
+    try {
+      await AuthenticationService.authenticate(user, store, context);
+
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new MainPage()));
+    } on AuthException {
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new FirstRegisterPage()));
+    }
+  }
+
+  Future _signInWithFacebook() async {
+    var store = StoreProvider.of<AppState>(context);
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn(['email']);
+
+    final AuthCredential credential = FacebookAuthProvider.getCredential(
+      accessToken: result.accessToken.token,
+    );
+    final FirebaseUser user =
+        (await _auth.signInWithCredential(credential)).user;
+    assert(user.displayName != null);
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
     if (user == null) {
       return;
     }
@@ -189,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.only(bottom: 25.0, top: 5),
                         child: PiggyFacebookButton(
                           text: "Facebook",
-                          onClick: () async => await _signInWithGoogle(),
+                          onClick: () async => await _signInWithFacebook(),
                         ),
                       ),
                       Padding(

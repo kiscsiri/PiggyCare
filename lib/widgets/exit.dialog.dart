@@ -12,7 +12,7 @@ Future<bool> showExitModal(BuildContext context) async {
           content: Container(
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[

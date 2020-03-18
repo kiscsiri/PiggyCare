@@ -77,7 +77,7 @@ class UserServices {
         .where('id', isEqualTo: fromId)
         .getDocuments();
 
-    if (result.documents.length == 0) {
+    if (result.documents.length != 0) {
       try {
         await Firestore.instance
             .collection('userRequests')

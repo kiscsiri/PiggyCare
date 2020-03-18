@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PiggyBanx</string>
+    <string name="facebook_app_id">2452881658318241</string>
+    <string name="fb_login_protocol_scheme">fb2452881658318241</string>
+</resources>

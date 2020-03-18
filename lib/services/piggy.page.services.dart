@@ -8,6 +8,7 @@ import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
+import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
@@ -23,23 +24,19 @@ Future<int> showPiggySelector(
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      return Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: MediaQuery.of(context).size.height * 0.2),
-        child: AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            content: Column(
+      return PiggyModal(
+          vPadding: MediaQuery.of(context).size.height * 0.2,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Text(loc.trans('selector_title'),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline2),
+          ),
+          content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Text(loc.trans('selector_title'),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline2),
-                    ),
                     Text(
                       loc.trans('selector_explanation'),
                       textAlign: TextAlign.center,
@@ -73,9 +70,7 @@ Future<int> showPiggySelector(
                     ),
                   ),
                 )
-              ],
-            )),
-      );
+              ]));
     },
   );
 
@@ -111,6 +106,7 @@ Future<void> showAlert(BuildContext context, String errorMessage,
 
 Future<bool> showAckDialog(BuildContext context, Widget message,
     [Widget title]) async {
+  var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
     context: context,
     barrierDismissible: true,
@@ -126,11 +122,11 @@ Future<bool> showAckDialog(BuildContext context, Widget message,
                 child: Column(
                   children: <Widget>[
                     PiggyButton(
-                      text: "Igen",
+                      text: loc.trans('yes'),
                       onClick: () => Navigator.of(context).pop(true),
                     ),
                     PiggyButton(
-                      text: "Nem",
+                      text: loc.trans('no'),
                       onClick: () => Navigator.of(context).pop(false),
                     )
                   ],
@@ -153,17 +149,8 @@ Future<void> showCreateTask(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: CreateTaskWidget(
-                child: child,
-              ),
-            ),
-          ),
+        return CreateTaskWidget(
+          child: child,
         );
       });
 }
@@ -174,17 +161,8 @@ Future<void> showCreatePiggyModal(BuildContext context, Store<AppState> store,
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: CreatePiggyWidget(
-                childId: childId,
-              ),
-            ),
-          ),
+        return CreatePiggyWidget(
+          childId: childId,
         );
       });
 }
@@ -195,22 +173,14 @@ Future<void> showAddNewChildModal(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: AddChildWidget(),
-            ),
-          ),
-        );
+        return AddChildWidget();
       });
 }
 
 Future<String> showUserAddModal(
     BuildContext context, Store<AppState> store) async {
   var textController = new TextEditingController();
+  var loc = PiggyLocalizations.of(context);
 
   try {
     await showDialog<String>(
@@ -246,11 +216,11 @@ Future<String> showUserAddModal(
                 ),
                 actions: <Widget>[
                   PiggyButton(
-                    text: "Keresés",
+                    text: loc.trans('search'),
                     onClick: () => Navigator.of(context).pop(),
                   )
                 ],
-                title: Text("Search user"),
+                title: Text(loc.trans("search_user")),
               ),
             ),
           );

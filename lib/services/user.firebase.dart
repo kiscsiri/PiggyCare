@@ -31,10 +31,10 @@ feedPiggyDatabase(FeedPiggy action) {
     var piggy =
         user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
 
-    piggy.money = piggy.money + piggy.currentFeedAmount;
-    piggy.currentSaving = piggy.currentSaving + piggy.currentFeedAmount;
+    piggy.money = piggy.money + user.feedPerPeriod;
+    piggy.currentSaving = piggy.currentSaving + user.feedPerPeriod;
 
-    user.saving = user.saving + piggy.currentFeedAmount;
+    user.saving = user.saving + user.feedPerPeriod;
 
     user.currentFeedTime = ++doc.data['currentFeedTime'];
     user.isDemoOver = doc.data['isDemoOver'];

@@ -10,7 +10,6 @@ class Piggy {
   bool isFeedAvailable;
   bool isAproved;
   PiggyLevel piggyLevel;
-  int currentFeedAmount;
   int money;
   bool doubleUp;
   String item;
@@ -20,7 +19,6 @@ class Piggy {
   Piggy.fromPiggy(Piggy another) {
     userId = another.userId;
     isFeedAvailable = another.isFeedAvailable;
-    currentFeedAmount = another.currentFeedAmount;
     money = another.money;
     isAproved = another.isAproved;
     doubleUp = another.doubleUp;
@@ -33,7 +31,6 @@ class Piggy {
   Piggy(
       {this.id = 0,
       this.userId,
-      this.currentFeedAmount,
       this.doubleUp,
       this.isFeedAvailable,
       this.money,

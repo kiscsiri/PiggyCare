@@ -40,6 +40,12 @@
 @import firebase_messaging;
 #endif
 
+#if __has_include(<flutter_facebook_login/FacebookLoginPlugin.h>)
+#import <flutter_facebook_login/FacebookLoginPlugin.h>
+#else
+@import flutter_facebook_login;
+#endif
+
 #if __has_include(<flutter_webview_plugin/FlutterWebviewPlugin.h>)
 #import <flutter_webview_plugin/FlutterWebviewPlugin.h>
 #else
@@ -85,6 +91,7 @@
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
+  [FacebookLoginPlugin registerWithRegistrar:[registry registrarForPlugin:@"FacebookLoginPlugin"]];
   [FlutterWebviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterWebviewPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];

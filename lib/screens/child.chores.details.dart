@@ -166,7 +166,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    child.name + " megtakarításai",
+                    child.name + " ${loc.trans('his_savings')}",
                     style: Theme.of(context).textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
@@ -230,10 +230,10 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    child.name + " feladatai",
+                    child.name + " ${loc.trans('his_tasks')}",
                     style: Theme.of(context).textTheme.headline2,
                   ),
-                  Text("Válassz malacperselyt",
+                  Text(loc.trans('choose_money_box'),
                       style: Theme.of(context).textTheme.subtitle2),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
@@ -244,7 +244,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
-                      text: "+ FELADAT HOZZÁADÁS",
+                      text: loc.trans('+_add_task'),
                       onClick: () async => await _showAddTaskModal(store),
                     ),
                   )

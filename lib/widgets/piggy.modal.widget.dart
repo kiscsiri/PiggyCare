@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class PiggyModal extends StatefulWidget {
-  const PiggyModal({Key key, this.name, this.title, this.content, this.actions})
+  const PiggyModal(
+      {Key key,
+      this.name,
+      this.title,
+      this.content,
+      this.actions,
+      this.vPadding,
+      this.hPadding})
       : super(key: key);
 
   final String name;
   final Widget title;
+  final double vPadding;
+  final double hPadding;
   final Widget content;
   final List<Widget> actions;
 
@@ -46,25 +55,34 @@ class _PiggyModalState extends State<PiggyModal>
     return Stack(children: [
       Padding(
           padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.height * 0.1,
-              horizontal: MediaQuery.of(context).size.width * 0),
+              vertical:
+                  widget.vPadding ?? MediaQuery.of(context).size.height * 0.1,
+              horizontal:
+                  widget.hPadding ?? MediaQuery.of(context).size.width * 0),
           child: AlertDialog(
               title: widget.title,
               actions: [
                 Padding(
                     padding: EdgeInsets.only(bottom: 30),
-                    child: Column(children: widget.actions))
+                    child: Column(children: widget.actions ?? [Container()]))
               ],
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(40)),
               content: widget.content)),
       AnimatedPositioned(
           duration: Duration(seconds: 1),
           bottom: animation.value,
-          right: MediaQuery.of(context).size.width * 0.315,
-          child: Image.asset(
-            'assets/images/modal_piggy.png',
-            scale: 3,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/modal_piggy.png',
+                  scale: MediaQuery.of(context).size.width * 0.0066,
+                ),
+              ],
+            ),
           ))
     ]);
   }

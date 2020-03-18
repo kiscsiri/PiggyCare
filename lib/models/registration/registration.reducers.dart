@@ -42,7 +42,6 @@ AppState addItem(AppState state, AddPiggy action) {
     newItems.add(Piggy(
         currentSaving: 0,
         piggyLevel: PiggyLevel.Baby,
-        currentFeedAmount: 2,
         doubleUp: false,
         id: state.user.piggies.length + 1,
         isFeedAvailable: true,
@@ -80,7 +79,6 @@ AppState addItem(AppState state, AddPiggy action) {
     child.piggies.add(Piggy(
         currentSaving: 0,
         piggyLevel: PiggyLevel.Baby,
-        currentFeedAmount: 2,
         doubleUp: false,
         id: state.user.piggies.length + 1,
         isFeedAvailable: true,

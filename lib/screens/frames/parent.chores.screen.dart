@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
@@ -27,11 +28,13 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
   }
 
   Widget getGyerekMegtakaritasok(BuildContext context, Store<AppState> store) {
+    var loc = PiggyLocalizations.of(context);
     var children = store.state.user.children;
     var gyerekLista = List.generate(
         children.length,
         (int i) => PiggyButton(
-              text: (children[i].name ?? children[i].email) + " megtakarításai",
+              text: (children[i].name ?? children[i].email) +
+                  " ${loc.trans('his_savings')}",
               onClick: () => _navigateToChild(children[i].documentId),
               color: Colors.white,
             ));
@@ -43,7 +46,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          "Vedd fel a gyerekeidet ismerősnek, hogy lásd a megtakarításaikat!",
+          loc.trans('add_your_children_for_information'),
           style: Theme.of(context).textTheme.headline2,
           textAlign: TextAlign.center,
         ),
@@ -58,7 +61,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
   @override
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
-
+    var loc = PiggyLocalizations.of(context);
     return isChildSelected
         ? ChildDetailsWidget(
             documentId: selectedId.toString(),
@@ -83,7 +86,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 40.0),
                       child: Text(
-                        "Gyerek Megtakarítások",
+                        loc.trans('children_savings'),
                         style: Theme.of(context).textTheme.headline3,
                         textAlign: TextAlign.center,
                       ),
@@ -92,7 +95,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                     GestureDetector(
                       onTap: () async => await _showAddChild(store),
                       child: Text(
-                        "Gyerek hozzáadás",
+                        loc.trans('add_child_for_parent'),
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           decoration: TextDecoration.underline,

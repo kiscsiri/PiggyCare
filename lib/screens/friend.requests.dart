@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/user.services.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 
 class FirendRequestsScreen extends StatefulWidget {
   const FirendRequestsScreen(
@@ -34,101 +36,117 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text("Family Requests"),
+          title: Text(loc.trans('family_requests')),
         ),
-        body: new FutureBuilder<List<UserData>>(
-          future: UserServices.getFriendRequests(
-              widget.currentUserId), // a Future<String> or null
-          builder:
-              (BuildContext context, AsyncSnapshot<List<UserData>> snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return new Text('Press button to start');
-              case ConnectionState.waiting:
-                return Center(child: new Text('Awaiting result...'));
-              default:
-                if (snapshot.hasError)
-                  return new Text('Error');
-                else if (snapshot.data.length == 0)
-                  return Center(
-                      child: Text(
-                    "Nem küldött senki se ismerős felkérést az utóbbi időben",
-                    textAlign: TextAlign.center,
-                  ));
-                else
-                  return ListView(
-                      children: snapshot.data
-                          .map((u) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 5),
-                                child: Container(
-                                  decoration: new BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 2.0,
-                                          spreadRadius: 0.5,
-                                          offset: Offset(
-                                            0.5,
-                                            0.5,
+        body: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                decoration: piggyFamilyBackgroundDecoration(context),
+              ),
+            ],
+          ),
+          new FutureBuilder<List<UserData>>(
+            future: UserServices.getFriendRequests(
+                widget.currentUserId), // a Future<String> or null
+            builder:
+                (BuildContext context, AsyncSnapshot<List<UserData>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return new Text('Press button to start');
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError)
+                    return new Text(loc.trans('error'));
+                  else if (snapshot.data.length == 0)
+                    return Center(
+                        child: Text(
+                      loc.trans('no_friend_requests'),
+                      textAlign: TextAlign.center,
+                    ));
+                  else
+                    return ListView(
+                        children: snapshot.data
+                            .map((u) => Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 5),
+                                  child: Container(
+                                    decoration: new BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 2.0,
+                                            spreadRadius: 0.5,
+                                            offset: Offset(
+                                              0.5,
+                                              0.5,
+                                            ),
+                                          ),
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius: new BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        )),
+                                    child: ListTile(
+                                        leading: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.3,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: u.pictureUrl == null
+                                                        ? AssetImage(
+                                                            "lib/assets/images/piggy_nyito.png")
+                                                        : NetworkImage(
+                                                            u.pictureUrl))),
                                           ),
                                         ),
-                                      ],
-                                      color: Colors.white,
-                                      borderRadius: new BorderRadius.all(
-                                        Radius.circular(15.0),
-                                      )),
-                                  child: ListTile(
-                                      leading: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1,
+                                        title: Text(u.name ?? u.email),
+                                        trailing: Container(
                                           height: MediaQuery.of(context)
                                                   .size
-                                                  .height *
-                                              0.3,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: u.pictureUrl == null
-                                                      ? AssetImage(
-                                                          "lib/assets/images/piggy_nyito.png")
-                                                      : NetworkImage(
-                                                          u.pictureUrl))),
-                                        ),
-                                      ),
-                                      title: Text(u.name ?? u.email),
-                                      trailing: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                4,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4,
-                                        child: Row(
-                                          children: <Widget>[
-                                            IconButton(
-                                                icon: Icon(Icons.clear,
-                                                    color: Colors.red),
-                                                onPressed: () => _refuse(u.id)),
-                                            IconButton(
-                                                icon: Icon(Icons.done,
-                                                    color: Colors.green),
-                                                onPressed: () => _accept(u.id))
-                                          ],
-                                        ),
-                                      )),
-                                ),
-                              ))
-                          .toList());
-            }
-          },
-        ));
+                                                  .height /
+                                              4,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          child: Row(
+                                            children: <Widget>[
+                                              IconButton(
+                                                  icon: Icon(Icons.clear,
+                                                      color: Colors.red),
+                                                  onPressed: () =>
+                                                      _refuse(u.id)),
+                                              IconButton(
+                                                  icon: Icon(Icons.done,
+                                                      color: Colors.green),
+                                                  onPressed: () =>
+                                                      _accept(u.id))
+                                            ],
+                                          ),
+                                        )),
+                                  ),
+                                ))
+                            .toList());
+              }
+            },
+          )
+        ]));
   }
 }

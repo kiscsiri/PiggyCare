@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<void> logout(Store<AppState> store) async {
     var isExit = await showExitModal(context);
-    if (isExit) {
+    if (isExit ?? false) {
       await FirebaseAuth.instance.signOut();
       store.dispatch(InitUserData(UserData()));
       Navigator.pushReplacement(context,
@@ -167,7 +167,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       },
                     ),
                   ListTile(
-                    title: Text("Felkérések"),
+                    title: Text(loc.trans('requests')),
                     onTap: () {
                       Navigator.push(
                           context,

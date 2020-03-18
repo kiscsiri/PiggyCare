@@ -6,6 +6,7 @@ import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
+import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 import 'package:redux/redux.dart';
 
 class CreateTaskWidget extends StatefulWidget {
@@ -45,18 +46,30 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   @override
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
-    return Center(
-      child: Container(
+    return PiggyModal(
+      hPadding: MediaQuery.of(context).size.width * 0.05,
+      vPadding: MediaQuery.of(context).size.height * 0.2,
+      actions: <Widget>[
+        PiggyButton(
+          text: 'LÉTREHOZÁS',
+          onClick: () async {
+            if (_formKey.currentState.validate()) {
+              await _createTask(store);
+            }
+          },
+        )
+      ],
+      title: Text(
+        'Feladat létrehozás ${widget.child.name} számára',
+        style: Theme.of(context).textTheme.headline2,
+        textAlign: TextAlign.center,
+      ),
+      content: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.6,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Text(
-              'Feladat létrehozás ${widget.child.name} számára',
-              style: Theme.of(context).textTheme.headline2,
-              textAlign: TextAlign.center,
-            ),
             Form(
               key: _formKey,
               child: PiggyInput(
@@ -71,18 +84,9 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       item = val;
                     });
                   }
-
                   return null;
                 },
               ),
-            ),
-            PiggyButton(
-              text: 'LÉTREHOZÁS',
-              onClick: () async {
-                if (_formKey.currentState.validate()) {
-                  await _createTask(store);
-                }
-              },
             )
           ],
         ),

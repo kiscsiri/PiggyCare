@@ -100,7 +100,7 @@ class UserData {
         userType: register.userType,
         phoneNumber: "phoneNumber",
         feedPerPeriod:
-            (register.schedule != null) ? register.schedule.savingPerPeriod : 2,
+            (register.schedule != null) ? register.schedule.savingPerPeriod : 1,
         lastFeed: DateTime(1995),
         money: 100000,
         currentFeedTime: 0,
@@ -108,7 +108,6 @@ class UserData {
           if (register.schedule != null)
             Piggy(
                 piggyLevel: PiggyLevel.Child,
-                currentFeedAmount: 2,
                 doubleUp: false,
                 isFeedAvailable: false,
                 money: 0,

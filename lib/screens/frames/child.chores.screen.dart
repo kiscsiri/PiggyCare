@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/notification.services.dart';
@@ -18,6 +19,7 @@ class ChildChoresPage extends StatefulWidget {
 
 class _ChoresPageState extends State<ChildChoresPage> {
   Widget _getFinishedChores(AppState state) {
+    var loc = PiggyLocalizations.of(context);
     var finishedChores = state.user.chores
         .where((element) => element.isDone && element.isValidated)
         .toList();
@@ -44,7 +46,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
           )
           .toList();
     } else {
-      result = [Text("Nincs befejezett feladatod :(")];
+      result = [Text(loc.trans('no_finished_task'))];
     }
 
     return Column(
@@ -56,6 +58,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     var store = StoreProvider.of<AppState>(context);
     return ListView(children: <Widget>[
       Stack(children: [
@@ -73,11 +76,11 @@ class _ChoresPageState extends State<ChildChoresPage> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new Text('Elvégzendő feladatok',
+              new Text(loc.trans('active_tasks'),
                   style: Theme.of(context).textTheme.headline3),
               ChoresWidget(),
               PiggyButton(
-                text: "DUPLÁZÁS",
+                text: loc.trans('lets_double'),
                 disabled: false,
                 onClick: () async {
                   var user = store.state.user;
@@ -95,7 +98,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Elvégzett feladatok",
+                    loc.trans('finished_tasks'),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline5,
                   ),
