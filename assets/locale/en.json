@@ -105,5 +105,6 @@
   "lets_double": "LET'S DOUBLE",
   "how_much_per_feed_question": "How much oney do you want to spend on feeding?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "friend_accepted" : " has accepted your friend request!"
 }

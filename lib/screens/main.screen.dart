@@ -15,6 +15,7 @@ import 'package:piggybanx/screens/frames/child.chores.screen.dart';
 import 'package:piggybanx/screens/frames/child.savings.dart';
 import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
+import 'package:piggybanx/screens/frames/social.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
@@ -49,9 +50,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         onMessage: (Map<String, dynamic> message) async =>
             await onResumeNotificationHandler(
                 message, context, widget._pageController),
-        onLaunch: (Map<String, dynamic> message) async {
-          print("onLaunch: $message");
-        },
+        onLaunch: (Map<String, dynamic> message) async =>
+            await onResumeNotificationHandler(
+                message, context, widget._pageController),
         onResume: (Map<String, dynamic> message) async =>
             await onResumeNotificationHandler(
                 message, context, widget._pageController));
@@ -74,7 +75,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
 
-  List<Widget> getFrames(Store<AppState> store) {
+  List<Widget> getFrames() {
     var store = StoreProvider.of<AppState>(context);
     return [
       new PiggyPage(),
@@ -85,6 +86,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         store.state.user.userType == UserType.child
             ? ChildChoresPage()
             : ParentChoresPage(),
+      PiggySocial()
     ];
   }
 
@@ -106,6 +108,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           appBar: AppBar(
             title: Text("PiggyBanx"),
           ),
+          resizeToAvoidBottomInset: false,
           endDrawer: Drawer(
             child: Container(
               color: Theme.of(context).primaryColor,
@@ -201,7 +204,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ),
           ),
           body: PageView(
-            children: getFrames(store),
+            children: getFrames(),
             onPageChanged: (int index) {
               setState(() {
                 widget.navigationStore

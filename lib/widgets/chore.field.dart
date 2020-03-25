@@ -42,7 +42,7 @@ class _ChoreInputState extends State<ChoreInput> {
   Future<void> _askFinishChore(BuildContext context) async {
     var ack = await showChildrenFinishTaskSubmit(context);
 
-    if (ack) {
+    if (ack ?? false) {
       await ChoreFirebaseServices.finishChildChore(
           widget.userId, widget.taskId, widget.parentId);
       StoreProvider.of<AppState>(context)

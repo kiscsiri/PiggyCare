@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 
@@ -16,13 +18,90 @@ Future<bool> showAskedForNewTask(
               name + " ${loc.trans('request_new_task')}",
               textAlign: TextAlign.center,
             ),
+          ],
+        ),
+        actions: <Widget>[
+          PiggyButton(
+            text: loc.trans('sure'),
+            onClick: () => Navigator.of(context).pop(true),
+          )
+        ]),
+  );
+}
+
+Future<bool> showChildrenNewTask(BuildContext context, String name) async {
+  var store = StoreProvider.of<AppState>(context);
+
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => PiggyModal(
+        title: Text(
+          "Szia " + store.state.user.name + "!",
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          PiggyButton(
+            text: "NÉZZÜK MEG",
+            onClick: () => Navigator.pop(context),
+          )
+        ],
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/images/notification.png'),
+            Text(
+              "Kaptál egy új feladatot!",
+            ),
+          ],
+        )),
+  );
+}
+
+Future<bool> showChildrenDouble(BuildContext context, String name) async {
+  var loc = PiggyLocalizations.of(context);
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => PiggyModal(
+        title: Column(
+          children: <Widget>[
+            Text(
+              name + " egy új feladatot kért",
+              textAlign: TextAlign.center,
+            ),
             Padding(
               padding: EdgeInsets.only(top: 30.0),
               child: Text(
-                loc.trans('will_you_give_him_task_ask'),
+                "Adsz neki egyet?",
                 style: Theme.of(context).textTheme.headline2,
               ),
             )
+          ],
+        ),
+        actions: <Widget>[
+          PiggyButton(
+            text: loc.trans("yes"),
+            onClick: () => Navigator.of(context).pop(true),
+          ),
+          PiggyButton(
+            text: loc.trans("no"),
+            onClick: () => Navigator.of(context).pop(false),
+          )
+        ]),
+  );
+}
+
+Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
+  var loc = PiggyLocalizations.of(context);
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => PiggyModal(
+        title: Column(
+          children: <Widget>[
+            Text(
+              "Biztosan duplázni akarsz?",
+              style: Theme.of(context).textTheme.headline2,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
         actions: <Widget>[
@@ -38,91 +117,8 @@ Future<bool> showAskedForNewTask(
   );
 }
 
-Future<bool> showChildrenNewTask(BuildContext context, String name) async {
-  return await showDialog<bool>(
-    context: context,
-    builder: (context) => PiggyModal(
-        title: Text(
-          "Welcome back " + name + "!",
-          textAlign: TextAlign.center,
-        ),
-        actions: <Widget>[
-          PiggyButton(
-            text: "LET'S CHECK IT!",
-            onClick: () => Navigator.pop(context),
-          )
-        ],
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/images/notification.png'),
-            Text(
-              "You have a new task!",
-            ),
-          ],
-        )),
-  );
-}
-
-Future<bool> showChildrenDouble(BuildContext context, String name) async {
-  return await showDialog<bool>(
-    context: context,
-    builder: (context) => PiggyModal(
-        title: Column(
-          children: <Widget>[
-            Text(
-              name + " asked for a new task",
-              textAlign: TextAlign.center,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 30.0),
-              child: Text(
-                "Will you give him one?",
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          PiggyButton(
-            text: "YES",
-            onClick: () => Navigator.of(context).pop(true),
-          ),
-          PiggyButton(
-            text: "NO",
-            onClick: () => Navigator.of(context).pop(false),
-          )
-        ]),
-  );
-}
-
-Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
-  return await showDialog<bool>(
-    context: context,
-    builder: (context) => PiggyModal(
-        title: Column(
-          children: <Widget>[
-            Text(
-              "Are you sure you want to double?",
-              style: Theme.of(context).textTheme.headline2,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          PiggyButton(
-            text: "IGEN",
-            onClick: () => Navigator.of(context).pop(true),
-          ),
-          PiggyButton(
-            text: "NO",
-            onClick: () => Navigator.of(context).pop(false),
-          )
-        ]),
-  );
-}
-
 Future<bool> showChildrenFinishTaskSubmit(BuildContext context) async {
+  var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
     context: context,
     builder: (context) => PiggyModal(
@@ -137,11 +133,11 @@ Future<bool> showChildrenFinishTaskSubmit(BuildContext context) async {
         ),
         actions: <Widget>[
           PiggyButton(
-            text: "IGEN",
+            text: loc.trans('yes'),
             onClick: () => Navigator.of(context).pop(true),
           ),
           PiggyButton(
-            text: "NEM",
+            text: loc.trans('no'),
             onClick: () => Navigator.of(context).pop(false),
           )
         ]),
@@ -150,10 +146,10 @@ Future<bool> showChildrenFinishTaskSubmit(BuildContext context) async {
 
 Future<bool> showRequestSent(BuildContext context) async {
   var loc = PiggyLocalizations.of(context);
-
   return await showDialog<bool>(
     context: context,
     builder: (context) => PiggyModal(
+        vPadding: 0,
         title: Column(
           children: <Widget>[
             Text(
@@ -172,10 +168,18 @@ Future<bool> showRequestSent(BuildContext context) async {
             Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Text(loc.trans('request_sent'))),
-            Text(
-              "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
-              textAlign: TextAlign.center,
-            )
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.12,
+                child: Flexible(
+                    child: Text(
+                  "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13),
+                )),
+              ),
+            ),
           ],
         ),
         actions: <Widget>[
@@ -226,7 +230,6 @@ Future<bool> showCompletedTask(BuildContext context, String name) async {
               ],
             ),
           ),
-          name: name,
         );
       });
 }
@@ -238,14 +241,15 @@ Future<bool> showValidatedTask(BuildContext context, String name) async {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return PiggyModal(
+          vPadding: MediaQuery.of(context).size.height * 0,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Image.asset("assets/images/yellow_tick.png", scale: 1),
+              Image.asset("assets/images/yellow_tick.png", scale: 1.3),
               Padding(
-                padding: const EdgeInsets.only(top: 0.0),
+                padding: const EdgeInsets.only(top: 0.0, right: 0, left: 0),
                 child: Text(
-                  "Megerősítették hogy elkészült a feladatod!",
+                  "Jóváhagyták, hogy kész a feladatod!",
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -264,7 +268,45 @@ Future<bool> showValidatedTask(BuildContext context, String name) async {
               ],
             ),
           ),
-          name: name,
+        );
+      });
+}
+
+Future<bool> showFriendRequestAccepted(
+    BuildContext context, String name) async {
+  var loc = PiggyLocalizations.of(context);
+  return await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return PiggyModal(
+          vPadding: MediaQuery.of(context).size.height * 0,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Image.asset("assets/images/yellow_tick.png", scale: 1.3),
+              Padding(
+                padding: const EdgeInsets.only(top: 0.0, right: 0, left: 0),
+                child: Text(
+                  "Siker!",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            PiggyButton(
+              text: "OK",
+              onClick: () => Navigator.of(context).pop(true),
+            )
+          ],
+          content: Center(
+            child: Column(
+              children: <Widget>[
+                Text(name + loc.trans('friend_accepted')),
+              ],
+            ),
+          ),
         );
       });
 }
@@ -302,7 +344,6 @@ Future<void> showRefusedTask(BuildContext context, String name) async {
               ],
             ),
           ),
-          name: name,
         );
       });
 }

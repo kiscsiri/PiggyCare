@@ -24,18 +24,26 @@ class PiggyNavigationBar extends StatelessWidget {
     var loc = PiggyLocalizations.of(context);
     return BottomNavigationBar(
       onTap: (index) => onNavigateTap(index),
+      type: BottomNavigationBarType.fixed,
       items: [
         new BottomNavigationBarItem(
-            title: new Text(loc.trans('home')), icon: Icon(Icons.home)),
+            title: new Text(loc.trans('home')),
+            icon: Icon(
+              Icons.home,
+            )),
         new BottomNavigationBarItem(
             title: new Text(loc.trans('saving')),
-            icon: Icon(Icons.attach_money)),
+            icon: Icon(
+              Icons.attach_money,
+            )),
         if (userType != UserType.individual)
           new BottomNavigationBarItem(
               title: userType == UserType.adult
                   ? Text('Gyerek')
                   : Text(loc.trans('tasks')),
               icon: Icon(FontAwesomeIcons.clipboardCheck)),
+        new BottomNavigationBarItem(
+            title: new Text(loc.trans('social')), icon: Icon(Icons.group)),
       ],
       currentIndex: store.state.index,
     );

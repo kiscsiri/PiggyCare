@@ -30,8 +30,10 @@ class _ChoresWidgetState extends State<ChoresWidget> {
         converter: (store) => store.state,
         builder: (context, vm) {
           int i = 0;
-          savingTypeList =
-              user.chores.where((c) => !c.isValidated).take(3).map((p) {
+          savingTypeList = user.chores
+              .where((c) => !c.isValidated && !c.isDone)
+              .take(3)
+              .map((p) {
             i++;
             return ChoreInput(
               index: i,

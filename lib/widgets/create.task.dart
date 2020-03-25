@@ -4,6 +4,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/notification.services.dart';
+import 'package:piggybanx/services/services.export.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
@@ -28,16 +29,21 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
 
   Future _createTask(Store<AppState> store) async {
     try {
-      store.dispatch(AddChore(Chore(
+      var action = AddChore(Chore(
           childId: widget.child.id,
           choreType: ChoreType.haziMunka,
           details: "",
           isDone: false,
           isValidated: false,
           reward: "",
-          title: item)));
-      NotificationServices.sendNotificationNewTask(
-          widget.child.id, store.state.user.name);
+          title: item));
+
+      action.chore.id =
+          await ChoreFirebaseServices.createChoreForUser(action.chore);
+
+      store.dispatch(action);
+      NotificationServices.sendNotificationNewTask(widget.child.id,
+          store.state.user.name, store.state.user.id, action.chore.id);
     } finally {
       Navigator.of(context).pop();
     }
@@ -64,32 +70,28 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
         style: Theme.of(context).textTheme.headline2,
         textAlign: TextAlign.center,
       ),
-      content: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.6,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: PiggyInput(
-                hintText: 'Mi a feladat?',
-                textController: controller,
-                width: MediaQuery.of(context).size.width,
-                onValidate: (val) {
-                  if (val.isEmpty) {
-                    return "Kötelező mező";
-                  } else {
-                    setState(() {
-                      item = val;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: PiggyInput(
+              hintText: 'Mi a feladat?',
+              textController: controller,
+              width: MediaQuery.of(context).size.width,
+              onValidate: (val) {
+                if (val.isEmpty) {
+                  return "Kötelező mező";
+                } else {
+                  setState(() {
+                    item = val;
+                  });
+                }
+                return null;
+              },
+            ),
+          )
+        ],
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
@@ -67,9 +66,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.7,
-            decoration: store.state.user.userType == UserType.child
-                ? piggyBackgroundDecoration(context, UserType.adult)
-                : piggyBusinessBackgroundDecoration(context),
+            decoration: piggyBusinessBackgroundDecoration(context),
           ),
         ],
       ),
@@ -93,7 +90,9 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 ),
               ],
             ),
-            ChildSavingsWidget(),
+            ChildSavingsWidget(
+              savingPerFeed: savingPerFeed,
+            ),
             Column(
               children: <Widget>[
                 Opacity(
@@ -127,7 +126,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                               savingPerFeed = val.toInt();
                             });
                           },
-                          onChangeEnd: (val) async {
+                          onChangeEnding: (val) async {
                             store.dispatch(UpdateUserData(UserData(
                                 period: store.state.user.period,
                                 feedPerPeriod: val.toInt())));

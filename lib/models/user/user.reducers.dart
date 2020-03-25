@@ -13,6 +13,7 @@ AppState initUser(AppState state, InitUserData action) {
       money: action.user.money,
       piggies: action.user.piggies,
       userType: action.user.userType,
+      wantToSeeInfoAgain: action.user.wantToSeeInfoAgain,
       email: action.user.email,
       name: action.user.name,
       pictureUrl: action.user.pictureUrl,
@@ -37,7 +38,7 @@ AppState updateUser(AppState state, UpdateUserData action) {
   return AppState.fromAppState(state);
 }
 
-feedPiggy(AppState state, FeedPiggy action) {
+AppState feedPiggy(AppState state, FeedPiggy action) {
   state.user.currentFeedTime++;
 
   if (state.user.currentFeedTime >= 5 &&
@@ -75,4 +76,43 @@ feedPiggy(AppState state, FeedPiggy action) {
       targetPrice: piggy.targetPrice);
 
   return new AppState.fromAppState(state);
+}
+
+AppState setChildSavingPerFeed(AppState state, SetChildSavingPerFeed action) {
+  var user = state.user;
+  var child = user.children
+      .singleWhere((d) => d.documentId == action.childId, orElse: null);
+
+  if (child == null) throw Exception("Gyerek nem található");
+
+  child.feedPerPeriod = action.savingPerFeed;
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState setWantToSeeDoubleInfo(AppState state, SetSeenDoubleInfo action) {
+  var user = state.user;
+
+  user.wantToSeeInfoAgain = action.wantToSeeDoubleInfo;
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState incrementCoins(AppState state, IncrementCoins action) {
+  var user = state.user;
+
+  user.numberOfCoins = user.numberOfCoins != null ? ++user.numberOfCoins : 1;
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState addChildToUser(AppState state, AddChild action) {
+  if (state.user.children.any((element) => element.id == action.user.id))
+    state.user.children.add(action.user);
+
+  var newState = state.user;
+  return new AppState(user: newState);
 }

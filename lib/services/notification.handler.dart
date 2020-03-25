@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
+import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/services/chore.firebase.dart';
@@ -10,6 +12,7 @@ import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/services/notification.modals.dart';
+import 'package:piggybanx/services/user.services.dart';
 
 _navigate(int index, PageController _pageController) {
   _pageController.animateToPage(index,
@@ -29,7 +32,7 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
           if (res ?? false) {
             _navigate(2, _pageController);
             await showCreateTask(context, store,
-                ChildDto(id: data['userId'], name: data['userName']));
+                ChildDto(id: data['senderId'], name: data['userName']));
           } else {
             Navigator.of(context).pop();
           }
@@ -50,12 +53,18 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
             await ChoreFirebaseServices.refuseChildChore(
                 data['senderId'], int.tryParse(data['taskId']));
           }
-
           break;
         case "TaskValidated":
           await showValidatedTask(context, data['userName']);
           store.dispatch(
               AcceptChore(data['userId'], int.tryParse(data['taskId'])));
+          break;
+        case "FriendRequestAccepted":
+          var user = await UserServices.getUserById(data['senderId']);
+          if (store.state.user.userType == UserType.adult)
+            store.dispatch(AddChild(user));
+
+          await showFriendRequestAccepted(context, user.name);
           break;
         case "TaskRefused":
           await showRefusedTask(context, data['userName']);
@@ -64,6 +73,10 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
           break;
         case "NewTask":
           await showChildrenNewTask(context, data['userName']);
+          var chore = await ChoreFirebaseServices.getChoreForChild(
+              int.tryParse(data['taskId']), data['userId']);
+
+          store.dispatch(AddChoreChild(chore));
           _navigate(2, _pageController);
           break;
         case "FriendRequest":

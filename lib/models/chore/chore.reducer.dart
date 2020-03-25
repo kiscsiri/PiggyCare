@@ -14,6 +14,15 @@ AppState addChore(AppState state, AddChore action) {
   return new AppState(user: newUserData);
 }
 
+AppState addChoreChild(AppState state, AddChoreChild action) {
+  var user = state.user;
+
+  state.user.chores.add(action.chore);
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
 AppState removeChore(AppState state, RemoveChore action) {
   var user = state.user;
   if (user is Parent) {
@@ -41,6 +50,7 @@ AppState validateChore(AppState state, AcceptChore action) {
   if (user.userType == UserType.child) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
 
+    user.numberOfCoins = user.numberOfCoins != null ? user.numberOfCoins++ : 1;
     chore.isDone = true;
     chore.isValidated = true;
   }
@@ -53,6 +63,22 @@ AppState refuseChore(AppState state, RefuseChore action) {
   var user = state.user;
   if (user.userType == UserType.child) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
+
+    chore.isDone = false;
+    chore.isValidated = false;
+  }
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState validateChildChore(AppState state, ValidateChoreParent action) {
+  var user = state.user;
+  if (user.userType == UserType.adult) {
+    var chore = user.children
+        .singleWhere((d) => d.id == action.childId, orElse: null)
+        ?.chores
+        ?.singleWhere((d) => d.id == action.choreId, orElse: null);
 
     chore.isDone = false;
     chore.isValidated = false;

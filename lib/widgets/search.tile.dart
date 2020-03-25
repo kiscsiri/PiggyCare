@@ -16,11 +16,12 @@ class SearchTile extends StatelessWidget {
     bool isAck = await showAckDialog(
         context,
         Container(
-            width: MediaQuery.of(context).size.width * 0.27,
+            width: MediaQuery.of(context).size.width * 0.15,
+            height: MediaQuery.of(context).size.width * 0.3,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                     image: picUrl == null
                         ? AssetImage("lib/assets/images/piggy_nyito.png")
                         : NetworkImage(picUrl)))),
@@ -33,7 +34,6 @@ class SearchTile extends StatelessWidget {
       try {
         await UserServices.sendRequest(currentUserId, id);
         await showRequestSent(context);
-        Navigator.of(context).pop();
       } catch (err) {
         await showAlert(context, err.message);
       }

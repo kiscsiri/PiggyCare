@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 
@@ -24,8 +25,12 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
   }
 
   _accept(String fromId) async {
-    await UserServices.acceptRequest(
-        fromId, widget.currentUserId, widget.userType);
+    try {
+      await UserServices.acceptRequest(
+          fromId, widget.currentUserId, widget.userType);
+      NotificationServices.sendNotificationAcceptFriendRequest(
+          fromId, widget.currentUserId);
+    } catch (err) {}
     Navigator.of(context).pop();
   }
 

@@ -36,6 +36,12 @@ AppState handleUserActions(AppState appState, UserAction action) {
     return feedPiggy(appState, action);
   } else if (action is SaveSettingsAction) {
     return appState;
+  } else if (action is SetChildSavingPerFeed) {
+    return setChildSavingPerFeed(appState, action);
+  } else if (action is AddChild) {
+    return addChildToUser(appState, action);
+  } else if (action is SetSeenDoubleInfo) {
+    return setWantToSeeDoubleInfo(appState, action);
   } else {
     return null;
   }
@@ -86,7 +92,6 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
 
 AppState handleChoresActions(AppState appState, ChoreAction action) {
   if (action is AddChore) {
-    ChoreFirebaseServices.createChoreForUser(action.chore);
     return addChore(appState, action);
   } else if (action is RemoveChore) {
     return removeChore(appState, action);
@@ -96,6 +101,12 @@ AppState handleChoresActions(AppState appState, ChoreAction action) {
     return validateChore(appState, action);
   } else if (action is RefuseChore) {
     return refuseChore(appState, action);
-  }
-  return null;
+  } else if (action is ValidateChoreParent) {
+    return validateChildChore(appState, action);
+  } else if (action is RefuseChore) {
+    return null;
+  } else if (action is AddChoreChild) {
+    return addChoreChild(appState, action);
+  } else
+    return null;
 }

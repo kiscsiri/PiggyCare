@@ -5,6 +5,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/childsaving.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -35,7 +36,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
   void initState() {
     var children = mapChildrenToChilDto(widget.initChildren).toList();
 
-    child = children.singleWhere((t) => t.documentId == widget.documentId,
+    child = children.firstWhere((t) => t.documentId == widget.documentId,
         orElse: null);
 
     super.initState();
@@ -50,10 +51,14 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
             documentId: e.documentId,
             name: e.name ?? e.email,
             savings: e.piggies
-                .map((p) =>
-                    SavingDto(index: i++, name: p.item, price: p.targetPrice))
+                .map((p) => SavingDto(
+                    index: i++,
+                    name: p.item,
+                    price: p.targetPrice,
+                    saving: p.currentSaving))
                 .toList(),
             taks: e.chores
+                .where((e) => !e.isValidated)
                 .map((c) => TaskDto(index: i++, name: c.title))
                 .toList()))
         .toList();
@@ -80,6 +85,12 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     });
   }
 
+  Future<void> _changeChildSavingPerFeed(int val) async {
+    var store = StoreProvider.of<AppState>(context);
+    store.dispatch(SetChildSavingPerFeed(widget.documentId, val));
+    await UserServices.setChildSavingPerDay(widget.documentId, val);
+  }
+
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
@@ -100,7 +111,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     }
 
     int i = 0;
-    tasks = child.taks.map((p) {
+    tasks = child.taks.take(3).map((p) {
       i++;
       return TaskInputWidget(
         index: i,
@@ -126,12 +137,16 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     }
 
     int j = 0;
-    savings = child.savings.map((p) {
+    savings = child.savings.take(3).map((p) {
       j++;
       return ChildSavingInputWidget(
         index: j,
         name: p.name,
-        price: p.price,
+        price: (child.feedPerCoin == 0
+                ? "∞"
+                : (p.price - p.saving) ~/ child.feedPerCoin)
+            .toString(),
+        saving: p.saving,
         selected: false,
         selectIndex: (j) => _selectSavingItem(j),
       );
@@ -144,7 +159,11 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
             index: f.index,
             selected: true,
             name: f.name,
-            price: f.price,
+            saving: f.saving,
+            price: (child.feedPerCoin == 0
+                    ? "∞"
+                    : (int.parse(f.price) - f.saving) ~/ child.feedPerCoin)
+                .toString(),
             selectIndex: (j) => _selectSavingItem(j),
           );
         } else {
@@ -202,6 +221,8 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     child: PiggySlider(
                       value: child.feedPerCoin.toDouble(),
                       maxMinTextTrailing: Text('€'),
+                      onChangeEnding: (val) async =>
+                          await _changeChildSavingPerFeed(val.toInt()),
                       maxVal: 10,
                       onChange: (val) {
                         setState(() {
@@ -287,6 +308,7 @@ class SavingDto {
   String name;
   int index;
   int price;
+  int saving;
 
-  SavingDto({this.name, this.index, this.price});
+  SavingDto({this.name, this.index, this.price, this.saving});
 }

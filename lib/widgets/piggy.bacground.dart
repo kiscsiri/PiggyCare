@@ -20,7 +20,7 @@ BoxDecoration piggyBackgroundDecoration(
 }
 
 BoxDecoration piggyBusinessBackgroundDecoration(BuildContext context) {
-  var align = Alignment.bottomLeft;
+  var align = Alignment.bottomRight;
 
   var assettName = 'assets/images/piggy_business_half_left_b.png';
 

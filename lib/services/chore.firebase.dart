@@ -6,7 +6,7 @@ import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/user.services.dart';
 
 class ChoreFirebaseServices extends ChangeNotifier {
-  static Future<void> createChoreForUser(Chore chore) async {
+  static Future<int> createChoreForUser(Chore chore) async {
     var user = await UserServices.getUserById(chore.childId);
     if (user.chores.length != 0)
       chore.id = (user.chores.last.id ?? 1) + 1;
@@ -18,6 +18,16 @@ class ChoreFirebaseServices extends ChangeNotifier {
         .collection('users')
         .document(user.documentId)
         .updateData(user.toJson());
+
+    return chore.id;
+  }
+
+  static Future<Chore> getChoreForChild(int choreId, String childId) async {
+    var user = await UserServices.getUserById(childId);
+    var chore = user.chores
+        .singleWhere((element) => element.id == choreId, orElse: null);
+
+    return chore;
   }
 
   static Future<void> finishChildChore(String id, int taskId, parentId) async {
@@ -51,6 +61,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
       var userData =
           UserData.fromFirebaseDocumentSnapshot(user.data, user.documentID);
 
+      userData.numberOfCoins = userData.numberOfCoins ?? 1;
       var task = userData.chores
           .singleWhere((element) => element.id == taskId, orElse: null);
 

@@ -77,7 +77,7 @@ class UserServices {
         .where('id', isEqualTo: fromId)
         .getDocuments();
 
-    if (result.documents.length != 0) {
+    if (result.documents.length == 0) {
       try {
         await Firestore.instance
             .collection('userRequests')
@@ -144,6 +144,17 @@ class UserServices {
         .delete();
   }
 
+  static Future setChildSavingPerDay(String childId, int savingPerFeed) async {
+    var user = await getUserById(childId);
+
+    user.feedPerPeriod = savingPerFeed;
+
+    await Firestore.instance
+        .collection('users')
+        .document(user.documentId)
+        .updateData(user.toJson());
+  }
+
   static Future<UserData> getUserById(String id) async {
     var value;
     try {
@@ -165,5 +176,28 @@ class UserServices {
         }
       }
     }
+  }
+
+  static Future setDoubleInformationSeen(
+      String documentId, bool seenInfo) async {
+    var user = await getUserById(documentId);
+
+    user.wantToSeeInfoAgain = seenInfo;
+
+    await Firestore.instance
+        .collection('users')
+        .document(documentId)
+        .updateData(user.toJson());
+  }
+
+  static Future increaseCoinNumberForChild(String childDocumentId) async {
+    var user = await getUserById(childDocumentId);
+
+    user.numberOfCoins++;
+
+    Firestore.instance
+        .collection('users')
+        .document(childDocumentId)
+        .updateData(user.toJson());
   }
 }

@@ -3,12 +3,14 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/notification.services.dart';
+import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/chores.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:redux/redux.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 
 class ChildChoresPage extends StatefulWidget {
   ChildChoresPage({Key key}) : super(key: key);
@@ -24,11 +26,11 @@ class _ChoresPageState extends State<ChildChoresPage> {
         .where((element) => element.isDone && element.isValidated)
         .toList();
     int i = 1;
-
     var result;
 
     if (finishedChores.length != 0) {
       result = finishedChores
+          .take(3)
           .map(
             (e) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,9 +83,21 @@ class _ChoresPageState extends State<ChildChoresPage> {
               ChoresWidget(),
               PiggyButton(
                 text: loc.trans('lets_double'),
-                disabled: false,
+                disabled: store.state.user.chores
+                        .where((element) =>
+                            !element.isValidated && !element.isDone)
+                        .length >=
+                    3,
                 onClick: () async {
                   var user = store.state.user;
+                  if (user.wantToSeeInfoAgain ?? true) {
+                    var isNotShownAgainChecked =
+                        await showDoubleInformationModel(context);
+                    store.dispatch(
+                        SetSeenDoubleInfo(!(isNotShownAgainChecked ?? false)));
+                    await UserServices.setDoubleInformationSeen(
+                        user.documentId, !(isNotShownAgainChecked ?? false));
+                  }
                   if (user.parentId != null) {
                     if (await showChildrenAskDoubleSubmit(context) ?? false) {
                       NotificationServices.sendNotificationDouble(

@@ -20,9 +20,12 @@ class _SavingDetailsState extends State<SavingDetails> {
   String _getRemainingCoinsToCollect() {
     var store = StoreProvider.of<AppState>(context);
     if (widget.piggy != null)
-      return ((widget.piggy.targetPrice - widget.piggy.currentSaving) ~/
-              store.state.user.feedPerPeriod)
-          .toString();
+      return ((widget.piggy.targetPrice - widget.piggy.currentSaving)
+              .ceil()
+              .toString() +
+          " / " +
+          ((widget.piggy.targetPrice - widget.piggy.currentSaving) * 350)
+              .toString());
     return '0';
   }
 
@@ -75,6 +78,8 @@ class _SavingDetailsState extends State<SavingDetails> {
                           onChange: (val) {},
                           maxVal: widget.piggy.targetPrice.toDouble(),
                           trackColor: Colors.white,
+                          centerTextStyle:
+                              TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Padding(

@@ -6,12 +6,14 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/screens/saving.details.dart';
 import 'package:redux/redux.dart';
+import 'dart:math' as math;
 
 import 'piggy.saving.type.input.dart';
 
 class SavingForWidget extends StatefulWidget {
-  const SavingForWidget({Key key}) : super(key: key);
+  const SavingForWidget({Key key, this.savingPerFeed}) : super(key: key);
 
+  final int savingPerFeed;
   @override
   _SavingForWidgetState createState() => _SavingForWidgetState();
 }
@@ -57,7 +59,9 @@ class _SavingForWidgetState extends State<SavingForWidget> {
       return SavingTypeInput(
         index: i,
         name: p.item,
-        coinValue: p.targetPrice,
+        coinValue: widget.savingPerFeed != 0
+            ? ((p.targetPrice - p.currentSaving) / widget.savingPerFeed).ceil()
+            : 0,
         selectIndex: (i) => _selectItem(i, store),
       );
     }).toList();

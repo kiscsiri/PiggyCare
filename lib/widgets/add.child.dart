@@ -44,7 +44,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
     return PiggyModal(
-        vPadding: MediaQuery.of(context).size.height * 0.09,
+        vPadding: MediaQuery.of(context).size.height * 0,
         title: Text(
           '+ Vedd fel a gyereked',
           style: Theme.of(context).textTheme.headline3,
@@ -52,7 +52,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
         ),
         content: Column(children: <Widget>[
           PiggyInput(
-            hintText: "Gyerek neve",
+            hintText: "E-mail/Név",
             textController: controller,
             width: MediaQuery.of(context).size.width,
             onValidate: (val) {
@@ -88,7 +88,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
                     'Add meg, hogy mennyi legyen az értéke egy PiggyCoin-nak'),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5.0, bottom: 0),
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                 child: PiggySlider(
                   maxMinTextTrailing: Text(
                     '€',

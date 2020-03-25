@@ -65,9 +65,11 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
                         "${widget.index.toString()}.",
                         style: textStyle,
                       ),
-                      Padding(
+                      Container(
+                        width: MediaQuery.of(context).size.height * 0.23,
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(widget.name, style: textStyle),
+                        child: Text(widget.name,
+                            style: textStyle, overflow: TextOverflow.ellipsis),
                       ),
                     ],
                   ),
@@ -77,7 +79,11 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(widget.coinValue.toString(), style: textStyle),
+                      Text(
+                          widget.coinValue != 0
+                              ? widget.coinValue.toString()
+                              : "∞",
+                          style: textStyle),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.12,
                         height: MediaQuery.of(context).size.height * 0.12,

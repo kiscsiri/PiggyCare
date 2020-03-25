@@ -30,7 +30,22 @@ class InitUserData extends UserAction {
 }
 
 class AddChild extends UserAction {
-  final String id;
+  final UserData user;
 
-  AddChild(this.id);
+  AddChild(this.user);
 }
+
+class SetChildSavingPerFeed extends UserAction {
+  final String childId;
+  final int savingPerFeed;
+
+  SetChildSavingPerFeed(this.childId, this.savingPerFeed);
+}
+
+class SetSeenDoubleInfo extends UserAction {
+  final bool wantToSeeDoubleInfo;
+
+  SetSeenDoubleInfo(this.wantToSeeDoubleInfo);
+}
+
+class IncrementCoins extends UserAction {}

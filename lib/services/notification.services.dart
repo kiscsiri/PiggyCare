@@ -130,8 +130,14 @@ class NotificationServices {
     });
   }
 
-  static sendNotificationNewTask(String parentId, String userName) async {
-    Map<String, Object> data = {'targetId': parentId, 'userName': userName};
+  static sendNotificationNewTask(
+      String parentId, String userName, String senderId, int taskId) async {
+    Map<String, Object> data = {
+      'targetId': parentId,
+      'userName': userName,
+      'senderId': senderId,
+      'taskId': taskId
+    };
 
     var jsonString = json.encode(data);
 
@@ -186,12 +192,34 @@ class NotificationServices {
     Map<String, Object> data = {
       'targetId': targetId,
       'fromId': fromId,
-      'userName': userName
+      'userName': userName,
+      'senderId': fromId
     };
     var jsonString = json.encode(data);
 
     await http
         .put(url + "double",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendNotificationAcceptFriendRequest(
+      String targetId, String fromId) async {
+    Map<String, Object> data = {
+      'targetId': targetId,
+      'fromId': fromId,
+      'senderId': fromId
+    };
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "friendRequestAccepted",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"

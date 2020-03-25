@@ -24,10 +24,12 @@ class UserData {
   DateTime created;
   double money;
   bool isDemoOver;
+  int numberOfCoins;
   String email;
   String name;
   String pictureUrl;
   String parentId;
+  bool wantToSeeInfoAgain;
   List<Piggy> piggies;
   List<Chore> chores;
   List<UserData> children;
@@ -55,6 +57,10 @@ class UserData {
     }
   }
 
+  bool get hasAnyCoinsLeft {
+    return numberOfCoins > 0 || timeUntilNextFeed < Duration(days: 0);
+  }
+
   factory UserData.fromJson(Map<String, dynamic> json, String documentId) =>
       _$UserDataFromJson(json, documentId);
 
@@ -74,10 +80,12 @@ class UserData {
     currentFeedTime = another.currentFeedTime;
     piggyLevel = another.piggyLevel;
     period = another.period;
+    numberOfCoins = another.numberOfCoins;
     phoneNumber = another.phoneNumber;
     saving = another.saving;
     isDemoOver = another.isDemoOver;
     created = another.created;
+    wantToSeeInfoAgain = another.wantToSeeInfoAgain;
     pictureUrl = another.pictureUrl;
     email = another.email;
     name = another.name;
@@ -119,6 +127,8 @@ class UserData {
         piggyLevel: PiggyLevel.Baby,
         created: DateTime.now(),
         saving: 0,
+        wantToSeeInfoAgain: false,
+        numberOfCoins: 0,
         email: register.email,
         name: register.username,
         pictureUrl: register.pictureUrl,
@@ -141,10 +151,12 @@ class UserData {
       this.piggyLevel,
       this.currentFeedTime,
       this.money,
+      this.numberOfCoins,
       this.lastFeed,
       this.parentId,
       this.isDemoOver,
       this.phoneNumber,
+      this.wantToSeeInfoAgain = true,
       this.created,
       this.email,
       this.name,

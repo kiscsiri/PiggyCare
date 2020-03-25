@@ -29,29 +29,33 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
   double targetMoney = 1;
   double moneyPerFeed = 2;
   var controller = TextEditingController();
+  var priceController = TextEditingController();
+  final _createPiggyFormKey = new GlobalKey<FormState>();
 
   Future _createPiggy(Store<AppState> store) async {
-    var action = CreateTempPiggy(
-        piggy: Piggy(
-      currentSaving: 0,
-      doubleUp: false,
-      isAproved: false,
-      isFeedAvailable: true,
-      item: controller.text,
-      userId: widget.childId ?? store.state.user.id,
-      money: 0,
-      targetPrice: targetMoney.round(),
-      piggyLevel: PiggyLevel.Baby,
-    ));
+    if (_createPiggyFormKey.currentState.validate()) {
+      var action = CreateTempPiggy(
+          piggy: Piggy(
+        currentSaving: 0,
+        doubleUp: false,
+        isAproved: false,
+        isFeedAvailable: true,
+        item: controller.text,
+        userId: widget.childId ?? store.state.user.id,
+        money: 0,
+        targetPrice: int.tryParse(priceController.text).round(),
+        piggyLevel: PiggyLevel.Baby,
+      ));
 
-    store.dispatch(action);
+      store.dispatch(action);
 
-    var add = AddPiggy(store.state.tempPiggy);
-    store.dispatch(add);
+      var add = AddPiggy(store.state.tempPiggy);
+      store.dispatch(add);
 
-    await PiggyServices.createPiggyForUser(
-        action.piggy, widget.childId ?? store.state.user.id);
-    Navigator.of(context).pop();
+      await PiggyServices.createPiggyForUser(
+          action.piggy, widget.childId ?? store.state.user.id);
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -59,50 +63,85 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
     var loc = PiggyLocalizations.of(context);
     var store = StoreProvider.of<AppState>(context);
     return PiggyModal(
-        vPadding: MediaQuery.of(context).size.height * 0.15,
+        vPadding: 0,
         title: new Text(
           loc.trans("create_money_box"),
           style: Theme.of(context).textTheme.headline1,
           textAlign: TextAlign.center,
         ),
-        content: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              PiggyInput(
-                hintText: loc.trans('what_do_you_saving'),
-                textController: controller,
-                width: MediaQuery.of(context).size.width,
-                onValidate: (val) {
-                  setState(() {
-                    item = val;
-                  });
-                  return null;
-                },
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    loc.trans(
-                      'how_much_it_cost',
+        content: Form(
+          key: _createPiggyFormKey,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PiggyInput(
+                  hintText: loc.trans('what_do_you_saving'),
+                  textController: controller,
+                  width: MediaQuery.of(context).size.width,
+                  onValidate: (val) {
+                    setState(() {
+                      item = val;
+                    });
+                    return null;
+                  },
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        loc.trans(
+                          'how_much_it_cost',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
+                    PiggySlider(
+                      maxMinTextTrailing: Text("€"),
+                      value: double.tryParse(priceController.text) ?? 0,
+                      maxVal: 1000,
+                      onChange: (val) {
+                        setState(() {
+                          priceController.text = val.toInt().toString();
+                          targetMoney = val;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0.0),
+                        child: Text(
+                          "Vagy add meg kézzel",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      PiggyInput(
+                        hintText: "Értéke",
+                        textController: priceController,
+                        onValidate: (val) {
+                          if (int.tryParse(val) == null) {
+                            return "Kérlek számot adj meg!";
+                          } else {
+                            return null;
+                          }
+                        },
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
                   ),
-                  PiggySlider(
-                    maxMinTextTrailing: Text("€"),
-                    value: targetMoney,
-                    maxVal: 1000,
-                    onChange: (val) {
-                      setState(() {
-                        targetMoney = val;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ]),
+                ),
+              ]),
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 0.0),
             child: PiggyButton(
               text: loc.trans('create_money_box'),
               onClick: () async => await _createPiggy(store),

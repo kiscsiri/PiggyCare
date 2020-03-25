@@ -6,6 +6,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
+import 'package:piggybanx/widgets/double.information.modal.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
@@ -79,7 +80,7 @@ Future<int> showPiggySelector(
 
 Future<void> showAlert(BuildContext context, String errorMessage,
     [String title]) async {
-  await showDialog<String>(
+  await showDialog<void>(
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
@@ -91,7 +92,7 @@ Future<void> showAlert(BuildContext context, String errorMessage,
             actions: <Widget>[
               PiggyButton(
                 text: "OK",
-                onClick: () => Navigator.pop(context),
+                onClick: () => Navigator.of(context).pop(),
               )
             ],
             shape:
@@ -152,6 +153,14 @@ Future<void> showCreateTask(
         return CreateTaskWidget(
           child: child,
         );
+      });
+}
+
+Future<bool> showDoubleInformationModel(BuildContext context) async {
+  return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return DoubleInformationModal();
       });
 }
 

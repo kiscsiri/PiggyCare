@@ -8,12 +8,14 @@ class ChildSavingInputWidget extends StatefulWidget {
       @required this.name,
       this.selected,
       this.selectIndex,
-      this.price})
+      this.price,
+      this.saving})
       : super(key: key);
 
   final int index;
   final String name;
-  final int price;
+  final String price;
+  final int saving;
   final bool selected;
   final Function(int) selectIndex;
 

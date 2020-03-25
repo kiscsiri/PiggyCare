@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class PiggyModal extends StatefulWidget {
   const PiggyModal(
       {Key key,
-      this.name,
       this.title,
       this.content,
       this.actions,
@@ -11,7 +10,6 @@ class PiggyModal extends StatefulWidget {
       this.hPadding})
       : super(key: key);
 
-  final String name;
   final Widget title;
   final double vPadding;
   final double hPadding;
@@ -53,7 +51,8 @@ class _PiggyModalState extends State<PiggyModal>
         setState(() {});
       });
     return Stack(children: [
-      Padding(
+      SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.symmetric(
               vertical:
                   widget.vPadding ?? MediaQuery.of(context).size.height * 0.1,
@@ -68,7 +67,9 @@ class _PiggyModalState extends State<PiggyModal>
               ],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
-              content: widget.content)),
+              content: widget.content),
+        ),
+      ),
       AnimatedPositioned(
           duration: Duration(seconds: 1),
           bottom: animation.value,
@@ -79,7 +80,7 @@ class _PiggyModalState extends State<PiggyModal>
               children: <Widget>[
                 Image.asset(
                   'assets/images/modal_piggy.png',
-                  scale: MediaQuery.of(context).size.width * 0.0066,
+                  width: MediaQuery.of(context).size.width * 0.3,
                 ),
               ],
             ),

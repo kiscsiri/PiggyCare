@@ -10,7 +10,7 @@ import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/nopiggy.widget.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
-
+import 'package:piggybanx/services/notification.modals.dart';
 import 'create.piggy.dart';
 import 'piggy.coin.dart';
 import 'piggy.main.dart';
@@ -142,7 +142,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
   }
 
   Future<void> selectPiggy(BuildContext context, Store<AppState> store) async {
-    var newId = await showPiggySelector(context, store);
+    var newId = showPiggySelector(context, store);
     if (newId != null) {
       _changePiggyData(newId, store);
     }
@@ -294,7 +294,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                             padding: EdgeInsets.only(
                                 top: MediaQuery.of(context).size.height * 0.13),
                             width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 0.48,
+                            height: MediaQuery.of(context).size.height * 0.45,
                             child: PiggyFeedWidget(
                                 scale: 1,
                                 willAcceptStream: willAcceptStream,

@@ -51,11 +51,14 @@ class _StartupPageState extends State<StartupPage>
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationService.splashLogin(context).then((success) {
-      setState(() {
-        _isLoaded = true;
+    if (!_isLoaded) {
+      AuthenticationService.splashLogin(context).then((success) {
+        setState(() {
+          _isLoaded = true;
+        });
       });
-    });
+    }
+
     var loc = PiggyLocalizations.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -98,7 +101,7 @@ class _StartupPageState extends State<StartupPage>
                           borderRadius: BorderRadius.circular(70.0)),
                       child: new FlatButton(
                         onPressed: () async {
-                          await exitStartAnimation(this, false, context);
+                          // await exitStartAnimation(this, false, context);
                           Navigator.of(context).pushReplacementNamed('tryOut');
                         },
                         child: new Text(

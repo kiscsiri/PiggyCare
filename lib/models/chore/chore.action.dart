@@ -8,6 +8,12 @@ class AddChore extends ChoreAction {
   AddChore(this.chore);
 }
 
+class AddChoreChild extends ChoreAction {
+  final Chore chore;
+
+  AddChoreChild(this.chore);
+}
+
 class LoadChores extends ChoreAction {
   final List<Chore> chores;
 
@@ -40,4 +46,11 @@ class RefuseChore extends ChoreAction {
   final String childId;
 
   RefuseChore(this.childId, this.choreId);
+}
+
+class ValidateChoreParent extends ChoreAction {
+  final int choreId;
+  final String childId;
+
+  ValidateChoreParent(this.childId, this.choreId);
 }
