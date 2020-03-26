@@ -23,13 +23,20 @@ class _ChoresPageState extends State<ChildChoresPage> {
   Widget _getFinishedChores(AppState state) {
     var loc = PiggyLocalizations.of(context);
     var finishedChores = state.user.chores
+        .where((d) => d.finishedDate != null)
         .where((element) => element.isDone && element.isValidated)
         .toList();
     int i = 1;
     var result;
 
+    finishedChores.toList().sort((a, b) {
+      var comp = a.finishedDate.compareTo(b.finishedDate);
+      return a.finishedDate.compareTo(b.finishedDate);
+    });
+
     if (finishedChores.length != 0) {
       result = finishedChores
+          .reversed
           .take(3)
           .map(
             (e) => Row(

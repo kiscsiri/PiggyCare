@@ -53,6 +53,7 @@ AppState validateChore(AppState state, AcceptChore action) {
     user.numberOfCoins = user.numberOfCoins != null ? user.numberOfCoins++ : 1;
     chore.isDone = true;
     chore.isValidated = true;
+    chore.finishedDate = DateTime.now();
   }
 
   var newUserData = user;
@@ -80,8 +81,12 @@ AppState validateChildChore(AppState state, ValidateChoreParent action) {
         ?.chores
         ?.singleWhere((d) => d.id == action.choreId, orElse: null);
 
-    chore.isDone = false;
-    chore.isValidated = false;
+    chore.isDone = action.isValid;
+    chore.isValidated = action.isValid;
+    if (action.isValid)
+      chore.finishedDate = DateTime.now();
+    else
+      chore.finishedDate = null;
   }
 
   var newUserData = user;

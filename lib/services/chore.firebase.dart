@@ -66,7 +66,8 @@ class ChoreFirebaseServices extends ChangeNotifier {
           .singleWhere((element) => element.id == taskId, orElse: null);
 
       task.isValidated = true;
-
+      task.finishedDate = DateTime.now();
+      
       await Firestore.instance
           .collection('users')
           .document(user.documentID)

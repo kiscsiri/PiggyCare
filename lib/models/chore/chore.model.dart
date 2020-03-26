@@ -13,6 +13,7 @@ class Chore {
   String reward;
   bool isDone;
   bool isValidated;
+  DateTime finishedDate;
 
   Chore(
       {this.choreType,
@@ -22,6 +23,7 @@ class Chore {
       this.title,
       this.isValidated,
       this.childId,
+      this.finishedDate,
       this.id});
 
   factory Chore.fromMap(Map snapshot) => _$ChoreFromJson(snapshot);
@@ -36,6 +38,7 @@ class Chore {
     isValidated = another.isValidated;
     reward = another.reward;
     title = another.title;
+    finishedDate = another.finishedDate;
     id = another.id;
   }
 }

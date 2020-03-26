@@ -13,6 +13,7 @@ Chore _$ChoreFromJson(Map json) {
     isDone: json['isDone'] as bool,
     reward: json['reward'] as String,
     title: json['title'] as String,
+    finishedDate: json['finishedDate'] as DateTime,
     isValidated: json['isValidated'] as bool,
     childId: json['childId'] as String,
     id: json['id'] as int,
@@ -26,6 +27,7 @@ Map<String, dynamic> _$ChoreToJson(Chore instance) => <String, dynamic>{
       'title': instance.title,
       'details': instance.details,
       'reward': instance.reward,
+      'finishedDate': instance.finishedDate,
       'isDone': instance.isDone,
       'isValidated': instance.isValidated,
     };

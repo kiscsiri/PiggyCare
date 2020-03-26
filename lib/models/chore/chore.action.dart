@@ -51,6 +51,7 @@ class RefuseChore extends ChoreAction {
 class ValidateChoreParent extends ChoreAction {
   final int choreId;
   final String childId;
+  final bool isValid;
 
-  ValidateChoreParent(this.childId, this.choreId);
+  ValidateChoreParent(this.childId, this.choreId, this.isValid);
 }

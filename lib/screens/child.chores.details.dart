@@ -57,7 +57,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     price: p.targetPrice,
                     saving: p.currentSaving))
                 .toList(),
-            taks: e.chores
+            tasks: e.chores
                 .where((e) => !e.isValidated)
                 .map((c) => TaskDto(index: i++, name: c.title))
                 .toList()))
@@ -111,7 +111,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     }
 
     int i = 0;
-    tasks = child.taks.take(3).map((p) {
+    tasks = child.tasks.take(3).map((p) {
       i++;
       return TaskInputWidget(
         index: i,
@@ -280,7 +280,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 }
 
 class ChildDto {
-  List<TaskDto> taks;
+  List<TaskDto> tasks;
   List<SavingDto> savings;
 
   String name;
@@ -290,7 +290,7 @@ class ChildDto {
   String documentId;
 
   ChildDto(
-      {this.taks,
+      {this.tasks,
       this.id,
       this.documentId,
       this.savings,

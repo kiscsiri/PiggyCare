@@ -133,5 +133,6 @@
   "will_you_give_him_task_ask" : "Adsz neki egyet?",
   "social": "Közösség",
   "friend_accepted" : " elfogadta az ismerős felkérésed!",
-  "sure": "Rendben"
+  "sure": "Rendben",
+  "no_finished_task": "Nincs még befejezett feladatod! :("
 }

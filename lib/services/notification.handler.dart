@@ -43,16 +43,21 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
         case "AproveTaskCompleted":
           bool ack = await showCompletedTask(context, data['userName']);
           if (ack ?? false) {
+            store.dispatch(
+                ValidateChoreParent(data['senderId'], data['choreId'], true));
             await ChoreFirebaseServices.validateChildChore(
                 data['senderId'], int.tryParse(data['taskId']));
             await NotificationServices.sendNotificationValidatedTask(
                 data['senderId'], int.tryParse(data['taskId']));
           } else {
+            store.dispatch(
+                ValidateChoreParent(data['senderId'], data['choreId'], false));
             await NotificationServices.sendNotificationRefusedTask(
                 data['senderId'], int.tryParse(data['taskId']));
             await ChoreFirebaseServices.refuseChildChore(
                 data['senderId'], int.tryParse(data['taskId']));
           }
+
           break;
         case "TaskValidated":
           await showValidatedTask(context, data['userName']);
