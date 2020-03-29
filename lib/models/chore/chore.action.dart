@@ -55,3 +55,10 @@ class ValidateChoreParent extends ChoreAction {
 
   ValidateChoreParent(this.childId, this.choreId, this.isValid);
 }
+
+class FinishChoreParent extends ChoreAction {
+  final int choreId;
+  final String childId;
+
+  FinishChoreParent(this.childId, this.choreId);
+}

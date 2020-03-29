@@ -5,21 +5,6 @@ import '../models/user/user.export.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-updateUserDatabase(AppState state, UpdateUserData action) {
-  Firestore.instance
-      .collection("users")
-      .where("id", isEqualTo: state.user.id)
-      .getDocuments()
-      .then((QuerySnapshot value) {
-    var doc = value.documents.first;
-    var newPeriod = $PeriodEnumMap[action.user.period];
-
-    var newFeedPerPeriod = action.user.feedPerPeriod;
-    Firestore.instance.collection('users').document(doc.documentID).updateData(
-        {'period': newPeriod, 'feedPerPeriod': newFeedPerPeriod.toInt()});
-  });
-}
-
 feedPiggyDatabase(FeedPiggy action) {
   Firestore.instance
       .collection("users")

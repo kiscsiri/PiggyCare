@@ -5,6 +5,7 @@ import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/services/chore.firebase.dart';
@@ -24,8 +25,12 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
   var store = StoreProvider.of<AppState>(context);
   if (message.containsKey('data')) {
     final dynamic data = message['data'];
-    if (store.state.user.id == data['userId'] || data['userId'] == null) {
+    if (store.state.user.id != data['userId'] || data['userId'] == null) {
       switch (data['modalType']) {
+        case "FeedPerCoinSet":
+          store.dispatch(UpdateUserData(
+              UserData(feedPerPeriod: int.tryParse(data['feedPerCoin']))));
+          break;
         case "ParentNewTask":
           var res = await showAskedForNewTask(
               context, data['userName'], data['userId']);
@@ -41,23 +46,23 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
           await showChildrenNewTask(context, data['userName']);
           break;
         case "AproveTaskCompleted":
+          int taskId = int.tryParse(data['taskId']);
+          store.dispatch(FinishChoreParent(data['senderId'], taskId));
           bool ack = await showCompletedTask(context, data['userName']);
           if (ack ?? false) {
-            store.dispatch(
-                ValidateChoreParent(data['senderId'], data['choreId'], true));
+            store.dispatch(ValidateChoreParent(data['senderId'], taskId, true));
             await ChoreFirebaseServices.validateChildChore(
-                data['senderId'], int.tryParse(data['taskId']));
+                data['senderId'], taskId);
             await NotificationServices.sendNotificationValidatedTask(
-                data['senderId'], int.tryParse(data['taskId']));
+                data['senderId'], taskId);
           } else {
-            store.dispatch(
-                ValidateChoreParent(data['senderId'], data['choreId'], false));
+            store
+                .dispatch(ValidateChoreParent(data['senderId'], taskId, false));
             await NotificationServices.sendNotificationRefusedTask(
-                data['senderId'], int.tryParse(data['taskId']));
+                data['senderId'], taskId);
             await ChoreFirebaseServices.refuseChildChore(
-                data['senderId'], int.tryParse(data['taskId']));
+                data['senderId'], taskId);
           }
-
           break;
         case "TaskValidated":
           await showValidatedTask(context, data['userName']);

@@ -33,7 +33,6 @@ AppState initUser(AppState state, InitUserData action) {
 }
 
 AppState updateUser(AppState state, UpdateUserData action) {
-  state.user.period = action.user.period;
   state.user.feedPerPeriod = action.user.feedPerPeriod;
   return AppState.fromAppState(state);
 }

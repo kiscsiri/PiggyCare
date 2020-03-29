@@ -30,13 +30,11 @@ class _ChoresPageState extends State<ChildChoresPage> {
     var result;
 
     finishedChores.toList().sort((a, b) {
-      var comp = a.finishedDate.compareTo(b.finishedDate);
       return a.finishedDate.compareTo(b.finishedDate);
     });
 
     if (finishedChores.length != 0) {
-      result = finishedChores
-          .reversed
+      result = finishedChores.reversed
           .take(3)
           .map(
             (e) => Row(

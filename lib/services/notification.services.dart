@@ -169,6 +169,26 @@ class NotificationServices {
     });
   }
 
+  static sendEmptyNotificationSetFeedPerCoin(
+      String childId, int feedPerCoin) async {
+    Map<String, Object> data = {
+      'targetId': childId,
+      'feedPerCoin': feedPerCoin
+    };
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "feedPerCoinSet",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
   static sendNotificationNewPiggy(String childId) async {
     Map<String, Object> data = {
       'childId': childId,

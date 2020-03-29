@@ -7,13 +7,19 @@ part of 'chore.model.dart';
 // **************************************************************************
 
 Chore _$ChoreFromJson(Map json) {
+  var finishedDate;
+  if (json['finishedDate'] != null) {
+    finishedDate = DateTime.parse(json['finishedDate'] as String);
+  } else {
+    finishedDate = null;
+  }
   return Chore(
     choreType: _$enumDecode(_$ChoreTypeEnumMap, json['choreType']),
     details: json['details'] as String,
     isDone: json['isDone'] as bool,
     reward: json['reward'] as String,
     title: json['title'] as String,
-    finishedDate: json['finishedDate'] as DateTime,
+    finishedDate: finishedDate,
     isValidated: json['isValidated'] as bool,
     childId: json['childId'] as String,
     id: json['id'] as int,
@@ -27,7 +33,7 @@ Map<String, dynamic> _$ChoreToJson(Chore instance) => <String, dynamic>{
       'title': instance.title,
       'details': instance.details,
       'reward': instance.reward,
-      'finishedDate': instance.finishedDate,
+      'finishedDate': instance.finishedDate?.toIso8601String(),
       'isDone': instance.isDone,
       'isValidated': instance.isValidated,
     };

@@ -72,9 +72,17 @@ class _PiggyPostState extends State<PiggyPost> {
                           widget.post.postedDate.day.toString()),
                       style: TextStyle(color: Colors.grey)),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[Icon(Icons.share)],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(
+                        Icons.share,
+                        color: Colors.blue,
+                      )
+                    ],
+                  ),
                 )
               ],
             )

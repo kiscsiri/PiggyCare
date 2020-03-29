@@ -92,3 +92,18 @@ AppState validateChildChore(AppState state, ValidateChoreParent action) {
   var newUserData = user;
   return new AppState(user: newUserData);
 }
+
+AppState finishChildChore(AppState state, FinishChoreParent action) {
+  var user = state.user;
+  if (user.userType == UserType.adult) {
+    var chore = user.children
+        .singleWhere((d) => d.id == action.childId, orElse: null)
+        ?.chores
+        ?.singleWhere((d) => d.id == action.choreId, orElse: null);
+
+    chore.isDone = true;
+  }
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}

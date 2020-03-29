@@ -4,9 +4,11 @@ import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/childsaving.input.dart';
+import 'package:piggybanx/widgets/parent.chore.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
@@ -59,12 +61,19 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                 .toList(),
             tasks: e.chores
                 .where((e) => !e.isValidated)
-                .map((c) => TaskDto(index: i++, name: c.title))
+                .map((c) => TaskDto(
+                    index: i++,
+                    name: c.title,
+                    isFinished: c.isValidated,
+                    isDone: c.isDone,
+                    id: c.id))
                 .toList()))
         .toList();
   }
 
-  Future<void> _showCreateModal(Store<AppState> store) async {
+  Future<void> _showCreateModal() async {
+    var store = StoreProvider.of<AppState>(context);
+
     await showCreatePiggyModal(context, store, child.id);
 
     setState(() {
@@ -75,7 +84,9 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     });
   }
 
-  Future<void> _showAddTaskModal(Store<AppState> store) async {
+  Future<void> _showAddTaskModal() async {
+    var store = StoreProvider.of<AppState>(context);
+
     await showCreateTask(context, store, child);
     setState(() {
       var children = mapChildrenToChilDto(store.state.user.children).toList();
@@ -88,35 +99,54 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
   Future<void> _changeChildSavingPerFeed(int val) async {
     var store = StoreProvider.of<AppState>(context);
     store.dispatch(SetChildSavingPerFeed(widget.documentId, val));
+    await NotificationServices.sendEmptyNotificationSetFeedPerCoin(
+        child.id, val);
     await UserServices.setChildSavingPerDay(widget.documentId, val);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var loc = PiggyLocalizations.of(context);
-    var tasks = List<TaskInputWidget>();
-    var savings = List<ChildSavingInputWidget>();
+  int _compareFinishedTasks(TaskDto a, TaskDto b) {
+    if ((a.isFinished ?? false) && (b.isFinished ?? false))
+      return 0;
+    else if ((a.isFinished ?? false) && (!b.isFinished ?? false))
+      return 1;
+    else
+      return -1;
+  }
+
+  _selectTaskItem(int i) {
+    setState(() {
+      selectedTaskIndex = i;
+    });
+  }
+
+  _selectSavingItem(int i) {
+    setState(() {
+      selectedSavingIndex = i;
+    });
+  }
+
+  _getTasks(context) {
+    int i = 0;
+    var tasks = List<ParentChoreInput>();
     var store = StoreProvider.of<AppState>(context);
 
-    _selectTaskItem(int i) {
-      setState(() {
-        selectedTaskIndex = i;
-      });
-    }
+    var children = mapChildrenToChilDto(store.state.user.children).toList();
 
-    _selectSavingItem(int i) {
-      setState(() {
-        selectedSavingIndex = i;
-      });
-    }
+    child = children.singleWhere((t) => t.documentId == widget.documentId,
+        orElse: null);
 
-    int i = 0;
+    child.tasks.sort(_compareFinishedTasks);
+
     tasks = child.tasks.take(3).map((p) {
       i++;
-      return TaskInputWidget(
+      return ParentChoreInput(
+        taskId: p.id,
+        isDone: p.isDone,
+        parentId: store.state.user.id,
+        userId: widget.initChildren.first.id,
         index: i,
         name: p.name,
-        selected: false,
+        selected: p.isDone,
         selectIndex: (i) => _selectTaskItem(i),
       );
     }).toList();
@@ -124,7 +154,11 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     if (selectedTaskIndex != null) {
       tasks = tasks.map((f) {
         if (f.index == selectedTaskIndex) {
-          return TaskInputWidget(
+          return ParentChoreInput(
+            taskId: f.taskId,
+            isDone: f.isDone,
+            parentId: store.state.user.id,
+            userId: widget.initChildren.first.id,
             index: f.index,
             selected: true,
             name: f.name,
@@ -135,6 +169,14 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         }
       }).toList();
     }
+
+    return tasks;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
+    var savings = List<ChildSavingInputWidget>();
 
     int j = 0;
     savings = child.savings.take(3).map((p) {
@@ -160,10 +202,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
             selected: true,
             name: f.name,
             saving: f.saving,
-            price: (child.feedPerCoin == 0
-                    ? "∞"
-                    : (int.parse(f.price) - f.saving) ~/ child.feedPerCoin)
-                .toString(),
+            price: f.price,
             selectIndex: (j) => _selectSavingItem(j),
           );
         } else {
@@ -235,7 +274,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     padding: const EdgeInsets.only(top: 20.0),
                     child: PiggyButton(
                       text: loc.trans('create_money_box_button'),
-                      onClick: () async => await _showCreateModal(store),
+                      onClick: () async => await _showCreateModal(),
                     ),
                   )
                 ],
@@ -245,34 +284,37 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
           Container(
             width: MediaQuery.of(context).size.width,
             decoration: coinBackground(context, UserType.adult),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    child.name + " ${loc.trans('his_tasks')}",
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  Text(loc.trans('choose_money_box'),
-                      style: Theme.of(context).textTheme.subtitle2),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Column(
-                      children: tasks,
+            child: StoreConnector<AppState, AppState>(
+              converter: (store) => store.state,
+              builder: (context, store) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 25.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      child.name + " ${loc.trans('his_tasks')}",
+                      style: Theme.of(context).textTheme.headline2,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: PiggyButton(
-                      text: loc.trans('+_add_task'),
-                      onClick: () async => await _showAddTaskModal(store),
+                    Text(loc.trans('choose_task'),
+                        style: Theme.of(context).textTheme.subtitle2),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: Column(
+                        children: _getTasks(context),
+                      ),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: PiggyButton(
+                        text: loc.trans('+_add_task'),
+                        onClick: () async => await _showAddTaskModal(),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
+          )
         ],
       ),
     ]));
@@ -299,9 +341,13 @@ class ChildDto {
 }
 
 class TaskDto {
+  int id;
+
   String name;
   int index;
-  TaskDto({this.name, this.index});
+  bool isDone;
+  bool isFinished;
+  TaskDto({this.name, this.id, this.index, this.isFinished, this.isDone});
 }
 
 class SavingDto {

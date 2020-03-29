@@ -22,12 +22,6 @@ AppState applicationReducer(AppState appState, dynamic action) {
 
 AppState handleUserActions(AppState appState, UserAction action) {
   if (action is UpdateUserData) {
-    updateUserDatabase(appState, action);
-    return updateUser(appState, action);
-  } else if (action is InitUserData) {
-    return initUser(appState, action);
-  } else if (action is UpdateUserData) {
-    updateUserDatabase(appState, action);
     return updateUser(appState, action);
   } else if (action is InitUserData) {
     return initUser(appState, action);
@@ -107,6 +101,9 @@ AppState handleChoresActions(AppState appState, ChoreAction action) {
     return null;
   } else if (action is AddChoreChild) {
     return addChoreChild(appState, action);
-  } else
+  } else if (action is FinishChoreParent) {
+    return finishChildChore(appState, action);
+  } else {
     return null;
+  }
 }
