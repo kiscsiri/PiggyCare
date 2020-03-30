@@ -6,7 +6,6 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/screens/saving.details.dart';
 import 'package:redux/redux.dart';
-import 'dart:math' as math;
 
 import 'piggy.saving.type.input.dart';
 
@@ -38,7 +37,7 @@ class _SavingForWidgetState extends State<SavingForWidget> {
     var piggy = new Piggy(
       currentSaving: 0,
       doubleUp: false,
-      isAproved: false,
+      isApproved: false,
       isFeedAvailable: false,
       item: selected.name,
       money: 0,
@@ -54,7 +53,9 @@ class _SavingForWidgetState extends State<SavingForWidget> {
     var store = StoreProvider.of<AppState>(context);
 
     int i = 0;
-    savingTypeList = store.state.user.piggies.map((p) {
+    savingTypeList = store.state.user.piggies
+        .where((element) => element.isApproved ?? false)
+        .map((p) {
       i++;
       return SavingTypeInput(
         index: i,

@@ -19,4 +19,22 @@ class PiggyServices {
         .document(doc.documentID)
         .updateData(user.toJson());
   }
+
+  static Future<void> validatePiggy(int piggyId, String userId) async {
+    var value = await Firestore.instance
+        .collection("users")
+        .where("id", isEqualTo: userId)
+        .getDocuments();
+    var doc = value.documents.first;
+
+    var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
+
+    var piggy = user.piggies.singleWhere((element) => element.id == piggyId);
+    piggy.isApproved = true;
+
+    Firestore.instance
+        .collection('users')
+        .document(doc.documentID)
+        .updateData(user.toJson());
+  }
 }

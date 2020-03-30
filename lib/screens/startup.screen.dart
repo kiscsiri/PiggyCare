@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/services/authentication-service.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartupPage extends StatefulWidget {

@@ -21,14 +21,20 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
   var selectedId = "";
 
   void _navigateToChild(String id) {
+    var store = StoreProvider.of<AppState>(context);
     setState(() {
       selectedId = id;
-      isChildSelected = true;
     });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ChildDetailsWidget(
+              documentId: selectedId.toString(),
+              initChildren: store.state.user.children,
+            )));
   }
 
-  Widget getGyerekMegtakaritasok(BuildContext context, Store<AppState> store) {
+  Widget getGyerekMegtakaritasok(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
     var children = store.state.user.children;
     var gyerekLista = List.generate(
         children.length,
@@ -91,7 +97,11 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    getGyerekMegtakaritasok(context, store),
+                    StoreConnector<AppState, AppState>(
+                      converter: (store) => store.state,
+                      builder: (context, store) =>
+                          getGyerekMegtakaritasok(context),
+                    ),
                     GestureDetector(
                       onTap: () async => await _showAddChild(store),
                       child: Text(

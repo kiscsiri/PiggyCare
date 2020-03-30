@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
 import 'package:piggybanx/enums/period.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 
 class NotificationServices {
   //Debug
@@ -179,6 +183,53 @@ class NotificationServices {
 
     await http
         .put(url + "feedPerCoinSet",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendChildNewPiggy(BuildContext context, Piggy piggy) async {
+    var user = StoreProvider.of<AppState>(context).state.user;
+
+    Map<String, Object> data = {
+      'targetId': user.parentId,
+      'senderId': user.id,
+      'userName': user.name,
+      'piggyData': {
+        'targetName': piggy.item,
+        'targetPrice': piggy.targetPrice,
+        'id': piggy.id
+      }
+    };
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "createPiggy",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonString)
+        .then((val) {
+      print(val);
+    });
+  }
+
+  static sendPiggyApproved(String userName, String childId, int piggyId) async {
+    Map<String, Object> data = {
+      'targetId': childId,
+      'userName': userName,
+      'piggyData': {'id': piggyId}
+    };
+    var jsonString = json.encode(data);
+
+    await http
+        .put(url + "acceptPiggy",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"

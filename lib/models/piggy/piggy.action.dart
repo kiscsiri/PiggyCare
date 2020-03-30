@@ -37,3 +37,11 @@ class CreateTempPiggy extends ChildPiggyAction {
 class ClearTempPiggy extends ChildPiggyAction {
   ClearTempPiggy();
 }
+
+class ValidatePiggy extends ChildPiggyAction {
+  final int piggyId;
+  final bool isValidated;
+  final String childId;
+
+  ValidatePiggy({this.piggyId, this.isValidated, this.childId});
+}

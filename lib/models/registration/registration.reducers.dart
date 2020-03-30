@@ -38,6 +38,12 @@ AppState addItem(AppState state, AddPiggy action) {
 
   if (action.piggy.userId == state.user.id) {
     var newItems = state.user.piggies;
+    var isApproved = false;
+
+    if (newUser.userType == UserType.adult)
+      isApproved = true;
+    else
+      isApproved = false;
 
     newItems.add(Piggy(
         currentSaving: 0,
@@ -48,7 +54,7 @@ AppState addItem(AppState state, AddPiggy action) {
         money: 0,
         userId: state.user.id,
         item: action.piggy.item,
-        isAproved: false,
+        isApproved: isApproved,
         targetPrice: action.piggy.targetPrice));
 
     newUser = UserData(
@@ -85,7 +91,7 @@ AppState addItem(AppState state, AddPiggy action) {
         money: 0,
         userId: state.user.id,
         item: action.piggy.item,
-        isAproved: false,
+        isApproved: true,
         targetPrice: action.piggy.targetPrice));
 
     newUser = UserData(

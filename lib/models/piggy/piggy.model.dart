@@ -8,7 +8,7 @@ class Piggy {
   int id;
   String userId;
   bool isFeedAvailable;
-  bool isAproved;
+  bool isApproved;
   PiggyLevel piggyLevel;
   int money;
   bool doubleUp;
@@ -20,7 +20,7 @@ class Piggy {
     userId = another.userId;
     isFeedAvailable = another.isFeedAvailable;
     money = another.money;
-    isAproved = another.isAproved;
+    isApproved = another.isApproved;
     doubleUp = another.doubleUp;
   }
 
@@ -38,5 +38,5 @@ class Piggy {
       this.currentSaving,
       this.item,
       this.piggyLevel,
-      this.isAproved});
+      this.isApproved});
 }

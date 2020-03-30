@@ -96,7 +96,7 @@ class UserServices {
     }
   }
 
-  static Future<void> acceptRequest(
+  static Future<dynamic> acceptRequest(
       String fromId, String toId, UserType currentUserType) async {
     var result = await Firestore.instance
         .collection('userRequests')
@@ -107,22 +107,31 @@ class UserServices {
 
     if (result.documents.isEmpty) throw HttpException("Not found");
 
-    await Firestore.instance
-        .collection('userRequests')
-        .document(result.documents.first.documentID)
-        .updateData({'isPending': false});
+    try {
+      await Firestore.instance
+          .collection('userRequests')
+          .document(result.documents.first.documentID)
+          .updateData({'isPending': false});
 
-    var data = await Firestore.instance
-        .collection('users')
-        .where('id',
-            isEqualTo: currentUserType == UserType.adult ? fromId : toId)
-        .getDocuments();
+      var data = await Firestore.instance
+          .collection('users')
+          .where('id',
+              isEqualTo: currentUserType == UserType.adult ? fromId : toId)
+          .getDocuments();
 
-    Firestore.instance
-        .collection('users')
-        .document(data.documents.first.documentID)
-        .updateData(
-            {'parentId': currentUserType == UserType.adult ? toId : fromId});
+      Firestore.instance
+          .collection('users')
+          .document(data.documents.first.documentID)
+          .updateData(
+              {'parentId': currentUserType == UserType.adult ? toId : fromId});
+
+      return currentUserType == UserType.child
+          ? fromId
+          : UserData.fromFirebaseDocumentSnapshot(
+              data.documents.first.data, data.documents.first.documentID);
+    } catch (err) {
+      throw Exception("Hiba történt a felkérés elfogadása során");
+    }
   }
 
   static Future<void> declineRequest(String fromId, String toId) async {

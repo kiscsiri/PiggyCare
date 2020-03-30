@@ -32,7 +32,7 @@ AppState handleUserActions(AppState appState, UserAction action) {
     return appState;
   } else if (action is SetChildSavingPerFeed) {
     return setChildSavingPerFeed(appState, action);
-  } else if (action is AddChild) {
+  } else if (action is AddFamily) {
     return addChildToUser(appState, action);
   } else if (action is SetSeenDoubleInfo) {
     return setWantToSeeDoubleInfo(appState, action);
@@ -80,7 +80,10 @@ AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
     return removePiggy(appState, action);
   } else if (action is CreateTempPiggy) {
     return createPiggyTemp(appState, action);
-  } else if (action is ClearTempPiggy) {}
+  } else if (action is ClearTempPiggy) {
+  } else if (action is ValidatePiggy) {
+    return validatePiggy(appState, action);
+  }
   return null;
 }
 

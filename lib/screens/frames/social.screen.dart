@@ -43,14 +43,14 @@ class _PiggySocialState extends State<PiggySocial> {
                     "Kovács János",
                     23,
                     "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/38085697_1768580729845318_3982390768881893376_o.jpg?_nc_cat=111&_nc_sid=174925&_nc_oc=AQmYaGILAf7VyLdNHIZV4W_U0sxpCOvVU7h5uZImZMxKeLguZvPqsAuMxD1MmmKCqPSq_RsaNZ7jq6t7256mDZzC&_nc_ht=scontent-vie1-1.xx&oh=f5c58518d99ae96d6074c52796060514&oe=5E9F4B21",
-                    "Új gyűjtésbe kezdett: FinTech bemutató")),
+                    "Új gyűjtésbe kezdett: PiggyBanx show")),
             PiggyPost(
                 post: PostDto(
                     DateTime.now(),
                     "Szlivia Anikó",
                     23,
                     "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/60305684_10212968722632432_1650346487772610560_n.jpg?_nc_cat=107&_nc_sid=174925&_nc_oc=AQkPBQfz2OFzk-zKOUX9NAJJ3x7Sq3vCbtZ9PXZwjcBFqCFgGsE6JlC5DCkXyJchOPX2O0eRuzDNNODYWDd4PrdZ&_nc_ht=scontent-vie1-1.xx&oh=126b348eaf8bd5fed9d0be83b9261d5f&oe=5E9E1D5A",
-                    "Új gyűjtésbe kezdett: Festő készlet")),
+                    "Új gyűjtésbe kezdett: Tetováló készlet")),
             PiggyPost(
                 post: PostDto(
                     DateTime.now(),

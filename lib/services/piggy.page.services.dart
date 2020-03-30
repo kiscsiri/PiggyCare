@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
@@ -36,19 +37,25 @@ Future<int> showPiggySelector(
           content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(
-                      loc.trans('selector_explanation'),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        loc.trans('selector_explanation'),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
+                Image.asset('assets/images/business.png'),
                 Form(
                   key: _formKey,
                   child: Container(
                     decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.grey),
+                      border: new Border.all(
+                          color: Theme.of(context).primaryColor, width: 3.0),
                       borderRadius: BorderRadius.circular(35),
                     ),
                     child: DropdownButtonHideUnderline(
@@ -59,10 +66,11 @@ Future<int> showPiggySelector(
                         },
                         value: id,
                         items: store.state.user.piggies
-                            .map((f) => DropdownMenuItem(
-                                  value: f.id,
-                                  child: Text(f.item),
-                                ))
+                            .where((element) => element.isApproved ?? false)
+                            .map(
+                              (f) => DropdownMenuItem(
+                                  value: f.id, child: Text(f.item)),
+                            )
                             .toList(),
                         decoration: InputDecoration(
                             hintText: "  " + loc.trans('choose_money_box'),
@@ -70,7 +78,7 @@ Future<int> showPiggySelector(
                       ),
                     ),
                   ),
-                )
+                ),
               ]));
     },
   );
@@ -164,9 +172,9 @@ Future<bool> showDoubleInformationModel(BuildContext context) async {
       });
 }
 
-Future<void> showCreatePiggyModal(BuildContext context, Store<AppState> store,
+Future<void> showCreatePiggyModal(BuildContext context,
     [String childId]) async {
-  await showDialog<void>(
+  var piggy = await showDialog<Piggy>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {

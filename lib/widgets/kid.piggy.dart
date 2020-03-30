@@ -10,7 +10,6 @@ import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/nopiggy.widget.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
-import 'package:piggybanx/services/notification.modals.dart';
 import 'create.piggy.dart';
 import 'piggy.coin.dart';
 import 'piggy.main.dart';
@@ -126,23 +125,26 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     }
 
     setState(() {
-      piggy = store.state.user.piggies.singleWhere((p) => p.id == piggy.id);
+      piggy = store.state.user.piggies
+          .where((element) => element.isApproved ?? false)
+          .singleWhere((p) => p.id == piggy.id);
     });
   }
 
   _changeCreatePiggyState() async {
-    await showCreatePiggyModal(context, StoreProvider.of<AppState>(context));
+    await showCreatePiggyModal(context);
   }
 
   _changePiggyData(index, Store<AppState> store) {
     setState(() {
       piggy = store.state.user.piggies
+          .where((element) => element.isApproved ?? false)
           .singleWhere((d) => d.id == index, orElse: null);
     });
   }
 
   Future<void> selectPiggy(BuildContext context, Store<AppState> store) async {
-    var newId = showPiggySelector(context, store);
+    var newId = await showPiggySelector(context, store);
     if (newId != null) {
       _changePiggyData(newId, store);
     }
@@ -154,10 +156,14 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     var store = StoreProvider.of<AppState>(context);
 
     var user = store.state.user;
+    var validatedPiggies =
+        user.piggies.where((element) => element.isApproved ?? false);
 
     bool _isDisabled = piggy == null ? false : !piggy.isFeedAvailable;
-    if (piggy == null && user.piggies.length != 0) {
-      piggy = user.piggies.first;
+    if (piggy == null && validatedPiggies.length != 0) {
+      piggy = validatedPiggies
+          .where((element) => element.isApproved ?? false)
+          .first;
     }
     _coinVisible = !_isDisabled;
 
@@ -170,7 +176,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
       period = loc.trans("next_month");
     }
 
-    return (user.piggies.length == 0 || creatingPiggy)
+    return (validatedPiggies.length == 0 || creatingPiggy)
         ? (creatingPiggy
             ? AnimatedOpacity(
                 opacity: creatingPiggy ? 1.0 : 0.0,

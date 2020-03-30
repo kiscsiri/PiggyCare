@@ -66,7 +66,9 @@ class _PiggyModalState extends State<PiggyModal>
                     child: Column(children: widget.actions ?? [Container()]))
               ],
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
+                  borderRadius: BorderRadius.circular(40),
+                  side: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3.0)),
               content: widget.content),
         ),
       ),

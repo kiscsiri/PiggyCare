@@ -1,4 +1,5 @@
 import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -65,7 +66,7 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
   state.user.piggies[index] = Piggy(
       currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
       item: piggy.item,
-      isAproved: piggy.isAproved,
+      isApproved: piggy.isApproved,
       piggyLevel: state.user.piggyLevel,
       doubleUp: piggy.doubleUp,
       money: piggy.money,
@@ -108,9 +109,35 @@ AppState incrementCoins(AppState state, IncrementCoins action) {
   return new AppState(user: newUserData);
 }
 
-AppState addChildToUser(AppState state, AddChild action) {
-  if (state.user.children.any((element) => element.id == action.user.id))
-    state.user.children.add(action.user);
+AppState addChildToUser(AppState state, AddFamily action) {
+  if (state.user.userType == UserType.adult) {
+    if (!state.user.children.any((element) => element.id == action.user.id))
+      state.user.children.add(action.user);
+  } else if (state.user.userType == UserType.child) {
+    state.user.parentId = action.user.id;
+  }
+
+  var newState = state.user;
+  return new AppState(user: newState);
+}
+
+AppState validatePiggy(AppState state, ValidatePiggy action) {
+  if (state.user.userType == UserType.adult) {
+    var child = state.user.children
+        .singleWhere((element) => element.id == action.childId, orElse: null);
+    if (child == null) throw Exception("Nem található gyerek");
+
+    var piggy = child.piggies
+        .where((element) => !element.isApproved)
+        .singleWhere((element) => element.id == action.piggyId, orElse: null);
+
+    if (piggy == null) throw Exception("Nem található persely");
+    piggy.isApproved = true;
+  } else if (state.user.userType == UserType.child) {
+    var piggy = state.user.piggies
+        .singleWhere((element) => element.id == action.piggyId);
+    piggy.isApproved = true;
+  }
 
   var newState = state.user;
   return new AppState(user: newState);

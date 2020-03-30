@@ -1,6 +1,5 @@
 import 'package:piggybanx/enums/level.dart';
 
-import '../models/appState.dart';
 import '../models/user/user.export.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

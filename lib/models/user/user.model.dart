@@ -127,7 +127,7 @@ class UserData {
         piggyLevel: PiggyLevel.Baby,
         created: DateTime.now(),
         saving: 0,
-        wantToSeeInfoAgain: false,
+        wantToSeeInfoAgain: true,
         numberOfCoins: 0,
         email: register.email,
         name: register.username,

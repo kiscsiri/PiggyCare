@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
+import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.firebase.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -38,7 +40,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
           piggy: Piggy(
         currentSaving: 0,
         doubleUp: false,
-        isAproved: false,
+        isApproved: store.state.user.userType == UserType.adult ? true : false,
         isFeedAvailable: true,
         item: controller.text,
         userId: widget.childId ?? store.state.user.id,
@@ -54,7 +56,8 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
 
       await PiggyServices.createPiggyForUser(
           action.piggy, widget.childId ?? store.state.user.id);
-      Navigator.of(context).pop();
+      NotificationServices.sendChildNewPiggy(context, action.piggy);
+      Navigator.of(context).pop(action.piggy);
     }
   }
 

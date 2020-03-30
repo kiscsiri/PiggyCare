@@ -83,20 +83,19 @@ flutter:
     - assets/animations/Baby-Feed3.gif
     - assets/animations/Baby-Feed4.gif
     - assets/animations/Baby-Feed5.gif
-    - assets/animations/Baby-Start.gif
+    # - assets/animations/Baby-Start.gif
     - assets/animations/Baby-Exit.gif
     - assets/images/Baby-Normal.png
     - assets/images/modal_piggy.png
     - assets/images/notification.png
     - assets/images/Child-Login.png
-    - assets/images/Piggy-Normal-Login.png
     - assets/images/adult_create.png
     - assets/images/create_child.png
     - assets/images/piggybank.png
-    - assets/images/piggy_half.png
     - assets/images/pink_tick.png
     - assets/images/yellow_tick.png
     - assets/images/coin.png
+    - assets/images/business.png
     - assets/images/coins.png
     - assets/images/social.png
     - assets/images/adult_profile_4K.png

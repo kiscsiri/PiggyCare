@@ -29,10 +29,10 @@ class InitUserData extends UserAction {
   InitUserData(this.user);
 }
 
-class AddChild extends UserAction {
+class AddFamily extends UserAction {
   final UserData user;
 
-  AddChild(this.user);
+  AddFamily(this.user);
 }
 
 class SetChildSavingPerFeed extends UserAction {

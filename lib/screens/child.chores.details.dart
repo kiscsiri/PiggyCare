@@ -12,8 +12,7 @@ import 'package:piggybanx/widgets/parent.chore.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
-import 'package:piggybanx/widgets/task.widget.dart';
-import 'package:redux/redux.dart';
+import 'package:provider/provider.dart';
 
 class ChildDetailsWidget extends StatefulWidget {
   const ChildDetailsWidget(
@@ -74,7 +73,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
   Future<void> _showCreateModal() async {
     var store = StoreProvider.of<AppState>(context);
 
-    await showCreatePiggyModal(context, store, child.id);
+    await showCreatePiggyModal(context, child.id);
 
     setState(() {
       var children = mapChildrenToChilDto(store.state.user.children).toList();
@@ -211,113 +210,123 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
       }).toList();
     }
 
-    return Container(
-        child: ListView(children: [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            decoration: coinBackground(context, UserType.adult),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    child.name + " ${loc.trans('his_savings')}",
-                    style: Theme.of(context).textTheme.headline2,
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Column(
-                      children: savings,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.15,
-                        right: MediaQuery.of(context).size.width * 0.15,
-                        top: MediaQuery.of(context).size.height * 0.05),
-                    child: Opacity(
-                      opacity: 0.9,
-                      child: Container(
-                          color: Colors.grey[300],
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('${child.feedPerCoin} € = 1 '),
-                              Image.asset('assets/images/coin.png')
-                            ],
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.15),
-                    child: PiggySlider(
-                      value: child.feedPerCoin.toDouble(),
-                      maxMinTextTrailing: Text('€'),
-                      onChangeEnding: (val) async =>
-                          await _changeChildSavingPerFeed(val.toInt()),
-                      maxVal: 10,
-                      onChange: (val) {
-                        setState(() {
-                          child.feedPerCoin = val.toInt();
-                        });
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: PiggyButton(
-                      text: loc.trans('create_money_box_button'),
-                      onClick: () async => await _showCreateModal(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: coinBackground(context, UserType.adult),
-            child: StoreConnector<AppState, AppState>(
-              converter: (store) => store.state,
-              builder: (context, store) => Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.initChildren.first.name + " oldala"),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop())
+        ],
+      ),
+      body: Container(
+          child: ListView(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              decoration: coinBackground(context, UserType.adult),
+              child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 25.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
-                      child.name + " ${loc.trans('his_tasks')}",
+                      child.name + " ${loc.trans('his_savings')}",
                       style: Theme.of(context).textTheme.headline2,
+                      textAlign: TextAlign.center,
                     ),
-                    Text(loc.trans('choose_task'),
-                        style: Theme.of(context).textTheme.subtitle2),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Column(
-                        children: _getTasks(context),
+                        children: savings,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.15,
+                          right: MediaQuery.of(context).size.width * 0.15,
+                          top: MediaQuery.of(context).size.height * 0.05),
+                      child: Opacity(
+                        opacity: 0.9,
+                        child: Container(
+                            color: Colors.grey[300],
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text('${child.feedPerCoin} € = 1 '),
+                                Image.asset('assets/images/coin.png')
+                              ],
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.15),
+                      child: PiggySlider(
+                        value: child.feedPerCoin.toDouble(),
+                        maxMinTextTrailing: Text('€'),
+                        onChangeEnding: (val) async =>
+                            await _changeChildSavingPerFeed(val.toInt()),
+                        maxVal: 10,
+                        onChange: (val) {
+                          setState(() {
+                            child.feedPerCoin = val.toInt();
+                          });
+                        },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: PiggyButton(
-                        text: loc.trans('+_add_task'),
-                        onClick: () async => await _showAddTaskModal(),
+                        text: loc.trans('create_money_box_button'),
+                        onClick: () async => await _showCreateModal(),
                       ),
                     )
                   ],
                 ),
               ),
             ),
-          )
-        ],
-      ),
-    ]));
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: coinBackground(context, UserType.adult),
+              child: StoreConnector<AppState, AppState>(
+                converter: (store) => store.state,
+                builder: (context, store) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        child.name + " ${loc.trans('his_tasks')}",
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                      Text(loc.trans('choose_task'),
+                          style: Theme.of(context).textTheme.subtitle2),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Column(
+                          children: _getTasks(context),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: PiggyButton(
+                          text: loc.trans('+_add_task'),
+                          onClick: () async => await _showAddTaskModal(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ])),
+    );
   }
 }
 

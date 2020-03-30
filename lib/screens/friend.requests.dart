@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/user.services.dart';
@@ -25,9 +27,16 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
   }
 
   _accept(String fromId) async {
+    var store = StoreProvider.of<AppState>(context);
     try {
-      await UserServices.acceptRequest(
-          fromId, widget.currentUserId, widget.userType);
+      var senderUser = await UserServices.acceptRequest(
+          fromId, widget.currentUserId, store.state.user.userType);
+      if (store.state.user.userType == UserType.child) {
+        store.dispatch(AddFamily(UserData(id: senderUser)));
+      } else {
+        store.dispatch(AddFamily(senderUser));
+      }
+
       NotificationServices.sendNotificationAcceptFriendRequest(
           fromId, widget.currentUserId);
     } catch (err) {}

@@ -57,6 +57,100 @@ Future<bool> showChildrenNewTask(BuildContext context, String name) async {
   );
 }
 
+Future<bool> showChildrenNewPiggy(BuildContext context, String name,
+    String targetName, int targetPrice) async {
+  var store = StoreProvider.of<AppState>(context);
+  var loc = PiggyLocalizations.of(context);
+
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => PiggyModal(
+        title: Text(
+          (name ?? "A gyereked") + " új malacperselyt készített!",
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          PiggyButton(
+            text: loc.trans('yes'),
+            onClick: () => Navigator.of(context).pop(true),
+          ),
+          PiggyButton(
+            text: loc.trans('no'),
+            onClick: () => Navigator.of(context).pop(false),
+          )
+        ],
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Cél: " + targetName,
+                ),
+                Text(
+                  "Öszzeg: " + targetPrice.toString(),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[Text("Jóváhagyod a megtakarítási célt?")],
+            )
+          ],
+        )),
+  );
+}
+
+Future<bool> showChildrenAcceptedPiggy(
+    BuildContext context, int piggyId) async {
+  var store = StoreProvider.of<AppState>(context);
+  var loc = PiggyLocalizations.of(context);
+  var piggy =
+      store.state.user.piggies.singleWhere((element) => element.id == piggyId);
+
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => PiggyModal(
+        title: Text(
+          "Szuper!",
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          PiggyButton(
+            text: loc.trans('sure'),
+            onClick: () => Navigator.of(context).pop(true),
+          ),
+        ],
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Az alábbi malacperselybe már el is kezdheted a gyűjtést:",
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Cél: " + piggy.item,
+                    ),
+                    Text(
+                      "Öszzeg: " + piggy.targetPrice.toString(),
+                    ),
+                  ],
+                ))
+          ],
+        )),
+  );
+}
+
 Future<bool> showChildrenDouble(BuildContext context, String name) async {
   var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
@@ -171,14 +265,12 @@ Future<bool> showRequestSent(BuildContext context) async {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.12,
-                child: Flexible(
-                    child: Text(
-                  "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13),
-                )),
-              ),
+                  height: MediaQuery.of(context).size.height * 0.12,
+                  child: Text(
+                    "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13),
+                  )),
             ),
           ],
         ),
