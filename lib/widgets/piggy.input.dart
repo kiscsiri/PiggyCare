@@ -85,7 +85,7 @@ class _PiggyInputState extends State<PiggyInput> {
             var result = widget.onValidate(value);
             if (result != null) {
               if (widget.onErrorMessage != null) widget.onErrorMessage(result);
-              return result;
+              return "     " + result;
             }
             return null;
           },

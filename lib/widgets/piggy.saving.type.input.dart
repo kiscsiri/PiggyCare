@@ -8,13 +8,15 @@ class SavingTypeInput extends StatefulWidget {
       @required this.name,
       @required this.coinValue,
       this.selected,
-      this.selectIndex})
+      this.selectIndex,
+      this.id})
       : super(key: key);
 
   final int index;
   final String name;
   final int coinValue;
   final bool selected;
+  final int id;
   final Function(int) selectIndex;
 
   @override
@@ -24,7 +26,7 @@ class SavingTypeInput extends StatefulWidget {
 class _SavingTypeInputState extends State<SavingTypeInput> {
   bool selected = false;
   _selectType() {
-    widget.selectIndex(widget.index);
+    widget.selectIndex(widget.id);
   }
 
   @override
@@ -57,7 +59,7 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -66,7 +68,7 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
                         style: textStyle,
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.height * 0.23,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(widget.name,
                             style: textStyle, overflow: TextOverflow.ellipsis),
@@ -75,7 +77,7 @@ class _SavingTypeInputState extends State<SavingTypeInput> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[

@@ -1,10 +1,13 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
+import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
 import 'package:piggybanx/widgets/double.information.modal.dart';
@@ -15,6 +18,7 @@ import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:piggybanx/widgets/add.child.dart';
+import 'package:video_player/video_player.dart';
 
 Future<int> showPiggySelector(
     BuildContext context, Store<AppState> store) async {
@@ -182,6 +186,10 @@ Future<void> showCreatePiggyModal(BuildContext context,
           childId: childId,
         );
       });
+  var store = StoreProvider.of<AppState>(context);
+  if (store.state.user.userType == UserType.child &&
+      store.state.user.piggies.length == 0)
+    await showChildrenPiggyInfo(context);
 }
 
 Future<void> showAddNewChildModal(
@@ -249,85 +257,75 @@ Future<String> showUserAddModal(
   }
 }
 
-Widget getFeedAnimation(
-    BuildContext context, Store<AppState> store, int feedRandom) {
-  try {
-    return AnimatedOpacity(
-        opacity: 1.0,
-        duration: Duration(milliseconds: 1500),
-        child: Image.asset(
-            'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
-            gaplessPlayback: true,
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.height * 0.2));
-  } catch (err) {
-    return Image.asset(
-        'assets/animations/${levelStringValue(store.state.user.piggyLevel)}-Feed$feedRandom.gif',
-        gaplessPlayback: true,
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.2);
-  }
+int getMaxAnimationIndex(PiggyLevel level) {
+  if (level == PiggyLevel.Baby)
+    return 2;
+  else if (level == PiggyLevel.Child)
+    return 6;
+  else if (level == PiggyLevel.Teen)
+    return 2;
+  else if (level == PiggyLevel.Adult)
+    return 2;
+  else
+    return 0;
 }
 
 Future<void> loadAnimation(
     bool isLevelUp,
     TickerProviderStateMixin tickerProviderStateMixin,
     BuildContext context,
-    Store<AppState> store) async {
-  AnimationController _controller = AnimationController(
-      duration: const Duration(milliseconds: 6000),
-      vsync: tickerProviderStateMixin)
-    ..forward();
-
-  var animation = new Tween<double>(begin: 0, end: 300).animate(_controller)
-    ..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        imageCache.clear();
-        Navigator.of(context).pop();
-        _controller.dispose();
-      }
-    });
+    Store<AppState> store,
+    int piggyId) async {
+  var piggy =
+      store.state.user.piggies.singleWhere((element) => element.id == piggyId);
 
   Future.delayed(Duration(milliseconds: 250), () {
     AudioCache().play("coin_sound.mp3");
     Vibration.vibrate(duration: 750);
   });
+
   var prefs = await SharedPreferences.getInstance();
-  var feedRandom = prefs.getInt("animationCount");
-  if (feedRandom > 2) {
+  var feedCtr = prefs.getInt("animationCount");
+  if (feedCtr > getMaxAnimationIndex(piggy.piggyLevel)) {
     prefs.setInt('animationCount', 1);
-    feedRandom = 1;
+    feedCtr = 1;
   }
+
   if (isLevelUp) {
     prefs.setInt("animationCount", 1);
   } else {
-    prefs.setInt("animationCount", feedRandom + 1);
+    prefs.setInt("animationCount", feedCtr + 1);
   }
 
+  VideoPlayerController vidController;
+  vidController = VideoPlayerController.asset(
+    'assets/animations/${levelStringValue(piggy.piggyLevel)}-Feed$feedCtr.mp4',
+  );
+  await vidController.initialize();
+  vidController.addListener(() {
+    if (vidController.value.position >= vidController.value.duration) {
+      Navigator.of(context).pop();
+    }
+  });
+  vidController.play();
   await showDialog(
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
           onWillPop: () async {
-            _controller.dispose();
+            vidController.dispose();
             imageCache.clear();
             return true;
           },
           child: Container(
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => Hero(
-                tag: "piggy",
-                child: (isLevelUp)
-                    ? Image.asset(
-                        'assets/animations/Baby-Feed$feedRandom.gif',
-                        gaplessPlayback: true,
-                      )
-                    : (Image.asset(
-                        'assets/animations/Baby-Feed$feedRandom.gif')),
+            child: Hero(
+              tag: "piggy",
+              child: AspectRatio(
+                aspectRatio: vidController.value.aspectRatio,
+                child: VideoPlayer(vidController),
               ),
             ),
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width * 0.7,
             height: MediaQuery.of(context).size.height,
             color: Color(0xFFe25997),
           ),
@@ -339,40 +337,32 @@ Future<void> exitStartAnimation(
     TickerProviderStateMixin tickerProviderStateMixin,
     bool isExit,
     BuildContext context) async {
-  AnimationController _controller = AnimationController(
-      duration: Duration(milliseconds: !isExit ? 6000 : 6000),
-      vsync: tickerProviderStateMixin)
-    ..forward();
-
-  var animation = new Tween<double>(begin: 0, end: 250).animate(_controller)
-    ..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        imageCache.clear();
-        Navigator.of(context).pop();
-        _controller.dispose();
-      }
-    });
+  VideoPlayerController vidController;
+  vidController = VideoPlayerController.asset(
+    'assets/animations/${isExit ? "exit" : "start"}.mp4',
+  );
+  await vidController.initialize();
+  vidController.addListener(() {
+    if (vidController.value.position >= vidController.value.duration) {
+      Navigator.of(context).pop();
+    }
+  });
 
   await showDialog(
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
           onWillPop: () async {
-            _controller.dispose();
+            vidController.dispose();
             imageCache.clear();
             return true;
           },
           child: Container(
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => Hero(
-                tag: "piggy",
-                child: (isExit)
-                    ? Image.asset(
-                        'assets/animations/Baby-Exit.gif',
-                        gaplessPlayback: true,
-                      )
-                    : (Image.asset('assets/animations/Baby-Start.gif')),
+            child: Hero(
+              tag: "piggy",
+              child: AspectRatio(
+                aspectRatio: vidController.value.aspectRatio,
+                child: VideoPlayer(vidController),
               ),
             ),
             width: MediaQuery.of(context).size.width,

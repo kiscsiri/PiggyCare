@@ -101,7 +101,6 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
           _controller.forward();
         }
       });
-
     _controller.forward();
   }
 
@@ -119,9 +118,9 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     NotificationServices.feedPiggy(store.state.user.id);
 
     if (tempLevel.index == store.state.user.piggyLevel.index) {
-      await loadAnimation(false, this, context, store);
+      await loadAnimation(false, this, context, store, piggyId);
     } else {
-      await loadAnimation(true, this, context, store);
+      await loadAnimation(true, this, context, store, piggyId);
     }
 
     setState(() {

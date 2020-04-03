@@ -78,13 +78,6 @@ class _RegisterPageState extends State<LastPage> {
     }
   }
 
-  testSignInWithPhoneNumber(BuildContext context, Store<AppState> store) async {
-    var phoneState = SetPhoneNumber(_emailController.text);
-    store.dispatch(phoneState);
-
-    await AuthenticationService.registerUser(store);
-  }
-
   Future<void> signInAndRegisterGoogle(Store<AppState> store) async {
     var user = await AuthenticationService.signInWithGoogle(store);
     store.dispatch(

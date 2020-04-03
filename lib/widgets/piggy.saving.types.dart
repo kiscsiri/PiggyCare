@@ -22,13 +22,52 @@ class _SavingForWidgetState extends State<SavingForWidget> {
   var savingTypeList = List<SavingTypeInput>();
 
   _selectItem(int index, Store<AppState> store) {
-    var piggy = store.state.user.piggies[index - 1];
+    var piggy = store.state.user.piggies
+        .singleWhere((element) => element.id == index, orElse: null);
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SavingDetails(
                   piggy: piggy,
                 )));
+  }
+
+  _getSavingTypeList() {
+    var store = StoreProvider.of<AppState>(context);
+
+    int i = 0;
+    savingTypeList = store.state.user.piggies
+        .where((element) => element.isApproved ?? false)
+        .map((p) {
+      i++;
+      return SavingTypeInput(
+        index: i,
+        name: p.item,
+        id: p.id,
+        coinValue: widget.savingPerFeed != 0
+            ? ((p.targetPrice - p.currentSaving) / widget.savingPerFeed).ceil()
+            : 0,
+        selectIndex: (i) => _selectItem(i, store),
+      );
+    }).toList();
+    if (selectedIndex != null) {
+      savingTypeList = savingTypeList.map((f) {
+        if (f.index == selectedIndex) {
+          return SavingTypeInput(
+            coinValue: f.coinValue,
+            index: f.index,
+            id: f.id,
+            selected: true,
+            name: f.name,
+            selectIndex: (i) => _selectItem(i, store),
+          );
+        } else {
+          return f;
+        }
+      }).toList();
+    }
+
+    return savingTypeList;
   }
 
   Piggy getSelected() {
@@ -50,43 +89,14 @@ class _SavingForWidgetState extends State<SavingForWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var store = StoreProvider.of<AppState>(context);
-
-    int i = 0;
-    savingTypeList = store.state.user.piggies
-        .where((element) => element.isApproved ?? false)
-        .map((p) {
-      i++;
-      return SavingTypeInput(
-        index: i,
-        name: p.item,
-        coinValue: widget.savingPerFeed != 0
-            ? ((p.targetPrice - p.currentSaving) / widget.savingPerFeed).ceil()
-            : 0,
-        selectIndex: (i) => _selectItem(i, store),
-      );
-    }).toList();
-    if (selectedIndex != null) {
-      savingTypeList = savingTypeList.map((f) {
-        if (f.index == selectedIndex) {
-          return SavingTypeInput(
-            coinValue: f.coinValue,
-            index: f.index,
-            selected: true,
-            name: f.name,
-            selectIndex: (i) => _selectItem(i, store),
-          );
-        } else {
-          return f;
-        }
-      }).toList();
-    }
-
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
       width: MediaQuery.of(context).size.width * 0.8,
-      child: ListView(
-        children: savingTypeList,
+      child: StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, store) => ListView(
+          children: _getSavingTypeList(),
+        ),
       ),
     );
   }

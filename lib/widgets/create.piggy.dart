@@ -56,7 +56,10 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
 
       await PiggyServices.createPiggyForUser(
           action.piggy, widget.childId ?? store.state.user.id);
-      NotificationServices.sendChildNewPiggy(context, action.piggy);
+      if (store.state.user.userType == UserType.child) {
+        await NotificationServices.sendChildNewPiggy(context, action.piggy);
+      }
+
       Navigator.of(context).pop(action.piggy);
     }
   }

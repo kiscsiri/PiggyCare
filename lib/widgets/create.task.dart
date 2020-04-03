@@ -82,6 +82,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               onValidate: (val) {
                 if (val.isEmpty) {
                   return "Kötelező mező";
+                } else if (val.length >= 50) {
+                  return "Maximum 50 karakter engedélyezett!";
                 } else {
                   setState(() {
                     item = val;

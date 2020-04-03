@@ -56,7 +56,7 @@ class _SavingTypeInputState extends State<ChildSavingInputWidget> {
                 borderRadius: BorderRadius.circular(70.0)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -69,23 +69,32 @@ class _SavingTypeInputState extends State<ChildSavingInputWidget> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(widget.name, style: textStyle),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(widget.name,
+                              style: textStyle,
+                              overflow: TextOverflow.ellipsis),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text(widget.price.toString(), style: textStyle),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.12,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        child: Image.asset("assets/coin.png"),
-                      ),
-                    ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(widget.price.toString(), style: textStyle),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.12,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          child: Image.asset("assets/coin.png"),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

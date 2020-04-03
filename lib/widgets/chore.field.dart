@@ -33,7 +33,7 @@ class ChoreInput extends StatefulWidget {
   _ChoreInputState createState() => _ChoreInputState();
 }
 
-class _ChoreInputState extends State<ChoreInput> {
+class _ChoreInputState extends State<ChoreInput> with TickerProviderStateMixin {
   bool selected = false;
   _selectType() {
     widget.selectIndex(widget.index);
@@ -71,7 +71,7 @@ class _ChoreInputState extends State<ChoreInput> {
       fill,
       fill,
     ];
-    final double fillPercent = width * 0.05;
+    final double fillPercent = width * 0.045;
     final double fillStop = (100 - (selected ? fillPercent : 0)) / 100;
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
 
@@ -94,7 +94,7 @@ class _ChoreInputState extends State<ChoreInput> {
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Container(
             width: width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.08,
+            height: MediaQuery.of(context).size.height * 0.095,
             decoration: new BoxDecoration(
                 border: new Border.all(color: color),
                 color: Colors.white,
@@ -105,7 +105,7 @@ class _ChoreInputState extends State<ChoreInput> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -114,21 +114,29 @@ class _ChoreInputState extends State<ChoreInput> {
                         style: textStyle,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(widget.name, style: textStyle),
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width *
+                              ((widget.selected ?? false) ? 0.46 : 0.55),
+                          child: Text(
+                            widget.name,
+                            style: textStyle,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.only(right: 17),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            width: width * 0.12,
+                            width: width * 0.085,
                             height: MediaQuery.of(context).size.height * 0.12,
                             child: Image.asset("assets/coin.png"),
                           )
@@ -136,12 +144,17 @@ class _ChoreInputState extends State<ChoreInput> {
                       ),
                     ),
                     selected
-                        ? Container(
-                            width: width * 0.15,
-                            height: MediaQuery.of(context).size.height * 0.12,
-                            child: Center(
-                                child: Icon(FontAwesomeIcons.check,
-                                    color: Colors.white)),
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(right: 26.0, left: 0),
+                            child: Container(
+                              margin: EdgeInsets.only(right: 0),
+                              width: width * 0.035,
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              child: Center(
+                                  child: Icon(FontAwesomeIcons.check,
+                                      color: Colors.white)),
+                            ),
                           )
                         : Container()
                   ],

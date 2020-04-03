@@ -27,12 +27,12 @@ class PiggyNavigationBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: [
         new BottomNavigationBarItem(
-            title: new Text(loc.trans('home')),
+            title: new Text("Piggy"),
             icon: Icon(
               Icons.home,
             )),
         new BottomNavigationBarItem(
-            title: new Text(loc.trans('saving')),
+            title: new Text("Perselyek"),
             icon: Icon(
               Icons.attach_money,
             )),

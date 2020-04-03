@@ -1,6 +1,6 @@
 import 'chore.model.dart';
 
-class ChoreAction {}
+abstract class ChoreAction {}
 
 class AddChore extends ChoreAction {
   final Chore chore;

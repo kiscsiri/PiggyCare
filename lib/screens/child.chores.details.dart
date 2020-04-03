@@ -213,11 +213,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.initChildren.first.name + " oldala"),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop())
-        ],
       ),
       body: Container(
           child: ListView(children: [

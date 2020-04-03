@@ -167,23 +167,27 @@ class UserServices {
   static Future<UserData> getUserById(String id) async {
     var value;
     try {
-      value = await Firestore.instance.collection('users').document(id).get();
-    } catch (err) {} finally {
-      if (value.data != null) {
+      var res = await Firestore.instance
+          .collection('users')
+          .where('id', isEqualTo: id)
+          .getDocuments();
+
+      if (res.documents.length != 0) {
+        value = res.documents.first;
         return UserData.fromFirebaseDocumentSnapshot(
             value.data, value.documentID);
       } else {
-        var res = await Firestore.instance
-            .collection('users')
-            .where('id', isEqualTo: id)
-            .getDocuments();
+        value = await Firestore.instance.collection('users').document(id).get();
 
-        if (res.documents.length != 0) {
-          value = res.documents.first;
+        if (value.data != null) {
           return UserData.fromFirebaseDocumentSnapshot(
               value.data, value.documentID);
+        } else {
+          throw Exception("Felhasználó nem található!");
         }
       }
+    } catch (err) {
+      throw err;
     }
   }
 

@@ -57,6 +57,32 @@ Future<bool> showChildrenNewTask(BuildContext context, String name) async {
   );
 }
 
+Future<bool> showChildrenPiggyInfo(BuildContext context) async {
+  var loc = PiggyLocalizations.of(context);
+
+  return await showDialog<bool>(
+      context: context,
+      builder: (context) => PiggyModal(
+          title: Text(
+            "Kész is vagyunk!",
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            PiggyButton(
+              text: loc.trans('sure'),
+              onClick: () => Navigator.of(context).pop(true),
+            ),
+          ],
+          content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "A Malacpersely azonnal megjelenik a szülői jóváhagyást követően és elkezdhetsz gyűjteni!",
+                  textAlign: TextAlign.center,
+                ),
+              ])));
+}
+
 Future<bool> showChildrenNewPiggy(BuildContext context, String name,
     String targetName, int targetPrice) async {
   var store = StoreProvider.of<AppState>(context);
@@ -81,15 +107,19 @@ Future<bool> showChildrenNewPiggy(BuildContext context, String name,
         ],
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   "Cél: " + targetName,
+                  textAlign: TextAlign.left,
                 ),
                 Text(
-                  "Öszzeg: " + targetPrice.toString(),
+                  "Öszzeg: " + targetPrice.toString() + ' €',
+                  textAlign: TextAlign.left,
                 ),
               ],
             ),
@@ -140,9 +170,11 @@ Future<bool> showChildrenAcceptedPiggy(
                   children: <Widget>[
                     Text(
                       "Cél: " + piggy.item,
+                      textAlign: TextAlign.start,
                     ),
                     Text(
-                      "Öszzeg: " + piggy.targetPrice.toString(),
+                      "Öszzeg: " + piggy.targetPrice.toString() + " €",
+                      textAlign: TextAlign.start,
                     ),
                   ],
                 ))

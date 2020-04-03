@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -31,27 +29,6 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
   bool isRandomGenerated = false;
   int feedRandom = 1;
 
-  Widget getFeedAnimation(BuildContext context) {
-    if (widget.isAnimationPlaying && !isRandomGenerated) {
-      feedRandom = Random().nextInt(3) + 1;
-      isRandomGenerated = true;
-    }
-    try {
-      return AnimatedOpacity(
-          opacity: 1.0,
-          duration: Duration(milliseconds: 1500),
-          child: Image.asset(
-            'assets/animations/Baby-Feed$feedRandom.mov',
-            gaplessPlayback: true,
-          ));
-    } catch (err) {
-      return Image.asset(
-        'assets/animations/${levelStringValue(widget.piggy.piggyLevel)}-Feed$feedRandom.mov',
-        gaplessPlayback: true,
-      );
-    }
-  }
-
   Widget getAnimation(BuildContext context, Piggy piggy) {
     if (piggy == null) {
       return Image.asset(
@@ -62,8 +39,6 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
       return Image.asset(
           'assets/animations/${levelStringValue(piggy.piggyLevel)}-Sleep.gif',
           gaplessPlayback: true);
-    } else if (widget.isAnimationPlaying) {
-      return getFeedAnimation(context);
     } else {
       isRandomGenerated = false;
       return Image.asset(

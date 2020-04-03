@@ -87,14 +87,14 @@ class _ChoreInputState extends State<ParentChoreInput> {
     textColor = selected ? Theme.of(context).primaryColor : Colors.grey;
 
     TextStyle textStyle =
-        TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 17);
+        TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16);
     return GestureDetector(
       onTap: () async => selected ? _finishChore(context) : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Container(
             width: width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.08,
+            height: MediaQuery.of(context).size.height * 0.09,
             decoration: new BoxDecoration(
                 border: new Border.all(color: color),
                 color: Colors.white,
@@ -102,10 +102,10 @@ class _ChoreInputState extends State<ParentChoreInput> {
                 borderRadius: BorderRadius.circular(70.0)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.only(left: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -114,8 +114,17 @@ class _ChoreInputState extends State<ParentChoreInput> {
                         style: textStyle,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(widget.name, style: textStyle),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width *
+                              ((widget.selected ?? false) ? 0.47 : 0.5),
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            widget.name,
+                            style: textStyle,
+                            maxLines: 3,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -123,12 +132,12 @@ class _ChoreInputState extends State<ParentChoreInput> {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.only(right: 0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            width: width * 0.12,
+                            width: width * 0.1,
                             height: MediaQuery.of(context).size.height * 0.12,
                             child: Image.asset("assets/coin.png"),
                           )
@@ -137,7 +146,7 @@ class _ChoreInputState extends State<ParentChoreInput> {
                     ),
                     selected
                         ? Container(
-                            width: width * 0.15,
+                            width: width * 0.14,
                             height: MediaQuery.of(context).size.height * 0.12,
                             child: Center(
                                 child: Icon(FontAwesomeIcons.checkDouble,

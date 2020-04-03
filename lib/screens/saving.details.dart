@@ -18,7 +18,6 @@ class SavingDetails extends StatefulWidget {
 
 class _SavingDetailsState extends State<SavingDetails> {
   String _getRemainingCoinsToCollect() {
-    var store = StoreProvider.of<AppState>(context);
     if (widget.piggy != null)
       return ((widget.piggy.targetPrice - widget.piggy.currentSaving)
               .ceil()
@@ -48,6 +47,7 @@ class _SavingDetailsState extends State<SavingDetails> {
                   child: Text(
                     widget.piggy.item,
                     style: Theme.of(context).textTheme.headline3,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Text(loc.trans('home')),

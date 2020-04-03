@@ -35,7 +35,8 @@ dependencies:
   percent_indicator: ^2.1.1+1
   flutter_svg: ^0.17.0
   flutter_facebook_login: ^3.0.0
-
+  cached_network_image: ^0.7.0
+  
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -76,15 +77,20 @@ flutter:
     - assets/task-ikon.svg
     - assets/images/child_half.png
     - assets/images/Child-Normal.png
-    - assets/animations/Baby-LevelUp.gif
-    - assets/animations/Baby-Feed1.gif
     - assets/animations/Baby-Feed1.mp4
-    - assets/animations/Baby-Feed2.gif
-    - assets/animations/Baby-Feed3.gif
-    - assets/animations/Baby-Feed4.gif
-    - assets/animations/Baby-Feed5.gif
-    # - assets/animations/Baby-Start.gif
-    - assets/animations/Baby-Exit.gif
+    - assets/animations/Baby-Feed2.mp4
+    - assets/animations/Teen-Feed1.mp4
+    - assets/animations/Teen-Feed2.mp4
+    - assets/animations/Adult-Feed1.mp4
+    - assets/animations/Adult-Feed2.mp4
+    - assets/animations/Child-Feed1.mp4
+    - assets/animations/Child-Feed2.mp4
+    - assets/animations/Child-Feed3.mp4
+    - assets/animations/Child-Feed4.mp4
+    - assets/animations/Child-Feed5.mp4
+    - assets/animations/Child-Feed6.mp4
+    - assets/animations/start.mp4
+    - assets/animations/exit.mp4
     - assets/images/Baby-Normal.png
     - assets/images/modal_piggy.png
     - assets/images/notification.png
@@ -100,21 +106,6 @@ flutter:
     - assets/images/social.png
     - assets/images/adult_profile_4K.png
     - assets/images/piggy_business_half_left_b.png
-    - assets/animations/Baby-Sleep.gif
-    # - assets/animations/Child-LevelUp.gif
-    # - assets/animations/Child-Feed1.gif
-    # - assets/animations/Child-Feed2.gif
-    # - assets/animations/Child-Feed3.gif
-    # - assets/animations/Child-Feed4.gif
-    # - assets/animations/Child-Normal.gif
-    # - assets/animations/Child-Sleep.gif
-    # - assets/animations/Teen-LevelUp.gif
-    # - assets/animations/Teen-Feed1.gif
-    # - assets/animations/Teen-Feed2.gif
-    # - assets/animations/Teen-Feed3.gif
-    # - assets/animations/Teen-Feed4.gif
-    # - assets/animations/Teen-Normal.gif
-    # - assets/animations/Teen-Sleep.gif
     - assets/animations/coin.gif
     - assets/coin.png
 

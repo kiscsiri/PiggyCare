@@ -41,9 +41,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _videoPlayerController =
-        VideoPlayerController.asset('assets/animations/Baby-Feed1.mp4');
-
     super.initState();
   }
 
