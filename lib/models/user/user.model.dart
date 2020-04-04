@@ -32,7 +32,6 @@ class UserData {
   bool wantToSeeInfoAgain;
   List<Piggy> piggies;
   List<Chore> chores;
-  List<UserData> children;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {

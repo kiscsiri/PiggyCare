@@ -7,7 +7,7 @@ GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerLazySingleton(() => ItemsApi('items'));
-  locator.registerLazySingleton(() => UsersApi('users'));
+  locator.registerLazySingleton(() => UsersApi('donators'));
   locator.registerLazySingleton(() => ChoreApi('chores'));
   locator.registerLazySingleton(() => PiggiesApi('piggies'));
 

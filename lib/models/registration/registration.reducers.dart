@@ -137,7 +137,7 @@ AppState setOauthAccount(AppState state, SetFromOauth action) {
 
 addItemDatabase(AddPiggy item, String uid) {
   Firestore.instance
-      .collection('users')
+      .collection('donators')
       .where("uid", isEqualTo: uid)
       .getDocuments()
       .then((doc) {

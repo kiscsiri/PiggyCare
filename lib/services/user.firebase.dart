@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future feedPiggyDatabase(FeedPiggy action) async {
   var value = await Firestore.instance
-      .collection("users")
+      .collection('donators')
       .where("id", isEqualTo: action.id)
       .getDocuments();
 
@@ -57,7 +57,7 @@ Future feedPiggyDatabase(FeedPiggy action) async {
             '${user.name} összegyűjtötte a pénzt egy "${piggy.item}" nevű tárgyra! Gratuláció a megtakarításhoz! :)'));
   }
   Firestore.instance
-      .collection('users')
+      .collection('donators')
       .document(doc.documentID)
       .updateData(user.toJson());
 }

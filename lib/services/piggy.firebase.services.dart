@@ -7,7 +7,7 @@ import 'package:piggycare/services/user.social.post.service.dart';
 class PiggyServices {
   static Future<void> createPiggyForUser(Piggy piggy, String userId) async {
     var value = await Firestore.instance
-        .collection("users")
+        .collection('donators')
         .where("id", isEqualTo: userId)
         .getDocuments();
     var doc = value.documents.first;
@@ -27,14 +27,14 @@ class PiggyServices {
     }
 
     Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(doc.documentID)
         .updateData(user.toJson());
   }
 
   static Future<void> validatePiggy(int piggyId, String userId) async {
     var value = await Firestore.instance
-        .collection("users")
+        .collection('donators')
         .where("id", isEqualTo: userId)
         .getDocuments();
     var doc = value.documents.first;
@@ -51,7 +51,7 @@ class PiggyServices {
         user: doc.reference));
 
     Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(doc.documentID)
         .updateData(user.toJson());
   }

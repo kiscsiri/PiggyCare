@@ -15,7 +15,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
     DocumentSnapshot userSnap;
     try {
       userSnap = (await Firestore.instance
-              .collection('users')
+              .collection('donators')
               .where('id', isEqualTo: chore.childId)
               .getDocuments())
           .documents
@@ -41,7 +41,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
             '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
 
     Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(user.documentId)
         .updateData(user.toJson());
 
@@ -58,7 +58,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   static Future<void> finishChildChore(String id, int taskId, parentId) async {
     var result =
-        await Firestore.instance.collection('users').document(id).get();
+        await Firestore.instance.collection('donators').document(id).get();
 
     var user =
         UserData.fromFirebaseDocumentSnapshot(result.data, result.documentID);
@@ -69,7 +69,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
     task.isDone = true;
 
     await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(id)
         .updateData(user.toJson());
 
@@ -79,7 +79,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   static Future<void> validateChildChore(String userId, int taskId) async {
     var result = await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .where('id', isEqualTo: userId)
         .getDocuments();
     if (result.documents.length != 0) {
@@ -102,7 +102,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           text:
               '${userData.name} épp befejezte a "${task.title}" nevű feladatát!'));
       await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .document(user.documentID)
           .updateData(userData.toJson());
     }
@@ -110,7 +110,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   static Future<void> refuseChildChore(String userId, int taskId) async {
     var result = await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .where('id', isEqualTo: userId)
         .getDocuments();
     if (result.documents.length != 0) {
@@ -125,7 +125,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
       task.isValidated = false;
 
       await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .document(user.documentID)
           .updateData(userData.toJson());
     }

@@ -27,7 +27,7 @@ class AuthenticationService {
       String phoneNumber, BuildContext context) async {
     var loc = PiggyLocalizations.of(context);
     QuerySnapshot value = await Firestore.instance
-        .collection("users")
+        .collection('donators')
         .where("phoneNumber", isEqualTo: phoneNumber)
         .getDocuments();
     if (value.documents.isEmpty) {
@@ -60,7 +60,7 @@ class AuthenticationService {
       FirebaseUser user, Store<AppState> store) async {
     if (user != null) {
       var value = await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .where("id", isEqualTo: user.uid)
           .getDocuments();
       if (value.documents.length > 0) {
@@ -75,7 +75,7 @@ class AuthenticationService {
 
         if (u.userType == UserType.business) {
           var children = await Firestore.instance
-              .collection('users')
+              .collection('donators')
               .where("parentId", isEqualTo: user.uid)
               .getDocuments();
           for (var childSnapshot in children.documents) {
@@ -92,7 +92,7 @@ class AuthenticationService {
   static Future<void> authenticate(
       FirebaseUser user, Store<AppState> store, BuildContext context) async {
     QuerySnapshot value = await Firestore.instance
-        .collection("users")
+        .collection('donators')
         .where("id", isEqualTo: user.uid)
         .getDocuments();
     if (value.documents.length == 0) {
@@ -123,7 +123,7 @@ class AuthenticationService {
     var user = store.state.registrationData;
 
     var value = await Firestore.instance
-        .collection("users")
+        .collection("donators")
         .where("id", isEqualTo: user.uid)
         .getDocuments();
 
@@ -148,13 +148,14 @@ class AuthenticationService {
         NotificationServices.register(token, userData.documentId, platfom);
       });
 
-      var userRef =
-          await Firestore.instance.collection('users').add(userData.toJson());
+      var userRef = await Firestore.instance
+          .collection('donators')
+          .add(userData.toJson());
 
       userData.documentId = userRef.documentID;
 
       await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .document(userData.documentId)
           .updateData(userData.toJson());
 

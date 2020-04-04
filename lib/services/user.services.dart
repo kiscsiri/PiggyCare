@@ -13,13 +13,13 @@ class UserServices {
         userType == UserType.business ? UserType.donator : UserType.business;
 
     var searchByName = await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
         .where("name", isEqualTo: searchString.trim().toLowerCase())
         .getDocuments();
 
     var searchByEmail = await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
         .where("email", isEqualTo: searchString.trim().toLowerCase())
         .getDocuments();
@@ -52,7 +52,7 @@ class UserServices {
     var users = List<DocumentSnapshot>();
     for (final d in result) {
       var user = await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .where("id", isEqualTo: d.fromId)
           .getDocuments();
       users.add(user.documents.first);
@@ -73,7 +73,7 @@ class UserServices {
         .getDocuments();
 
     var sender = await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .where('id', isEqualTo: fromId)
         .getDocuments();
 
@@ -114,13 +114,13 @@ class UserServices {
           .updateData({'isPending': false});
 
       var data = await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .where('id',
               isEqualTo: currentUserType == UserType.business ? fromId : toId)
           .getDocuments();
 
       Firestore.instance
-          .collection('users')
+          .collection('donators')
           .document(data.documents.first.documentID)
           .updateData({
         'parentId': currentUserType == UserType.business ? toId : fromId
@@ -160,7 +160,7 @@ class UserServices {
     user.feedPerPeriod = savingPerFeed;
 
     await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(user.documentId)
         .updateData(user.toJson());
   }
@@ -169,7 +169,7 @@ class UserServices {
     var value;
     try {
       var res = await Firestore.instance
-          .collection('users')
+          .collection('donators')
           .where('id', isEqualTo: id)
           .getDocuments();
 
@@ -178,7 +178,8 @@ class UserServices {
         return UserData.fromFirebaseDocumentSnapshot(
             value.data, value.documentID);
       } else {
-        value = await Firestore.instance.collection('users').document(id).get();
+        value =
+            await Firestore.instance.collection('donators').document(id).get();
 
         if (value.data != null) {
           return UserData.fromFirebaseDocumentSnapshot(
@@ -199,7 +200,7 @@ class UserServices {
     user.wantToSeeInfoAgain = seenInfo;
 
     await Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(documentId)
         .updateData(user.toJson());
   }
@@ -210,7 +211,7 @@ class UserServices {
     user.numberOfCoins++;
 
     Firestore.instance
-        .collection('users')
+        .collection('donators')
         .document(childDocumentId)
         .updateData(user.toJson());
   }
