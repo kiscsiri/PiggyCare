@@ -1,68 +1,64 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
-import 'package:piggycare/models/registration/registration.actions.dart';
+import 'package:piggycare/models/registration/registration.export.dart';
 import 'package:piggycare/screens/main.screen.dart';
 import 'package:piggycare/services/authentication-service.dart';
 import 'package:piggycare/services/piggy.page.services.dart';
 import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:redux/redux.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+class BusinessRegistrationScreen extends StatefulWidget {
+  BusinessRegistrationScreen({Key key}) : super(key: key);
 
-class LastPage extends StatefulWidget {
-  LastPage({Key key, @required this.initUserName, @required this.initEmail})
-      : super(key: key);
-
-  final String initUserName;
-  final String initEmail;
   @override
-  _RegisterPageState createState() => new _RegisterPageState();
+  _BusinessRegistrationScreenState createState() =>
+      _BusinessRegistrationScreenState();
 }
 
-class _RegisterPageState extends State<LastPage> {
+class _BusinessRegistrationScreenState
+    extends State<BusinessRegistrationScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _useGatheredBusinessPlace = true;
   String _message = '';
 
-  String verificationId;
+  final _registrationFormKey = new GlobalKey<FormState>();
 
-  final _telephoneFormKey = new GlobalKey<FormState>();
-
-  final focusEmail = FocusNode();
+  final focusTaxNumber = FocusNode();
+  final focusBusinessNumber = FocusNode();
   final focusPassword = FocusNode();
+  final focusBusinessName = FocusNode();
+  final focusLocationPlace = FocusNode();
 
-  TextEditingController _userNameController = new TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  TextEditingController _businessNameController = new TextEditingController();
+  TextEditingController _taxNumberController = TextEditingController();
+  TextEditingController _businessNumberController = TextEditingController();
 
   @override
   void initState() {
-    _userNameController.text = widget.initUserName;
-    _emailController.text = widget.initEmail;
-
     super.initState();
   }
 
   @override
   void dispose() {
-    _userNameController.dispose();
-    _passwordController.dispose();
-    _emailController.dispose();
+    _businessNameController.dispose();
+    _taxNumberController.dispose();
+    _businessNumberController.dispose();
     super.dispose();
   }
 
   Future<void> _register(BuildContext context, Store<AppState> store) async {
     try {
       var res = await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+          email: _businessNumberController.text,
+          password: _taxNumberController.text);
 
       store.dispatch(SetFromOauth(
           res.user.email,
-          res.user.displayName ?? _userNameController.text,
+          res.user.displayName ?? _businessNameController.text,
           res.user.uid,
           res.user.photoUrl));
 
@@ -75,28 +71,12 @@ class _RegisterPageState extends State<LastPage> {
     }
   }
 
-  Future<void> signInAndRegisterGoogle(Store<AppState> store) async {
-    var user = await AuthenticationService.signInWithGoogle(store);
-    store.dispatch(
-        SetFromOauth(user.email, user.displayName, user.uid, user.photoUrl));
-
-    await AuthenticationService.registerUser(store);
-
-    setState(() {
-      _emailController.text = user.email;
-      _userNameController.text = user.displayName;
-    });
-
-    Navigator.of(context).pushReplacement(
-        new MaterialPageRoute(builder: (context) => new MainPage()));
-  }
-
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     var store = StoreProvider.of<AppState>(context);
     var registrationBlock = new Form(
-        key: _telephoneFormKey,
+        key: _registrationFormKey,
         child: new Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -109,12 +89,13 @@ class _RegisterPageState extends State<LastPage> {
                 ),
               ),
               PiggyInput(
-                inputIcon: FontAwesomeIcons.user,
-                hintText: loc.trans("user_name"),
-                textController: _userNameController,
+                inputIcon: FontAwesomeIcons.building,
+                hintText: loc.trans("business_name"),
+                textController: _businessNameController,
                 textInputAction: TextInputAction.go,
+                focusNode: focusBusinessName,
                 onSubmit: (val) async {
-                  FocusScope.of(context).requestFocus(focusEmail);
+                  FocusScope.of(context).requestFocus(focusTaxNumber);
                   return "";
                 },
                 width: MediaQuery.of(context).size.width * 0.7,
@@ -129,14 +110,37 @@ class _RegisterPageState extends State<LastPage> {
                 },
               ),
               PiggyInput(
-                inputIcon: Icons.mail_outline,
-                hintText: loc.trans("email"),
-                focusNode: focusEmail,
+                inputIcon: Icons.receipt,
+                hintText: loc.trans("tax_number"),
+                focusNode: focusTaxNumber,
                 textInputAction: TextInputAction.go,
-                textController: _emailController,
+                textController: _businessNumberController,
                 width: MediaQuery.of(context).size.width * 0.7,
                 onSubmit: (val) async {
-                  FocusScope.of(context).requestFocus(focusPassword);
+                  FocusScope.of(context).requestFocus(focusBusinessNumber);
+                  return "";
+                },
+                onValidate: (value) {
+                  if (value.isEmpty) {
+                    return loc.trans("required_field");
+                  }
+                  return null;
+                },
+                onErrorMessage: (error) {
+                  setState(() {});
+                },
+              ),
+              PiggyInput(
+                inputIcon: FontAwesomeIcons.briefcase,
+                hintText: loc.trans("business_number"),
+                textController: _taxNumberController,
+                focusNode: focusBusinessNumber,
+                width: MediaQuery.of(context).size.width * 0.7,
+                obscureText: true,
+                onSubmit: (value) async {
+                  if (_registrationFormKey.currentState.validate()) {
+                    await _register(context, store);
+                  }
                   return "";
                 },
                 onValidate: (value) {
@@ -152,12 +156,12 @@ class _RegisterPageState extends State<LastPage> {
               PiggyInput(
                 inputIcon: Icons.lock_outline,
                 hintText: loc.trans("password"),
-                textController: _passwordController,
+                textController: _taxNumberController,
                 focusNode: focusPassword,
                 width: MediaQuery.of(context).size.width * 0.7,
                 obscureText: true,
                 onSubmit: (value) async {
-                  if (_telephoneFormKey.currentState.validate()) {
+                  if (_registrationFormKey.currentState.validate()) {
                     await _register(context, store);
                   }
                   return "";
@@ -172,6 +176,45 @@ class _RegisterPageState extends State<LastPage> {
                   setState(() {});
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Checkbox(
+                    onChanged: (val) {
+                      setState(() {
+                        _useGatheredBusinessPlace = val;
+                      });
+                    },
+                    value: _useGatheredBusinessPlace,
+                  ),
+                  Text(loc.trans("use_headquarters_address"))
+                ],
+              ),
+              !_useGatheredBusinessPlace
+                  ? PiggyInput(
+                      inputIcon: FontAwesomeIcons.mapSigns,
+                      hintText: loc.trans("password"),
+                      textController: _taxNumberController,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      obscureText: true,
+                      focusNode: focusLocationPlace,
+                      onSubmit: (value) async {
+                        if (_registrationFormKey.currentState.validate()) {
+                          await _register(context, store);
+                        }
+                        return "";
+                      },
+                      onValidate: (value) {
+                        if (value.isEmpty) {
+                          return loc.trans("required_field");
+                        }
+                        return null;
+                      },
+                      onErrorMessage: (error) {
+                        setState(() {});
+                      },
+                    )
+                  : Container(),
               Text(
                 _message,
                 style: new TextStyle(color: Colors.redAccent),
@@ -179,15 +222,10 @@ class _RegisterPageState extends State<LastPage> {
               PiggyButton(
                   text: loc.trans("register"),
                   onClick: () async {
-                    if (_telephoneFormKey.currentState.validate()) {
+                    if (_registrationFormKey.currentState.validate()) {
                       await _register(context, store);
                     }
                   }),
-              Text(loc.trans('or_register_somehow')),
-              PiggyGoogleButton(
-                text: "Google",
-                onClick: () async => signInAndRegisterGoogle(store),
-              ),
             ]));
     return new Scaffold(
         appBar: new AppBar(

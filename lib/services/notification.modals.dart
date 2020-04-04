@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
+import 'package:piggycare/widgets/piggy.modal.widget.dart';
 
 Future<bool> showAskedForNewTask(
     BuildContext context, String name, String id) async {
@@ -85,7 +85,6 @@ Future<bool> showChildrenPiggyInfo(BuildContext context) async {
 
 Future<bool> showChildrenNewPiggy(BuildContext context, String name,
     String targetName, int targetPrice) async {
-  var store = StoreProvider.of<AppState>(context);
   var loc = PiggyLocalizations.of(context);
 
   return await showDialog<bool>(

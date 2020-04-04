@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:piggybanx/services/chore.firebase.dart';
+import 'package:piggycare/services/chore.firebase.dart';
 
 import 'firebase.implementations.dart/implementations.export.dart';
 

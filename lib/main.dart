@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/localization/localizations.delegate.dart';
-import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/user/user.model.dart';
-import 'package:piggybanx/screens/login.screen.dart';
-import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/screens/piggyTryOut.dart';
-import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggycare/localization/localizations.delegate.dart';
+import 'package:piggycare/models/registration/registration.model.dart';
+import 'package:piggycare/models/user/user.model.dart';
+import 'package:piggycare/screens/after.startup.dart';
+import 'package:piggycare/screens/login.screen.dart';
+import 'package:piggycare/screens/main.screen.dart';
+import 'package:piggycare/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
-import 'package:piggybanx/models/store.reducer.dart';
+import 'package:piggycare/models/store.reducer.dart';
 
 import 'enums/period.dart';
 import 'firebase/locator.dart';
@@ -48,8 +48,8 @@ class PiggyApp extends StatelessWidget {
   };
 
   ///Themes colors
-  final primaryColor = Color(0xffe25979);
-  final primaryDark = Color(0xffb1264c);
+  final primaryColor = Color(0xff099ECC);
+  final primaryDark = Color(0xff099ECC);
 
   ///Redux states init
   static final registrationState =
@@ -99,7 +99,7 @@ class PiggyApp extends StatelessWidget {
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Color(0xffd2576b),
+            backgroundColor: primaryColor,
             textTheme: TextTheme(
               headline4: TextStyle(
                   color: primaryColor,
@@ -124,7 +124,7 @@ class PiggyApp extends StatelessWidget {
             ),
           ),
           routes: {
-            'tryOut': (context) => PiggyTestPage(),
+            'tryOut': (context) => PiggyAfterStartupScreen(),
             'home': (context) => MainPage(),
             'register': (context) => FirstRegisterPage(),
             'login': (context) => LoginPage()

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PiggyFeedWidget extends StatefulWidget {

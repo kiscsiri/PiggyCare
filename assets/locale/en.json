@@ -1,5 +1,5 @@
 {
-  "welcome": "Welcome to PiggyBanx!",
+  "welcome": "Welcome to PiggyCare!",
   "saving_fun": "Saving made fun!",
   "3_easy_steps": "Register with 3 easy steps!",
   "register_saving_for": "First tell Piggy what you are saving for...",
@@ -95,7 +95,7 @@
   "terms_use": "Terms of Use!",
   "logout": "Logout",
   "selector_title": "Change PiggyBank",
-  "selector_explanation":"Choose which PiggyBank you want to put money in!",
+  "selector_explanation": "Choose which PiggyBank you want to put money in!",
   "selector_lets_see": "LET'S SEE!",
   "change_box": "Change money box >",
   "what_do_you_saving": "What do you saving for?",
@@ -106,5 +106,10 @@
   "how_much_per_feed_question": "How much oney do you want to spend on feeding?",
   "yes": "Yes",
   "no": "No",
-  "friend_accepted" : " has accepted your friend request!"
+  "friend_accepted": " has accepted your friend request!",
+  "sure": "Sure",
+  "no_finished_task": "There is no finished task, yet! :(",
+  "choose_task": "Choose a task!",
+  "business": "Business",
+  "donator": "Donator"
 }

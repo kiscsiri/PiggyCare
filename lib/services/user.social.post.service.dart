@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/helpers/pagination.helper.dart';
-import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggycare/helpers/pagination.helper.dart';
+import 'package:piggycare/models/post/user.post.dart';
 
 class UserPostService {
   static Future<UserPost> createUserPiggyPost(UserPost post) async {

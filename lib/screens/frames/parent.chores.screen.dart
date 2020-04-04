@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/screens/child.chores.details.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/screens/child.chores.details.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:redux/redux.dart';
 
 class ParentChoresPage extends StatefulWidget {
@@ -79,8 +77,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
               children: <Widget>[
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
-                  decoration:
-                      piggyBackgroundDecoration(context, UserType.adult),
+                  decoration: piggyBackgroundDecoration(context),
                 ),
               ],
             ),

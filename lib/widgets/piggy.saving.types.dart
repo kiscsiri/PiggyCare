@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/screens/saving.details.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/screens/saving.details.dart';
 import 'package:redux/redux.dart';
 
 import 'piggy.saving.type.input.dart';
 
-class SavingForWidget extends StatefulWidget {
-  const SavingForWidget({Key key, this.savingPerFeed}) : super(key: key);
+class SavingForListWidget extends StatefulWidget {
+  const SavingForListWidget({Key key, this.savingPerFeed}) : super(key: key);
 
   final int savingPerFeed;
   @override
   _SavingForWidgetState createState() => _SavingForWidgetState();
 }
 
-class _SavingForWidgetState extends State<SavingForWidget> {
+class _SavingForWidgetState extends State<SavingForListWidget> {
   int selectedIndex;
   var savingTypeList = List<SavingTypeInput>();
 

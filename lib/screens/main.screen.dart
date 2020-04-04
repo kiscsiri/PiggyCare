@@ -5,24 +5,24 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/navigation.redux.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/screens/frames/child.chores.screen.dart';
-import 'package:piggybanx/screens/frames/child.savings.dart';
-import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
-import 'package:piggybanx/screens/frames/piggy.screen.dart';
-import 'package:piggybanx/screens/frames/social.screen.dart';
-import 'package:piggybanx/screens/friend.requests.dart';
-import 'package:piggybanx/screens/search.user.dart';
-import 'package:piggybanx/screens/startup.screen.dart';
-import 'package:piggybanx/services/notification.handler.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/widgets/exit.dialog.dart';
-import 'package:piggybanx/widgets/piggy.navigationBar.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/navigation.redux.dart';
+import 'package:piggycare/models/user/user.actions.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/screens/frames/child.chores.screen.dart';
+import 'package:piggycare/screens/frames/child.savings.dart';
+import 'package:piggycare/screens/frames/parent.chores.screen.dart';
+import 'package:piggycare/screens/frames/piggy.screen.dart';
+import 'package:piggycare/screens/frames/social.screen.dart';
+import 'package:piggycare/screens/friend.requests.dart';
+import 'package:piggycare/screens/search.user.dart';
+import 'package:piggycare/screens/startup.screen.dart';
+import 'package:piggycare/services/notification.handler.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/widgets/exit.dialog.dart';
+import 'package:piggycare/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 
 class MainPage extends StatefulWidget {
@@ -82,8 +82,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       ChildSavingScreen(
         initFeedPerPeriod: store.state.user.feedPerPeriod,
       ),
-      if (store.state.user.userType != UserType.individual)
-        store.state.user.userType == UserType.child
+      if (store.state.user.userType != UserType.business)
+        store.state.user.userType == UserType.donator
             ? ChildChoresPage()
             : ParentChoresPage(),
       PiggySocial()
@@ -106,7 +106,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text("PiggyBanx"),
+            title: Text("PiggyCare"),
           ),
           resizeToAvoidBottomInset: false,
           endDrawer: Drawer(
@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  if (store.state.user.userType == UserType.child)
+                  if (store.state.user.userType == UserType.donator)
                     ListTile(
                       title: Text(loc.trans('add_parent')),
                       onTap: () async {
@@ -152,7 +152,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       )));
                       },
                     ),
-                  if (store.state.user.userType == UserType.adult)
+                  if (store.state.user.userType == UserType.business)
                     ListTile(
                       title: Text(loc.trans('add_child')),
                       onTap: () async {

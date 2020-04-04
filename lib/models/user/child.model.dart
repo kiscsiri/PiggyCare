@@ -1,4 +1,4 @@
-import 'package:piggybanx/models/chore/chore.model.dart';
+import 'package:piggycare/models/chore/chore.model.dart';
 
 import 'user.model.dart';
 

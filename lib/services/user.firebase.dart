@@ -1,6 +1,6 @@
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/models/post/user.post.dart';
-import 'package:piggybanx/services/user.social.post.service.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/models/post/user.post.dart';
+import 'package:piggycare/services/user.social.post.service.dart';
 
 import '../models/user/user.export.dart';
 

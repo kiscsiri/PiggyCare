@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/registration/registration.export.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/registration/registration.export.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
 
 import 'notification.services.dart';
 
@@ -73,7 +73,7 @@ class AuthenticationService {
         NotificationServices.updateToken(
             val, user.uid, Platform.isAndroid ? "android" : "ios");
 
-        if (u.userType == UserType.adult) {
+        if (u.userType == UserType.business) {
           var children = await Firestore.instance
               .collection('users')
               .where("parentId", isEqualTo: user.uid)

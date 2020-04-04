@@ -1,5 +1,5 @@
-import 'package:piggybanx/enums/period.dart';
-import 'package:piggybanx/models/SavingSchedule.dart';
+import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/models/SavingSchedule.dart';
 import 'dart:core';
 
 class ScheduleGenerator {

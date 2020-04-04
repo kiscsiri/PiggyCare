@@ -1,4 +1,4 @@
-package com.piggybanx;
+package com.piggycare;
 
 import io.flutter.app.FlutterApplication;
  import io.flutter.plugin.common.PluginRegistry;

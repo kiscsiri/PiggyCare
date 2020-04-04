@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:piggybanx/helpers/pagination.helper.dart';
-import 'package:piggybanx/models/post/user.post.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/widgets/piggy.post.dart';
-import 'package:piggybanx/widgets/top.navigation.item.dart';
-import 'package:piggybanx/services/user.social.post.service.dart';
+import 'package:piggycare/helpers/pagination.helper.dart';
+import 'package:piggycare/models/post/user.post.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/widgets/piggy.post.dart';
+import 'package:piggycare/widgets/top.navigation.item.dart';
+import 'package:piggycare/services/user.social.post.service.dart';
 
 class PiggySocial extends StatefulWidget {
   @override

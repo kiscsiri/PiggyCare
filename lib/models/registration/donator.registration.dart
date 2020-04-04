@@ -1,32 +1,27 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
-import 'package:piggycare/models/registration/registration.actions.dart';
+import 'package:piggycare/models/registration/registration.export.dart';
 import 'package:piggycare/screens/main.screen.dart';
 import 'package:piggycare/services/authentication-service.dart';
 import 'package:piggycare/services/piggy.page.services.dart';
 import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:redux/redux.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+class DonatorRegistrationScreen extends StatefulWidget {
+  DonatorRegistrationScreen({Key key}) : super(key: key);
 
-class LastPage extends StatefulWidget {
-  LastPage({Key key, @required this.initUserName, @required this.initEmail})
-      : super(key: key);
-
-  final String initUserName;
-  final String initEmail;
   @override
-  _RegisterPageState createState() => new _RegisterPageState();
+  _DonatorRegistrationScreenState createState() =>
+      _DonatorRegistrationScreenState();
 }
 
-class _RegisterPageState extends State<LastPage> {
+class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
   String _message = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String verificationId;
 
@@ -34,6 +29,7 @@ class _RegisterPageState extends State<LastPage> {
 
   final focusEmail = FocusNode();
   final focusPassword = FocusNode();
+  final focusUserName = FocusNode();
 
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -41,9 +37,6 @@ class _RegisterPageState extends State<LastPage> {
 
   @override
   void initState() {
-    _userNameController.text = widget.initUserName;
-    _emailController.text = widget.initEmail;
-
     super.initState();
   }
 
@@ -110,9 +103,30 @@ class _RegisterPageState extends State<LastPage> {
               ),
               PiggyInput(
                 inputIcon: FontAwesomeIcons.user,
+                hintText: loc.trans("full_name"),
+                textController: _userNameController,
+                textInputAction: TextInputAction.go,
+                onSubmit: (val) async {
+                  FocusScope.of(context).requestFocus(focusUserName);
+                  return "";
+                },
+                width: MediaQuery.of(context).size.width * 0.7,
+                onValidate: (value) {
+                  if (value.isEmpty) {
+                    return loc.trans("required_field");
+                  }
+                  return null;
+                },
+                onErrorMessage: (error) {
+                  setState(() {});
+                },
+              ),
+              PiggyInput(
+                inputIcon: FontAwesomeIcons.user,
                 hintText: loc.trans("user_name"),
                 textController: _userNameController,
                 textInputAction: TextInputAction.go,
+                focusNode: focusUserName,
                 onSubmit: (val) async {
                   FocusScope.of(context).requestFocus(focusEmail);
                   return "";
@@ -184,10 +198,19 @@ class _RegisterPageState extends State<LastPage> {
                     }
                   }),
               Text(loc.trans('or_register_somehow')),
-              PiggyGoogleButton(
-                text: "Google",
-                onClick: () async => signInAndRegisterGoogle(store),
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  PiggyFacebookButton(
+                    text: "Facebook",
+                    onClick: () async => null,
+                  ),
+                  PiggyGoogleButton(
+                    text: "Google",
+                    onClick: () async => signInAndRegisterGoogle(store),
+                  ),
+                ],
+              )
             ]));
     return new Scaffold(
         appBar: new AppBar(

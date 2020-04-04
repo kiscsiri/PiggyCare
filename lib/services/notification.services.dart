@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
-import 'package:piggybanx/enums/period.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
+import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
 
 class NotificationServices {
   //Debug

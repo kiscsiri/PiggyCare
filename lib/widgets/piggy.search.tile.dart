@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/notification.modals.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/services/user.services.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/notification.modals.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/services/user.services.dart';
 
 class SearchTile extends StatelessWidget {
   const SearchTile({Key key, @required this.user, this.currentUserId})

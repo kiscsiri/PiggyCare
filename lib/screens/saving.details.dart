@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.slider.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 class SavingDetails extends StatefulWidget {
   const SavingDetails({Key key, this.piggy}) : super(key: key);
@@ -34,7 +30,7 @@ class _SavingDetailsState extends State<SavingDetails> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.piggy.item)),
       body: Container(
-        decoration: coinBackground(context, UserType.adult),
+        decoration: coinBackground(context),
         height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

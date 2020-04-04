@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/notification.modals.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/user.services.dart';
-import 'package:piggybanx/widgets/chores.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/notification.modals.dart';
+import 'package:piggycare/services/notification.services.dart';
+import 'package:piggycare/services/user.services.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 class ChildChoresPage extends StatefulWidget {
   ChildChoresPage({Key key}) : super(key: key);
@@ -74,7 +71,7 @@ class _ChoresPageState extends State<ChildChoresPage> {
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
-              decoration: piggyBackgroundDecoration(context, UserType.adult),
+              decoration: piggyBackgroundDecoration(context),
             ),
           ],
         ),

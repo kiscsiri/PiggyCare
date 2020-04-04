@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/services/authentication-service.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/services/authentication-service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartupPage extends StatefulWidget {
@@ -79,7 +79,7 @@ class _StartupPageState extends State<StartupPage>
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)),
-                      new Text("Banx",
+                      new Text("Care",
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w200,

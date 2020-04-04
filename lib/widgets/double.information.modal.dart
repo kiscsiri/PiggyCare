@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
+import 'package:piggycare/widgets/piggy.modal.widget.dart';
 
 import 'piggy.button.dart';
 

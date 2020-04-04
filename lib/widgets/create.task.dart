@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/chore/chore.export.dart';
-import 'package:piggybanx/screens/child.chores.details.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/services.export.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/chore/chore.export.dart';
+import 'package:piggycare/screens/child.chores.details.dart';
+import 'package:piggycare/services/notification.services.dart';
+import 'package:piggycare/services/services.export.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
+import 'package:piggycare/widgets/piggy.input.dart';
+import 'package:piggycare/widgets/piggy.modal.widget.dart';
 import 'package:redux/redux.dart';
 
 class CreateTaskWidget extends StatefulWidget {

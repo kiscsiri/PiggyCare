@@ -1,4 +1,4 @@
-import 'package:piggybanx/models/chore/choreType.enum.dart';
+import 'package:piggycare/models/chore/choreType.enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'chore.model.g.dart';

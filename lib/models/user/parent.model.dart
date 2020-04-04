@@ -1,4 +1,4 @@
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggycare/models/user/user.model.dart';
 
 class Parent extends UserData {
   Parent.fromParent(Parent another) {

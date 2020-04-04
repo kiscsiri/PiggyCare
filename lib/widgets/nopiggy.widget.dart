@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
 
 class NoPiggyWidget extends StatefulWidget {
   NoPiggyWidget({Key key, this.navigateToCreateWidget, @required this.type})
@@ -45,7 +45,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
             Container(
               width: MediaQuery.of(context).size.width * 1.2,
               height: MediaQuery.of(context).size.height * 0.25,
-              child: widget.type == UserType.child
+              child: widget.type == UserType.donator
                   ? Image.asset('assets/images/create_child.png')
                   : Image.asset('assets/images/adult_create.png'),
             ),

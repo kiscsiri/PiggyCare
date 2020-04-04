@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
 
 Future<bool> showExitModal(BuildContext context) async {
   return await showDialog<bool>(

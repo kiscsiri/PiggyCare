@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
+import 'package:piggycare/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
-import 'package:piggybanx/screens/search.user.dart';
+import 'package:piggycare/screens/search.user.dart';
 import 'piggy.modal.widget.dart';
 import 'piggy.slider.dart';
 

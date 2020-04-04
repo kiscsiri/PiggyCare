@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/period.dart';
-import 'package:piggybanx/helpers/InputFormatters.dart';
-import 'package:piggybanx/helpers/SavingScheduleGenerator.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
+import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/helpers/InputFormatters.dart';
+import 'package:piggycare/helpers/SavingScheduleGenerator.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/registration/registration.actions.dart';
+import 'package:piggycare/screens/main.screen.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 import 'register.screen.dart';
 
+@deprecated
 class ThirdRegisterPage extends StatefulWidget {
   ThirdRegisterPage({Key key}) : super(key: key);
   @override
   _ThirdRegisterPageState createState() => new _ThirdRegisterPageState();
 }
 
+@deprecated
 class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
   TextEditingController textEditingController = new TextEditingController();
   final _priceFormKey = GlobalKey<FormState>();
@@ -217,8 +217,7 @@ class _ThirdRegisterPageState extends State<ThirdRegisterPage> {
       body: Form(
         key: _priceFormKey,
         child: Container(
-          decoration: piggyBackgroundDecoration(
-              context, store.state.registrationData.userType),
+          decoration: piggyBackgroundDecoration(context),
           child: new Center(
             child: new ListView(
               children: <Widget>[

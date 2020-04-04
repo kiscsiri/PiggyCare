@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:piggybanx/enums/level.dart';
+import 'package:piggycare/enums/level.dart';
 
 part 'piggy.model.g.dart';
 

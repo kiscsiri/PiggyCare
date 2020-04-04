@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggycare/models/user/user.export.dart';
 
 class PiggyPost extends StatefulWidget {
   const PiggyPost({Key key, @required this.post}) : super(key: key);

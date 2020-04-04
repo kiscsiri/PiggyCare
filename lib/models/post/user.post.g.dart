@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggycare/models/post/user.post.dart';
 
 UserPost $UserPostFromJson(DocumentSnapshot json) {
   return UserPost(

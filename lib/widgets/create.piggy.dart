@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/piggy.firebase.services.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/registration/registration.actions.dart';
+import 'package:piggycare/services/notification.services.dart';
+import 'package:piggycare/services/piggy.firebase.services.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
+import 'package:piggycare/widgets/piggy.input.dart';
+import 'package:piggycare/widgets/piggy.modal.widget.dart';
 import 'package:redux/redux.dart';
 
 import 'piggy.slider.dart';
@@ -40,7 +40,8 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
           piggy: Piggy(
         currentSaving: 0,
         doubleUp: false,
-        isApproved: store.state.user.userType == UserType.adult ? true : false,
+        isApproved:
+            store.state.user.userType == UserType.business ? true : false,
         isFeedAvailable: true,
         item: controller.text,
         userId: widget.childId ?? store.state.user.id,
@@ -56,7 +57,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
 
       await PiggyServices.createPiggyForUser(
           action.piggy, widget.childId ?? store.state.user.id);
-      if (store.state.user.userType == UserType.child) {
+      if (store.state.user.userType == UserType.business) {
         await NotificationServices.sendChildNewPiggy(context, action.piggy);
       }
 

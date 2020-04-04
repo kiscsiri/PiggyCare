@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/user.services.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
-import 'package:piggybanx/widgets/search.tile.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/user.services.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 class UserSearchScreen extends StatefulWidget {
   const UserSearchScreen(
@@ -52,7 +50,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height * 0.7,
-                decoration: piggyBackgroundDecoration(context, UserType.adult),
+                decoration: piggyBackgroundDecoration(context),
               ),
             ],
           ),

@@ -1,50 +1,43 @@
 {
   "project_info": {
-    "project_number": "856214861570",
-    "firebase_url": "https://piggybanx-c2e75.firebaseio.com",
-    "project_id": "piggybanx-c2e75",
-    "storage_bucket": "piggybanx-c2e75.appspot.com"
+    "project_number": "779093659263",
+    "firebase_url": "https://piggycare-202d0.firebaseio.com",
+    "project_id": "piggycare-202d0",
+    "storage_bucket": "piggycare-202d0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:856214861570:android:dc266f05a732a62cd2b41b",
+        "mobilesdk_app_id": "1:779093659263:android:a6b0c85c1726eeaeb4f94a",
         "android_client_info": {
-          "package_name": "com.piggybanx"
+          "package_name": "com.piggycare"
         }
       },
       "oauth_client": [
         {
-          "client_id": "856214861570-utnl1dt28o5si1lpvcnmeklmk94fca2i.apps.googleusercontent.com",
+          "client_id": "779093659263-b3f666b68pq2grpmq5ehtj9siq87m3f2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.piggybanx",
-            "certificate_hash": "3b164ab752cd731707e96980a48850d85409865e"
+            "package_name": "com.piggycare",
+            "certificate_hash": "fbbfe3768f08612f171e4a1d61204719f7d15c54"
           }
         },
         {
-          "client_id": "856214861570-t7ki2gghft3rtd2uaq70vcom57fn6q9u.apps.googleusercontent.com",
+          "client_id": "779093659263-qcm0aarcgjn84itgg1ptjdfdspom0uvv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCfI77PeiMrJmam1Pu86gU3lmCe7xRj0jM"
+          "current_key": "AIzaSyD-dV7e7CNWtByxA-O5mPKYU6zka_A3gA0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "856214861570-t7ki2gghft3rtd2uaq70vcom57fn6q9u.apps.googleusercontent.com",
+              "client_id": "779093659263-qcm0aarcgjn84itgg1ptjdfdspom0uvv.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "856214861570-bdrshh637hj9ncoel1e544c107b5gdhr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "comexample.piggybanx"
-              }
             }
           ]
         }

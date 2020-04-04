@@ -1,5 +1,5 @@
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/SavingSchedule.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/SavingSchedule.dart';
 
 class RegistrationData {
   String phoneNumber;

@@ -1,4 +1,4 @@
-import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggycare/localization/Localizations.dart';
 
 enum Period { demo, daily, weely, monthly }
 

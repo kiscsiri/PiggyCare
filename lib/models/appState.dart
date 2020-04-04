@@ -1,5 +1,5 @@
-import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggycare/models/registration/registration.model.dart';
+import 'package:piggycare/models/user/user.model.dart';
 
 import 'piggy/piggy.export.dart';
 

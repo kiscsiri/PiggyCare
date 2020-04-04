@@ -57,7 +57,7 @@ android {
         }
 
     defaultConfig {
-        applicationId "com.piggybanx"
+        applicationId "com.piggycare"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()

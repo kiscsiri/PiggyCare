@@ -1,8 +1,8 @@
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/user/user.actions.dart';
+import 'package:piggycare/models/user/user.model.dart';
 
 import '../appState.dart';
 
@@ -110,10 +110,10 @@ AppState incrementCoins(AppState state, IncrementCoins action) {
 }
 
 AppState addChildToUser(AppState state, AddFamily action) {
-  if (state.user.userType == UserType.adult) {
+  if (state.user.userType == UserType.business) {
     if (!state.user.children.any((element) => element.id == action.user.id))
       state.user.children.add(action.user);
-  } else if (state.user.userType == UserType.child) {
+  } else if (state.user.userType == UserType.donator) {
     state.user.parentId = action.user.id;
   }
 
@@ -122,7 +122,7 @@ AppState addChildToUser(AppState state, AddFamily action) {
 }
 
 AppState validatePiggy(AppState state, ValidatePiggy action) {
-  if (state.user.userType == UserType.adult) {
+  if (state.user.userType == UserType.business) {
     var child = state.user.children
         .singleWhere((element) => element.id == action.childId, orElse: null);
     if (child == null) throw Exception("Nem található gyerek");
@@ -133,7 +133,7 @@ AppState validatePiggy(AppState state, ValidatePiggy action) {
 
     if (piggy == null) throw Exception("Nem található persely");
     piggy.isApproved = true;
-  } else if (state.user.userType == UserType.child) {
+  } else if (state.user.userType == UserType.donator) {
     var piggy = state.user.piggies
         .singleWhere((element) => element.id == action.piggyId);
     piggy.isApproved = true;

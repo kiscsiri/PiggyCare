@@ -1,6 +1,6 @@
 {
   "welcome": "Üdvözöllek!",
-  "saving_fun": "PiggyBanx - Saving made fun!",
+  "saving_fun": "PiggyCare - Saving made fun!",
   "3_easy_steps": "Regisztrálj 3 könnyű lépéssel!",
   "register_saving_for": "Elsőnek mond el Piggynek, mire spórolsz...",
   "your_wish_hint": "A vágyad...",
@@ -135,5 +135,13 @@
   "friend_accepted": " elfogadta az ismerős felkérésed!",
   "sure": "Rendben",
   "no_finished_task": "Nincs még befejezett feladatod! :(",
-  "choose_task": "Válassz feladatot!"
+  "choose_task": "Válassz feladatot!",
+  "business": "Vállalkozás",
+  "donator": "Adományozó",
+  "full_name": "Teljes név",
+  "business_name": "Cégnév",
+  "business_number": "Cégjegyzék szám",
+  "tax_number": "Adószám",
+  "business_operation_place": "Működési helyszín",
+  "use_headquarters_address": "Székhely cím használata"
 }

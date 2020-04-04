@@ -3,21 +3,20 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/chore/chore.action.dart';
-import 'package:piggybanx/models/chore/chore.export.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/user/user.actions.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/screens/child.chores.details.dart';
-import 'package:piggybanx/screens/friend.requests.dart';
-import 'package:piggybanx/services/chore.firebase.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/piggy.firebase.services.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/services/notification.modals.dart';
-import 'package:piggybanx/services/user.services.dart';
+import 'package:piggycare/models/chore/chore.action.dart';
+import 'package:piggycare/models/chore/chore.export.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/user/user.actions.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/screens/child.chores.details.dart';
+import 'package:piggycare/screens/friend.requests.dart';
+import 'package:piggycare/services/chore.firebase.dart';
+import 'package:piggycare/services/notification.services.dart';
+import 'package:piggycare/services/piggy.firebase.services.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/services/notification.modals.dart';
+import 'package:piggycare/services/user.services.dart';
 
 _navigate(int index, PageController _pageController) {
   _pageController.animateToPage(index,
@@ -27,7 +26,6 @@ _navigate(int index, PageController _pageController) {
 Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
     BuildContext context, PageController _pageController) async {
   var store = StoreProvider.of<AppState>(context);
-  var user = store.state.user;
   if (message.containsKey('data')) {
     final dynamic data = message['data'];
     switch (data['modalType']) {

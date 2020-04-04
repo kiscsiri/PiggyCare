@@ -1,6 +1,6 @@
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.action.dart';
-import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.action.dart';
+import 'package:piggycare/models/user/user.export.dart';
 
 AppState addPiggy(AppState state, AddNewPiggy action) {
   return AppState.fromAppState(state);

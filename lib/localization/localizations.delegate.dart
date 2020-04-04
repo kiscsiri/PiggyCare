@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggycare/localization/Localizations.dart';
 
 class PiggyLocalizationsDelegate
     extends LocalizationsDelegate<PiggyLocalizations> {

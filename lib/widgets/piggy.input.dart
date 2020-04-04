@@ -57,7 +57,6 @@ class _PiggyInputState extends State<PiggyInput> {
   @override
   void dispose() {
     super.dispose();
-    widget.focusNode?.dispose();
   }
 
   @override

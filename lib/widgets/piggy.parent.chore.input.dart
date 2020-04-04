@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/chore/chore.action.dart';
-import 'package:piggybanx/services/chore.firebase.dart';
-import 'package:piggybanx/services/notification.modals.dart';
-import 'package:piggybanx/services/notification.services.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/chore/chore.action.dart';
+import 'package:piggycare/services/chore.firebase.dart';
+import 'package:piggycare/services/notification.modals.dart';
+import 'package:piggycare/services/notification.services.dart';
 
 class ParentChoreInput extends StatefulWidget {
   const ParentChoreInput(

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/registration/registration.export.dart';
-import 'package:piggybanx/screens/register/register.screen.dart';
-import 'package:piggybanx/screens/register/second.screen.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/registration/business.registration.dart';
+import 'package:piggycare/models/registration/donator.registration.dart';
+import 'package:piggycare/models/registration/registration.export.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:redux/redux.dart';
 
 import '../../models/appState.dart';
@@ -26,38 +25,23 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
     store.dispatch(userTypeAction);
 
     switch (type) {
-      case UserType.individual:
+      case UserType.business:
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new LastPage(
-                      initEmail: store.state.registrationData.email,
-                      initUserName: store.state.registrationData.username,
-                    )));
+                builder: (context) => new BusinessRegistrationScreen()));
         break;
-      case UserType.adult:
+      case UserType.donator:
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new LastPage(
-                      initEmail: store.state.registrationData.email,
-                      initUserName: store.state.registrationData.username,
-                    )));
-        break;
-      case UserType.child:
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new LastPage(
-                      initEmail: store.state.registrationData.email,
-                      initUserName: store.state.registrationData.username,
-                    )));
+                builder: (context) => new DonatorRegistrationScreen()));
         break;
       default:
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage()));
+                builder: (context) => new DonatorRegistrationScreen()));
         break;
     }
   }
@@ -76,7 +60,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.5,
-                decoration: coinBackground(context, UserType.child),
+                decoration: coinBackground(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -88,9 +72,9 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
                           textAlign: TextAlign.center,
                         )),
                     PiggyButton(
-                      text: loc.trans('individual'),
+                      text: loc.trans('business'),
                       disabled: false,
-                      onClick: () => _register(UserType.individual, store),
+                      onClick: () => _register(UserType.business, store),
                     ),
                   ],
                 ),
@@ -98,19 +82,14 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.35,
-                decoration: coinBackground(context, UserType.child),
+                decoration: coinBackground(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     PiggyButton(
-                      text: loc.trans('adult'),
+                      text: loc.trans('donator'),
                       disabled: false,
-                      onClick: () => _register(UserType.adult, store),
-                    ),
-                    PiggyButton(
-                      text: loc.trans('child'),
-                      disabled: false,
-                      onClick: () => _register(UserType.child, store),
+                      onClick: () => _register(UserType.donator, store),
                     ),
                   ],
                 ),

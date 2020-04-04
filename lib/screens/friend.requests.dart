@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/notification.services.dart';
-import 'package:piggybanx/services/user.services.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/notification.services.dart';
+import 'package:piggycare/services/user.services.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 class FirendRequestsScreen extends StatefulWidget {
   const FirendRequestsScreen(
@@ -31,7 +31,7 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
     try {
       var senderUser = await UserServices.acceptRequest(
           fromId, widget.currentUserId, store.state.user.userType);
-      if (store.state.user.userType == UserType.child) {
+      if (store.state.user.userType == UserType.donator) {
         store.dispatch(AddFamily(UserData(id: senderUser)));
       } else {
         store.dispatch(AddFamily(senderUser));

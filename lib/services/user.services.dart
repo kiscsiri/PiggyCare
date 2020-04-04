@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/models/userRequest/user.request.dart';
-import 'package:piggybanx/services/notification.services.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/models/userRequest/user.request.dart';
+import 'package:piggycare/services/notification.services.dart';
 
 class UserServices {
   static Future<List<UserData>> getUsers(
       String searchString, UserType userType) async {
     var searchTypeParam =
-        userType == UserType.adult ? UserType.child : UserType.adult;
+        userType == UserType.business ? UserType.donator : UserType.business;
 
     var searchByName = await Firestore.instance
         .collection('users')
@@ -116,16 +116,17 @@ class UserServices {
       var data = await Firestore.instance
           .collection('users')
           .where('id',
-              isEqualTo: currentUserType == UserType.adult ? fromId : toId)
+              isEqualTo: currentUserType == UserType.business ? fromId : toId)
           .getDocuments();
 
       Firestore.instance
           .collection('users')
           .document(data.documents.first.documentID)
-          .updateData(
-              {'parentId': currentUserType == UserType.adult ? toId : fromId});
+          .updateData({
+        'parentId': currentUserType == UserType.business ? toId : fromId
+      });
 
-      return currentUserType == UserType.child
+      return currentUserType == UserType.donator
           ? fromId
           : UserData.fromFirebaseDocumentSnapshot(
               data.documents.first.data, data.documents.first.documentID);

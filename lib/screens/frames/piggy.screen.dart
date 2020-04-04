@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/widgets/kid.piggy.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/widgets/kid.piggy.dart';
 
 class PiggyPage extends StatefulWidget {
   PiggyPage({Key key, this.title}) : super(key: key);

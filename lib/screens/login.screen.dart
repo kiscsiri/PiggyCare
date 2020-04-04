@@ -5,16 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/screens/main.screen.dart';
-import 'package:piggybanx/services/authentication-service.dart';
-import 'package:piggybanx/widgets/facebook.button.dart';
-import 'package:piggybanx/widgets/google.button.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.input.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/screens/main.screen.dart';
+import 'package:piggycare/services/authentication-service.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:video_player/video_player.dart';
 
 import 'register/first.screen.dart';
@@ -254,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("PiggyBanx"),
+        title: new Text("PiggyCare"),
       ),
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -265,8 +260,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
-                  decoration:
-                      piggyBackgroundDecoration(context, UserType.adult),
+                  decoration: piggyBackgroundDecoration(context),
                 ),
               ],
             ),

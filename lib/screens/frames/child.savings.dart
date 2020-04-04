@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
-import 'package:piggybanx/widgets/child.savings.dart';
-import 'package:piggybanx/widgets/piggy.bacground.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
-import 'package:piggybanx/widgets/piggy.slider.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/widgets/piggy.saving.types.dart';
+import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
 class ChildSavingScreen extends StatefulWidget {
   ChildSavingScreen({Key key, @required this.initFeedPerPeriod})
@@ -91,7 +88,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                   ),
                 ],
               ),
-              ChildSavingsWidget(
+              SavingForListWidget(
                 savingPerFeed: store.user.feedPerPeriod,
               ),
               Column(
@@ -115,7 +112,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                    child: store.user.userType == UserType.child
+                    child: store.user.userType == UserType.donator
                         ? Container()
                         : PiggySlider(
                             maxMinTextTrailing: Text(

@@ -80,9 +80,8 @@ T _$enumDecode<T>(
 }
 
 const _$UserTypeEnumMap = {
-  UserType.adult: 'adult',
-  UserType.child: 'child',
-  UserType.individual: 'individual',
+  UserType.business: 'business',
+  UserType.donator: 'donator',
 };
 
 const $PeriodEnumMap = {

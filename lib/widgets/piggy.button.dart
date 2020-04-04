@@ -43,7 +43,7 @@ class PiggyButton extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: Text(
-                text,
+                text ?? "",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color:

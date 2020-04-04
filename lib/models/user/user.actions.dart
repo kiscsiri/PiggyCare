@@ -1,5 +1,5 @@
-import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/models/user/user.model.dart';
 
 class UserAction {}
 

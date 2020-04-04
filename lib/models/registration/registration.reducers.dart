@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/registration/registration.actions.dart';
-import 'package:piggybanx/models/registration/registration.model.dart';
-import 'package:piggybanx/models/user/user.model.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/registration/registration.actions.dart';
+import 'package:piggycare/models/registration/registration.model.dart';
+import 'package:piggycare/models/user/user.model.dart';
 
 AppState initRegistrationState(AppState state, InitRegistration action) {
   var newRegistration = new RegistrationData(
@@ -17,7 +17,7 @@ AppState initRegistrationState(AppState state, InitRegistration action) {
       uid: "",
       username: "",
       schedule: null,
-      userType: UserType.individual);
+      userType: UserType.donator);
 
   return new AppState(user: state.user, registrationData: newRegistration);
 }
@@ -40,7 +40,7 @@ AppState addItem(AppState state, AddPiggy action) {
     var newItems = state.user.piggies;
     var isApproved = false;
 
-    if (newUser.userType == UserType.adult)
+    if (newUser.userType == UserType.business)
       isApproved = true;
     else
       isApproved = false;

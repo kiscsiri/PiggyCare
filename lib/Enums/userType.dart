@@ -1,18 +1,15 @@
-enum UserType { adult, child, individual }
+enum UserType { business, donator }
 
 String userTypeDecode(UserType type) {
   switch (type) {
-    case UserType.adult:
-      return "adult";
+    case UserType.business:
+      return "business";
       break;
-    case UserType.child:
-      return "child";
-      break;
-    case UserType.individual:
-      return "individual";
+    case UserType.donator:
+      return "donator";
       break;
     default:
-      return "individual";
+      return "donator";
       break;
   }
 }

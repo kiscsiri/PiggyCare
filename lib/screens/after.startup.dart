@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
 
-class PiggyTestPage extends StatefulWidget {
-  PiggyTestPage({Key key}) : super(key: key);
+class PiggyAfterStartupScreen extends StatefulWidget {
+  PiggyAfterStartupScreen({Key key}) : super(key: key);
 
   @override
   _PiggyPageState createState() => new _PiggyPageState();
 }
 
-class _PiggyPageState extends State<PiggyTestPage>
+class _PiggyPageState extends State<PiggyAfterStartupScreen>
     with TickerProviderStateMixin {
-  BehaviorSubject<bool> willAcceptStream;
-
-  AnimationController _animationController;
-
   int counter = 0;
   bool isOnTarget = false;
   bool _isDisabled = true;
@@ -23,18 +18,11 @@ class _PiggyPageState extends State<PiggyTestPage>
 
   @override
   void initState() {
-    _animationController =
-        AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _animationController.forward();
-
-    willAcceptStream = new BehaviorSubject<bool>();
-    willAcceptStream.add(false);
     super.initState();
   }
 
   @override
   void dispose() async {
-    _animationController.dispose();
     super.dispose();
   }
 
@@ -50,7 +38,6 @@ class _PiggyPageState extends State<PiggyTestPage>
         ),
         body: new Container(
             width: MediaQuery.of(context).size.width,
-            color: Color(0xFFcb435b),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: new Column(
@@ -69,12 +56,16 @@ class _PiggyPageState extends State<PiggyTestPage>
                           Text(
                             loc.trans('welcome'),
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 20),
                           ),
                           Text(
                             loc.trans('saving_fun'),
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 20),
                           )
                         ],
                       ),

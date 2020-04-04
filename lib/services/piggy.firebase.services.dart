@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/post/user.post.dart';
-import 'package:piggybanx/models/user/user.export.dart';
-import 'package:piggybanx/services/user.social.post.service.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/post/user.post.dart';
+import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/services/user.social.post.service.dart';
 
 class PiggyServices {
   static Future<void> createPiggyForUser(Piggy piggy, String userId) async {

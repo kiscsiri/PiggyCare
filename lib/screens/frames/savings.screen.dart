@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
+import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/widgets/piggy.button.dart';
 
 class SavingsPage extends StatefulWidget {
   SavingsPage({Key key, this.title, this.pageController}) : super(key: key);

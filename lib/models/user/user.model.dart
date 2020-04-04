@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/period.dart';
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/chore/chore.export.dart';
-import 'package:piggybanx/models/piggy/piggy.export.dart';
-import 'package:piggybanx/models/registration/registration.model.dart';
+import 'package:piggycare/enums/level.dart';
+import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/chore/chore.export.dart';
+import 'package:piggycare/models/piggy/piggy.export.dart';
+import 'package:piggycare/models/registration/registration.model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.model.g.dart';
@@ -14,7 +14,7 @@ class UserData {
   String id;
   String documentId;
   int saving;
-  UserType userType = UserType.individual;
+  UserType userType = UserType.donator;
   Period period;
   int feedPerPeriod;
   PiggyLevel piggyLevel;
@@ -142,7 +142,7 @@ class UserData {
       {this.id,
       this.documentId,
       this.saving,
-      this.userType = UserType.individual,
+      this.userType = UserType.donator,
       this.feedPerPeriod,
       this.period = Period.daily,
       List<Piggy> piggies,

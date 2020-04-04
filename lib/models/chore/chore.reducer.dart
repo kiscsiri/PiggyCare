@@ -1,11 +1,11 @@
-import 'package:piggybanx/enums/userType.dart';
-import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/models/chore/chore.action.dart';
-import 'package:piggybanx/models/user/parent.model.dart';
+import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/models/appState.dart';
+import 'package:piggycare/models/chore/chore.action.dart';
+import 'package:piggycare/models/user/parent.model.dart';
 
 AppState addChore(AppState state, AddChore action) {
   var user = state.user;
-  if (user.userType == UserType.adult) {
+  if (user.userType == UserType.business) {
     var child = user.children.singleWhere((d) => d.id == action.chore.childId);
     child.chores.add(action.chore);
   }
@@ -36,7 +36,7 @@ AppState removeChore(AppState state, RemoveChore action) {
 
 AppState finishChore(AppState state, FinishChore action) {
   var user = state.user;
-  if (user.userType == UserType.child) {
+  if (user.userType == UserType.donator) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
     chore.isDone = true;
   }
@@ -47,7 +47,7 @@ AppState finishChore(AppState state, FinishChore action) {
 
 AppState validateChore(AppState state, AcceptChore action) {
   var user = state.user;
-  if (user.userType == UserType.child) {
+  if (user.userType == UserType.donator) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
 
     user.numberOfCoins = user.numberOfCoins != null ? user.numberOfCoins++ : 1;
@@ -62,7 +62,7 @@ AppState validateChore(AppState state, AcceptChore action) {
 
 AppState refuseChore(AppState state, RefuseChore action) {
   var user = state.user;
-  if (user.userType == UserType.child) {
+  if (user.userType == UserType.donator) {
     var chore = user.chores.singleWhere((d) => d.id == action.choreId);
 
     chore.isDone = false;
@@ -75,7 +75,7 @@ AppState refuseChore(AppState state, RefuseChore action) {
 
 AppState validateChildChore(AppState state, ValidateChoreParent action) {
   var user = state.user;
-  if (user.userType == UserType.adult) {
+  if (user.userType == UserType.business) {
     var chore = user.children
         .singleWhere((d) => d.id == action.childId, orElse: null)
         ?.chores
@@ -95,7 +95,7 @@ AppState validateChildChore(AppState state, ValidateChoreParent action) {
 
 AppState finishChildChore(AppState state, FinishChoreParent action) {
   var user = state.user;
-  if (user.userType == UserType.adult) {
+  if (user.userType == UserType.business) {
     var chore = user.children
         .singleWhere((d) => d.id == action.childId, orElse: null)
         ?.chores
