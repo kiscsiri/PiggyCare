@@ -30,38 +30,38 @@ class _ChoresWidgetState extends State<ChoresWidget> {
         converter: (store) => store.state,
         builder: (context, vm) {
           int i = 0;
-          savingTypeList =
-              user.chores.where((c) => !c.isValidated).take(3).map((p) {
-            i++;
-            return ChoreInput(
-              index: i,
-              isDone: p.isDone,
-              taskId: p.id,
-              name: p.title,
-              selectIndex: (i) => p.isDone ? null : _selectItem(i),
-              parentId: store.state.user.parentId,
-              userId: store.state.user.documentId,
-            );
-          }).toList();
+          // savingTypeList =
+          //     user.chores.where((c) => !c.isValidated).take(3).map((p) {
+          //   i++;
+          //   return ChoreInput(
+          //     index: i,
+          //     isDone: p.isDone,
+          //     taskId: p.id,
+          //     name: p.title,
+          //     selectIndex: (i) => p.isDone ? null : _selectItem(i),
+          //     parentId: store.state.user.parentId,
+          //     userId: store.state.user.documentId,
+          //   );
+          // }).toList();
 
-          if (selectedIndex != null) {
-            savingTypeList = savingTypeList.map((f) {
-              if (f.index == selectedIndex) {
-                return ChoreInput(
-                  taskId: f.taskId,
-                  index: f.index,
-                  isDone: f.isDone,
-                  selected: true,
-                  name: '${f.name}',
-                  selectIndex: (i) => f.isDone ? null : _selectItem(i),
-                  parentId: store.state.user.parentId,
-                  userId: store.state.user.documentId,
-                );
-              } else {
-                return f;
-              }
-            }).toList();
-          }
+          // if (selectedIndex != null) {
+          //   savingTypeList = savingTypeList.map((f) {
+          //     if (f.index == selectedIndex) {
+          //       return ChoreInput(
+          //         taskId: f.taskId,
+          //         index: f.index,
+          //         isDone: f.isDone,
+          //         selected: true,
+          //         name: '${f.name}',
+          //         selectIndex: (i) => f.isDone ? null : _selectItem(i),
+          //         parentId: store.state.user.parentId,
+          //         userId: store.state.user.documentId,
+          //       );
+          //     } else {
+          //       return f;
+          //     }
+          //   }).toList();
+          // }
 
           return Container(
             width: MediaQuery.of(context).size.width * 0.8,

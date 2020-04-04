@@ -61,7 +61,6 @@ class PiggyApp extends StatelessWidget {
       lastFeed: DateTime.now(),
       money: 0,
       period: Period.demo,
-      phoneNumber: "",
       saving: 0);
 
   final store = Store<AppState>(applicationReducer,

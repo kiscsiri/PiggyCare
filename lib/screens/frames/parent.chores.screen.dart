@@ -23,39 +23,39 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
     setState(() {
       selectedId = id;
     });
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ChildDetailsWidget(
-              documentId: selectedId.toString(),
-              initChildren: store.state.user.children,
-            )));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => ChildDetailsWidget(
+    //           documentId: selectedId.toString(),
+    //           initChildren: store.state.user.children,
+    //         )));
   }
 
   Widget getGyerekMegtakaritasok(BuildContext context) {
-    var loc = PiggyLocalizations.of(context);
-    var store = StoreProvider.of<AppState>(context);
-    var children = store.state.user.children;
-    var gyerekLista = List.generate(
-        children.length,
-        (int i) => PiggyButton(
-              text: (children[i].name ?? children[i].email) +
-                  " ${loc.trans('his_savings')}",
-              onClick: () => _navigateToChild(children[i].documentId),
-              color: Colors.white,
-            ));
-    if (gyerekLista.length != 0) {
-      return Column(
-        children: gyerekLista,
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          loc.trans('add_your_children_for_information'),
-          style: Theme.of(context).textTheme.headline2,
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
+    // var loc = PiggyLocalizations.of(context);
+    // var store = StoreProvider.of<AppState>(context);
+    // // var children = store.state.user.children;
+    // var gyerekLista = List.generate(
+    //     children.length,
+    //     (int i) => PiggyButton(
+    //           text: (children[i].name ?? children[i].email) +
+    //               " ${loc.trans('his_savings')}",
+    //           onClick: () => _navigateToChild(children[i].documentId),
+    //           color: Colors.white,
+    //         ));
+    // if (gyerekLista.length != 0) {
+    //   return Column(
+    //     children: gyerekLista,
+    //   );
+    // } else {
+    //   return Padding(
+    //     padding: const EdgeInsets.all(8.0),
+    //     child: Text(
+    //       loc.trans('add_your_children_for_information'),
+    //       style: Theme.of(context).textTheme.headline2,
+    //       textAlign: TextAlign.center,
+    //     ),
+    //   );
+    // }
   }
 
   _showAddChild(Store<AppState> store) async {
@@ -69,7 +69,7 @@ class _ParentChoresPageState extends State<ParentChoresPage> {
     return isChildSelected
         ? ChildDetailsWidget(
             documentId: selectedId.toString(),
-            initChildren: store.state.user.children,
+            // initChildren: store.state.user.children,
           )
         : Stack(children: [
             Column(

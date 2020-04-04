@@ -8,18 +8,11 @@ AppState addPiggy(AppState state, AddNewPiggy action) {
 
 AppState removePiggy(AppState state, RemovePiggy action) {
   var user = state.user;
-  if (user is Child) {
-    user.piggies.removeWhere((ch) => ch.id == action.piggyId);
-  }
   return AppState.fromAppState(state);
 }
 
 AppState feedChildPiggy(AppState state, FeedChildPiggy action) {
   var user = state.user;
-  if (user is Child) {
-    var chore = user.piggies.singleWhere((d) => d.id == action.piggyId);
-    chore.money = action.isDouble ? action.amount * 2 : action.amount;
-  }
 
   return AppState.fromAppState(state);
 }
@@ -36,12 +29,6 @@ AppState clearTempPiggy(AppState state, ClearTempPiggy action) {
 
 AppState growPiggy(AppState state, action) {
   var user = state.user;
-  if (user is Parent) {
-    var child = user.children.singleWhere((d) => d.id == action.childId);
-
-    var chore = child.chores.singleWhere((ch) => ch.id == action.choreId);
-    chore.isDone = true;
-  }
 
   var newUserData = user;
   return new AppState(user: newUserData);

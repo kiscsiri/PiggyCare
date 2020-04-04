@@ -42,8 +42,6 @@ class PiggyNavigationBar extends StatelessWidget {
                   ? Text('Gyerek')
                   : Text(loc.trans('tasks')),
               icon: Icon(FontAwesomeIcons.clipboardCheck)),
-        new BottomNavigationBarItem(
-            title: new Text(loc.trans('social')), icon: Icon(Icons.group)),
       ],
       currentIndex: store.state.index,
     );

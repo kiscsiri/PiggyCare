@@ -8,6 +8,7 @@ import 'package:piggycare/services/piggy.page.services.dart';
 import 'package:piggycare/services/user.services.dart';
 import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
+@deprecated
 class ChildDetailsWidget extends StatefulWidget {
   const ChildDetailsWidget(
       {Key key, this.documentId, @required this.initChildren})
@@ -39,29 +40,29 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
   List<ChildDto> mapChildrenToChilDto(List<UserData> children) {
     int i = 0;
-    return children
-        .map((e) => ChildDto(
-            feedPerCoin: e.feedPerPeriod,
-            id: e.id,
-            documentId: e.documentId,
-            name: e.name ?? e.email,
-            savings: e.piggies
-                .map((p) => SavingDto(
-                    index: i++,
-                    name: p.item,
-                    price: p.targetPrice,
-                    saving: p.currentSaving))
-                .toList(),
-            tasks: e.chores
-                .where((e) => !e.isValidated)
-                .map((c) => TaskDto(
-                    index: i++,
-                    name: c.title,
-                    isFinished: c.isValidated,
-                    isDone: c.isDone,
-                    id: c.id))
-                .toList()))
-        .toList();
+    // return children
+    //     .map((e) => ChildDto(
+    //         feedPerCoin: e.feedPerPeriod,
+    //         id: e.id,
+    //         documentId: e.documentId,
+    //         name: e.name ?? e.email,
+    //         savings: e.piggies
+    //             .map((p) => SavingDto(
+    //                 index: i++,
+    //                 name: p.item,
+    //                 price: p.targetPrice,
+    //                 saving: p.currentSaving))
+    //             .toList(),
+    //         tasks: e.chores
+    //             .where((e) => !e.isValidated)
+    //             .map((c) => TaskDto(
+    //                 index: i++,
+    //                 name: c.title,
+    //                 isFinished: c.isValidated,
+    //                 isDone: c.isDone,
+    //                 id: c.id))
+    //             .toList()))
+    //     .toList();
   }
 
   Future<void> _showCreateModal() async {
@@ -70,10 +71,10 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     await showCreatePiggyModal(context, child.id);
 
     setState(() {
-      var children = mapChildrenToChilDto(store.state.user.children).toList();
+      // var children = mapChildrenToChilDto(store.state.user.children).toList();
 
-      child = children.singleWhere((t) => t.documentId == widget.documentId,
-          orElse: null);
+      // child = children.singleWhere((t) => t.documentId == widget.documentId,
+      //     orElse: null);
     });
   }
 
@@ -82,10 +83,10 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
     await showCreateTask(context, store, child);
     setState(() {
-      var children = mapChildrenToChilDto(store.state.user.children).toList();
+      // var children = mapChildrenToChilDto(store.state.user.children).toList();
 
-      child = children.singleWhere((t) => t.documentId == widget.documentId,
-          orElse: null);
+      // child = children.singleWhere((t) => t.documentId == widget.documentId,
+      //     orElse: null);
     });
   }
 
@@ -123,10 +124,10 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     var tasks = List<ParentChoreInput>();
     var store = StoreProvider.of<AppState>(context);
 
-    var children = mapChildrenToChilDto(store.state.user.children).toList();
+    // // var children = mapChildrenToChilDto(store.state.user.children).toList();
 
-    child = children.singleWhere((t) => t.documentId == widget.documentId,
-        orElse: null);
+    // child = children.singleWhere((t) => t.documentId == widget.documentId,
+    //     orElse: null);
 
     child.tasks.sort(_compareFinishedTasks);
 

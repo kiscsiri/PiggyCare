@@ -19,19 +19,18 @@ class UserData {
   int feedPerPeriod;
   PiggyLevel piggyLevel;
   int currentFeedTime;
-  String phoneNumber;
   DateTime lastFeed;
   DateTime created;
   double money;
-  bool isDemoOver;
-  int numberOfCoins;
   String email;
   String name;
   String pictureUrl;
-  String parentId;
-  bool wantToSeeInfoAgain;
+  String companyName;
+  String taxNumber;
+  double companyLocationLong;
+  double companyLocationLat;
+
   List<Piggy> piggies;
-  List<Chore> chores;
 
   Duration get timeUntilNextFeed {
     if (this.lastFeed == null) {
@@ -56,10 +55,6 @@ class UserData {
     }
   }
 
-  bool get hasAnyCoinsLeft {
-    return numberOfCoins > 0 || timeUntilNextFeed < Duration(days: 0);
-  }
-
   factory UserData.fromJson(Map<String, dynamic> json, String documentId) =>
       _$UserDataFromJson(json, documentId);
 
@@ -79,19 +74,12 @@ class UserData {
     currentFeedTime = another.currentFeedTime;
     piggyLevel = another.piggyLevel;
     period = another.period;
-    numberOfCoins = another.numberOfCoins;
-    phoneNumber = another.phoneNumber;
     saving = another.saving;
-    isDemoOver = another.isDemoOver;
     created = another.created;
-    wantToSeeInfoAgain = another.wantToSeeInfoAgain;
     pictureUrl = another.pictureUrl;
     email = another.email;
     name = another.name;
-    parentId = another.parentId;
-    chores = another.chores;
     piggies = another.piggies;
-    children = another.children;
   }
 
   factory UserData.fromFirebaseDocumentSnapshot(
@@ -105,7 +93,6 @@ class UserData {
     return new UserData(
         id: register.uid,
         userType: register.userType,
-        phoneNumber: "phoneNumber",
         feedPerPeriod:
             (register.schedule != null) ? register.schedule.savingPerPeriod : 1,
         lastFeed: DateTime(1995),
@@ -126,12 +113,9 @@ class UserData {
         piggyLevel: PiggyLevel.Baby,
         created: DateTime.now(),
         saving: 0,
-        wantToSeeInfoAgain: true,
-        numberOfCoins: 0,
         email: register.email,
         name: register.username,
         pictureUrl: register.pictureUrl,
-        isDemoOver: false,
         period: (register.schedule != null)
             ? register.schedule.period
             : Period.daily);
@@ -150,17 +134,10 @@ class UserData {
       this.piggyLevel,
       this.currentFeedTime,
       this.money,
-      this.numberOfCoins,
       this.lastFeed,
-      this.parentId,
-      this.isDemoOver,
-      this.phoneNumber,
-      this.wantToSeeInfoAgain = true,
       this.created,
       this.email,
       this.name,
       this.pictureUrl})
-      : piggies = piggies ?? List<Piggy>(),
-        children = children ?? List<UserData>(),
-        chores = chores ?? List<Chore>();
+      : piggies = piggies ?? List<Piggy>();
 }

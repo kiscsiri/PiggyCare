@@ -197,8 +197,6 @@ class UserServices {
       String documentId, bool seenInfo) async {
     var user = await getUserById(documentId);
 
-    user.wantToSeeInfoAgain = seenInfo;
-
     await Firestore.instance
         .collection('donators')
         .document(documentId)
@@ -207,8 +205,6 @@ class UserServices {
 
   static Future increaseCoinNumberForChild(String childDocumentId) async {
     var user = await getUserById(childDocumentId);
-
-    user.numberOfCoins++;
 
     Firestore.instance
         .collection('donators')

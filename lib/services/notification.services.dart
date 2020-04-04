@@ -7,6 +7,7 @@ import 'package:piggycare/enums/period.dart';
 import 'package:piggycare/models/appState.dart';
 import 'package:piggycare/models/piggy/piggy.export.dart';
 
+@deprecated
 class NotificationServices {
   //Debug
   // static String url = "http://localhost:8080/";
@@ -197,7 +198,6 @@ class NotificationServices {
     var user = StoreProvider.of<AppState>(context).state.user;
 
     Map<String, Object> data = {
-      'targetId': user.parentId,
       'senderId': user.id,
       'userName': user.name,
       'piggyData': {

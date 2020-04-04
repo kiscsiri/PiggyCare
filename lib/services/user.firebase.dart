@@ -25,8 +25,6 @@ Future feedPiggyDatabase(FeedPiggy action) async {
   user.saving = user.saving + user.feedPerPeriod;
 
   user.currentFeedTime = ++doc.data['currentFeedTime'];
-  user.isDemoOver = doc.data['isDemoOver'];
-
   var newPiggyLevel = 0;
 
   if (user.currentFeedTime >= 5) {
@@ -41,7 +39,6 @@ Future feedPiggyDatabase(FeedPiggy action) async {
 
   if (newPiggyLevel > 2) {
     newPiggyLevel = 2;
-    user.isDemoOver = true;
     user.piggyLevel = PiggyLevel.values[newPiggyLevel];
     piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
   }

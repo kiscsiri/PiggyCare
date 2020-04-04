@@ -9,11 +9,8 @@ class Parent extends UserData {
     currentFeedTime = another.currentFeedTime;
     piggyLevel = another.piggyLevel;
     period = another.period;
-    phoneNumber = another.phoneNumber;
     saving = another.saving;
-    isDemoOver = another.isDemoOver;
     created = another.created;
-    children = another.children;
     piggies = another.piggies;
   }
 }

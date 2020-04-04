@@ -79,8 +79,8 @@ class AuthenticationService {
               .where("parentId", isEqualTo: user.uid)
               .getDocuments();
           for (var childSnapshot in children.documents) {
-            u.children.add(UserData.fromFirebaseDocumentSnapshot(
-                childSnapshot.data, childSnapshot.documentID));
+            // u.children.add(UserData.fromFirebaseDocumentSnapshot(
+            //     childSnapshot.data, childSnapshot.documentID));
           }
         }
 

@@ -66,34 +66,14 @@ AppState addItem(AppState state, AddPiggy action) {
         piggies: state.user.piggies,
         lastFeed: state.user.lastFeed,
         money: state.user.money,
-        children: state.user.children,
         documentId: state.user.documentId,
-        parentId: state.user.parentId,
         email: state.user.email,
         name: state.user.name,
-        isDemoOver: state.user.isDemoOver,
-        chores: state.user.chores,
         pictureUrl: state.user.pictureUrl,
         period: state.user.period,
-        phoneNumber: state.user.phoneNumber,
         piggyLevel: state.user.piggyLevel,
         saving: state.user.saving);
   } else {
-    var child = state.user.children
-        .singleWhere((element) => element.id == action.piggy.userId);
-
-    child.piggies.add(Piggy(
-        currentSaving: 0,
-        piggyLevel: PiggyLevel.Baby,
-        doubleUp: false,
-        id: state.user.piggies.length + 1,
-        isFeedAvailable: true,
-        money: 0,
-        userId: state.user.id,
-        item: action.piggy.item,
-        isApproved: true,
-        targetPrice: action.piggy.targetPrice));
-
     newUser = UserData(
         created: state.user.created,
         currentFeedTime: state.user.currentFeedTime,
@@ -103,16 +83,11 @@ AppState addItem(AppState state, AddPiggy action) {
         piggies: state.user.piggies,
         lastFeed: state.user.lastFeed,
         money: state.user.money,
-        children: state.user.children,
         documentId: state.user.documentId,
-        parentId: state.user.parentId,
         email: state.user.email,
         name: state.user.name,
-        isDemoOver: state.user.isDemoOver,
-        chores: state.user.chores,
         pictureUrl: state.user.pictureUrl,
         period: state.user.period,
-        phoneNumber: state.user.phoneNumber,
         piggyLevel: state.user.piggyLevel,
         saving: state.user.saving);
   }

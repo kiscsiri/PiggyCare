@@ -14,20 +14,14 @@ AppState initUser(AppState state, InitUserData action) {
       money: action.user.money,
       piggies: action.user.piggies,
       userType: action.user.userType,
-      wantToSeeInfoAgain: action.user.wantToSeeInfoAgain,
       email: action.user.email,
       name: action.user.name,
       pictureUrl: action.user.pictureUrl,
       currentFeedTime: action.user.currentFeedTime,
       piggyLevel: action.user.piggyLevel,
       period: action.user.period,
-      isDemoOver: action.user.isDemoOver,
-      parentId: action.user.parentId,
-      phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
-      chores: action.user.chores,
       documentId: action.user.documentId,
-      children: action.user.children,
       created: action.user.created);
 
   return AppState(user: newUserData, registrationData: state.registrationData);
@@ -51,9 +45,7 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
   }
 
   if (state.user.currentFeedTime >= 5 &&
-      state.user.piggyLevel == PiggyLevel.Teen) {
-    state.user.isDemoOver = true;
-  }
+      state.user.piggyLevel == PiggyLevel.Teen) {}
 
   var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
   var piggy = state.user.piggies[index];
@@ -78,67 +70,37 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
   return new AppState.fromAppState(state);
 }
 
+@deprecated
 AppState setChildSavingPerFeed(AppState state, SetChildSavingPerFeed action) {
   var user = state.user;
-  var child = user.children
-      .singleWhere((d) => d.documentId == action.childId, orElse: null);
-
-  if (child == null) throw Exception("Gyerek nem található");
-
-  child.feedPerPeriod = action.savingPerFeed;
-
   var newUserData = user;
   return new AppState(user: newUserData);
 }
 
+@deprecated
 AppState setWantToSeeDoubleInfo(AppState state, SetSeenDoubleInfo action) {
   var user = state.user;
 
-  user.wantToSeeInfoAgain = action.wantToSeeDoubleInfo;
-
   var newUserData = user;
   return new AppState(user: newUserData);
 }
 
+@deprecated
 AppState incrementCoins(AppState state, IncrementCoins action) {
   var user = state.user;
 
-  user.numberOfCoins = user.numberOfCoins != null ? ++user.numberOfCoins : 1;
-
   var newUserData = user;
   return new AppState(user: newUserData);
 }
 
+@deprecated
 AppState addChildToUser(AppState state, AddFamily action) {
-  if (state.user.userType == UserType.business) {
-    if (!state.user.children.any((element) => element.id == action.user.id))
-      state.user.children.add(action.user);
-  } else if (state.user.userType == UserType.donator) {
-    state.user.parentId = action.user.id;
-  }
-
   var newState = state.user;
   return new AppState(user: newState);
 }
 
+@deprecated
 AppState validatePiggy(AppState state, ValidatePiggy action) {
-  if (state.user.userType == UserType.business) {
-    var child = state.user.children
-        .singleWhere((element) => element.id == action.childId, orElse: null);
-    if (child == null) throw Exception("Nem található gyerek");
-
-    var piggy = child.piggies
-        .where((element) => !element.isApproved)
-        .singleWhere((element) => element.id == action.piggyId, orElse: null);
-
-    if (piggy == null) throw Exception("Nem található persely");
-    piggy.isApproved = true;
-  } else if (state.user.userType == UserType.donator) {
-    var piggy = state.user.piggies
-        .singleWhere((element) => element.id == action.piggyId);
-    piggy.isApproved = true;
-  }
-
   var newState = state.user;
   return new AppState(user: newState);
 }

@@ -19,45 +19,45 @@ class ChildChoresPage extends StatefulWidget {
 class _ChoresPageState extends State<ChildChoresPage> {
   Widget _getFinishedChores(AppState state) {
     var loc = PiggyLocalizations.of(context);
-    var finishedChores = state.user.chores
-        .where((d) => d.finishedDate != null)
-        .where((element) => element.isDone && element.isValidated)
-        .toList();
+    // var finishedChores = state.user.chores
+    //     .where((d) => d.finishedDate != null)
+    //     .where((element) => element.isDone && element.isValidated)
+    //     .toList();
     int i = 1;
     var result;
 
-    finishedChores.toList().sort((a, b) {
-      return a.finishedDate.compareTo(b.finishedDate);
-    });
+    // finishedChores.toList().sort((a, b) {
+    //   return a.finishedDate.compareTo(b.finishedDate);
+    // });
 
-    if (finishedChores.length != 0) {
-      result = finishedChores.reversed
-          .take(3)
-          .map(
-            (e) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text('${i++}.  '),
-                    Text(e.title),
-                  ],
-                ),
-                Image.asset('assets/images/yellow_tick.png', scale: 3.5)
-              ],
-            ),
-          )
-          .toList();
-    } else {
-      result = [Text(loc.trans('no_finished_task'))];
-    }
+    // if (finishedChores.length != 0) {
+    //   result = finishedChores.reversed
+    //       .take(3)
+    //       .map(
+    //         (e) => Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: <Widget>[
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.start,
+    //               children: <Widget>[
+    //                 Text('${i++}.  '),
+    //                 Text(e.title),
+    //               ],
+    //             ),
+    //             Image.asset('assets/images/yellow_tick.png', scale: 3.5)
+    //           ],
+    //         ),
+    //       )
+    //       .toList();
+    // } else {
+    //   result = [Text(loc.trans('no_finished_task'))];
+    // }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: result,
-    );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: result,
+    // );
   }
 
   @override
@@ -85,29 +85,29 @@ class _ChoresPageState extends State<ChildChoresPage> {
               ChoresWidget(),
               PiggyButton(
                 text: loc.trans('lets_double'),
-                disabled: store.state.user.chores
-                        .where((element) =>
-                            !element.isValidated && !element.isDone)
-                        .length >=
-                    3,
+                // disabled: store.state.user.chores
+                //         .where((element) =>
+                //             !element.isValidated && !element.isDone)
+                //         .length >=
+                //     3,
                 onClick: () async {
                   var user = store.state.user;
-                  if (user.wantToSeeInfoAgain ?? true) {
-                    var isNotShownAgainChecked =
-                        await showDoubleInformationModel(context);
-                    store.dispatch(
-                        SetSeenDoubleInfo(!(isNotShownAgainChecked ?? false)));
-                    await UserServices.setDoubleInformationSeen(
-                        user.documentId, !(isNotShownAgainChecked ?? false));
-                  }
-                  if (user.parentId != null) {
-                    if (await showChildrenAskDoubleSubmit(context) ?? false) {
-                      NotificationServices.sendNotificationDouble(
-                          store.state.user.parentId,
-                          store.state.user.name,
-                          store.state.user.id);
-                    }
-                  }
+                  // if (user.wantToSeeInfoAgain ?? true) {
+                  //   var isNotShownAgainChecked =
+                  //       await showDoubleInformationModel(context);
+                  //   store.dispatch(
+                  //       SetSeenDoubleInfo(!(isNotShownAgainChecked ?? false)));
+                  //   await UserServices.setDoubleInformationSeen(
+                  //       user.documentId, !(isNotShownAgainChecked ?? false));
+                  // }
+                  // if (user.parentId != null) {
+                  //   if (await showChildrenAskDoubleSubmit(context) ?? false) {
+                  //     NotificationServices.sendNotificationDouble(
+                  //         store.state.user.parentId,
+                  //         store.state.user.name,
+                  //         store.state.user.id);
+                  //   }
+                  // }
                 },
               ),
               Row(
