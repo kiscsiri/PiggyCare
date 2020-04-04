@@ -33,9 +33,9 @@ Map<String, dynamic> _$ChoreToJson(Chore instance) => <String, dynamic>{
       'title': instance.title,
       'details': instance.details,
       'reward': instance.reward,
-      'finishedDate': instance.finishedDate?.toIso8601String(),
       'isDone': instance.isDone,
       'isValidated': instance.isValidated,
+      'finishedDate': instance.finishedDate?.toIso8601String(),
     };
 
 T _$enumDecode<T>(

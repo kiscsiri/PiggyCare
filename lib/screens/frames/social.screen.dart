@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:piggybanx/helpers/pagination.helper.dart';
+import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/widgets/piggy.post.dart';
 import 'package:piggybanx/widgets/top.navigation.item.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
@@ -11,16 +14,61 @@ class PiggySocial extends StatefulWidget {
 
 class _PiggySocialState extends State<PiggySocial> {
   bool isLoading = false;
-  List<PostDto> items;
+  List<PostDto> items = List<PostDto>();
 
-  Future _loadData() async {
-    var list = await UserPostService.getUserPosts();
-    // perform fetching data delay
-    await new Future.delayed(
-        new Duration(seconds: 2)); // update data and loading status
+  Future _loadData(ScrollNotification scrollInfo) async {
+    var posts = (await UserPostService.getUserPosts(PaginationHelper(
+            items.length,
+            5,
+            "postedDate",
+            items.length != 0 ? items.last.documentSnapshot : null)))
+        .map((e) => UserPost.fromMap(e));
+
+    var mappedPosts = await Future.wait(posts.map((e) async {
+      var userSnapshot = await e.user.get();
+      return PostDto(
+          text: e.text,
+          likesCount: e.likes,
+          documentSnapshot: userSnapshot,
+          user: UserData.fromFirebaseDocumentSnapshot(
+              userSnapshot.data, e.user.documentID),
+          postedDate: DateTime.now());
+    }).toList());
     setState(() {
-      items.addAll(list);
+      isLoading = false;
+      if (items != null) {
+        items.addAll(mappedPosts);
+      }
     });
+  }
+
+  @override
+  void initState() {
+    (UserPostService.getUserPosts(PaginationHelper(
+            items.length,
+            5,
+            "postedDate",
+            items.length != 0 ? items.last.documentSnapshot : null)))
+        .then((value) => value.map((e) => UserPost.fromMap(e)))
+        .then((value) async {
+      var mappedPosts = await Future.wait(value.map((e) async {
+        var userSnapshot = await e.user.get();
+        return PostDto(
+            text: e.text,
+            likesCount: e.likes,
+            documentSnapshot: userSnapshot,
+            user: UserData.fromFirebaseDocumentSnapshot(
+                userSnapshot.data, e.user.documentID),
+            postedDate: DateTime.now());
+      }));
+      setState(() {
+        isLoading = false;
+        if (items != null) {
+          items.addAll(mappedPosts);
+        }
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -40,23 +88,26 @@ class _PiggySocialState extends State<PiggySocial> {
           ],
         ),
       ),
-      NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (!isLoading &&
-              scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-            setState(() {
-              isLoading = true;
-            });
-            _loadData();
-          }
-        },
-        child: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text('${items[index]}'),
-            );
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.87,
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (!isLoading &&
+                scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
+              setState(() {
+                isLoading = true;
+              });
+              _loadData(scrollInfo);
+            }
           },
+          child: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return PiggyPost(post: items[index]);
+            },
+          ),
         ),
       ),
       Container(
@@ -66,48 +117,6 @@ class _PiggySocialState extends State<PiggySocial> {
           child: new CircularProgressIndicator(),
         ),
       ),
-      // Container(
-      //   height: MediaQuery.of(context).size.height * 0.7,
-      //   child: ListView(
-      //     children: <Widget>[
-      //       PiggyPost(
-      //           post: PostDto(
-      //               DateTime.now(),
-      //               "Szilágyi Ádám",
-      //               23,
-      //               "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/78481302_2754955497859238_5017358384047849472_o.jpg?_nc_cat=100&_nc_sid=09cbfe&_nc_oc=AQmF_DalJXrzl0K5jpRJ6ACZEOX4PXRFmYQXDSLmJl019RP3v0E887EQ8qFB_IFayHWwjy69MOgxywdKQELddtY5&_nc_ht=scontent-vie1-1.xx&oh=93e48ee85818052f0ae9237cfacc8c36&oe=5E9CA849",
-      //               "Új gyűjtésbe kezdett: PS5")),
-      //       PiggyPost(
-      //           post: PostDto(
-      //               DateTime.now(),
-      //               "Kovács János",
-      //               23,
-      //               "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/38085697_1768580729845318_3982390768881893376_o.jpg?_nc_cat=111&_nc_sid=174925&_nc_oc=AQmYaGILAf7VyLdNHIZV4W_U0sxpCOvVU7h5uZImZMxKeLguZvPqsAuMxD1MmmKCqPSq_RsaNZ7jq6t7256mDZzC&_nc_ht=scontent-vie1-1.xx&oh=f5c58518d99ae96d6074c52796060514&oe=5E9F4B21",
-      //               "Új gyűjtésbe kezdett: PiggyBanx show")),
-      //       PiggyPost(
-      //           post: PostDto(
-      //               DateTime.now(),
-      //               "Szlivia Anikó",
-      //               23,
-      //               "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/60305684_10212968722632432_1650346487772610560_n.jpg?_nc_cat=107&_nc_sid=174925&_nc_oc=AQkPBQfz2OFzk-zKOUX9NAJJ3x7Sq3vCbtZ9PXZwjcBFqCFgGsE6JlC5DCkXyJchOPX2O0eRuzDNNODYWDd4PrdZ&_nc_ht=scontent-vie1-1.xx&oh=126b348eaf8bd5fed9d0be83b9261d5f&oe=5E9E1D5A",
-      //               "Új gyűjtésbe kezdett: Tetováló készlet")),
-      //       PiggyPost(
-      //           post: PostDto(
-      //               DateTime.now(),
-      //               "Szabó Dániel",
-      //               23,
-      //               "https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/83301146_2611808252383609_4906132663955357696_n.jpg?_nc_cat=109&_nc_sid=09cbfe&_nc_oc=AQmamz5lDKGG4u4IaKMN6xSD1CC4LOHGA1iiIcR5tKcbkTzkHKCvPHpjdtJH_w07QqSfvrRddmfjO2uRA4cF8LMA&_nc_ht=scontent-vie1-1.xx&oh=53be35ebe3631a5d4a20aeeec13c48e8&oe=5E9FFA7F",
-      //               "Új gyűjtésbe kezdett: Autó")),
-      //       PiggyPost(
-      //           post: PostDto(
-      //               DateTime.now(),
-      //               "Vesztergom Balázs",
-      //               23,
-      //               "https://scontent-vie1-1.xx.fbcdn.net/v/t31.0-8/13925851_10154366275081462_6082813286334876832_o.jpg?_nc_cat=109&_nc_sid=09cbfe&_nc_oc=AQlqHrtUWjVYSU86VTU6MkyE_WeqM9XH85Kg0qf6ukKNM6vjGgw7POWEtn4cyYy0JxN9i30zPK_pjp7OKWm3ULn3&_nc_ht=scontent-vie1-1.xx&oh=a385c9171cbbe3a3b985a05ff65f5c54&oe=5E9FBA20",
-      //               "Új gyűjtésbe kezdett: Borászati eszközök"))
-      //     ],
-      //   ),
-      // )
     ]);
   }
 }

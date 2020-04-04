@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piggybanx/models/user/user.export.dart';
 
 class PiggyPost extends StatefulWidget {
   const PiggyPost({Key key, @required this.post}) : super(key: key);
@@ -31,10 +33,10 @@ class _PiggyPostState extends State<PiggyPost> {
                           shape: BoxShape.circle,
                           image: new DecorationImage(
                               fit: BoxFit.scaleDown,
-                              image: (widget.post.imageUrl?.isNotEmpty ?? false)
-                                  ? NetworkImage(widget.post.imageUrl)
-                                  : AssetImage(
-                                      "assets/images/adult_profile_4K.png")))),
+                              image: (widget.post.user.pictureUrl?.isNotEmpty ??
+                                      false)
+                                  ? NetworkImage(widget.post.user.pictureUrl)
+                                  : AssetImage("assets/images/business.png")))),
                   Row(
                     children: <Widget>[
                       Padding(
@@ -57,7 +59,7 @@ class _PiggyPostState extends State<PiggyPost> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    widget.post.name,
+                    widget.post.user.name,
                     style: Theme.of(context).textTheme.headline1,
                   ),
                 ),
@@ -109,12 +111,16 @@ class _PiggyPostState extends State<PiggyPost> {
 }
 
 class PostDto {
-  String imageUrl;
   String text;
   DateTime postedDate;
-  String name;
   int likesCount;
+  UserData user;
+  DocumentSnapshot documentSnapshot;
 
   PostDto(
-      this.postedDate, this.name, this.likesCount, this.imageUrl, this.text);
+      {this.postedDate,
+      this.likesCount,
+      this.text,
+      this.user,
+      this.documentSnapshot});
 }

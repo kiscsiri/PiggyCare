@@ -1,10 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/widgets/piggy.post.dart';
+import 'package:piggybanx/helpers/pagination.helper.dart';
+import 'package:piggybanx/models/post/user.post.dart';
 
 class UserPostService {
-  static Future createUserPost() async {}
+  static Future<UserPost> createUserPiggyPost(UserPost post) async {
+    await Firestore.instance.collection('userPosts').add(post.toJson());
 
-  static Future<List<PostDto>> getUserPosts() async {
-    Firestore.instance.collection('userPost').getDocuments();
+    return post;
+  }
+
+  static Future<Iterable<DocumentSnapshot>> getUserPosts(
+      PaginationHelper paginationHelper) async {
+    var query = (Firestore.instance
+        .collection('userPosts')
+        .orderBy('postedDate', descending: false));
+
+    if (paginationHelper.lastDocument != null) {
+      query.startAfterDocument(paginationHelper.lastDocument).limit(4);
+    } else {
+      query.limit(4);
+    }
+
+    return (await query.getDocuments()).documents;
   }
 }

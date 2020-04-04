@@ -1,18 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
+import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/user.services.dart';
+import 'package:piggybanx/services/user.social.post.service.dart';
+import 'package:redux/redux.dart';
 
 class ChoreFirebaseServices extends ChangeNotifier {
-  static Future<int> createChoreForUser(Chore chore) async {
-    var user = await UserServices.getUserById(chore.childId);
+  static Future<int> createChoreForUser(
+      Chore chore, Store<AppState> store) async {
+    DocumentSnapshot userSnap;
+    try {
+      userSnap = (await Firestore.instance
+              .collection('users')
+              .where('id', isEqualTo: chore.childId)
+              .getDocuments())
+          .documents
+          .first;
+    } on StateError catch (err) {
+      throw Exception("Felhasználó nem található");
+    }
+
+    var user = UserData.fromFirebaseDocumentSnapshot(
+        userSnap.data, userSnap.documentID);
+
     if (user.chores.length != 0)
       chore.id = (user.chores.last.id ?? 1) + 1;
     else
       chore.id = 1;
     user.chores.add(chore);
+
+    await UserPostService.createUserPiggyPost(UserPost(
+        likes: 0,
+        postedDate: DateTime.now(),
+        user: userSnap.reference,
+        text:
+            '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
 
     Firestore.instance
         .collection('users')
@@ -69,6 +95,12 @@ class ChoreFirebaseServices extends ChangeNotifier {
       task.isDone = true;
       task.finishedDate = DateTime.now();
 
+      await UserPostService.createUserPiggyPost(UserPost(
+          likes: 0,
+          postedDate: DateTime.now(),
+          user: user.reference,
+          text:
+              '${userData.name} épp befejezte a "${task.title}" nevű feladatát!'));
       await Firestore.instance
           .collection('users')
           .document(user.documentID)

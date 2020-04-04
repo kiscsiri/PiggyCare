@@ -1,52 +1,63 @@
 import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggybanx/services/user.social.post.service.dart';
 
 import '../models/user/user.export.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-feedPiggyDatabase(FeedPiggy action) {
-  Firestore.instance
+Future feedPiggyDatabase(FeedPiggy action) async {
+  var value = await Firestore.instance
       .collection("users")
       .where("id", isEqualTo: action.id)
-      .getDocuments()
-      .then((QuerySnapshot value) {
-    var doc = value.documents.first;
-    var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
-    var piggy =
-        user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
+      .getDocuments();
 
-    piggy.money = piggy.money + user.feedPerPeriod;
-    piggy.currentSaving = piggy.currentSaving + user.feedPerPeriod;
+  var doc = value.documents.first;
+  var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
+  var piggy =
+      user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
 
-    user.saving = user.saving + user.feedPerPeriod;
+  var isBefejezteMarAzEtetesElott = piggy.money >= piggy.targetPrice;
 
-    user.currentFeedTime = ++doc.data['currentFeedTime'];
-    user.isDemoOver = doc.data['isDemoOver'];
+  piggy.money = piggy.money + user.feedPerPeriod;
+  piggy.currentSaving = piggy.currentSaving + user.feedPerPeriod;
 
-    var newPiggyLevel = 0;
+  user.saving = user.saving + user.feedPerPeriod;
 
-    if (user.currentFeedTime >= 5) {
-      user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
-      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
-      user.currentFeedTime = 0;
-    } else {
-      newPiggyLevel = user.piggyLevel.index;
-      user.piggyLevel = PiggyLevel.values[newPiggyLevel];
-      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
-    }
+  user.currentFeedTime = ++doc.data['currentFeedTime'];
+  user.isDemoOver = doc.data['isDemoOver'];
 
-    if (newPiggyLevel > 2) {
-      newPiggyLevel = 2;
-      user.isDemoOver = true;
-      user.piggyLevel = PiggyLevel.values[newPiggyLevel];
-      piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
-    }
+  var newPiggyLevel = 0;
 
-    user.lastFeed = DateTime.now();
+  if (user.currentFeedTime >= 5) {
+    user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
+    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
+    user.currentFeedTime = 0;
+  } else {
+    newPiggyLevel = user.piggyLevel.index;
+    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  }
 
-    Firestore.instance
-        .collection('users')
-        .document(doc.documentID)
-        .updateData(user.toJson());
-  });
+  if (newPiggyLevel > 2) {
+    newPiggyLevel = 2;
+    user.isDemoOver = true;
+    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  }
+
+  user.lastFeed = DateTime.now();
+
+  if (!isBefejezteMarAzEtetesElott && piggy.money >= piggy.targetPrice) {
+    await UserPostService.createUserPiggyPost(UserPost(
+        likes: 0,
+        postedDate: DateTime.now(),
+        user: doc.reference,
+        text:
+            '${user.name} összegyűjtötte a pénzt egy "${piggy.item}" nevű tárgyra! Gratuláció a megtakarításhoz! :)'));
+  }
+  Firestore.instance
+      .collection('users')
+      .document(doc.documentID)
+      .updateData(user.toJson());
 }
