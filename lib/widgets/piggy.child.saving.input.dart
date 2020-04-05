@@ -46,7 +46,7 @@ class _SavingTypeInputState extends State<ChildSavingInputWidget> {
     return GestureDetector(
       onTap: () => _selectType(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Container(
             width: MediaQuery.of(context).size.width * 0.8,
             height: MediaQuery.of(context).size.height * 0.08,

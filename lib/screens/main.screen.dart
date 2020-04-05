@@ -82,11 +82,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       ChildSavingScreen(
         initFeedPerPeriod: store.state.user.feedPerPeriod,
       ),
-      if (store.state.user.userType != UserType.business)
-        store.state.user.userType == UserType.donator
-            ? ChildChoresPage()
-            : ParentChoresPage(),
-      PiggySocial()
+      store.state.user.userType == UserType.business
+          ? BusinessDonationsPage()
+          : ParentChoresPage(),
     ];
   }
 
@@ -137,7 +135,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   ),
                   if (store.state.user.userType == UserType.donator)
                     ListTile(
-                      title: Text(loc.trans('add_parent')),
+                      title: Text(loc.trans('search_businesses')),
                       onTap: () async {
                         var searchString =
                             await showUserAddModal(context, store);
@@ -149,38 +147,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                         currentUserId: store.state.user.id,
                                         userType: store.state.user.userType,
                                         searchString: searchString,
+                                        isNearbySearch: false,
                                       )));
                       },
                     ),
-                  if (store.state.user.userType == UserType.business)
+                  if (store.state.user.userType == UserType.donator)
                     ListTile(
-                      title: Text(loc.trans('add_child')),
+                      title: Text(loc.trans('nearby_businesses')),
                       onTap: () async {
-                        var searchString =
-                            await showUserAddModal(context, store);
-                        if (searchString.isNotEmpty)
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => new UserSearchScreen(
-                                        currentUserId: store.state.user.id,
-                                        userType: store.state.user.userType,
-                                        searchString: searchString,
-                                      )));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new UserSearchScreen(
+                                      currentUserId: store.state.user.id,
+                                      userType: store.state.user.userType,
+                                      isNearbySearch: true,
+                                    )));
                       },
                     ),
-                  ListTile(
-                    title: Text(loc.trans('requests')),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => new FirendRequestsScreen(
-                                    currentUserId: store.state.user.id,
-                                    userType: store.state.user.userType,
-                                  )));
-                    },
-                  ),
                   ListTile(
                     title: Text(loc.trans('eula_short')),
                     onTap: () {},

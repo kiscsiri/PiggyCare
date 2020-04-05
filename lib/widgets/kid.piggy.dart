@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggycare/enums/period.dart';
+import 'package:piggycare/Enums/period.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
 import 'package:piggycare/models/piggy/piggy.export.dart';
@@ -15,8 +16,8 @@ import 'piggy.coin.dart';
 import 'piggy.main.dart';
 import 'piggy.progress.dart';
 
-class KidPiggyWidget extends StatefulWidget {
-  KidPiggyWidget(
+class PiggyWidget extends StatefulWidget {
+  PiggyWidget(
       {Key key, @required this.initialPiggy, @required this.timeUntilNextFeed})
       : super(key: key);
 
@@ -24,10 +25,10 @@ class KidPiggyWidget extends StatefulWidget {
   final Duration timeUntilNextFeed;
 
   @override
-  _KidPiggyWidgetState createState() => new _KidPiggyWidgetState();
+  _PiggyWidgetState createState() => new _PiggyWidgetState();
 }
 
-class _KidPiggyWidgetState extends State<KidPiggyWidget>
+class _PiggyWidgetState extends State<PiggyWidget>
     with TickerProviderStateMixin {
   AnimationController _controller;
   BehaviorSubject<bool> willAcceptStream;
@@ -164,7 +165,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
           .where((element) => element.isApproved ?? false)
           .first;
     }
-    _coinVisible = !_isDisabled;
+    _coinVisible = user.userType == UserType.business; // Hiabáa a warn, megy
 
     String period;
     if (user.period == Period.daily) {

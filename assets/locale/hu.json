@@ -98,7 +98,7 @@
   "selector_lets_see": "Lássuk!",
   "change_box": "Malacpersely váltás >",
   "what_do_you_saving": "Mire gyűjtesz?",
-  "active_tasks": "Elvégzendő feladatok",
+  "donations": "Adományok",
   "finished_tasks": "Elvégzett feladatok",
   "tasks": "Feladatok",
   "lets_double": "DUPLÁZÁS",
@@ -143,5 +143,7 @@
   "business_number": "Cégjegyzék szám",
   "tax_number": "Adószám",
   "business_operation_place": "Működési helyszín",
-  "use_headquarters_address": "Székhely cím használata"
+  "use_headquarters_address": "Székhely cím használata",
+  "search_businesses": "Cég keresése",
+  "nearby_businesses": "Cégek a közelben"
 }

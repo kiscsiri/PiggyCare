@@ -7,7 +7,7 @@ import 'package:piggycare/services/user.social.post.service.dart';
 class PiggyServices {
   static Future<void> createPiggyForUser(Piggy piggy, String userId) async {
     var value = await Firestore.instance
-        .collection('donators')
+        .collection('users')
         .where("id", isEqualTo: userId)
         .getDocuments();
     var doc = value.documents.first;
@@ -16,25 +16,25 @@ class PiggyServices {
     piggy.id = user.piggies.length + 1;
     user.piggies.add(piggy);
 
-    if (piggy.isApproved) {
-      UserPostService.createUserPiggyPost(UserPost(
-          likes: 0,
-          text: user.name +
-              " elkezdett gyűjteni az alábbi dologra: " +
-              piggy.item,
-          postedDate: DateTime.now(),
-          user: doc.reference));
-    }
+    // if (piggy.isApproved) {
+    //   UserPostService.createUserPiggyPost(UserPost(
+    //       likes: 0,
+    //       text: user.name +
+    //           " elkezdett gyűjteni az alábbi dologra: " +
+    //           piggy.item,
+    //       postedDate: DateTime.now(),
+    //       user: doc.reference));
+    // }
 
     Firestore.instance
-        .collection('donators')
+        .collection('users')
         .document(doc.documentID)
         .updateData(user.toJson());
   }
 
   static Future<void> validatePiggy(int piggyId, String userId) async {
     var value = await Firestore.instance
-        .collection('donators')
+        .collection('users')
         .where("id", isEqualTo: userId)
         .getDocuments();
     var doc = value.documents.first;
@@ -44,14 +44,14 @@ class PiggyServices {
     var piggy = user.piggies.singleWhere((element) => element.id == piggyId);
     piggy.isApproved = true;
 
-    UserPostService.createUserPiggyPost(UserPost(
-        likes: 0,
-        text: user.name + " elkezdett gyűjteni erre: " + piggy.item,
-        postedDate: DateTime.now(),
-        user: doc.reference));
+    // UserPostService.createUserPiggyPost(UserPost(
+    //     likes: 0,
+    //     text: user.name + " elkezdett gyűjteni erre: " + piggy.item,
+    //     postedDate: DateTime.now(),
+    //     user: doc.reference));
 
     Firestore.instance
-        .collection('donators')
+        .collection('users')
         .document(doc.documentID)
         .updateData(user.toJson());
   }

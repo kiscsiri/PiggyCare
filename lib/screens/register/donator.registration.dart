@@ -53,11 +53,14 @@ class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
       var res = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
 
-      store.dispatch(SetFromOauth(
+      store.dispatch(SetFromRegistrationForm(
           res.user.email,
           res.user.displayName ?? _userNameController.text,
           res.user.uid,
-          res.user.photoUrl));
+          res.user.photoUrl,
+          null,
+          null,
+          null));
 
       await AuthenticationService.registerUser(store);
 
@@ -66,22 +69,6 @@ class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
     } on Exception {
       await showAlert(context, "Létezik már az adott e-mail cím");
     }
-  }
-
-  Future<void> signInAndRegisterGoogle(Store<AppState> store) async {
-    var user = await AuthenticationService.signInWithGoogle(store);
-    store.dispatch(
-        SetFromOauth(user.email, user.displayName, user.uid, user.photoUrl));
-
-    await AuthenticationService.registerUser(store);
-
-    setState(() {
-      _emailController.text = user.email;
-      _userNameController.text = user.displayName;
-    });
-
-    Navigator.of(context).pushReplacement(
-        new MaterialPageRoute(builder: (context) => new MainPage()));
   }
 
   @override
@@ -203,11 +190,13 @@ class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
                 children: <Widget>[
                   PiggyFacebookButton(
                     text: "Facebook",
-                    onClick: () async => null,
+                    disabled: true,
+                    onClick: null,
                   ),
                   PiggyGoogleButton(
                     text: "Google",
-                    onClick: () async => signInAndRegisterGoogle(store),
+                    disabled: true,
+                    onClick: null,
                   ),
                 ],
               )

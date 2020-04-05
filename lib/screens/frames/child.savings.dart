@@ -129,7 +129,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                                   period: store.user.period,
                                   feedPerPeriod: val.toInt())));
                             },
-                            value: store.user.feedPerPeriod.toDouble(),
+                            value: savingPerFeed.toDouble(),
                           ),
                   ),
                 ],

@@ -59,7 +59,7 @@ AppState handleRegistrationActions(
     return clearRegistrationStore(appState, action);
   } else if (action is SetUserType) {
     return setUserType(appState, action);
-  } else if (action is SetFromOauth) {
+  } else if (action is SetFromRegistrationForm) {
     return setOauthAccount(appState, action);
   } else {
     return null;

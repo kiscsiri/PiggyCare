@@ -9,14 +9,16 @@ import 'package:piggycare/widgets/piggy.widgets.export.dart';
 class UserSearchScreen extends StatefulWidget {
   const UserSearchScreen(
       {Key key,
-      @required this.searchString,
+      this.searchString,
       @required this.userType,
-      @required this.currentUserId})
+      @required this.currentUserId,
+      this.isNearbySearch})
       : super(key: key);
 
   final String searchString;
   final UserType userType;
   final String currentUserId;
+  final bool isNearbySearch;
   @override
   _UserSearchScreenState createState() => _UserSearchScreenState();
 }
@@ -73,8 +75,8 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.0),
                     child: new FutureBuilder<List<UserData>>(
-                      future:
-                          UserServices.getUsers(_searchString, widget.userType),
+                      future: UserServices.getBusinesses(
+                          _searchString, widget.userType),
                       builder: (BuildContext context,
                           AsyncSnapshot<List<UserData>> snapshot) {
                         switch (snapshot.connectionState) {

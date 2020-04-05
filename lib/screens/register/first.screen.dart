@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggycare/enums/userType.dart';
 import 'package:piggycare/localization/Localizations.dart';
-import 'package:piggycare/models/registration/business.registration.dart';
-import 'package:piggycare/models/registration/donator.registration.dart';
 import 'package:piggycare/models/registration/registration.export.dart';
+import 'package:piggycare/screens/register/business.registration.dart';
+import 'package:piggycare/screens/register/donator.registration.dart';
 import 'package:piggycare/widgets/piggy.widgets.export.dart';
 import 'package:redux/redux.dart';
 

@@ -1,77 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggycare/dtos/donation.dto.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
-import 'package:piggycare/models/user/user.export.dart';
-import 'package:piggycare/services/notification.modals.dart';
-import 'package:piggycare/services/notification.services.dart';
-import 'package:piggycare/services/user.services.dart';
-import 'package:piggycare/services/piggy.page.services.dart';
 import 'package:piggycare/widgets/piggy.widgets.export.dart';
 
-class ChildChoresPage extends StatefulWidget {
-  ChildChoresPage({Key key}) : super(key: key);
+class BusinessDonationsPage extends StatefulWidget {
+  BusinessDonationsPage({Key key}) : super(key: key);
 
   @override
-  _ChoresPageState createState() => new _ChoresPageState();
+  _BusinessDonationsPageState createState() =>
+      new _BusinessDonationsPageState();
 }
 
-class _ChoresPageState extends State<ChildChoresPage> {
+class _BusinessDonationsPageState extends State<BusinessDonationsPage> {
   Widget _getFinishedChores(AppState state) {
     var loc = PiggyLocalizations.of(context);
-    // var finishedChores = state.user.chores
+    List<DonationDto> donations = [
+      DonationDto(
+          index: 1, senderName: "Ákos", price: 20, donatedDate: DateTime.now()),
+      DonationDto(
+          index: 2, senderName: "Bea", price: 36, donatedDate: DateTime.now()),
+      DonationDto(
+          index: 3, senderName: "Ottó", price: 10, donatedDate: DateTime.now()),
+      DonationDto(
+          index: 4,
+          senderName: "Béla",
+          price: 150,
+          donatedDate: DateTime.now()),
+      DonationDto(
+          index: 5, senderName: "Ákos", price: 5, donatedDate: DateTime.now())
+    ];
+
+    // Ezt majd ha lesz model szinten is
+    // state.user.chores
     //     .where((d) => d.finishedDate != null)
     //     .where((element) => element.isDone && element.isValidated)
     //     .toList();
-    int i = 1;
     var result;
 
-    // finishedChores.toList().sort((a, b) {
-    //   return a.finishedDate.compareTo(b.finishedDate);
-    // });
+    donations.toList().sort((a, b) {
+      return a.donatedDate.compareTo(b.donatedDate);
+    });
 
-    // if (finishedChores.length != 0) {
-    //   result = finishedChores.reversed
-    //       .take(3)
-    //       .map(
-    //         (e) => Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: <Widget>[
-    //             Row(
-    //               mainAxisAlignment: MainAxisAlignment.start,
-    //               children: <Widget>[
-    //                 Text('${i++}.  '),
-    //                 Text(e.title),
-    //               ],
-    //             ),
-    //             Image.asset('assets/images/yellow_tick.png', scale: 3.5)
-    //           ],
-    //         ),
-    //       )
-    //       .toList();
-    // } else {
-    //   result = [Text(loc.trans('no_finished_task'))];
-    // }
+    if (donations.length != 0) {
+      result = donations
+          .take(10)
+          .map(
+            (e) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ChildSavingInputWidget(
+                      index: e.index,
+                      name: e.senderName,
+                      price: e.price.toString(),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )
+          .toList();
+    } else {
+      result = [Text(loc.trans('no_finished_task'))];
+    }
 
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children: result,
-    // );
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: result,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
-    var store = StoreProvider.of<AppState>(context);
     return ListView(children: <Widget>[
       Stack(children: [
         Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
-              decoration: piggyBackgroundDecoration(context),
+              decoration: coinBackground(context),
             ),
           ],
         ),
@@ -80,53 +94,15 @@ class _ChoresPageState extends State<ChildChoresPage> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new Text(loc.trans('active_tasks'),
-                  style: Theme.of(context).textTheme.headline3),
-              ChoresWidget(),
-              PiggyButton(
-                text: loc.trans('lets_double'),
-                // disabled: store.state.user.chores
-                //         .where((element) =>
-                //             !element.isValidated && !element.isDone)
-                //         .length >=
-                //     3,
-                onClick: () async {
-                  var user = store.state.user;
-                  // if (user.wantToSeeInfoAgain ?? true) {
-                  //   var isNotShownAgainChecked =
-                  //       await showDoubleInformationModel(context);
-                  //   store.dispatch(
-                  //       SetSeenDoubleInfo(!(isNotShownAgainChecked ?? false)));
-                  //   await UserServices.setDoubleInformationSeen(
-                  //       user.documentId, !(isNotShownAgainChecked ?? false));
-                  // }
-                  // if (user.parentId != null) {
-                  //   if (await showChildrenAskDoubleSubmit(context) ?? false) {
-                  //     NotificationServices.sendNotificationDouble(
-                  //         store.state.user.parentId,
-                  //         store.state.user.name,
-                  //         store.state.user.id);
-                  //   }
-                  // }
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    loc.trans('finished_tasks'),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.04),
-                    child: Image.asset('assets/images/pink_tick.png'),
-                  )
-                ],
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: new Text(loc.trans('donations'),
+                    style: Theme.of(context).textTheme.headline3),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                ),
                 child: Center(
                   child: StoreConnector<AppState, AppState>(
                       converter: (store) => store.state,

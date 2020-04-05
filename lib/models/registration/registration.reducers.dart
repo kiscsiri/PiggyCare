@@ -101,9 +101,9 @@ AppState setStorePhoneNumber(AppState state, SetPhoneNumber action) {
   return AppState.fromAppState(state);
 }
 
-AppState setOauthAccount(AppState state, SetFromOauth action) {
+AppState setOauthAccount(AppState state, SetFromRegistrationForm action) {
   state.registrationData.email = action.email;
-  state.registrationData.username = action.username;
+  state.registrationData.username = action.name;
   state.registrationData.uid = action.uid;
   state.registrationData.pictureUrl = action.pictureUrl;
 
@@ -112,7 +112,7 @@ AppState setOauthAccount(AppState state, SetFromOauth action) {
 
 addItemDatabase(AddPiggy item, String uid) {
   Firestore.instance
-      .collection('donators')
+      .collection('users')
       .where("uid", isEqualTo: uid)
       .getDocuments()
       .then((doc) {

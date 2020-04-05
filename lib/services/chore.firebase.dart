@@ -4,7 +4,6 @@ import 'package:piggycare/models/appState.dart';
 import 'package:piggycare/models/chore/chore.export.dart';
 import 'package:piggycare/models/post/user.post.dart';
 import 'package:piggycare/models/user/user.export.dart';
-import 'package:piggycare/services/notification.services.dart';
 import 'package:piggycare/services/user.services.dart';
 import 'package:piggycare/services/user.social.post.service.dart';
 import 'package:redux/redux.dart';
@@ -16,7 +15,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
     DocumentSnapshot userSnap;
     try {
       userSnap = (await Firestore.instance
-              .collection('donators')
+              .collection('users')
               .where('id', isEqualTo: chore.childId)
               .getDocuments())
           .documents
@@ -28,15 +27,15 @@ class ChoreFirebaseServices extends ChangeNotifier {
     var user = UserData.fromFirebaseDocumentSnapshot(
         userSnap.data, userSnap.documentID);
 
-    await UserPostService.createUserPiggyPost(UserPost(
-        likes: 0,
-        postedDate: DateTime.now(),
-        user: userSnap.reference,
-        text:
-            '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
+    // await UserPostService.createUserPiggyPost(UserPost(
+    //     likes: 0,
+    //     postedDate: DateTime.now(),
+    //     user: userSnap.reference,
+    //     text:
+    //         '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
 
     Firestore.instance
-        .collection('donators')
+        .collection('users')
         .document(user.documentId)
         .updateData(user.toJson());
 
@@ -49,20 +48,20 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   static Future<void> finishChildChore(String id, int taskId, parentId) async {
     var result =
-        await Firestore.instance.collection('donators').document(id).get();
+        await Firestore.instance.collection('users').document(id).get();
 
     var user =
         UserData.fromFirebaseDocumentSnapshot(result.data, result.documentID);
 
     await Firestore.instance
-        .collection('donators')
+        .collection('users')
         .document(id)
         .updateData(user.toJson());
   }
 
   static Future<void> validateChildChore(String userId, int taskId) async {
     var result = await Firestore.instance
-        .collection('donators')
+        .collection('users')
         .where('id', isEqualTo: userId)
         .getDocuments();
     if (result.documents.length != 0) {
@@ -71,7 +70,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           UserData.fromFirebaseDocumentSnapshot(user.data, user.documentID);
 
       await Firestore.instance
-          .collection('donators')
+          .collection('users')
           .document(user.documentID)
           .updateData(userData.toJson());
     }
@@ -79,7 +78,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
   static Future<void> refuseChildChore(String userId, int taskId) async {
     var result = await Firestore.instance
-        .collection('donators')
+        .collection('users')
         .where('id', isEqualTo: userId)
         .getDocuments();
     if (result.documents.length != 0) {
@@ -88,7 +87,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           UserData.fromFirebaseDocumentSnapshot(user.data, user.documentID);
 
       await Firestore.instance
-          .collection('donators')
+          .collection('users')
           .document(user.documentID)
           .updateData(userData.toJson());
     }

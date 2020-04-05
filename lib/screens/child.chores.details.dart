@@ -90,14 +90,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
     });
   }
 
-  Future<void> _changeChildSavingPerFeed(int val) async {
-    var store = StoreProvider.of<AppState>(context);
-    store.dispatch(SetChildSavingPerFeed(widget.documentId, val));
-    await NotificationServices.sendEmptyNotificationSetFeedPerCoin(
-        child.id, val);
-    await UserServices.setChildSavingPerDay(widget.documentId, val);
-  }
-
   int _compareFinishedTasks(TaskDto a, TaskDto b) {
     if ((a.isFinished ?? false) && (b.isFinished ?? false))
       return 0;
@@ -250,22 +242,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                                 Image.asset('assets/images/coin.png')
                               ],
                             )),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.15),
-                      child: PiggySlider(
-                        value: child.feedPerCoin.toDouble(),
-                        maxMinTextTrailing: Text('€'),
-                        onChangeEnding: (val) async =>
-                            await _changeChildSavingPerFeed(val.toInt()),
-                        maxVal: 10,
-                        onChange: (val) {
-                          setState(() {
-                            child.feedPerCoin = val.toInt();
-                          });
-                        },
                       ),
                     ),
                     Padding(

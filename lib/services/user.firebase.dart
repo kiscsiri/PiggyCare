@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future feedPiggyDatabase(FeedPiggy action) async {
   var value = await Firestore.instance
-      .collection('donators')
+      .collection('users')
       .where("id", isEqualTo: action.id)
       .getDocuments();
 
@@ -45,16 +45,16 @@ Future feedPiggyDatabase(FeedPiggy action) async {
 
   user.lastFeed = DateTime.now();
 
-  if (!isBefejezteMarAzEtetesElott && piggy.money >= piggy.targetPrice) {
-    await UserPostService.createUserPiggyPost(UserPost(
-        likes: 0,
-        postedDate: DateTime.now(),
-        user: doc.reference,
-        text:
-            '${user.name} összegyűjtötte a pénzt egy "${piggy.item}" nevű tárgyra! Gratuláció a megtakarításhoz! :)'));
-  }
+  // if (!isBefejezteMarAzEtetesElott && piggy.money >= piggy.targetPrice) {
+  //   await UserPostService.createUserPiggyPost(UserPost(
+  //       likes: 0,
+  //       postedDate: DateTime.now(),
+  //       user: doc.reference,
+  //       text:
+  //           '${user.name} összegyűjtötte a pénzt egy "${piggy.item}" nevű tárgyra! Gratuláció a megtakarításhoz! :)'));
+  // }
   Firestore.instance
-      .collection('donators')
+      .collection('users')
       .document(doc.documentID)
       .updateData(user.toJson());
 }

@@ -18,7 +18,7 @@ class _PiggyPageState extends State<PiggyPage> with TickerProviderStateMixin {
     var store = StoreProvider.of<AppState>(context);
 
     return new Scaffold(
-        body: KidPiggyWidget(
+        body: PiggyWidget(
       initialPiggy: store.state.user.piggies
                   .where((element) => element.isApproved ?? false)
                   .length !=

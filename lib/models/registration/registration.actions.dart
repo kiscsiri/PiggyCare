@@ -16,13 +16,17 @@ class AddPiggy extends RegistrationAction {
   AddPiggy(this.piggy);
 }
 
-class SetFromOauth extends RegistrationAction {
+class SetFromRegistrationForm extends RegistrationAction {
   final String email;
-  final String username;
+  final String taxNumber;
+  final String businessNumber;
+  final String operationLocation;
+  final String name;
   final String uid;
   final String pictureUrl;
 
-  SetFromOauth(this.email, this.username, this.uid, this.pictureUrl);
+  SetFromRegistrationForm(this.email, this.name, this.uid, this.pictureUrl,
+      this.taxNumber, this.businessNumber, this.operationLocation);
 }
 
 class SetPhoneNumber extends RegistrationAction {

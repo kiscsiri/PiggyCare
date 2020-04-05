@@ -53,7 +53,13 @@ Future<int> showPiggySelector(
                     ],
                   ),
                 ),
-                Image.asset('assets/images/business.png'),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Image.asset(
+                    'assets/images/business.png',
+                    scale: 0.6,
+                  ),
+                ),
                 Form(
                   key: _formKey,
                   child: Container(

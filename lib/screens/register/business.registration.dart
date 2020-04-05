@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piggycare/localization/Localizations.dart';
@@ -23,7 +24,9 @@ class _BusinessRegistrationScreenState
     extends State<BusinessRegistrationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _useGatheredBusinessPlace = true;
+  bool _businessFound = false;
   String _message = '';
+  var _businessData;
 
   final _registrationFormKey = new GlobalKey<FormState>();
 
@@ -32,10 +35,14 @@ class _BusinessRegistrationScreenState
   final focusPassword = FocusNode();
   final focusBusinessName = FocusNode();
   final focusLocationPlace = FocusNode();
+  final focusEmail = FocusNode();
 
   TextEditingController _businessNameController = new TextEditingController();
   TextEditingController _taxNumberController = TextEditingController();
   TextEditingController _businessNumberController = TextEditingController();
+  TextEditingController _operationPlaceController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
@@ -50,24 +57,53 @@ class _BusinessRegistrationScreenState
     super.dispose();
   }
 
+  Future searchBusiness() async {
+    setState(() {
+      _businessFound = true;
+    });
+    return;
+
+    var business;
+
+    // TODO - Api meghívás a cég lekérdezésre, a businessData pedig majd a visszatérő adatokat tárolja
+    if (business == null) {
+      await showAlert(context, "Nem található a megadott cég!");
+      return;
+    }
+    setState(() {
+      _businessFound = true;
+    });
+  }
+
   Future<void> _register(BuildContext context, Store<AppState> store) async {
     try {
+      var businessData;
       var res = await _auth.createUserWithEmailAndPassword(
-          email: _businessNumberController.text,
-          password: _taxNumberController.text);
+          email: _emailController.text, password: _passwordController.text);
 
-      store.dispatch(SetFromOauth(
+      store.dispatch(SetFromRegistrationForm(
           res.user.email,
           res.user.displayName ?? _businessNameController.text,
           res.user.uid,
-          res.user.photoUrl));
+          res.user.photoUrl,
+          _taxNumberController.text,
+          _businessNumberController.text,
+          _useGatheredBusinessPlace
+              ? businessData.place
+              : _operationPlaceController.text));
 
       await AuthenticationService.registerUser(store);
 
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => new MainPage()));
-    } on Exception {
-      await showAlert(context, "Létezik már az adott e-mail cím");
+    } on PlatformException catch (err) {
+      if (err.code == "ERROR_INVALID_EMAIL")
+        await showAlert(
+            context, "Az e-mail cím nem megfelelően formátumban van");
+      if (err.code == "ERROR_EMAIL_ALREADY_IN_USE")
+        await showAlert(context, "Létezik már az adott e-mail cím");
+      if (err.code == "ERROR_WEAK_PASSWORD")
+        await showAlert(context, "Kérem adjon meg erősebb jelszót!");
     }
   }
 
@@ -81,7 +117,7 @@ class _BusinessRegistrationScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 15.0),
                 child: new Text(
                   loc.trans("final_step"),
                   style: Theme.of(context).textTheme.headline2,
@@ -114,6 +150,7 @@ class _BusinessRegistrationScreenState
                 hintText: loc.trans("tax_number"),
                 focusNode: focusTaxNumber,
                 textInputAction: TextInputAction.go,
+                keyboardType: TextInputType.number,
                 textController: _businessNumberController,
                 width: MediaQuery.of(context).size.width * 0.7,
                 onSubmit: (val) async {
@@ -133,14 +170,36 @@ class _BusinessRegistrationScreenState
               PiggyInput(
                 inputIcon: FontAwesomeIcons.briefcase,
                 hintText: loc.trans("business_number"),
+                textInputAction: TextInputAction.go,
                 textController: _taxNumberController,
+                keyboardType: TextInputType.number,
                 focusNode: focusBusinessNumber,
                 width: MediaQuery.of(context).size.width * 0.7,
-                obscureText: true,
                 onSubmit: (value) async {
                   if (_registrationFormKey.currentState.validate()) {
-                    await _register(context, store);
+                    FocusScope.of(context).requestFocus(focusEmail);
                   }
+                  return "";
+                },
+                onValidate: (value) {
+                  if (value.isEmpty) {
+                    return loc.trans("required_field");
+                  }
+                  return null;
+                },
+                onErrorMessage: (error) {
+                  setState(() {});
+                },
+              ),
+              PiggyInput(
+                inputIcon: Icons.mail,
+                hintText: loc.trans("email"),
+                textController: _emailController,
+                textInputAction: TextInputAction.go,
+                focusNode: focusEmail,
+                width: MediaQuery.of(context).size.width * 0.7,
+                onSubmit: (value) async {
+                  FocusScope.of(context).requestFocus(focusPassword);
                   return "";
                 },
                 onValidate: (value) {
@@ -156,11 +215,17 @@ class _BusinessRegistrationScreenState
               PiggyInput(
                 inputIcon: Icons.lock_outline,
                 hintText: loc.trans("password"),
-                textController: _taxNumberController,
+                textController: _passwordController,
+                textInputAction: _useGatheredBusinessPlace
+                    ? TextInputAction.done
+                    : TextInputAction.go,
                 focusNode: focusPassword,
                 width: MediaQuery.of(context).size.width * 0.7,
                 obscureText: true,
                 onSubmit: (value) async {
+                  if (!_useGatheredBusinessPlace) {
+                    FocusScope.of(context).requestFocus(focusLocationPlace);
+                  }
                   if (_registrationFormKey.currentState.validate()) {
                     await _register(context, store);
                   }
@@ -193,10 +258,9 @@ class _BusinessRegistrationScreenState
               !_useGatheredBusinessPlace
                   ? PiggyInput(
                       inputIcon: FontAwesomeIcons.mapSigns,
-                      hintText: loc.trans("password"),
-                      textController: _taxNumberController,
+                      hintText: loc.trans("business_operation_place"),
+                      textController: _operationPlaceController,
                       width: MediaQuery.of(context).size.width * 0.7,
-                      obscureText: true,
                       focusNode: focusLocationPlace,
                       onSubmit: (value) async {
                         if (_registrationFormKey.currentState.validate()) {
@@ -220,10 +284,14 @@ class _BusinessRegistrationScreenState
                 style: new TextStyle(color: Colors.redAccent),
               ),
               PiggyButton(
-                  text: loc.trans("register"),
+                  text: _businessFound
+                      ? loc.trans("register")
+                      : loc.trans("search_businesses"),
                   onClick: () async {
                     if (_registrationFormKey.currentState.validate()) {
-                      await _register(context, store);
+                      _businessFound
+                          ? await _register(context, store)
+                          : await searchBusiness();
                     }
                   }),
             ]));
