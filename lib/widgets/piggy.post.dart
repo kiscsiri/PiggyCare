@@ -63,7 +63,12 @@ class _PiggyPostState extends State<PiggyPost> {
                     style: Theme.of(context).textTheme.headline1,
                   ),
                 ),
-                Text(widget.post.text),
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: Text(
+                      widget.post.text,
+                      textAlign: TextAlign.left,
+                    )),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
