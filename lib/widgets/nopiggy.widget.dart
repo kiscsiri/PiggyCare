@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/widgets/piggy.button.dart';
 
@@ -42,16 +42,17 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
               style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center,
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 1.2,
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: widget.type == UserType.donator
-                  ? Image.asset('assets/images/create_child.png')
-                  : Image.asset('assets/images/adult_create.png'),
-            ),
-            PiggyButton(
-              text: loc.trans('create_money_box'),
-              onClick: () => _createPiggy(),
+            Column(
+              children: <Widget>[
+                PiggyButton(
+                  text: "KÖZELBEN LÉVŐK",
+                  onClick: () => _createPiggy(),
+                ),
+                PiggyButton(
+                  text: "VÁLLALKOZÁS KERESÉSE",
+                  onClick: () => _createPiggy(),
+                ),
+              ],
             ),
           ],
         ),

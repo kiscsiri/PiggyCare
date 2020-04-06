@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/registration/registration.export.dart';
 import 'package:piggycare/screens/register/business.registration.dart';

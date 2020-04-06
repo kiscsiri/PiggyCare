@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/models/user/user.export.dart';
 
 class UserServices {

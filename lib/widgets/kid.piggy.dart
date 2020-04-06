@@ -6,8 +6,10 @@ import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
 import 'package:piggycare/models/piggy/piggy.export.dart';
 import 'package:piggycare/models/user/user.export.dart';
+import 'package:piggycare/screens/search.user.dart';
 import 'package:piggycare/services/notification.services.dart';
 import 'package:piggycare/services/piggy.page.services.dart';
+import 'package:piggycare/services/user.services.dart';
 import 'package:piggycare/widgets/nopiggy.widget.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
@@ -125,14 +127,32 @@ class _PiggyWidgetState extends State<PiggyWidget>
     }
 
     setState(() {
-      piggy = store.state.user.piggies
-          .where((element) => element.isApproved ?? false)
-          .singleWhere((p) => p.id == piggy.id);
+      // piggy.currentSaving += 10;
+      // piggy = store.state.user.piggies
+      //     .where((element) => element.isApproved ?? false)
+      //     .singleWhere((p) => p.id == piggy.id);
     });
   }
 
   _changeCreatePiggyState() async {
-    await showCreatePiggyModal(context);
+    var store = StoreProvider.of<AppState>(context);
+    var searchString = await showUserAddModal(context, store);
+
+    if (searchString.isNotEmpty) {
+      var userId = await Navigator.push<String>(
+          context,
+          MaterialPageRoute(
+              builder: (context) => new UserSearchScreen(
+                    currentUserId: store.state.user.id,
+                    userType: store.state.user.userType,
+                    searchString: searchString,
+                    isNearbySearch: false,
+                  )));
+      var user = await UserServices.getUserById(userId);
+      setState(() {
+        if (user.piggies.first != null) piggy = user.piggies.first;
+      });
+    }
   }
 
   _changePiggyData(index, Store<AppState> store) {
@@ -156,16 +176,20 @@ class _PiggyWidgetState extends State<PiggyWidget>
     var store = StoreProvider.of<AppState>(context);
 
     var user = store.state.user;
-    var validatedPiggies =
-        user.piggies.where((element) => element.isApproved ?? false);
 
+    var validatedPiggies =
+        user.piggies.where((element) => element.isApproved ?? false).toList();
+
+    if (piggy != null) {
+      validatedPiggies.add(piggy);
+    }
     bool _isDisabled = piggy == null ? false : !piggy.isFeedAvailable;
     if (piggy == null && validatedPiggies.length != 0) {
       piggy = validatedPiggies
           .where((element) => element.isApproved ?? false)
           .first;
     }
-    _coinVisible = user.userType == UserType.business; // Hiabáa a warn, megy
+    _coinVisible = user.userType == UserType.donator;
 
     String period;
     if (user.period == Period.daily) {

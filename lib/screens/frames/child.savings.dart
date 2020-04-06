@@ -66,82 +66,56 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
           ),
         ],
       ),
-      StoreConnector<AppState, AppState>(
-        converter: (store) => store.state,
-        builder: (context, store) => Container(
-          height: MediaQuery.of(context).size.height * 1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      loc.trans('savings'),
-                      style: Theme.of(context).textTheme.headline3,
+      Center(
+        child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (context, store) => Container(
+            height: MediaQuery.of(context).size.height * 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        loc.trans('savings'),
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
                     ),
-                  ),
-                  Text(
-                    loc.trans('choose_money_box'),
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
-              ),
-              SavingForListWidget(
-                savingPerFeed: store.user.feedPerPeriod,
-              ),
-              Column(
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.9,
-                    child: Container(
-                        color: Colors.grey[300],
+                    Text(
+                      loc.trans('choose_money_box'),
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                  ],
+                ),
+                SavingForListWidget(
+                  savingPerFeed: store.user.feedPerPeriod,
+                ),
+                Column(
+                  children: <Widget>[
+                    Opacity(
+                      opacity: 0.9,
+                      child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.05,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '${store.user.feedPerPeriod} € = 1 ',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Image.asset('assets/images/coin.png')
-                          ],
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                    child: store.user.userType == UserType.donator
-                        ? Container()
-                        : PiggySlider(
-                            maxMinTextTrailing: Text(
-                              '€',
-                            ),
-                            maxVal: 10.toDouble(),
-                            onChange: (val) {
-                              setState(() {
-                                savingPerFeed = val.toInt();
-                              });
-                            },
-                            onChangeEnding: (val) async {
-                              reducerStore.dispatch(UpdateUserData(UserData(
-                                  period: store.user.period,
-                                  feedPerPeriod: val.toInt())));
-                            },
-                            value: savingPerFeed.toDouble(),
-                          ),
-                  ),
-                ],
-              ),
-              PiggyButton(
-                  text: "MALACPERSELY LÉTREHOZÁSA",
-                  disabled: false,
-                  onClick: () async {
-                    await showCreatePiggyModal(context);
-                    setState(() {});
-                  })
-            ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                    ),
+                  ],
+                ),
+                PiggyButton(
+                    text: "MALACPERSELY LÉTREHOZÁSA",
+                    disabled: false,
+                    onClick: () async {
+                      await showCreatePiggyModal(context);
+                      setState(() {});
+                    })
+              ],
+            ),
           ),
         ),
       )

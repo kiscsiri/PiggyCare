@@ -36,15 +36,14 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
 
     var bigcoin = Container(
         child: Image.asset(
-          "assets/animations/coin.gif",
-          gaplessPlayback: false,
-          width: coinSizeBig,
-          height: coinSizeBig,
-        ));
+      "assets/animations/coin.gif",
+      gaplessPlayback: false,
+      width: coinSizeBig,
+      height: coinSizeBig,
+    ));
 
     var smallCoin = Image.asset("assets/animations/coin.gif",
-        width: coinSizeSmall,
-        height: coinSizeSmall);
+        width: coinSizeSmall, height: coinSizeSmall);
 
     return Positioned(
       top: (MediaQuery.of(context).size.width * widget.coinController.value) -

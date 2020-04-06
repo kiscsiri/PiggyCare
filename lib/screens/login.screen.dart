@@ -212,15 +212,17 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 25.0, top: 5),
                         child: PiggyFacebookButton(
+                          disabled: true,
                           text: "Facebook",
-                          onClick: () async => await _signInWithFacebook(),
+                          onClick: null,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 25.0, top: 5),
                         child: PiggyGoogleButton(
+                          disabled: true,
                           text: "Google",
-                          onClick: () async => await _signInWithGoogle(),
+                          onClick: null,
                         ),
                       ),
                     ],

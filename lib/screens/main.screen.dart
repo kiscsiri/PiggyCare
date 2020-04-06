@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/appState.dart';
 import 'package:piggycare/models/navigation.redux.dart';

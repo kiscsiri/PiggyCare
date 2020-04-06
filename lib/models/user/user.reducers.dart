@@ -35,37 +35,37 @@ AppState updateUser(AppState state, UpdateUserData action) {
 AppState feedPiggy(AppState state, FeedPiggy action) {
   state.user.currentFeedTime++;
 
-  if (state.user.currentFeedTime >= 5 &&
-      state.user.piggyLevel != PiggyLevel.Teen) {
-    state.user.piggyLevel =
-        PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
-    state.user.currentFeedTime = 0;
-  } else {
-    state.user.piggyLevel = state.user.piggyLevel;
-  }
+  // if (state.user.currentFeedTime >= 5 &&
+  //     state.user.piggyLevel != PiggyLevel.Teen) {
+  //   state.user.piggyLevel =
+  //       PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
+  //   state.user.currentFeedTime = 0;
+  // } else {
+  //   state.user.piggyLevel = state.user.piggyLevel;
+  // }
 
-  if (state.user.currentFeedTime >= 5 &&
-      state.user.piggyLevel == PiggyLevel.Teen) {}
+  // if (state.user.currentFeedTime >= 5 &&
+  //     state.user.piggyLevel == PiggyLevel.Teen) {}
 
-  var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
-  var piggy = state.user.piggies[index];
+  // var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
+  // var piggy = state.user.piggies[index];
 
-  state.user.saving = state.user.saving + state.user.feedPerPeriod;
+  // state.user.saving = state.user.saving + state.user.feedPerPeriod;
 
-  state.user.money = state.user.money - state.user.feedPerPeriod;
-  state.user.lastFeed = DateTime.now();
+  // state.user.money = state.user.money - state.user.feedPerPeriod;
+  // state.user.lastFeed = DateTime.now();
 
-  state.user.piggies[index] = Piggy(
-      currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
-      item: piggy.item,
-      isApproved: piggy.isApproved,
-      piggyLevel: state.user.piggyLevel,
-      doubleUp: piggy.doubleUp,
-      money: piggy.money,
-      userId: piggy.userId,
-      isFeedAvailable: true,
-      id: piggy.id,
-      targetPrice: piggy.targetPrice);
+  // state.user.piggies[index] = Piggy(
+  //     currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
+  //     item: piggy.item,
+  //     isApproved: piggy.isApproved,
+  //     piggyLevel: state.user.piggyLevel,
+  //     doubleUp: piggy.doubleUp,
+  //     money: piggy.money,
+  //     userId: piggy.userId,
+  //     isFeedAvailable: true,
+  //     id: piggy.id,
+  //     targetPrice: piggy.targetPrice);
 
   return new AppState.fromAppState(state);
 }

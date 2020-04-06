@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/enums/level.dart';
 import 'package:piggycare/enums/period.dart';
-import 'package:piggycare/enums/userType.dart';
 import 'package:piggycare/models/chore/chore.export.dart';
 import 'package:piggycare/models/piggy/piggy.export.dart';
 import 'package:piggycare/models/registration/registration.model.dart';

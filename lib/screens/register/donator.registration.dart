@@ -30,8 +30,10 @@ class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
   final focusEmail = FocusNode();
   final focusPassword = FocusNode();
   final focusUserName = FocusNode();
+  final focusFullName = FocusNode();
 
   TextEditingController _userNameController = new TextEditingController();
+  TextEditingController _fullNameController = new TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
 
@@ -91,7 +93,8 @@ class _DonatorRegistrationScreenState extends State<DonatorRegistrationScreen> {
               PiggyInput(
                 inputIcon: FontAwesomeIcons.user,
                 hintText: loc.trans("full_name"),
-                textController: _userNameController,
+                focusNode: focusFullName,
+                textController: _fullNameController,
                 textInputAction: TextInputAction.go,
                 onSubmit: (val) async {
                   FocusScope.of(context).requestFocus(focusUserName);

@@ -14,34 +14,34 @@ Future feedPiggyDatabase(FeedPiggy action) async {
 
   var doc = value.documents.first;
   var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
-  var piggy =
-      user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
+  // var piggy =
+  //     user.piggies.singleWhere((p) => p.id == action.piggyId, orElse: null);
 
-  var isBefejezteMarAzEtetesElott = piggy.money >= piggy.targetPrice;
+  // var isBefejezteMarAzEtetesElott = piggy.money >= piggy.targetPrice;
 
-  piggy.money = piggy.money + user.feedPerPeriod;
-  piggy.currentSaving = piggy.currentSaving + user.feedPerPeriod;
+  // piggy.money = piggy.money + user.feedPerPeriod;
+  // piggy.currentSaving = piggy.currentSaving + user.feedPerPeriod;
 
   user.saving = user.saving + user.feedPerPeriod;
 
   user.currentFeedTime = ++doc.data['currentFeedTime'];
   var newPiggyLevel = 0;
 
-  if (user.currentFeedTime >= 5) {
-    user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
-    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
-    user.currentFeedTime = 0;
-  } else {
-    newPiggyLevel = user.piggyLevel.index;
-    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
-    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
-  }
+  // if (user.currentFeedTime >= 5) {
+  //   user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
+  //   piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
+  //   user.currentFeedTime = 0;
+  // } else {
+  //   newPiggyLevel = user.piggyLevel.index;
+  //   user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  //   piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  // }
 
-  if (newPiggyLevel > 2) {
-    newPiggyLevel = 2;
-    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
-    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
-  }
+  // if (newPiggyLevel > 2) {
+  //   newPiggyLevel = 2;
+  //   user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  //   piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
+  // }
 
   user.lastFeed = DateTime.now();
 

@@ -1,4 +1,4 @@
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/models/SavingSchedule.dart';
 import 'package:piggycare/models/piggy/piggy.export.dart';
 

@@ -234,7 +234,7 @@ Future<String> showUserAddModal(
                       style: Theme.of(context).textTheme.headline2,
                     ),
                     PiggyInput(
-                      hintText: "A családtag...",
+                      hintText: "Név vagy E-mail",
                       onValidate: (val) {
                         if (val.isEmpty) {
                           return "Can't be empty!";
@@ -251,7 +251,10 @@ Future<String> showUserAddModal(
                     onClick: () => Navigator.of(context).pop(),
                   )
                 ],
-                title: Text(loc.trans("search_user")),
+                title: Text(
+                  "Vállalkozás keresése",
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           );
@@ -282,8 +285,8 @@ Future<void> loadAnimation(
     BuildContext context,
     Store<AppState> store,
     int piggyId) async {
-  var piggy =
-      store.state.user.piggies.singleWhere((element) => element.id == piggyId);
+  // var piggy =
+  //     store.state.user.piggies.singleWhere((element) => element.id == piggyId);
 
   Future.delayed(Duration(milliseconds: 250), () {
     AudioCache().play("coin_sound.mp3");
@@ -292,7 +295,7 @@ Future<void> loadAnimation(
 
   var prefs = await SharedPreferences.getInstance();
   var feedCtr = prefs.getInt("animationCount");
-  if (feedCtr > getMaxAnimationIndex(piggy.piggyLevel)) {
+  if (feedCtr > getMaxAnimationIndex(PiggyLevel.Child)) {
     prefs.setInt('animationCount', 1);
     feedCtr = 1;
   }
@@ -305,7 +308,7 @@ Future<void> loadAnimation(
 
   VideoPlayerController vidController;
   vidController = VideoPlayerController.asset(
-    'assets/animations/${levelStringValue(piggy.piggyLevel)}-Feed$feedCtr.mp4',
+    'assets/animations/${levelStringValue(PiggyLevel.Child)}-Feed$feedCtr.mp4',
   );
   await vidController.initialize();
   vidController.addListener(() {

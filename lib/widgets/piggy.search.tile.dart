@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:piggycare/models/user/user.export.dart';
 
 class SearchTile extends StatelessWidget {
-  const SearchTile({Key key, @required this.user, this.currentUserId})
+  const SearchTile(
+      {Key key, @required this.user, this.currentUserId, this.onSelect})
       : super(key: key);
 
   final UserData user;
   final String currentUserId;
-
-  _navigateToBusiness() async {}
+  final Function(String) onSelect;
+  _navigateToBusiness(businessId) async {
+    onSelect(businessId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +51,9 @@ class SearchTile extends StatelessWidget {
             title: Text(user.name ?? user.email),
             trailing: FlatButton(
                 color: Theme.of(context).primaryColor,
-                onPressed: () async => await _navigateToBusiness(),
+                onPressed: () async => await _navigateToBusiness(user.id),
                 child: Text(
-                  "Add+",
+                  "Donate+",
                   style: TextStyle(color: Colors.white),
                 ))),
       ),

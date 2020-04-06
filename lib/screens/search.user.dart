@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggycare/enums/userType.dart';
+import 'package:piggycare/Enums/userType.dart';
+
 import 'package:piggycare/localization/Localizations.dart';
 import 'package:piggycare/models/user/user.export.dart';
 import 'package:piggycare/services/user.services.dart';
@@ -96,6 +97,9 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                                       .map((u) => SearchTile(
                                             user: u,
                                             currentUserId: widget.currentUserId,
+                                            onSelect: (businessId) =>
+                                                Navigator.of(context)
+                                                    .pop(businessId),
                                           ))
                                       .toList());
                         }

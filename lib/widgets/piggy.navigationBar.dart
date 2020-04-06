@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggycare/enums/userType.dart';
-import 'package:piggycare/localization/Localizations.dart';
+import 'package:piggycare/Enums/userType.dart';
 import 'package:piggycare/models/navigation.redux.dart';
 import 'package:redux/redux.dart';
 
@@ -21,25 +20,26 @@ class PiggyNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var loc = PiggyLocalizations.of(context);
     return BottomNavigationBar(
       onTap: (index) => onNavigateTap(index),
       type: BottomNavigationBarType.fixed,
       items: [
         new BottomNavigationBarItem(
-            title: new Text("Piggy"),
+            title: new Text(
+                userType == UserType.business ? "Piggy" : "Adományozás"),
             icon: Icon(
               Icons.home,
             )),
-        new BottomNavigationBarItem(
-            title: new Text("Perselyek"),
-            icon: Icon(
-              Icons.attach_money,
-            )),
+        if (userType == UserType.business)
+          new BottomNavigationBarItem(
+              title: new Text("Perselyek"),
+              icon: Icon(
+                Icons.attach_money,
+              )),
         new BottomNavigationBarItem(
             title: userType == UserType.business
                 ? Text('Adományok')
-                : Text(loc.trans('tasks')),
+                : Text('Adományaim'),
             icon: Icon(FontAwesomeIcons.handHoldingUsd)),
       ],
       currentIndex: store.state.index,

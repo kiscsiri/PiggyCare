@@ -89,7 +89,7 @@ class _BusinessRegistrationScreenState
           _taxNumberController.text,
           _businessNumberController.text,
           _useGatheredBusinessPlace
-              ? businessData.place
+              ? (businessData?.place ?? "")
               : _operationPlaceController.text));
 
       await AuthenticationService.registerUser(store);
