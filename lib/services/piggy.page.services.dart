@@ -1,7 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -11,6 +11,7 @@ import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
 import 'package:piggybanx/widgets/double.information.modal.dart';
+import 'package:piggybanx/widgets/no.parent.modal.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
@@ -31,7 +32,7 @@ Future<int> showPiggySelector(
     barrierDismissible: true,
     builder: (BuildContext context) {
       return PiggyModal(
-          vPadding: MediaQuery.of(context).size.height * 0.2,
+          vPadding: MediaQuery.of(context).size.height * 0.1,
           title: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(loc.trans('selector_title'),
@@ -53,7 +54,9 @@ Future<int> showPiggySelector(
                     ],
                   ),
                 ),
-                Image.asset('assets/images/business.png'),
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Image.asset('assets/images/business.png')),
                 Form(
                   key: _formKey,
                   child: Container(
@@ -158,6 +161,15 @@ Future<bool> showAckDialog(BuildContext context, Widget message,
 
 Future<void> showCreateTask(
     BuildContext context, Store<AppState> store, ChildDto child) async {
+  if (store.state.user.parentId == null) {
+    await showDialog<Piggy>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return NoParentModal();
+        });
+    return;
+  }
   await showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -178,6 +190,16 @@ Future<bool> showDoubleInformationModel(BuildContext context) async {
 
 Future<void> showCreatePiggyModal(BuildContext context,
     [String childId]) async {
+  var user = StoreProvider.of<AppState>(context).state.user;
+  if (user.parentId == null && user.userType == UserType.child) {
+    await showDialog<Piggy>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return NoParentModal();
+        });
+    return;
+  }
   var piggy = await showDialog<Piggy>(
       context: context,
       barrierDismissible: true,
@@ -186,10 +208,9 @@ Future<void> showCreatePiggyModal(BuildContext context,
           childId: childId,
         );
       });
-  var store = StoreProvider.of<AppState>(context);
-  if (store.state.user.userType == UserType.child &&
-      store.state.user.piggies.length == 0)
-    await showChildrenPiggyInfo(context);
+  if (user.userType == UserType.child &&
+      user.piggies.length == 0 &&
+      piggy != null) await showChildrenPiggyInfo(context);
 }
 
 Future<void> showAddNewChildModal(
@@ -223,15 +244,15 @@ Future<String> showUserAddModal(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
-                      "Keresés e-mail vagy név alapján",
+                      loc.trans('search_by_user_data'),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headline2,
                     ),
                     PiggyInput(
-                      hintText: "A családtag...",
+                      hintText: loc.trans('family_hint'),
                       onValidate: (val) {
                         if (val.isEmpty) {
-                          return "Can't be empty!";
+                          return loc.trans('required');
                         }
                         return null;
                       },
@@ -268,69 +289,6 @@ int getMaxAnimationIndex(PiggyLevel level) {
     return 2;
   else
     return 0;
-}
-
-Future<void> loadAnimation(
-    bool isLevelUp,
-    TickerProviderStateMixin tickerProviderStateMixin,
-    BuildContext context,
-    Store<AppState> store,
-    int piggyId) async {
-  var piggy =
-      store.state.user.piggies.singleWhere((element) => element.id == piggyId);
-
-  Future.delayed(Duration(milliseconds: 250), () {
-    AudioCache().play("coin_sound.mp3");
-    Vibration.vibrate(duration: 750);
-  });
-
-  var prefs = await SharedPreferences.getInstance();
-  var feedCtr = prefs.getInt("animationCount");
-  if (feedCtr > getMaxAnimationIndex(piggy.piggyLevel)) {
-    prefs.setInt('animationCount', 1);
-    feedCtr = 1;
-  }
-
-  if (isLevelUp) {
-    prefs.setInt("animationCount", 1);
-  } else {
-    prefs.setInt("animationCount", feedCtr + 1);
-  }
-
-  VideoPlayerController vidController;
-  vidController = VideoPlayerController.asset(
-    'assets/animations/${levelStringValue(piggy.piggyLevel)}-Feed$feedCtr.mp4',
-  );
-  await vidController.initialize();
-  vidController.addListener(() {
-    if (vidController.value.position >= vidController.value.duration) {
-      Navigator.of(context).pop();
-    }
-  });
-  vidController.play();
-  await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async {
-            vidController.dispose();
-            imageCache.clear();
-            return true;
-          },
-          child: Container(
-            child: Hero(
-              tag: "piggy",
-              child: AspectRatio(
-                aspectRatio: vidController.value.aspectRatio,
-                child: VideoPlayer(vidController),
-              ),
-            ),
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: MediaQuery.of(context).size.height,
-            color: Color(0xFFe25997),
-          ),
-        );
-      });
 }
 
 Future<void> exitStartAnimation(

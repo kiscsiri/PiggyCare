@@ -35,7 +35,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
     await UserPostService.createUserPiggyPost(UserPost(
         likes: 0,
-        postedDate: DateTime.now(),
+        postedDate: Timestamp.now(),
         user: userSnap.reference,
         text:
             '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
@@ -97,7 +97,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
 
       await UserPostService.createUserPiggyPost(UserPost(
           likes: 0,
-          postedDate: DateTime.now(),
+          postedDate: Timestamp.now(),
           user: user.reference,
           text:
               '${userData.name} épp befejezte a "${task.title}" nevű feladatát!'));

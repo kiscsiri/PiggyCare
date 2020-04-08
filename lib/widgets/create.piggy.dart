@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
@@ -48,14 +48,14 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
         targetPrice: int.tryParse(priceController.text).round(),
         piggyLevel: PiggyLevel.Baby,
       ));
+      await PiggyServices.createPiggyForUser(
+          context, action.piggy, widget.childId ?? store.state.user.id);
 
       store.dispatch(action);
 
       var add = AddPiggy(store.state.tempPiggy);
       store.dispatch(add);
 
-      await PiggyServices.createPiggyForUser(
-          action.piggy, widget.childId ?? store.state.user.id);
       if (store.state.user.userType == UserType.child) {
         await NotificationServices.sendChildNewPiggy(context, action.piggy);
       }
@@ -77,6 +77,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
         ),
         content: Form(
           key: _createPiggyFormKey,
+          autovalidate: false,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -124,16 +125,33 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
                       Padding(
                         padding: const EdgeInsets.only(top: 0.0),
                         child: Text(
-                          "Vagy add meg kézzel",
+                          loc.trans('or_give_it_manually'),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       PiggyInput(
-                        hintText: "Értéke",
+                        hintText: loc.trans('value'),
                         textController: priceController,
+                        onSubmit: (val) async {
+                          if (int.tryParse(val) > 1000) {
+                            priceController.value =
+                                TextEditingValue(text: 1000.toString());
+                          } else if (int.tryParse(val) < 1) {
+                            priceController.value =
+                                TextEditingValue(text: 1.toString());
+                          }
+                          return "";
+                        },
                         onValidate: (val) {
+                          if (int.tryParse(val) > 1000) {
+                            priceController.value =
+                                TextEditingValue(text: 1000.toString());
+                          } else if (int.tryParse(val) < 1) {
+                            priceController.value =
+                                TextEditingValue(text: 1.toString());
+                          }
                           if (int.tryParse(val) == null) {
-                            return "Kérlek számot adj meg!";
+                            return loc.trans('only_number');
                           } else {
                             return null;
                           }

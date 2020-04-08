@@ -26,7 +26,6 @@ AppState handleUserActions(AppState appState, UserAction action) {
   } else if (action is InitUserData) {
     return initUser(appState, action);
   } else if (action is FeedPiggy) {
-    feedPiggyDatabase(action);
     return feedPiggy(appState, action);
   } else if (action is SaveSettingsAction) {
     return appState;

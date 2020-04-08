@@ -4,8 +4,8 @@ class PaginationHelper {
   final int currentSize;
   final int fetchNumber;
   final String startAtParameter;
-  final DocumentSnapshot lastDocument;
+  final Timestamp lastPostDate;
 
   PaginationHelper(this.currentSize, this.fetchNumber, this.startAtParameter,
-      this.lastDocument);
+      this.lastPostDate);
 }

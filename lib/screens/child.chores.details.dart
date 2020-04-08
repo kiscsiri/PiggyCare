@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
@@ -12,7 +12,6 @@ import 'package:piggybanx/widgets/parent.chore.input.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
-import 'package:provider/provider.dart';
 
 class ChildDetailsWidget extends StatefulWidget {
   const ChildDetailsWidget(
@@ -185,7 +184,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
         name: p.name,
         price: (child.feedPerCoin == 0
                 ? "∞"
-                : (p.price - p.saving) ~/ child.feedPerCoin)
+                : ((p.price - p.saving) / child.feedPerCoin).ceil())
             .toString(),
         saving: p.saving,
         selected: false,

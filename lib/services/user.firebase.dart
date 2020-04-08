@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 
@@ -6,7 +8,8 @@ import '../models/user/user.export.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future feedPiggyDatabase(FeedPiggy action) async {
+Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
+  var loc = PiggyLocalizations.of(context);
   var value = await Firestore.instance
       .collection("users")
       .where("id", isEqualTo: action.id)
@@ -51,10 +54,10 @@ Future feedPiggyDatabase(FeedPiggy action) async {
   if (!isBefejezteMarAzEtetesElott && piggy.money >= piggy.targetPrice) {
     await UserPostService.createUserPiggyPost(UserPost(
         likes: 0,
-        postedDate: DateTime.now(),
+        postedDate: Timestamp.now(),
         user: doc.reference,
         text:
-            '${user.name} összegyűjtötte a pénzt egy "${piggy.item}" nevű tárgyra! Gratuláció a megtakarításhoz! :)'));
+            '${user.name} ${loc.trans('collected_the_money')} "${piggy.item}" ${loc.trans('for_item')}! ${loc.trans('congrats_on_saving')} :)'));
   }
   Firestore.instance
       .collection('users')

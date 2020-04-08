@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piggybanx/models/appState.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/startup.screen.dart';

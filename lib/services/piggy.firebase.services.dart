@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 
 class PiggyServices {
-  static Future<void> createPiggyForUser(Piggy piggy, String userId) async {
+  static Future<void> createPiggyForUser(
+      BuildContext context, Piggy piggy, String userId) async {
+    var loc = PiggyLocalizations.of(context);
+
     var value = await Firestore.instance
         .collection("users")
         .where("id", isEqualTo: userId)
@@ -20,9 +25,9 @@ class PiggyServices {
       UserPostService.createUserPiggyPost(UserPost(
           likes: 0,
           text: user.name +
-              " elkezdett gyűjteni az alábbi dologra: " +
+              " ${loc.trans('started_collection_for')} " +
               piggy.item,
-          postedDate: DateTime.now(),
+          postedDate: Timestamp.now(),
           user: doc.reference));
     }
 
@@ -32,7 +37,9 @@ class PiggyServices {
         .updateData(user.toJson());
   }
 
-  static Future<void> validatePiggy(int piggyId, String userId) async {
+  static Future<void> validatePiggy(
+      BuildContext context, int piggyId, String userId) async {
+    var loc = PiggyLocalizations.of(context);
     var value = await Firestore.instance
         .collection("users")
         .where("id", isEqualTo: userId)
@@ -46,8 +53,9 @@ class PiggyServices {
 
     UserPostService.createUserPiggyPost(UserPost(
         likes: 0,
-        text: user.name + " elkezdett gyűjteni erre: " + piggy.item,
-        postedDate: DateTime.now(),
+        text:
+            user.name + " ${loc.trans('started_collection_for')} " + piggy.item,
+        postedDate: Timestamp.now(),
         user: doc.reference));
 
     Firestore.instance

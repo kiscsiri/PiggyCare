@@ -42,7 +42,7 @@ class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
     } else {
       isRandomGenerated = false;
       return Image.asset(
-        'assets/images/Child-Normal.png',
+        'assets/images/${levelStringValue(piggy.piggyLevel)}-Normal.png',
         gaplessPlayback: true,
       );
     }

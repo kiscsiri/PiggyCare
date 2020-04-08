@@ -7,6 +7,13 @@ import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/services/services.export.dart';
+import 'package:video_player/video_player.dart';
+import 'package:piggybanx/enums/level.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:vibration/vibration.dart';
+
 import 'package:piggybanx/widgets/nopiggy.widget.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:redux/redux.dart';
@@ -31,6 +38,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     with TickerProviderStateMixin {
   AnimationController _controller;
   BehaviorSubject<bool> willAcceptStream;
+  VideoPlayerController vidController;
 
   Animation<double> _coinAnimation;
   Tween<double> _tween;
@@ -111,16 +119,80 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     super.dispose();
   }
 
+  videoListener() {
+    if (vidController.value.position >= vidController.value.duration) {
+      try {
+        Navigator.of(context).pop();
+      } catch (err) {
+        print("asd");
+      }
+    }
+  }
+
+  Future<void> loadAnimation(bool isLevelUp, BuildContext context,
+      Store<AppState> store, int piggyId) async {
+    var piggy = store.state.user.piggies
+        .singleWhere((element) => element.id == piggyId);
+
+    Future.delayed(Duration(milliseconds: 250), () {
+      AudioCache().play("coin_sound.mp3");
+      Vibration.vibrate(duration: 750);
+    });
+
+    var prefs = await SharedPreferences.getInstance();
+    var feedCtr = prefs.getInt("animationCount");
+    if (feedCtr > getMaxAnimationIndex(piggy.piggyLevel)) {
+      prefs.setInt('animationCount', 1);
+      feedCtr = 1;
+    }
+
+    if (isLevelUp) {
+      prefs.setInt("animationCount", 1);
+    } else {
+      prefs.setInt("animationCount", feedCtr + 1);
+    }
+
+    vidController = VideoPlayerController.asset(
+      'assets/animations/Teen-Feed2.mp4',
+    );
+    await vidController.initialize();
+    vidController.addListener(videoListener);
+    vidController.play();
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async {
+              vidController.dispose();
+              return true;
+            },
+            child: Container(
+              child: Hero(
+                tag: "piggy",
+                child: AspectRatio(
+                  aspectRatio: vidController.value.aspectRatio,
+                  child: VideoPlayer(vidController),
+                ),
+              ),
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height,
+              color: Color(0xFFe25997),
+            ),
+          );
+        });
+  }
+
   Future<void> _feedPiggy(int piggyId, Store<AppState> store) async {
     var tempLevel = store.state.user.piggyLevel;
-
-    store.dispatch(FeedPiggy(store.state.user.id, piggyId));
+    var action = FeedPiggy(store.state.user.id, piggyId);
+    store.dispatch(action);
+    await feedPiggyDatabase(context, action);
     NotificationServices.feedPiggy(store.state.user.id);
 
     if (tempLevel.index == store.state.user.piggyLevel.index) {
-      await loadAnimation(false, this, context, store, piggyId);
+      await loadAnimation(false, context, store, piggyId);
     } else {
-      await loadAnimation(true, this, context, store, piggyId);
+      await loadAnimation(true, context, store, piggyId);
     }
 
     setState(() {
@@ -142,7 +214,8 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
     });
   }
 
-  Future<void> selectPiggy(BuildContext context, Store<AppState> store) async {
+  Future<void> selectPiggy() async {
+    var store = StoreProvider.of<AppState>(context);
     var newId = await showPiggySelector(context, store);
     if (newId != null) {
       _changePiggyData(newId, store);
@@ -278,7 +351,7 @@ class _KidPiggyWidgetState extends State<KidPiggyWidget>
                                             vertical: 0.0, horizontal: 10),
                                         child: GestureDetector(
                                           onTap: () async =>
-                                              await selectPiggy(context, store),
+                                              await selectPiggy(),
                                           child: new Text(
                                               loc.trans('change_box'),
                                               textAlign: TextAlign.left,

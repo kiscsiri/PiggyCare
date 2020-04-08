@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 
 BoxDecoration piggyBackgroundDecoration(
     BuildContext context, UserType userType) {

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/models/userRequest/user.request.dart';
 import 'package:piggybanx/services/notification.services.dart';
@@ -83,7 +83,7 @@ class UserServices {
             .collection('userRequests')
             .add(request.userRequestToJson());
       } catch (err) {
-        throw Exception("Hiba történt!");
+        throw Exception("error");
       }
 
       if (sender.documents.length != 0) {
@@ -92,7 +92,7 @@ class UserServices {
         NotificationServices.newFriendRequest(toId, user.name);
       }
     } else {
-      throw Exception("Már elküldted az ismerős kérelmet az adott embernek!");
+      throw Exception("friend_equest_sent_already");
     }
   }
 
@@ -130,7 +130,7 @@ class UserServices {
           : UserData.fromFirebaseDocumentSnapshot(
               data.documents.first.data, data.documents.first.documentID);
     } catch (err) {
-      throw Exception("Hiba történt a felkérés elfogadása során");
+      throw Exception("error_during_accept");
     }
   }
 
@@ -183,7 +183,7 @@ class UserServices {
           return UserData.fromFirebaseDocumentSnapshot(
               value.data, value.documentID);
         } else {
-          throw Exception("Felhasználó nem található!");
+          throw Exception("user_not_found");
         }
       }
     } catch (err) {

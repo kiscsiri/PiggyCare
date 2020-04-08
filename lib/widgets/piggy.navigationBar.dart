@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:redux/redux.dart';
@@ -32,14 +32,14 @@ class PiggyNavigationBar extends StatelessWidget {
               Icons.home,
             )),
         new BottomNavigationBarItem(
-            title: new Text("Perselyek"),
+            title: new Text(loc.trans('piggy_banxs')),
             icon: Icon(
               Icons.attach_money,
             )),
         if (userType != UserType.individual)
           new BottomNavigationBarItem(
               title: userType == UserType.adult
-                  ? Text('Gyerek')
+                  ? Text(loc.trans('child'))
                   : Text(loc.trans('tasks')),
               icon: Icon(FontAwesomeIcons.clipboardCheck)),
         new BottomNavigationBarItem(

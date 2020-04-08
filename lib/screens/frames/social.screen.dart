@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/helpers/pagination.helper.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/widgets/piggy.post.dart';
@@ -16,23 +19,52 @@ class _PiggySocialState extends State<PiggySocial> {
   bool isLoading = false;
   List<PostDto> items = List<PostDto>();
 
+  Future _likePost(String postId, int index) async {
+    var store = StoreProvider.of<AppState>(context);
+    var documentId = store.state.user.documentId;
+    setState(() {
+      var item = items.singleWhere(
+          (element) => element.postId == postId && element.index == index);
+      item.likedByUserIds.add(documentId);
+      item.likesCount++;
+    });
+    await UserPostService.likePost(postId, documentId);
+  }
+
+  Future _dislikePost(String postId, index) async {
+    var store = StoreProvider.of<AppState>(context);
+    var documentId = store.state.user.documentId;
+    setState(() {
+      var item = items.singleWhere(
+          (element) => element.postId == postId && element.index == index);
+      item.likedByUserIds.removeWhere((element) => element == documentId);
+      item.likesCount--;
+    });
+    await UserPostService.removeLikeFromPost(
+        postId, store.state.user.documentId);
+  }
+
   Future _loadData(ScrollNotification scrollInfo) async {
+    int i = items.length;
     var posts = (await UserPostService.getUserPosts(PaginationHelper(
             items.length,
             5,
             "postedDate",
-            items.length != 0 ? items.last.documentSnapshot : null)))
-        .map((e) => UserPost.fromMap(e));
+            items.length != 0 ? items.last.postedDate : Timestamp.now())))
+        .map((e) => UserPost.fromMap(e, e.documentID));
 
     var mappedPosts = await Future.wait(posts.map((e) async {
       var userSnapshot = await e.user.get();
       return PostDto(
+          postId: e.id,
+          index: i++,
+          likedByUserIds: e.likedUserIds,
           text: e.text,
           likesCount: e.likes,
-          documentSnapshot: userSnapshot,
+          documentSnapshot: e.documentSnapshot,
           user: UserData.fromFirebaseDocumentSnapshot(
               userSnapshot.data, e.user.documentID),
-          postedDate: DateTime.now());
+          postedDate: Timestamp.now());
     }).toList());
     setState(() {
       isLoading = false;
@@ -44,22 +76,23 @@ class _PiggySocialState extends State<PiggySocial> {
 
   @override
   void initState() {
-    (UserPostService.getUserPosts(PaginationHelper(
-            items.length,
-            5,
-            "postedDate",
-            items.length != 0 ? items.last.documentSnapshot : null)))
-        .then((value) => value.map((e) => UserPost.fromMap(e)))
+    var i = 0;
+    (UserPostService.getUserPosts(PaginationHelper(items.length, 5,
+            "postedDate", items.length != 0 ? items.last.postedDate : null)))
+        .then((value) => value.map((e) => UserPost.fromMap(e, e.documentID)))
         .then((value) async {
       var mappedPosts = await Future.wait(value.map((e) async {
         var userSnapshot = await e.user.get();
         return PostDto(
             text: e.text,
+            likedByUserIds: e.likedUserIds,
+            postId: e.id,
+            index: i++,
             likesCount: e.likes,
             documentSnapshot: userSnapshot,
             user: UserData.fromFirebaseDocumentSnapshot(
                 userSnapshot.data, e.user.documentID),
-            postedDate: DateTime.now());
+            postedDate: e.postedDate);
       }));
       setState(() {
         isLoading = false;
@@ -73,6 +106,7 @@ class _PiggySocialState extends State<PiggySocial> {
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     return Column(children: [
       Container(
         height: MediaQuery.of(context).size.height * 0.08,
@@ -105,7 +139,16 @@ class _PiggySocialState extends State<PiggySocial> {
           child: ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
-              return PiggyPost(post: items[index]);
+              var isSelected = items[index].likedByUserIds?.any(
+                      (element) => element == store.state.user.documentId) ??
+                  false;
+              return PiggyPost(
+                likedByUser: isSelected,
+                onClick: (postId, index) => isSelected
+                    ? _dislikePost(postId, index)
+                    : _likePost(postId, index),
+                post: items[index],
+              );
             },
           ),
         ),

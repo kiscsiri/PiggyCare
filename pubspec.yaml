@@ -77,7 +77,6 @@ flutter:
     - assets/coin_sound.mp3
     - assets/task-ikon.svg
     - assets/images/child_half.png
-    - assets/images/Child-Normal.png
     - assets/animations/Baby-Feed1.mp4
     - assets/animations/Baby-Feed2.mp4
     - assets/animations/Teen-Feed1.mp4
@@ -93,6 +92,9 @@ flutter:
     - assets/animations/start.mp4
     - assets/animations/exit.mp4
     - assets/images/Baby-Normal.png
+    - assets/images/Child-Normal.png
+    - assets/images/Adult-Normal.png
+    - assets/images/Teen-Normal.png
     - assets/images/modal_piggy.png
     - assets/images/notification.png
     - assets/images/Child-Login.png

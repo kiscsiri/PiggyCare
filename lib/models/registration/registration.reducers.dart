@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';

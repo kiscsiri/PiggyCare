@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/screens/child.chores.details.dart';
@@ -52,12 +53,13 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   @override
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
+    var loc = PiggyLocalizations.of(context);
     return PiggyModal(
       hPadding: MediaQuery.of(context).size.width * 0.05,
       vPadding: MediaQuery.of(context).size.height * 0.2,
       actions: <Widget>[
         PiggyButton(
-          text: 'LÉTREHOZÁS',
+          text: loc.trans('create').toUpperCase(),
           onClick: () async {
             if (_formKey.currentState.validate()) {
               await _createTask(store);
@@ -66,7 +68,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
         )
       ],
       title: Text(
-        'Feladat létrehozás ${widget.child.name} számára',
+        '${loc.trans('create_task')} ${widget.child.name} ${loc.trans('for')}',
         style: Theme.of(context).textTheme.headline2,
         textAlign: TextAlign.center,
       ),
@@ -76,14 +78,14 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
           Form(
             key: _formKey,
             child: PiggyInput(
-              hintText: 'Mi a feladat?',
+              hintText: loc.trans('task_ask'),
               textController: controller,
               width: MediaQuery.of(context).size.width,
               onValidate: (val) {
                 if (val.isEmpty) {
-                  return "Kötelező mező";
+                  return loc.trans('required_field');
                 } else if (val.length >= 50) {
-                  return "Maximum 50 karakter engedélyezett!";
+                  return loc.trans('maxumum_50_char');
                 } else {
                   setState(() {
                     item = val;

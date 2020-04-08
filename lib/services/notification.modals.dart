@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
@@ -173,7 +174,7 @@ Future<bool> showChildrenAcceptedPiggy(
                       textAlign: TextAlign.start,
                     ),
                     Text(
-                      "Öszzeg: " + piggy.targetPrice.toString() + " €",
+                      "Összeg: " + piggy.targetPrice.toString() + " €",
                       textAlign: TextAlign.start,
                     ),
                   ],
@@ -270,7 +271,7 @@ Future<bool> showChildrenFinishTaskSubmit(BuildContext context) async {
   );
 }
 
-Future<bool> showRequestSent(BuildContext context) async {
+Future<bool> showRequestSent(BuildContext context, UserType userType) async {
   var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
     context: context,
@@ -299,7 +300,9 @@ Future<bool> showRequestSent(BuildContext context) async {
               child: Container(
                   height: MediaQuery.of(context).size.height * 0.12,
                   child: Text(
-                    "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
+                    userType == UserType.adult
+                        ? "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki."
+                        : "Amikor visszaigazolja a kérelmet, látni fogja a megtakarításaid és különböző feladatokat is kérhetsz tőle.",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 13),
                   )),

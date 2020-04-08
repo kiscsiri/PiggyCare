@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/screens/search.user.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
 class NoPiggyWidget extends StatefulWidget {
@@ -14,12 +18,27 @@ class NoPiggyWidget extends StatefulWidget {
 }
 
 class _NoPiggyWidgetState extends State<NoPiggyWidget> {
-  _createPiggy() {
+  _addUser() async {
+    var store = StoreProvider.of<AppState>(context);
+    var searchString = await showUserAddModal(context, store);
+    if (searchString.isNotEmpty)
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => new UserSearchScreen(
+                    currentUserId: store.state.user.id,
+                    userType: store.state.user.userType,
+                    searchString: searchString,
+                  )));
+  }
+
+  _createPiggy() async {
     widget.navigateToCreateWidget();
   }
 
   @override
   Widget build(BuildContext context) {
+    var store = StoreProvider.of<AppState>(context);
     var loc = PiggyLocalizations.of(context);
     return Center(
       child: Padding(
@@ -33,7 +52,9 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
               textAlign: TextAlign.center,
             ),
             new Text(
-              loc.trans("if_you_dont_have"),
+              store.state.user.userType == UserType.child
+                  ? loc.trans("if_you_dont_have_family")
+                  : loc.trans("if_you_dont_have"),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),
             ),
@@ -49,10 +70,16 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
                   ? Image.asset('assets/images/create_child.png')
                   : Image.asset('assets/images/adult_create.png'),
             ),
-            PiggyButton(
-              text: loc.trans('create_money_box'),
-              onClick: () => _createPiggy(),
-            ),
+            StoreProvider.of<AppState>(context).state.user.userType ==
+                    UserType.child
+                ? PiggyButton(
+                    text: loc.trans('add_family').toUpperCase(),
+                    onClick: () => _addUser(),
+                  )
+                : PiggyButton(
+                    text: loc.trans('create_money_box').toUpperCase(),
+                    onClick: () => _createPiggy(),
+                  )
           ],
         ),
       ),

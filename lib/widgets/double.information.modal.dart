@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 
 import 'piggy.button.dart';
@@ -13,12 +14,13 @@ class _DoubleInformationModalState extends State<DoubleInformationModal> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return PiggyModal(
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            '''A Duplázás lényege, hogy a szüleid által meghatározott feladatok közül egyet végezz el és ezért cserébe kapsz egy extra Piggy Érmét. Ezt bármelyik Malacperselyedbe belerakhatod. Ha feladatokat végzel el, akkor gyorsabban el fogod érni a megtakarítási céljaidat.''',
+            loc.trans('double_information'),
             textAlign: TextAlign.center,
           ),
           Row(
@@ -35,7 +37,7 @@ class _DoubleInformationModalState extends State<DoubleInformationModal> {
               Container(
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Text(
-                  "Ne jelenjen meg többé ez az üzenet!",
+                  loc.trans('dont_show_again'),
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 11,
@@ -49,7 +51,7 @@ class _DoubleInformationModalState extends State<DoubleInformationModal> {
       actions: <Widget>[
         PiggyButton(
           onClick: () => Navigator.of(context).pop(_isNotShownAgainChecked),
-          text: "Rendben",
+          text: loc.trans('sure').toUpperCase(),
         )
       ],
     );

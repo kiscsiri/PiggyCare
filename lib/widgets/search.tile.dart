@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
@@ -13,6 +14,7 @@ class SearchTile extends StatelessWidget {
 
   _sendRequest(
       BuildContext context, String id, String name, String picUrl) async {
+    var loc = PiggyLocalizations.of(context);
     bool isAck = await showAckDialog(
         context,
         Container(
@@ -26,22 +28,23 @@ class SearchTile extends StatelessWidget {
                         ? AssetImage("lib/assets/images/piggy_nyito.png")
                         : NetworkImage(picUrl)))),
         Text(
-          "Biztosan elküldöd az ismerős kérelmet?",
+          loc.trans('send_friend_request'),
           style: Theme.of(context).textTheme.headline2,
           textAlign: TextAlign.center,
         ));
     if (isAck ?? false) {
       try {
         await UserServices.sendRequest(currentUserId, id);
-        await showRequestSent(context);
+        await showRequestSent(context, user.userType);
       } catch (err) {
-        await showAlert(context, err.message);
+        await showAlert(context, loc.trans(err.message));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
       child: Container(
@@ -81,7 +84,7 @@ class SearchTile extends StatelessWidget {
                 onPressed: () async => await _sendRequest(
                     context, user.id, user.name ?? user.email, user.pictureUrl),
                 child: Text(
-                  "Add+",
+                  loc.trans('+_add'),
                   style: TextStyle(color: Colors.white),
                 ))),
       ),

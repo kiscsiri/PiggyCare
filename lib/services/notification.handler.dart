@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/userType.dart';
 import 'package:piggybanx/models/chore/chore.action.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -54,7 +53,7 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
         var validated = await showChildrenNewPiggy(context, data['userName'],
             piggy['targetName'], piggy['targetPrice']);
         if (validated) {
-          PiggyServices.validatePiggy(piggy['id'], data['senderId']);
+          PiggyServices.validatePiggy(context, piggy['id'], data['senderId']);
           store.dispatch(ValidatePiggy(
               piggyId: piggy['id'],
               childId: data['senderId'],

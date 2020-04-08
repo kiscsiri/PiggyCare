@@ -1,17 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piggybanx/helpers/month.helper.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 
+typedef Future<void> OnLike(postId, index);
+
 class PiggyPost extends StatefulWidget {
-  const PiggyPost({Key key, @required this.post}) : super(key: key);
+  const PiggyPost(
+      {Key key, @required this.post, this.likedByUser, this.onClick})
+      : super(key: key);
   final PostDto post;
+  final bool likedByUser;
+  final OnLike onClick;
 
   @override
   _PiggyPostState createState() => _PiggyPostState();
 }
 
 class _PiggyPostState extends State<PiggyPost> {
+  Future _likePost() async {
+    await widget.onClick(widget.post.postId, widget.post.index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,9 +52,16 @@ class _PiggyPostState extends State<PiggyPost> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(right: 9.0),
-                        child: Icon(
-                          FontAwesomeIcons.solidHeart,
-                          color: Theme.of(context).primaryColor,
+                        child: GestureDetector(
+                          onTap: () async => await _likePost(),
+                          child: widget.likedByUser
+                              ? Icon(
+                                  FontAwesomeIcons.solidHeart,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : Icon(
+                                  FontAwesomeIcons.heart,
+                                ),
                         ),
                       ),
                       Text(widget.post.likesCount.toString())
@@ -72,11 +90,11 @@ class _PiggyPostState extends State<PiggyPost> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
-                      (widget.post.postedDate.year.toString() +
-                          "." +
-                          widget.post.postedDate.month.toString() +
-                          "." +
-                          widget.post.postedDate.day.toString()),
+                      (getMonthNameByIndex(
+                                  widget.post.postedDate.toDate().month) +
+                              " " +
+                              widget.post.postedDate.toDate().day.toString()) +
+                          ".",
                       style: TextStyle(color: Colors.grey)),
                 ),
                 Container(
@@ -116,16 +134,22 @@ class _PiggyPostState extends State<PiggyPost> {
 }
 
 class PostDto {
+  String postId;
+  int index;
   String text;
-  DateTime postedDate;
+  Timestamp postedDate;
   int likesCount;
   UserData user;
+  List<String> likedByUserIds;
   DocumentSnapshot documentSnapshot;
 
   PostDto(
       {this.postedDate,
+      this.postId,
+      this.index,
       this.likesCount,
       this.text,
       this.user,
+      this.likedByUserIds,
       this.documentSnapshot});
 }

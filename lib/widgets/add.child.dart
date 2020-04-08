@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -42,17 +43,18 @@ class _AddChildWidgetState extends State<AddChildWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var loc = PiggyLocalizations.of(context);
     var store = StoreProvider.of<AppState>(context);
     return PiggyModal(
         vPadding: MediaQuery.of(context).size.height * 0,
         title: Text(
-          '+ Vedd fel a gyereked',
+          loc.trans('+_add_child'),
           style: Theme.of(context).textTheme.headline3,
           textAlign: TextAlign.center,
         ),
         content: Column(children: <Widget>[
           PiggyInput(
-            hintText: "E-mail/Név",
+            hintText: loc.trans('email_/_name'),
             textController: controller,
             width: MediaQuery.of(context).size.width,
             onValidate: (val) {
@@ -84,8 +86,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Text(
-                    'Add meg, hogy mennyi legyen az értéke egy PiggyCoin-nak'),
+                child: Text(loc.trans('give_the_value_of_piggycoin')),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
@@ -107,7 +108,7 @@ class _AddChildWidgetState extends State<AddChildWidget> {
         ]),
         actions: [
           PiggyButton(
-            text: "GYEREK HOZZÁADÁSA",
+            text: loc.trans('add_child_for_parent'),
             onClick: () async => await _createPiggy(store),
           ),
         ]);

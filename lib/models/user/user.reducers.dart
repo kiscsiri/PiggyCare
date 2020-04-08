@@ -1,5 +1,5 @@
 import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -67,7 +67,7 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
       currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
       item: piggy.item,
       isApproved: piggy.isApproved,
-      piggyLevel: state.user.piggyLevel,
+      piggyLevel: piggy.piggyLevel,
       doubleUp: piggy.doubleUp,
       money: piggy.money,
       userId: piggy.userId,

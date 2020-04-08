@@ -1,4 +1,4 @@
-import 'package:piggybanx/enums/userType.dart';
+import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/SavingSchedule.dart';
 
 class RegistrationData {
