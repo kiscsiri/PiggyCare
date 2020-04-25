@@ -6,8 +6,6 @@ class Parent extends UserData {
     id = another.id;
     lastFeed = another.lastFeed;
     money = another.money;
-    currentFeedTime = another.currentFeedTime;
-    piggyLevel = another.piggyLevel;
     period = another.period;
     phoneNumber = another.phoneNumber;
     saving = another.saving;

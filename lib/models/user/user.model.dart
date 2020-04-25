@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piggybanx/Enums/level.dart';
+import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/Enums/userType.dart';
-import 'package:piggybanx/enums/level.dart';
-import 'package:piggybanx/enums/period.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
@@ -17,8 +17,6 @@ class UserData {
   UserType userType = UserType.individual;
   Period period;
   int feedPerPeriod;
-  PiggyLevel piggyLevel;
-  int currentFeedTime;
   String phoneNumber;
   DateTime lastFeed;
   DateTime created;
@@ -77,8 +75,6 @@ class UserData {
     lastFeed = another.lastFeed;
     money = another.money;
     userType = another.userType;
-    currentFeedTime = another.currentFeedTime;
-    piggyLevel = another.piggyLevel;
     period = another.period;
     numberOfCoins = another.numberOfCoins;
     phoneNumber = another.phoneNumber;
@@ -111,7 +107,6 @@ class UserData {
             (register.schedule != null) ? register.schedule.savingPerPeriod : 1,
         lastFeed: DateTime(1995),
         money: 100000,
-        currentFeedTime: 0,
         piggies: [
           if (register.schedule != null)
             Piggy(
@@ -124,11 +119,10 @@ class UserData {
                 item: register.item,
                 targetPrice: register.targetPrice)
         ],
-        piggyLevel: PiggyLevel.Baby,
         created: DateTime.now(),
         saving: 0,
         wantToSeeInfoAgain: true,
-        numberOfCoins: 0,
+        numberOfCoins: 1,
         email: register.email,
         name: register.username,
         pictureUrl: register.pictureUrl,
@@ -148,8 +142,6 @@ class UserData {
       List<Piggy> piggies,
       List<Chore> chores,
       List<UserData> children,
-      this.piggyLevel,
-      this.currentFeedTime,
       this.money,
       this.numberOfCoins,
       this.lastFeed,

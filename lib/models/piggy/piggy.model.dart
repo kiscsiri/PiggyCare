@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/Enums/level.dart';
 
 part 'piggy.model.g.dart';
 
@@ -13,16 +13,9 @@ class Piggy {
   int money;
   bool doubleUp;
   String item;
+  int currentFeedTime;
   int targetPrice;
   int currentSaving;
-
-  Piggy.fromPiggy(Piggy another) {
-    userId = another.userId;
-    isFeedAvailable = another.isFeedAvailable;
-    money = another.money;
-    isApproved = another.isApproved;
-    doubleUp = another.doubleUp;
-  }
 
   factory Piggy.fromJson(Map snapshot) => _$PiggyFromJson(snapshot);
 
@@ -33,10 +26,13 @@ class Piggy {
       this.userId,
       this.doubleUp,
       this.isFeedAvailable,
+      int currentFeedTime,
       this.money,
       this.targetPrice,
       this.currentSaving,
       this.item,
-      this.piggyLevel,
-      this.isApproved});
+      PiggyLevel piggyLevel,
+      this.isApproved})
+      : currentFeedTime = currentFeedTime ?? 0,
+        piggyLevel = piggyLevel ?? PiggyLevel.Baby;
 }

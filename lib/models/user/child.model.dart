@@ -12,8 +12,6 @@ class Child extends UserData {
     lastFeed = another.lastFeed;
     piggies = another.piggies;
     money = another.money;
-    currentFeedTime = another.currentFeedTime;
-    piggyLevel = another.piggyLevel;
     period = another.period;
     phoneNumber = another.phoneNumber;
     saving = another.saving;

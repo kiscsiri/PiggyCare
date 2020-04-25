@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/screens/saving.details.dart';

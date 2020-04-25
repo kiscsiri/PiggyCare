@@ -1,8 +1,7 @@
-import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/userType.dart';
-import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -16,8 +15,6 @@ import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 import 'package:redux/redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
 import 'package:piggybanx/widgets/add.child.dart';
 import 'package:video_player/video_player.dart';
 
@@ -161,7 +158,8 @@ Future<bool> showAckDialog(BuildContext context, Widget message,
 
 Future<void> showCreateTask(
     BuildContext context, Store<AppState> store, ChildDto child) async {
-  if (store.state.user.parentId == null) {
+  if (store.state.user.parentId == null &&
+      store.state.user.userType == UserType.child) {
     await showDialog<Piggy>(
         context: context,
         barrierDismissible: true,
@@ -191,6 +189,7 @@ Future<bool> showDoubleInformationModel(BuildContext context) async {
 Future<void> showCreatePiggyModal(BuildContext context,
     [String childId]) async {
   var user = StoreProvider.of<AppState>(context).state.user;
+  var nPiggiesBeforeAdd = user.piggies.length;
   if (user.parentId == null && user.userType == UserType.child) {
     await showDialog<Piggy>(
         context: context,
@@ -209,7 +208,7 @@ Future<void> showCreatePiggyModal(BuildContext context,
         );
       });
   if (user.userType == UserType.child &&
-      user.piggies.length == 0 &&
+      nPiggiesBeforeAdd == 0 &&
       piggy != null) await showChildrenPiggyInfo(context);
 }
 
@@ -233,41 +232,37 @@ Future<String> showUserAddModal(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.2),
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                content: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      loc.trans('search_by_user_data'),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    PiggyInput(
-                      hintText: loc.trans('family_hint'),
-                      onValidate: (val) {
-                        if (val.isEmpty) {
-                          return loc.trans('required');
-                        }
-                        return null;
-                      },
-                      textController: textController,
-                    )
-                  ],
+          return PiggyModal(
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  loc.trans('search_by_user_data'),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline2,
                 ),
-                actions: <Widget>[
-                  PiggyButton(
-                    text: loc.trans('search'),
-                    onClick: () => Navigator.of(context).pop(),
-                  )
-                ],
-                title: Text(loc.trans("search_user")),
-              ),
+                PiggyInput(
+                  hintText: loc.trans('family_hint'),
+                  onValidate: (val) {
+                    if (val.isEmpty) {
+                      return loc.trans('required');
+                    }
+                    return null;
+                  },
+                  textController: textController,
+                )
+              ],
+            ),
+            vPadding: MediaQuery.of(context).size.height * 0.2,
+            actions: <Widget>[
+              PiggyButton(
+                text: loc.trans('search'),
+                onClick: () => Navigator.of(context).pop(),
+              )
+            ],
+            title: Text(
+              loc.trans("search_user"),
+              textAlign: TextAlign.center,
             ),
           );
         });

@@ -15,57 +15,24 @@ import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
-import 'package:piggybanx/localization/Localizations.dart';
-import 'package:piggybanx/widgets/piggy.button.dart';
 
 import 'notification.services.dart';
 
 class AuthenticationService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static Future<bool> verifyPhoneNumber(
-      String phoneNumber, BuildContext context) async {
-    var loc = PiggyLocalizations.of(context);
-    QuerySnapshot value = await Firestore.instance
-        .collection("users")
-        .where("phoneNumber", isEqualTo: phoneNumber)
-        .getDocuments();
-    if (value.documents.isEmpty) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text(loc.trans("no_account")),
-                actions: <Widget>[
-                  Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.72,
-                      child: PiggyButton(
-                        text: "OK",
-                        onClick: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  )
-                ],
-                content: Text(loc.trans("please_register")),
-              ));
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   static Future<void> _loginUser(
       FirebaseUser user, Store<AppState> store) async {
+    print(user.metadata.lastSignInTime);
     if (user != null) {
       var value = await Firestore.instance
           .collection('users')
           .where("id", isEqualTo: user.uid)
           .getDocuments();
       if (value.documents.length > 0) {
+        var json = value.documents.first.data;
         UserData u = new UserData.fromFirebaseDocumentSnapshot(
-            value.documents.first.data, value.documents.first.documentID);
+            json, value.documents.first.documentID);
         user.reload();
 
         final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -84,6 +51,18 @@ class AuthenticationService {
           }
         }
 
+        _updateNumberOfCoins(
+            u,
+            DateTime.tryParse(
+                (json['lastLogin'] ?? DateTime.now().toIso8601String())
+                    as String)); // A coinok számának frissítése
+        var userJson = u.toJson()
+          ..addAll({"lastLogin": DateTime.now().toIso8601String()});
+        await Firestore.instance
+            .collection('users')
+            .document(u.documentId)
+            .updateData(userJson);
+
         store.dispatch(InitUserData(u));
       }
     }
@@ -100,6 +79,19 @@ class AuthenticationService {
     } else {
       await _loginUser(user, store);
       Navigator.of(context).pushReplacementNamed("home");
+    }
+  }
+
+  static _updateNumberOfCoins(UserData user, DateTime lastLogin) {
+    var today = DateTime.now();
+    if (today.isAfter(lastLogin) &&
+        user.numberOfCoins != 1 &&
+        (today.day !=
+                lastLogin
+                    .day || // Vizsgáljuk a hónapot meg az évet is, ha 1 hónap múlva térne vissza pont az app-ba, vagy pont 1 év múlva
+            today.month != lastLogin.month ||
+            today.year != lastLogin.year)) {
+      user.numberOfCoins = 1;
     }
   }
 

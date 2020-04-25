@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
@@ -67,19 +66,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     id: c.id))
                 .toList()))
         .toList();
-  }
-
-  Future<void> _showCreateModal() async {
-    var store = StoreProvider.of<AppState>(context);
-
-    await showCreatePiggyModal(context, child.id);
-
-    setState(() {
-      var children = mapChildrenToChilDto(store.state.user.children).toList();
-
-      child = children.singleWhere((t) => t.documentId == widget.documentId,
-          orElse: null);
-    });
   }
 
   Future<void> _showAddTaskModal() async {
@@ -211,7 +197,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.initChildren.first.name + " oldala"),
+        title: Text(child.name + " oldala"),
       ),
       body: Container(
           child: ListView(children: [
@@ -219,7 +205,7 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              decoration: coinBackground(context, UserType.adult),
+              decoration: coinBackground(context),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 25.0),
                 child: Column(
@@ -272,24 +258,17 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: PiggyButton(
-                        text: loc.trans('create_money_box_button'),
-                        onClick: () async => await _showCreateModal(),
-                      ),
-                    )
                   ],
                 ),
               ),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              decoration: coinBackground(context, UserType.adult),
+              decoration: coinBackground(context),
               child: StoreConnector<AppState, AppState>(
                 converter: (store) => store.state,
                 builder: (context, store) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25.0),
+                  padding: const EdgeInsets.symmetric(vertical: 35.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[

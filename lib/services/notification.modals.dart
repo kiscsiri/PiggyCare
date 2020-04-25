@@ -32,7 +32,6 @@ Future<bool> showAskedForNewTask(
 
 Future<bool> showChildrenNewTask(BuildContext context, String name) async {
   var store = StoreProvider.of<AppState>(context);
-
   return await showDialog<bool>(
     context: context,
     builder: (context) => PiggyModal(
@@ -119,7 +118,7 @@ Future<bool> showChildrenNewPiggy(BuildContext context, String name,
                   textAlign: TextAlign.left,
                 ),
                 Text(
-                  "Öszzeg: " + targetPrice.toString() + ' €',
+                  "Összeg: " + targetPrice.toString() + ' €',
                   textAlign: TextAlign.left,
                 ),
               ],
@@ -296,17 +295,16 @@ Future<bool> showRequestSent(BuildContext context, UserType userType) async {
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Text(loc.trans('request_sent'))),
             Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  child: Text(
-                    userType == UserType.adult
-                        ? "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki."
-                        : "Amikor visszaigazolja a kérelmet, látni fogja a megtakarításaid és különböző feladatokat is kérhetsz tőle.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 13),
-                  )),
-            ),
+                padding: const EdgeInsets.all(4.0),
+                child: userType == UserType.adult
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        child: Text(
+                          "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 13),
+                        ))
+                    : Container()),
           ],
         ),
         actions: <Widget>[

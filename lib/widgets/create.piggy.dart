@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/userType.dart';
-import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -40,7 +40,7 @@ class _CreatePiggyWidgetState extends State<CreatePiggyWidget> {
           piggy: Piggy(
         currentSaving: 0,
         doubleUp: false,
-        isApproved: store.state.user.userType == UserType.adult ? true : false,
+        isApproved: store.state.user.userType == UserType.child ? false : true,
         isFeedAvailable: true,
         item: controller.text,
         userId: widget.childId ?? store.state.user.id,

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/userType.dart';
-import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
@@ -40,16 +40,17 @@ AppState addItem(AppState state, AddPiggy action) {
     var newItems = state.user.piggies;
     var isApproved = false;
 
-    if (newUser.userType == UserType.adult)
-      isApproved = true;
-    else
+    if (newUser.userType == UserType.child)
       isApproved = false;
+    else
+      isApproved = true;
 
     newItems.add(Piggy(
         currentSaving: 0,
         piggyLevel: PiggyLevel.Baby,
         doubleUp: false,
-        id: state.user.piggies.length + 1,
+        id: action.piggy.id,
+        currentFeedTime: 0,
         isFeedAvailable: true,
         money: 0,
         userId: state.user.id,
@@ -59,13 +60,14 @@ AppState addItem(AppState state, AddPiggy action) {
 
     newUser = UserData(
         created: state.user.created,
-        currentFeedTime: state.user.currentFeedTime,
         feedPerPeriod: state.user.feedPerPeriod,
         userType: state.user.userType,
         id: state.user.id,
         piggies: state.user.piggies,
         lastFeed: state.user.lastFeed,
         money: state.user.money,
+        numberOfCoins: state.user.numberOfCoins,
+        wantToSeeInfoAgain: state.user.wantToSeeInfoAgain,
         children: state.user.children,
         documentId: state.user.documentId,
         parentId: state.user.parentId,
@@ -76,7 +78,6 @@ AppState addItem(AppState state, AddPiggy action) {
         pictureUrl: state.user.pictureUrl,
         period: state.user.period,
         phoneNumber: state.user.phoneNumber,
-        piggyLevel: state.user.piggyLevel,
         saving: state.user.saving);
   } else {
     var child = state.user.children
@@ -96,7 +97,6 @@ AppState addItem(AppState state, AddPiggy action) {
 
     newUser = UserData(
         created: state.user.created,
-        currentFeedTime: state.user.currentFeedTime,
         feedPerPeriod: state.user.feedPerPeriod,
         userType: state.user.userType,
         id: state.user.id,
@@ -113,7 +113,6 @@ AppState addItem(AppState state, AddPiggy action) {
         pictureUrl: state.user.pictureUrl,
         period: state.user.period,
         phoneNumber: state.user.phoneNumber,
-        piggyLevel: state.user.piggyLevel,
         saving: state.user.saving);
   }
 

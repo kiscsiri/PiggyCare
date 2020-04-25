@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/localization/localizations.delegate.dart';
 import 'package:piggybanx/models/registration/registration.model.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -13,7 +14,6 @@ import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:redux/redux.dart';
 import 'package:piggybanx/models/store.reducer.dart';
 
-import 'enums/period.dart';
 import 'firebase/locator.dart';
 import 'models/appState.dart';
 import 'models/user/user.export.dart';
@@ -124,7 +124,7 @@ class PiggyApp extends StatelessWidget {
             ),
           ),
           routes: {
-            'tryOut': (context) => PiggyTestPage(),
+            'tryOut': (context) => PiggyWelcomePage(),
             'home': (context) => MainPage(),
             'register': (context) => FirstRegisterPage(),
             'login': (context) => LoginPage()

@@ -8,7 +8,6 @@ import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/child.savings.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
-import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 import 'package:piggybanx/widgets/piggy.slider.dart';
 
 class ChildSavingScreen extends StatefulWidget {
@@ -26,33 +25,6 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
   void initState() {
     savingPerFeed = widget.initFeedPerPeriod;
     super.initState();
-  }
-
-  Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
-    var loc = PiggyLocalizations.of(context);
-    return await showDialog<bool>(
-      context: context,
-      builder: (context) => PiggyModal(
-          title: Column(
-            children: <Widget>[
-              Text(
-                loc.trans('wants_to_double_ask'),
-                style: Theme.of(context).textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            PiggyButton(
-              text: loc.trans('yes'),
-              onClick: () => Navigator.of(context).pop(true),
-            ),
-            PiggyButton(
-              text: loc.trans('no'),
-              onClick: () => Navigator.of(context).pop(false),
-            )
-          ]),
-    );
   }
 
   @override
@@ -132,7 +104,8 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                                   period: store.user.period,
                                   feedPerPeriod: val.toInt())));
                             },
-                            value: store.user.feedPerPeriod.toDouble(),
+                            value: savingPerFeed.toDouble() ??
+                                store.user.feedPerPeriod.toDouble(),
                           ),
                   ),
                 ],

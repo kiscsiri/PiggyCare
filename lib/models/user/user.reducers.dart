@@ -1,5 +1,6 @@
-import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/userType.dart';
+import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.model.dart';
@@ -18,8 +19,7 @@ AppState initUser(AppState state, InitUserData action) {
       email: action.user.email,
       name: action.user.name,
       pictureUrl: action.user.pictureUrl,
-      currentFeedTime: action.user.currentFeedTime,
-      piggyLevel: action.user.piggyLevel,
+      numberOfCoins: action.user.numberOfCoins,
       period: action.user.period,
       isDemoOver: action.user.isDemoOver,
       parentId: action.user.parentId,
@@ -39,36 +39,34 @@ AppState updateUser(AppState state, UpdateUserData action) {
 }
 
 AppState feedPiggy(AppState state, FeedPiggy action) {
-  state.user.currentFeedTime++;
-
-  if (state.user.currentFeedTime >= 5 &&
-      state.user.piggyLevel != PiggyLevel.Teen) {
-    state.user.piggyLevel =
-        PiggyLevel.values[levelMap(state.user.piggyLevel) + 1];
-    state.user.currentFeedTime = 0;
-  } else {
-    state.user.piggyLevel = state.user.piggyLevel;
-  }
-
-  if (state.user.currentFeedTime >= 5 &&
-      state.user.piggyLevel == PiggyLevel.Teen) {
-    state.user.isDemoOver = true;
-  }
-
   var index = state.user.piggies.indexWhere((p) => p.id == action.piggyId);
   var piggy = state.user.piggies[index];
+  piggy.currentFeedTime++;
+  if (piggy.currentFeedTime >= piggyLevelUpConstraint &&
+      piggy.piggyLevel != maxPiggyLevel) {
+    piggy.piggyLevel = PiggyLevel.values[levelMap(piggy.piggyLevel) + 1];
+    piggy.currentFeedTime = 0;
+  } else {
+    piggy.piggyLevel = piggy.piggyLevel;
+  }
+
+  if (piggy.currentFeedTime >= piggyLevelUpConstraint &&
+      piggy.piggyLevel == maxPiggyLevel) {
+    state.user.isDemoOver = true;
+  }
 
   state.user.saving = state.user.saving + state.user.feedPerPeriod;
 
   state.user.money = state.user.money - state.user.feedPerPeriod;
   state.user.lastFeed = DateTime.now();
-
+  state.user.numberOfCoins -= 1;
   state.user.piggies[index] = Piggy(
       currentSaving: (piggy.currentSaving + state.user.feedPerPeriod),
       item: piggy.item,
       isApproved: piggy.isApproved,
       piggyLevel: piggy.piggyLevel,
       doubleUp: piggy.doubleUp,
+      currentFeedTime: piggy.currentFeedTime,
       money: piggy.money,
       userId: piggy.userId,
       isFeedAvailable: true,
@@ -128,14 +126,18 @@ AppState validatePiggy(AppState state, ValidatePiggy action) {
     if (child == null) throw Exception("Nem található gyerek");
 
     var piggy = child.piggies
-        .where((element) => !element.isApproved)
-        .singleWhere((element) => element.id == action.piggyId, orElse: null);
+        .where((element) => !(element.isApproved ?? false))
+        .firstWhere((element) => element.id == action.piggy.id,
+            orElse: () => null);
 
-    if (piggy == null) throw Exception("Nem található persely");
-    piggy.isApproved = true;
+    if (piggy == null) {
+      child.piggies.add(action.piggy);
+    } else {
+      piggy.isApproved = true;
+    }
   } else if (state.user.userType == UserType.child) {
     var piggy = state.user.piggies
-        .singleWhere((element) => element.id == action.piggyId);
+        .firstWhere((element) => element.id == action.piggy.id, orElse: null);
     piggy.isApproved = true;
   }
 

@@ -62,7 +62,7 @@ class _PiggyModalState extends State<PiggyModal>
               title: widget.title,
               actions: [
                 Padding(
-                    padding: EdgeInsets.only(bottom: 30),
+                    padding: EdgeInsets.only(bottom: 30, right: 30, left: 30),
                     child: Column(children: widget.actions ?? [Container()]))
               ],
               shape: RoundedRectangleBorder(

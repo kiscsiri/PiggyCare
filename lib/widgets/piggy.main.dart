@@ -3,8 +3,8 @@ import 'package:piggybanx/enums/level.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PiggyFeedWidget extends StatefulWidget {
-  PiggyFeedWidget(
+class PiggyCoinDropPlaceWidget extends StatefulWidget {
+  PiggyCoinDropPlaceWidget(
       {Key key,
       this.willAcceptStream,
       this.onDrop,
@@ -21,31 +21,20 @@ class PiggyFeedWidget extends StatefulWidget {
   final Piggy piggy;
   final double scale;
   @override
-  _PiggyFeedWidgetState createState() => new _PiggyFeedWidgetState();
+  _PiggyCoinDropPlaceWidgetState createState() =>
+      new _PiggyCoinDropPlaceWidgetState();
 }
 
-class _PiggyFeedWidgetState extends State<PiggyFeedWidget> {
+class _PiggyCoinDropPlaceWidgetState extends State<PiggyCoinDropPlaceWidget> {
   bool isFeedingPlayed = false;
   bool isRandomGenerated = false;
   int feedRandom = 1;
 
   Widget getAnimation(BuildContext context, Piggy piggy) {
-    if (piggy == null) {
-      return Image.asset(
-        'assets/animations/Baby-Feed1.gif',
-        gaplessPlayback: true,
-      );
-    } else if (widget.isDisabled && !widget.isAnimationPlaying) {
-      return Image.asset(
-          'assets/animations/${levelStringValue(piggy.piggyLevel)}-Sleep.gif',
-          gaplessPlayback: true);
-    } else {
-      isRandomGenerated = false;
-      return Image.asset(
-        'assets/images/${levelStringValue(piggy.piggyLevel)}-Normal.png',
-        gaplessPlayback: true,
-      );
-    }
+    return Image.asset(
+      'assets/images/${levelStringValue(piggy.piggyLevel)}-Normal.png',
+      gaplessPlayback: true,
+    );
   }
 
   @override

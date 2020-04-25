@@ -52,7 +52,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height * 0.7,
-                decoration: piggyBackgroundDecoration(context, UserType.adult),
+                decoration: piggyBackgroundDecoration(context),
               ),
             ],
           ),

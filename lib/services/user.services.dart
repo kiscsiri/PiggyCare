@@ -15,13 +15,13 @@ class UserServices {
     var searchByName = await Firestore.instance
         .collection('users')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
-        .where("name", isEqualTo: searchString.trim().toLowerCase())
+        .where("name", isEqualTo: searchString.trim())
         .getDocuments();
 
     var searchByEmail = await Firestore.instance
         .collection('users')
         .where("userType", isEqualTo: userTypeDecode(searchTypeParam))
-        .where("email", isEqualTo: searchString.trim().toLowerCase())
+        .where("email", isEqualTo: searchString.trim())
         .getDocuments();
 
     var result = List<DocumentSnapshot>();
@@ -92,7 +92,7 @@ class UserServices {
         NotificationServices.newFriendRequest(toId, user.name);
       }
     } else {
-      throw Exception("friend_equest_sent_already");
+      throw Exception("friend_request_sent_already");
     }
   }
 

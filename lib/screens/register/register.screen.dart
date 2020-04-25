@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piggybanx/helpers/error.constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/registration/registration.actions.dart';
@@ -73,8 +75,11 @@ class _RegisterPageState extends State<LastPage> {
 
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => new MainPage()));
-    } on Exception catch (err) {
-      await showAlert(context, "Létezik már az adott e-mail cím");
+    } on PlatformException catch (err) {
+      if (err.code == ERROR_WEAK_PASSWORD) {
+        await showAlert(context, "Kérem adjon meg egy erősebb jelszót!");
+      } else if (err.code == ERROR_EMAIL_ALREADY_IN_USE)
+        await showAlert(context, "Létezik már az adott e-mail cím");
     }
   }
 
@@ -134,6 +139,7 @@ class _RegisterPageState extends State<LastPage> {
                 inputIcon: Icons.mail_outline,
                 hintText: loc.trans("email"),
                 focusNode: focusEmail,
+                keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.go,
                 textController: _emailController,
                 width: MediaQuery.of(context).size.width * 0.7,
@@ -208,8 +214,7 @@ class _RegisterPageState extends State<LastPage> {
               children: <Widget>[
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
-                  decoration: piggyBackgroundDecoration(
-                      context, store.state.user.userType),
+                  decoration: piggyBackgroundDecoration(context),
                 ),
               ],
             ),

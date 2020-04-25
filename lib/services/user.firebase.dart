@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:piggybanx/enums/level.dart';
+import 'package:piggybanx/Enums/level.dart';
+import 'package:piggybanx/Enums/userType.dart';
+import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
@@ -27,28 +29,26 @@ Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
 
   user.saving = user.saving + user.feedPerPeriod;
 
-  user.currentFeedTime = ++doc.data['currentFeedTime'];
-  user.isDemoOver = doc.data['isDemoOver'];
+  piggy.currentFeedTime += 1;
+  user.isDemoOver = user.isDemoOver;
 
   var newPiggyLevel = 0;
 
-  if (user.currentFeedTime >= 5) {
-    user.piggyLevel = PiggyLevel.values[user.piggyLevel.index + 1];
-    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel + 1];
-    user.currentFeedTime = 0;
+  if (piggy.currentFeedTime >= piggyLevelUpConstraint) {
+    piggy.piggyLevel = PiggyLevel.values[piggy.piggyLevel.index + 1];
+    piggy.currentFeedTime = 0;
   } else {
-    newPiggyLevel = user.piggyLevel.index;
-    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
+    newPiggyLevel = piggy.piggyLevel.index;
     piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
   }
 
-  if (newPiggyLevel > 2) {
-    newPiggyLevel = 2;
+  if (newPiggyLevel > maxLevel) {
+    newPiggyLevel = maxLevel;
     user.isDemoOver = true;
-    user.piggyLevel = PiggyLevel.values[newPiggyLevel];
     piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
   }
 
+  user.numberOfCoins -= 1;
   user.lastFeed = DateTime.now();
 
   if (!isBefejezteMarAzEtetesElott && piggy.money >= piggy.targetPrice) {
@@ -59,7 +59,7 @@ Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
         text:
             '${user.name} ${loc.trans('collected_the_money')} "${piggy.item}" ${loc.trans('for_item')}! ${loc.trans('congrats_on_saving')} :)'));
   }
-  Firestore.instance
+  await Firestore.instance
       .collection('users')
       .document(doc.documentID)
       .updateData(user.toJson());

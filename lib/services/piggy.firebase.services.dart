@@ -37,7 +37,7 @@ class PiggyServices {
         .updateData(user.toJson());
   }
 
-  static Future<void> validatePiggy(
+  static Future<Piggy> validatePiggy(
       BuildContext context, int piggyId, String userId) async {
     var loc = PiggyLocalizations.of(context);
     var value = await Firestore.instance
@@ -51,16 +51,18 @@ class PiggyServices {
     var piggy = user.piggies.singleWhere((element) => element.id == piggyId);
     piggy.isApproved = true;
 
-    UserPostService.createUserPiggyPost(UserPost(
+    await UserPostService.createUserPiggyPost(UserPost(
         likes: 0,
         text:
             user.name + " ${loc.trans('started_collection_for')} " + piggy.item,
         postedDate: Timestamp.now(),
         user: doc.reference));
 
-    Firestore.instance
+    await Firestore.instance
         .collection('users')
         .document(doc.documentID)
         .updateData(user.toJson());
+
+    return piggy;
   }
 }

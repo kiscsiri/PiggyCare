@@ -39,7 +39,10 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
   @override
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
+    var user = store.state.user;
     var loc = PiggyLocalizations.of(context);
+    var isParentConnected =
+        (user.userType == UserType.child && user.parentId == null);
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 52.0, vertical: 20),
@@ -52,7 +55,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
               textAlign: TextAlign.center,
             ),
             new Text(
-              store.state.user.userType == UserType.child
+              isParentConnected
                   ? loc.trans("if_you_dont_have_family")
                   : loc.trans("if_you_dont_have"),
               textAlign: TextAlign.center,
@@ -70,8 +73,7 @@ class _NoPiggyWidgetState extends State<NoPiggyWidget> {
                   ? Image.asset('assets/images/create_child.png')
                   : Image.asset('assets/images/adult_create.png'),
             ),
-            StoreProvider.of<AppState>(context).state.user.userType ==
-                    UserType.child
+            isParentConnected
                 ? PiggyButton(
                     text: loc.trans('add_family').toUpperCase(),
                     onClick: () => _addUser(),

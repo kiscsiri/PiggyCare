@@ -20,8 +20,6 @@ UserData _$UserDataFromJson(Map json, String documentId) {
         (json['piggies'] as List).map((e) => Piggy.fromJson(e as Map)).toList(),
     chores:
         (json['chores'] as List).map((e) => Chore.fromMap(e as Map)).toList(),
-    piggyLevel: _$enumDecode(_$PiggyLevelEnumMap, json['piggyLevel']),
-    currentFeedTime: json['currentFeedTime'] as int,
     money: (json['money'] as num).toDouble(),
     lastFeed: DateTime.parse(json['lastFeed'] as String),
     isDemoOver: json['isDemoOver'] as bool,
@@ -42,8 +40,6 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'period': $PeriodEnumMap[instance.period],
       'feedPerPeriod': instance.feedPerPeriod,
       'piggies': instance.piggies.map((f) => f.toJson()).toList(),
-      'piggyLevel': _$PiggyLevelEnumMap[instance.piggyLevel],
-      'currentFeedTime': instance.currentFeedTime,
       'phoneNumber': instance.phoneNumber,
       'wantToSeeInfoAgain': instance.wantToSeeInfoAgain,
       'parentId': instance.parentId,

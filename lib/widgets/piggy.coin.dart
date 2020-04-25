@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:piggybanx/Enums/userType.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PiggyCoin extends StatefulWidget {
@@ -31,20 +34,20 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var user = StoreProvider.of<AppState>(context).state.user;
     var coinSizeBig = MediaQuery.of(context).size.width * widget.scale * 1.7;
     var coinSizeSmall = MediaQuery.of(context).size.width * widget.scale;
 
     var bigcoin = Container(
         child: Image.asset(
-          "assets/animations/coin.gif",
-          gaplessPlayback: false,
-          width: coinSizeBig,
-          height: coinSizeBig,
-        ));
+      "assets/animations/coin.gif",
+      gaplessPlayback: false,
+      width: coinSizeBig,
+      height: coinSizeBig,
+    ));
 
     var smallCoin = Image.asset("assets/animations/coin.gif",
-        width: coinSizeSmall,
-        height: coinSizeSmall);
+        width: coinSizeSmall, height: coinSizeSmall);
 
     return Positioned(
       top: (MediaQuery.of(context).size.width * widget.coinController.value) -
@@ -64,7 +67,17 @@ class _PiggyCoinState extends State<PiggyCoin> with TickerProviderStateMixin {
                         ..rotateX(0)
                         ..rotateY(0),
                       alignment: FractionalOffset.center,
-                      child: smallCoin);
+                      child: Stack(
+                        children: <Widget>[
+                          smallCoin,
+                          user.userType == UserType.child
+                              ? Text(
+                                  "${user.numberOfCoins.toString()}x",
+                                  style: Theme.of(context).textTheme.headline6,
+                                )
+                              : Container(),
+                        ],
+                      ));
                 }),
         feedback: StreamBuilder(
           initialData: false,

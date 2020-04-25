@@ -87,7 +87,8 @@ class ChoreFirebaseServices extends ChangeNotifier {
       var userData =
           UserData.fromFirebaseDocumentSnapshot(user.data, user.documentID);
 
-      userData.numberOfCoins = userData.numberOfCoins ?? 1;
+      userData.numberOfCoins =
+          userData.numberOfCoins == null ? 1 : userData.numberOfCoins + 1;
       var task = userData.chores
           .singleWhere((element) => element.id == taskId, orElse: null);
 

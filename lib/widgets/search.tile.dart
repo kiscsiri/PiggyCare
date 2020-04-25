@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
+import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
@@ -34,8 +36,9 @@ class SearchTile extends StatelessWidget {
         ));
     if (isAck ?? false) {
       try {
+        var store = StoreProvider.of<AppState>(context);
         await UserServices.sendRequest(currentUserId, id);
-        await showRequestSent(context, user.userType);
+        await showRequestSent(context, store.state.user.userType);
       } catch (err) {
         await showAlert(context, loc.trans(err.message));
       }

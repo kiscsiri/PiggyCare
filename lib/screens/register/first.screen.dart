@@ -4,7 +4,6 @@ import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/screens/register/register.screen.dart';
-import 'package:piggybanx/screens/register/second.screen.dart';
 import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:redux/redux.dart';
@@ -57,7 +56,10 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SecondRegisterPage()));
+                builder: (context) => new LastPage(
+                      initEmail: store.state.registrationData.email,
+                      initUserName: store.state.registrationData.username,
+                    )));
         break;
     }
   }
@@ -76,7 +78,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.5,
-                decoration: coinBackground(context, UserType.child),
+                decoration: coinBackground(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -98,7 +100,7 @@ class _FirstRegisterPageState extends State<FirstRegisterPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.35,
-                decoration: coinBackground(context, UserType.child),
+                decoration: coinBackground(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[

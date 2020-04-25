@@ -12,7 +12,7 @@ import 'package:piggybanx/models/navigation.redux.dart';
 import 'package:piggybanx/models/user/user.actions.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/frames/child.chores.screen.dart';
-import 'package:piggybanx/screens/frames/child.savings.dart';
+import 'package:piggybanx/screens/frames/savings.dart';
 import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/social.screen.dart';
@@ -24,6 +24,7 @@ import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/exit.dialog.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
+import 'package:package_info/package_info.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -37,6 +38,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
+  String versionNumber;
   _navigate(int index) {
     widget._pageController.animateToPage(index,
         curve: Curves.linear, duration: new Duration(milliseconds: 350));
@@ -51,12 +53,18 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             await onResumeNotificationHandler(
                 message, context, widget._pageController),
         onLaunch: (Map<String, dynamic> message) async =>
-            await onResumeNotificationHandler(
+            await onStartNotificationHandler(
                 message, context, widget._pageController),
         onResume: (Map<String, dynamic> message) async =>
             await onResumeNotificationHandler(
                 message, context, widget._pageController));
     super.initState();
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        versionNumber = '${packageInfo.version}.${packageInfo.buildNumber}';
+      });
+    });
   }
 
   @override
@@ -78,7 +86,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   List<Widget> getFrames() {
     var store = StoreProvider.of<AppState>(context);
     return [
-      new PiggyPage(),
+      new PiggyWidget(
+        initialPiggy: store.state.user.piggies
+                    .where((element) => element.isApproved ?? false)
+                    .length !=
+                0
+            ? store.state.user.piggies
+                .where((element) => element.isApproved ?? false)
+                .first
+            : null,
+        timeUntilNextFeed: store.state.user.timeUntilNextFeed,
+      ),
       ChildSavingScreen(
         initFeedPerPeriod: store.state.user.feedPerPeriod,
       ),
@@ -198,6 +216,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     onTap: () {
                       logout(store);
                     },
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text("Verzió: ${versionNumber ?? ""}"),
+                    ],
                   ),
                 ],
               ),

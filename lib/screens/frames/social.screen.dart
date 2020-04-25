@@ -7,7 +7,6 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/widgets/piggy.post.dart';
-import 'package:piggybanx/widgets/top.navigation.item.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 
 class PiggySocial extends StatefulWidget {
@@ -18,6 +17,15 @@ class PiggySocial extends StatefulWidget {
 class _PiggySocialState extends State<PiggySocial> {
   bool isLoading = false;
   List<PostDto> items = List<PostDto>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   Future _likePost(String postId, int index) async {
     var store = StoreProvider.of<AppState>(context);
@@ -44,13 +52,21 @@ class _PiggySocialState extends State<PiggySocial> {
         postId, store.state.user.documentId);
   }
 
-  Future _loadData(ScrollNotification scrollInfo) async {
+  Future _loadData() async {
     int i = items.length;
-    var posts = (await UserPostService.getUserPosts(PaginationHelper(
-            items.length,
-            5,
-            "postedDate",
-            items.length != 0 ? items.last.postedDate : Timestamp.now())))
+    PaginationHelper paginationData;
+    if (isLoading) {
+      paginationData = PaginationHelper(items.length, 5, "postedDate",
+          items.length != 0 ? items.last.postedDate : Timestamp.now());
+    } else {
+      setState(() {
+        items.clear();
+        paginationData =
+            PaginationHelper(items.length, 5, "postedDate", Timestamp.now());
+      });
+    }
+
+    var posts = (await UserPostService.getUserPosts(paginationData))
         .map((e) => UserPost.fromMap(e, e.documentID));
 
     var mappedPosts = await Future.wait(posts.map((e) async {
@@ -108,23 +124,23 @@ class _PiggySocialState extends State<PiggySocial> {
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
     return Column(children: [
+      // Container(
+      //   height: MediaQuery.of(context).size.height * 0.08,
+      //   width: MediaQuery.of(context).size.width,
+      //   color: Theme.of(context).primaryColor,
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //     children: <Widget>[
+      //       TopNavigationBarItem(icon: Icons.home),
+      //       TopNavigationBarItem(icon: Icons.image),
+      //       TopNavigationBarItem(icon: Icons.videocam),
+      //       TopNavigationBarItem(icon: Icons.chat_bubble)
+      //     ],
+      //   ),
+      // ),
       Container(
-        height: MediaQuery.of(context).size.height * 0.08,
         width: MediaQuery.of(context).size.width,
-        color: Theme.of(context).primaryColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            TopNavigationBarItem(icon: Icons.home),
-            TopNavigationBarItem(icon: Icons.image),
-            TopNavigationBarItem(icon: Icons.videocam),
-            TopNavigationBarItem(icon: Icons.chat_bubble)
-          ],
-        ),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.87,
+        height: MediaQuery.of(context).size.height * (isLoading ? 0.7 : 0.8),
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (!isLoading &&
@@ -133,23 +149,27 @@ class _PiggySocialState extends State<PiggySocial> {
               setState(() {
                 isLoading = true;
               });
-              _loadData(scrollInfo);
+              _loadData();
             }
           },
-          child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              var isSelected = items[index].likedByUserIds?.any(
-                      (element) => element == store.state.user.documentId) ??
-                  false;
-              return PiggyPost(
-                likedByUser: isSelected,
-                onClick: (postId, index) => isSelected
-                    ? _dislikePost(postId, index)
-                    : _likePost(postId, index),
-                post: items[index],
-              );
-            },
+          child: RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: () => _loadData(),
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                var isSelected = items[index].likedByUserIds?.any(
+                        (element) => element == store.state.user.documentId) ??
+                    false;
+                return PiggyPost(
+                  likedByUser: isSelected,
+                  onClick: (postId, index) => isSelected
+                      ? _dislikePost(postId, index)
+                      : _likePost(postId, index),
+                  post: items[index],
+                );
+              },
+            ),
           ),
         ),
       ),

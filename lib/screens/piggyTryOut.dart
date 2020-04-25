@@ -3,14 +3,14 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PiggyTestPage extends StatefulWidget {
-  PiggyTestPage({Key key}) : super(key: key);
+class PiggyWelcomePage extends StatefulWidget {
+  PiggyWelcomePage({Key key}) : super(key: key);
 
   @override
   _PiggyPageState createState() => new _PiggyPageState();
 }
 
-class _PiggyPageState extends State<PiggyTestPage>
+class _PiggyPageState extends State<PiggyWelcomePage>
     with TickerProviderStateMixin {
   BehaviorSubject<bool> willAcceptStream;
 
@@ -60,7 +60,7 @@ class _PiggyPageState extends State<PiggyTestPage>
                     Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: Image.asset('assets/images/Child-Login.png')),
+                        child: Image.asset('assets/images/Child-Normal.png')),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 30),

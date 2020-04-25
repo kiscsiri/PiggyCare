@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
-import 'package:piggybanx/enums/period.dart';
+import 'package:piggybanx/Enums/period.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 
@@ -220,7 +220,8 @@ class NotificationServices {
     });
   }
 
-  static sendPiggyApproved(String userName, String childId, int piggyId) async {
+  static Future sendPiggyApproved(
+      String userName, String childId, int piggyId) async {
     Map<String, Object> data = {
       'targetId': childId,
       'userName': userName,

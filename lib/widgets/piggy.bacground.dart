@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:piggybanx/Enums/userType.dart';
 
-BoxDecoration piggyBackgroundDecoration(
-    BuildContext context, UserType userType) {
+BoxDecoration piggyBackgroundDecoration(BuildContext context) {
   var align = Alignment.bottomRight;
 
   var assettName = 'assets/images/child_half.png';
@@ -68,7 +66,7 @@ BoxDecoration piggyFamilyBackgroundDecoration(BuildContext context) {
   );
 }
 
-BoxDecoration coinBackground(BuildContext context, UserType userType) {
+BoxDecoration coinBackground(BuildContext context) {
   var assettName = 'assets/images/coins.png';
   return BoxDecoration(
     color: Color.fromRGBO(255, 255, 0, 0),

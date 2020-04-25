@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:piggybanx/Enums/level.dart' as PiggyLevel2;
+
 enum PiggyLevel { Baby, Child, Teen, Adult, Old }
 
 int levelMap(PiggyLevel level) {
@@ -19,17 +21,18 @@ int levelMap(PiggyLevel level) {
   }
 }
 
-String levelStringValue(PiggyLevel level) {
+// Ez itt package összeakadás miatt van, így kellett megoldani, mert valamiért 2 csomagba csinált egy enums és egy Enums mappa ágat is
+String levelStringValue(PiggyLevel2.PiggyLevel level) {
   switch (level) {
-    case PiggyLevel.Baby:
+    case PiggyLevel2.PiggyLevel.Baby:
       return "Baby";
-    case PiggyLevel.Child:
+    case PiggyLevel2.PiggyLevel.Child:
       return "Child";
-    case PiggyLevel.Teen:
+    case PiggyLevel2.PiggyLevel.Teen:
       return "Teen";
-    case PiggyLevel.Adult:
+    case PiggyLevel2.PiggyLevel.Adult:
       return "Adult";
-    case PiggyLevel.Old:
+    case PiggyLevel2.PiggyLevel.Old:
       return "Old";
     default:
       return "";
