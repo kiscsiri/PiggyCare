@@ -111,7 +111,7 @@ class _ChildSavingScreenState extends State<ChildSavingScreen> {
                 ],
               ),
               PiggyButton(
-                  text: "MALACPERSELY LÉTREHOZÁSA",
+                  text: loc.trans('create_money_box'),
                   disabled: false,
                   onClick: () async {
                     await showCreatePiggyModal(context);

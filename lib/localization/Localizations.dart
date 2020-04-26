@@ -17,7 +17,7 @@ class PiggyLocalizations {
 
   Future<bool> load() async {
     String data = await rootBundle.loadString(
-        'assets/locale/hu.json'); // TODO - Visszacserélni a locale szerinti fájlra, ha van rendes angol
+        'assets/locale/en.json'); // TODO - Visszacserélni a locale szerinti fájlra, ha van rendes angol
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
