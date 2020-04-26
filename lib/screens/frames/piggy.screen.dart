@@ -36,11 +36,13 @@ class PiggyWidget extends StatefulWidget {
 
 class _KidPiggyWidgetState extends State<PiggyWidget>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  AnimationController _controller;
   BehaviorSubject<bool> willAcceptStream;
   VideoPlayerController vidController;
 
   Animation<double> _coinAnimation;
+  Tween<double> _tween;
+  AnimationController _animationController;
 
   StepTween tween = new StepTween();
   double coinX = -1;
