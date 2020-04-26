@@ -69,12 +69,27 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
   void initState() {
     super.initState();
 
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+    _coinAnimation = Tween<double>(begin: 0, end: 300).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+
+    _controller.forward();
+
     piggy = widget.initialPiggy;
   }
 
   @override
   void dispose() async {
-    willAcceptStream.sink.close();
     _controller.dispose();
     super.dispose();
   }

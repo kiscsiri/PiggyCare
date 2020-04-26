@@ -32,16 +32,17 @@ Future<bool> showAskedForNewTask(
 
 Future<bool> showChildrenNewTask(BuildContext context, String name) async {
   var store = StoreProvider.of<AppState>(context);
+  var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
     context: context,
     builder: (context) => PiggyModal(
         title: Text(
-          "Szia " + store.state.user.name + "!",
+          loc.trans('hi') + store.state.user.name + "!",
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
           PiggyButton(
-            text: "NÉZZÜK MEG",
+            text: loc.trans('let_s_check'),
             onClick: () => Navigator.pop(context),
           )
         ],
@@ -50,7 +51,7 @@ Future<bool> showChildrenNewTask(BuildContext context, String name) async {
           children: <Widget>[
             Image.asset('assets/images/notification.png'),
             Text(
-              "Kaptál egy új feladatot!",
+              loc.trans('new_task'),
             ),
           ],
         )),
@@ -64,7 +65,7 @@ Future<bool> showChildrenPiggyInfo(BuildContext context) async {
       context: context,
       builder: (context) => PiggyModal(
           title: Text(
-            "Kész is vagyunk!",
+            loc.trans('ready'),
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
@@ -77,7 +78,7 @@ Future<bool> showChildrenPiggyInfo(BuildContext context) async {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "A Malacpersely azonnal megjelenik a szülői jóváhagyást követően és elkezdhetsz gyűjteni!",
+                  loc.trans('parent_validate_info'),
                   textAlign: TextAlign.center,
                 ),
               ])));
@@ -92,7 +93,7 @@ Future<bool> showChildrenNewPiggy(BuildContext context, String name,
     context: context,
     builder: (context) => PiggyModal(
         title: Text(
-          (name ?? "A gyereked") + " új malacperselyt készített!",
+          (name ?? "${loc.trans('your_child')}") + "${loc.trans('new_piggy')}",
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
@@ -114,17 +115,17 @@ Future<bool> showChildrenNewPiggy(BuildContext context, String name,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Cél: " + targetName,
+                  "${loc.trans('target')} " + targetName,
                   textAlign: TextAlign.left,
                 ),
                 Text(
-                  "Összeg: " + targetPrice.toString() + ' €',
+                  "${loc.trans('sum')} " + targetPrice.toString() + ' €',
                   textAlign: TextAlign.left,
                 ),
               ],
             ),
             Column(
-              children: <Widget>[Text("Jóváhagyod a megtakarítási célt?")],
+              children: <Widget>[Text(loc.trans('ask_validate_saving'))],
             )
           ],
         )),
@@ -142,7 +143,7 @@ Future<bool> showChildrenAcceptedPiggy(
     context: context,
     builder: (context) => PiggyModal(
         title: Text(
-          "Szuper!",
+          loc.trans('super'),
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
@@ -158,7 +159,7 @@ Future<bool> showChildrenAcceptedPiggy(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Az alábbi malacperselybe már el is kezdheted a gyűjtést:",
+                  loc.trans('you_can_start_saving_in_this'),
                   textAlign: TextAlign.center,
                 )
               ],
@@ -169,11 +170,13 @@ Future<bool> showChildrenAcceptedPiggy(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Cél: " + piggy.item,
+                      "${loc.trans('target')} " + piggy.item,
                       textAlign: TextAlign.start,
                     ),
                     Text(
-                      "Összeg: " + piggy.targetPrice.toString() + " €",
+                      "${loc.trans('sum')} " +
+                          piggy.targetPrice.toString() +
+                          " €",
                       textAlign: TextAlign.start,
                     ),
                   ],
@@ -191,13 +194,13 @@ Future<bool> showChildrenDouble(BuildContext context, String name) async {
         title: Column(
           children: <Widget>[
             Text(
-              name + " egy új feladatot kért",
+              name + " ${loc.trans('asked_for_new_task')}",
               textAlign: TextAlign.center,
             ),
             Padding(
               padding: EdgeInsets.only(top: 30.0),
               child: Text(
-                "Adsz neki egyet?",
+                "${loc.trans('will_you_give_him_task_ask')}",
                 style: Theme.of(context).textTheme.headline2,
               ),
             )
@@ -224,7 +227,7 @@ Future<bool> showChildrenAskDoubleSubmit(BuildContext context) async {
         title: Column(
           children: <Widget>[
             Text(
-              "Biztosan duplázni akarsz?",
+              loc.trans('sure_you_want_to_double'),
               style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center,
             ),
@@ -251,7 +254,7 @@ Future<bool> showChildrenFinishTaskSubmit(BuildContext context) async {
         title: Column(
           children: <Widget>[
             Text(
-              "Biztos vagy benne, hogy befejezted a feladatod?",
+              loc.trans('sure_you_want_to_finish'),
               style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center,
             ),
@@ -279,7 +282,7 @@ Future<bool> showRequestSent(BuildContext context, UserType userType) async {
         title: Column(
           children: <Widget>[
             Text(
-              "Sikeres felkérés!",
+              loc.trans('succesful_request'),
               textAlign: TextAlign.center,
             ),
           ],
@@ -300,7 +303,7 @@ Future<bool> showRequestSent(BuildContext context, UserType userType) async {
                     ? Container(
                         height: MediaQuery.of(context).size.height * 0.12,
                         child: Text(
-                          "Amikor visszaigazolja a kérelmet, látni fogod a gyerek megtakarításait és különböző feladatokat is adhatsz neki.",
+                          loc.trans('parent_request_info'),
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 13),
                         ))
@@ -330,7 +333,7 @@ Future<bool> showCompletedTask(BuildContext context, String name) async {
               Padding(
                 padding: const EdgeInsets.only(top: 0.0),
                 child: Text(
-                  (name ?? "") + " elkészült a feladatával.",
+                  (name ?? "") + " ${loc.trans('finished_hist_task')}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor, fontSize: 26),
@@ -340,11 +343,11 @@ Future<bool> showCompletedTask(BuildContext context, String name) async {
           ),
           actions: [
             PiggyButton(
-              text: "IGEN",
+              text: loc.trans('yes'),
               onClick: () => Navigator.of(context).pop(true),
             ),
             PiggyButton(
-              text: "NEM",
+              text: loc.trans('no'),
               onClick: () => Navigator.of(context).pop(false),
             )
           ],
@@ -374,7 +377,7 @@ Future<bool> showValidatedTask(BuildContext context, String name) async {
               Padding(
                 padding: const EdgeInsets.only(top: 0.0, right: 0, left: 0),
                 child: Text(
-                  "Jóváhagyták, hogy kész a feladatod!",
+                  loc.trans('validated_task'),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -413,7 +416,7 @@ Future<bool> showFriendRequestAccepted(
               Padding(
                 padding: const EdgeInsets.only(top: 0.0, right: 0, left: 0),
                 child: Text(
-                  "Siker!",
+                  loc.trans('success'),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -450,7 +453,7 @@ Future<void> showRefusedTask(BuildContext context, String name) async {
               Padding(
                 padding: const EdgeInsets.only(top: 0.0),
                 child: Text(
-                  "Elutasították hogy elkészült a feladatod!",
+                  loc.trans('task_refused'),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -92,6 +92,7 @@ Future<int> showPiggySelector(
 
 Future<void> showAlert(BuildContext context, String errorMessage,
     [String title]) async {
+  var loc = PiggyLocalizations.of(context);
   await showDialog<void>(
     context: context,
     barrierDismissible: true,
@@ -100,7 +101,7 @@ Future<void> showAlert(BuildContext context, String errorMessage,
         padding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).size.height * 0.2),
         child: AlertDialog(
-            title: Text(title ?? "Hiba!"),
+            title: Text(title ?? loc.trans('error')),
             actions: <Widget>[
               PiggyButton(
                 text: "OK",
