@@ -36,7 +36,7 @@ class PiggyWidget extends StatefulWidget {
 
 class _KidPiggyWidgetState extends State<PiggyWidget>
     with TickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController _animationController;
   BehaviorSubject<bool> willAcceptStream;
   VideoPlayerController vidController;
 
@@ -69,23 +69,51 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
   void initState() {
     super.initState();
 
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
-    _coinAnimation = Tween<double>(begin: 0, end: 300).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      })
+    piggy = widget.initialPiggy;
+
+    _animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _tween = Tween(begin: 0.35, end: 0.4);
+    _coinAnimation = _tween.animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.fastOutSlowIn,
+    ))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          _controller.reverse();
+          _animationController.reverse();
         } else if (status == AnimationStatus.dismissed) {
+          _animationController.forward();
+        }
+      })
+      ..addListener(() {
+        setState(() {
+          timeUntilNextFeed = (widget.timeUntilNextFeed * -1)
+              .toString()
+              .replaceRange(
+                  widget.timeUntilNextFeed.toString().lastIndexOf('.'),
+                  (widget.timeUntilNextFeed * -1).toString().length,
+                  '');
+        });
+      });
+    _animationController.forward();
+
+    willAcceptStream = new BehaviorSubject<bool>();
+    willAcceptStream.add(false);
+    _controller = new AnimationController(
+      vsync: this,
+      duration: new Duration(seconds: widget.timeUntilNextFeed.inSeconds % 60),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.duration = new Duration(seconds: 60);
+          setState(() {
+            tween.begin = widget.timeUntilNextFeed.inSeconds % 60;
+          });
+
+          _controller.reset();
           _controller.forward();
         }
       });
-
     _controller.forward();
-
-    piggy = widget.initialPiggy;
   }
 
   @override
