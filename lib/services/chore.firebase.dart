@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/post/user.post.dart';
@@ -11,7 +12,8 @@ import 'package:redux/redux.dart';
 
 class ChoreFirebaseServices extends ChangeNotifier {
   static Future<int> createChoreForUser(
-      Chore chore, Store<AppState> store) async {
+      BuildContext context, Chore chore, Store<AppState> store) async {
+    var loc = PiggyLocalizations.of(context);
     DocumentSnapshot userSnap;
     try {
       userSnap = (await Firestore.instance
@@ -21,7 +23,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           .documents
           .first;
     } on StateError catch (err) {
-      throw Exception("Felhasználó nem található");
+      throw Exception("${loc.trans('no_account')}");
     }
 
     var user = UserData.fromFirebaseDocumentSnapshot(
@@ -38,7 +40,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
         postedDate: Timestamp.now(),
         user: userSnap.reference,
         text:
-            '${store.state.user.name} feladatot adott ${user.name} számára, "${chore.title}" néven!'));
+            '${store.state.user.name} ${loc.trans('gave_task')} ${user.name} ${loc.trans('for')}, ${loc.trans('namen_before')} "${chore.title}" ${loc.trans('namen_after')}!'));
 
     Firestore.instance
         .collection('users')
@@ -77,7 +79,9 @@ class ChoreFirebaseServices extends ChangeNotifier {
         user.parentId, user.name, task.title, task.id, user.id);
   }
 
-  static Future<void> validateChildChore(String userId, int taskId) async {
+  static Future<void> validateChildChore(
+      BuildContext context, String userId, int taskId) async {
+    var loc = PiggyLocalizations.of(context);
     var result = await Firestore.instance
         .collection('users')
         .where('id', isEqualTo: userId)
@@ -101,7 +105,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           postedDate: Timestamp.now(),
           user: user.reference,
           text:
-              '${userData.name} épp befejezte a "${task.title}" nevű feladatát!'));
+              '${userData.name} ${loc.trans('finished')} "${task.title}" ${loc.trans('named_task')}!'));
       await Firestore.instance
           .collection('users')
           .document(user.documentID)

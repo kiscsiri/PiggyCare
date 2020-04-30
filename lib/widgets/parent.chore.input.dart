@@ -43,7 +43,7 @@ class _ChoreInputState extends State<ParentChoreInput> {
       StoreProvider.of<AppState>(context)
           .dispatch(ValidateChoreParent(widget.userId, widget.taskId, true));
       await ChoreFirebaseServices.validateChildChore(
-          widget.userId, widget.taskId);
+          context, widget.userId, widget.taskId);
       await NotificationServices.sendNotificationValidatedTask(
           widget.userId, widget.taskId);
     } else {

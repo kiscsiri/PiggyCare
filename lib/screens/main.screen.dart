@@ -19,6 +19,7 @@ import 'package:piggybanx/screens/frames/social.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/email.services.dart';
 import 'package:piggybanx/services/notification.handler.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/exit.dialog.dart';
@@ -149,7 +150,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       : NetworkImage(
                                           store.state.user.pictureUrl))),
                         ),
-                        Text(store.state.user.name ?? ""),
+                        Text(store.state.user.name ?? "",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15)),
                       ],
                     ),
                   ),
@@ -172,7 +175,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     ),
                   if (store.state.user.userType == UserType.adult)
                     ListTile(
-                      title: Text(loc.trans('add_child')),
+                      title: Text(loc.trans('add_child'),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 15)),
                       onTap: () async {
                         var searchString =
                             await showUserAddModal(context, store);
@@ -188,7 +193,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       },
                     ),
                   ListTile(
-                    title: Text(loc.trans('requests')),
+                    title: Text(loc.trans('requests'),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -199,20 +206,52 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                   )));
                     },
                   ),
+                  if (user.userType == UserType.adult)
+                    ListTile(
+                      title: Text(loc.trans('invite_child_menu'),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 15)),
+                      onTap: () async {
+                        var email = await showUserInviteModal(context, store);
+                        EmailService.sendInviteEmail(user.name, email);
+                        Navigator.pop(context);
+                      },
+                    )
+                  else if (user.userType == UserType.adult)
+                    ListTile(
+                      title: Text(loc.trans('invite_parent_menu'),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 15)),
+                      onTap: () async {
+                        var email = await showUserInviteModal(context, store);
+                        EmailService.sendInviteEmail(user.name, email);
+                        Navigator.pop(context);
+                      },
+                    ),
                   ListTile(
-                    title: Text(loc.trans('eula_short')),
+                    title: Text(loc.trans('eula_short'),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text('Profil'),
+                    title: Text('Profil',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text(loc.trans('terms_use')),
+                    title: Text(loc.trans('terms_use'),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text(loc.trans('logout')),
+                    title: Text(
+                      loc.trans('logout'),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                    ),
                     onTap: () {
                       logout(store);
                     },

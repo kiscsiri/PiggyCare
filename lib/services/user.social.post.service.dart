@@ -5,7 +5,6 @@ import 'package:piggybanx/models/post/user.post.dart';
 class UserPostService {
   static Future<UserPost> createUserPiggyPost(UserPost post) async {
     await Firestore.instance.collection('userPosts').add(post.toJson());
-
     return post;
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/Enums/level.dart';
-import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';

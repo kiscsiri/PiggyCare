@@ -274,6 +274,59 @@ Future<String> showUserAddModal(
   }
 }
 
+Future<String> showUserInviteModal(
+    BuildContext context, Store<AppState> store) async {
+  var textController = new TextEditingController();
+  var loc = PiggyLocalizations.of(context);
+
+  try {
+    await showDialog<String>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return PiggyModal(
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  loc.trans('invite_by_email'),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+                PiggyInput(
+                  hintText: loc.trans('email'),
+                  onValidate: (val) {
+                    if (val.isEmpty) {
+                      return loc.trans('required');
+                    }
+                    return null;
+                  },
+                  textController: textController,
+                )
+              ],
+            ),
+            vPadding: MediaQuery.of(context).size.height * 0.2,
+            actions: <Widget>[
+              PiggyButton(
+                text: loc.trans('invite'),
+                onClick: () => Navigator.of(context).pop(),
+              )
+            ],
+            title: Text(
+              store.state.user.userType == UserType.adult
+                  ? loc.trans("invite_child_menu")
+                  : loc.trans("invite_parent_menu"),
+              textAlign: TextAlign.center,
+            ),
+          );
+        });
+
+    return textController.text;
+  } on Exception {
+    return "";
+  }
+}
+
 int getMaxAnimationIndex(PiggyLevel level) {
   if (level == PiggyLevel.Baby)
     return 2;

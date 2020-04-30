@@ -75,7 +75,7 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
         if (ack ?? false) {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, true));
           await ChoreFirebaseServices.validateChildChore(
-              data['senderId'], taskId);
+              context, data['senderId'], taskId);
           await NotificationServices.sendNotificationValidatedTask(
               data['senderId'], taskId);
         } else {
@@ -173,7 +173,7 @@ Future<dynamic> onStartNotificationHandler(Map<String, dynamic> message,
         if (ack ?? false) {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, true));
           await ChoreFirebaseServices.validateChildChore(
-              data['senderId'], taskId);
+              context, data['senderId'], taskId);
           await NotificationServices.sendNotificationValidatedTask(
               data['senderId'], taskId);
         } else {

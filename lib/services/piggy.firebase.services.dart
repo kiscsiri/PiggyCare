@@ -22,7 +22,7 @@ class PiggyServices {
     user.piggies.add(piggy);
 
     if (piggy.isApproved) {
-      UserPostService.createUserPiggyPost(UserPost(
+      await UserPostService.createUserPiggyPost(UserPost(
           likes: 0,
           text: user.name +
               " ${loc.trans('started_collection_for')} " +

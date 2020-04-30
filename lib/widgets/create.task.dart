@@ -39,8 +39,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
           reward: "",
           title: item));
 
-      action.chore.id =
-          await ChoreFirebaseServices.createChoreForUser(action.chore, store);
+      action.chore.id = await ChoreFirebaseServices.createChoreForUser(
+          context, action.chore, store);
 
       store.dispatch(action);
       NotificationServices.sendNotificationNewTask(widget.child.id,

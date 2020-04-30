@@ -164,8 +164,8 @@
   "search_by_user_data": "Keresés e-mail vagy név alapján",
   "family_hint": "A családtag...",
   "started_collection_for": "elkezdett gyűjteni az alábbi dologra:",
-  "started_collection_for_this": "elkezdett gyűjteni erre:",
-  "his_page": " oldala",
+  "his_page_after": " oldala",
+  "his_page_before": "",
   "hi": "Szia ",
   "let_s_check": "NÉZZÜK MEG",
   "new_task": "Kaptál egy új feladatot!",
@@ -190,5 +190,13 @@
   "add_parent_button": "SZÜLŐ HOZZÁADÁSA",
   "task_refused": "Elutasították hogy elkészült a feladatod!",
   "no_registration": "Ha még nem regisztrált…",
-  "no_parent_info": "Szia! Ahhoz, hogy létre tudd hozni az első Malacperselyedet, hozzá kell adnod a szülőt az ismerőseidhez."
+  "no_parent_info": "Szia! Ahhoz, hogy létre tudd hozni az első Malacperselyedet, hozzá kell adnod a szülőt az ismerőseidhez.",
+  "gave_task": "feladatot adott",
+  "namen_after": "néven",
+  "finished": "épp befejezte a",
+  "named_task": "nevű feladatát!",
+  "invite_parent_menu": "Szülő meghívása",
+  "invite_child_menu": "Gyerek meghívása",
+  "invite_by_email": "Meghívás email címmel",
+  "invite": "Meghívás"
 }
