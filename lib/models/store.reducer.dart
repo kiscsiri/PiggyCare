@@ -33,6 +33,8 @@ AppState handleUserActions(AppState appState, UserAction action) {
     return setChildSavingPerFeed(appState, action);
   } else if (action is AddFamily) {
     return addChildToUser(appState, action);
+  } else if (action is UpdateUserProfile) {
+    return updateUserProfile(appState, action);
   } else if (action is SetSeenDoubleInfo) {
     return setWantToSeeDoubleInfo(appState, action);
   } else {

@@ -23,6 +23,12 @@ class UpdateUserData extends UserAction {
   UpdateUserData(this.user);
 }
 
+class UpdateUserProfile extends UserAction {
+  final UserData user;
+
+  UpdateUserProfile(this.user);
+}
+
 class InitUserData extends UserAction {
   final UserData user;
 

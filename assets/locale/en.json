@@ -195,5 +195,10 @@
   "invite_parent_menu": "Invite parent",
   "invite_child_menu": "Invite child",
   "invite_by_email": "Invite with email",
-  "invite": "Invite"
+  "invite": "Invite",
+  "privacy": "Privacy",
+  "privacy_accept": "You read and agree to our Data Privacy Policy",
+  "privacy_policy": "Privacy Policy",
+  "privacy_validation_error": "Please accept the privacy policy to register!",
+  "save": "SAVE"
 }

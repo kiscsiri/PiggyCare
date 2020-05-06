@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/models/userRequest/user.request.dart';
@@ -60,6 +61,33 @@ class UserServices {
     return users
         .map((u) => UserData.fromFirebaseDocumentSnapshot(u.data, u.documentID))
         .toList();
+  }
+
+  static Future<void> updateUser(UserData userData, {String newPass}) async {
+    var user = await getUserById(userData.documentId);
+
+    user.isAutoPostEnabled = userData.isAutoPostEnabled;
+    user.isPublicProfile = userData.isPublicProfile;
+    user.email = userData.email;
+    user.name = userData.name;
+
+    FirebaseUser auth = await FirebaseAuth.instance.currentUser();
+
+    // if (newPass != null && newPass.isNotEmpty) {
+    //   //Pass in the password to updatePassword.
+    //   auth.updateEmail(email)
+    //   auth.updatePassword(newPass).then((_) {
+    //     print("Succesfull changed password");
+    //   }).catchError((error) {
+    //     print("Password can't be changed" + error.toString());
+    //     //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+    //   });
+    // }
+
+    Firestore.instance
+        .collection('users')
+        .document(userData.documentId)
+        .updateData(user.toJson());
   }
 
   static Future<void> sendRequest(String fromId, String toId) async {

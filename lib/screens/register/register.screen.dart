@@ -17,6 +17,7 @@ import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:redux/redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -32,7 +33,7 @@ class LastPage extends StatefulWidget {
 
 class _RegisterPageState extends State<LastPage> {
   String _message = '';
-
+  bool _privacyElfogadva = false;
   String verificationId;
 
   final _telephoneFormKey = new GlobalKey<FormState>();
@@ -60,7 +61,16 @@ class _RegisterPageState extends State<LastPage> {
     super.dispose();
   }
 
-  Future<void> _register(BuildContext context, Store<AppState> store) async {
+  Future<void> _register() async {
+    setState(() {
+      _message = "";
+    });
+    var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
+    if (!_privacyElfogadva) {
+      showAlert(context, loc.trans('privacy_validation_error'));
+      return;
+    }
     try {
       var res = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
@@ -84,6 +94,15 @@ class _RegisterPageState extends State<LastPage> {
   }
 
   Future<void> signInAndRegisterGoogle(Store<AppState> store) async {
+    setState(() {
+      _message = "";
+    });
+    var loc = PiggyLocalizations.of(context);
+    var store = StoreProvider.of<AppState>(context);
+    if (!_privacyElfogadva) {
+      showAlert(context, loc.trans('privacy_validation_error'));
+      return;
+    }
     var user = await AuthenticationService.signInWithGoogle(store);
     store.dispatch(
         SetFromOauth(user.email, user.displayName, user.uid, user.photoUrl));
@@ -99,102 +118,148 @@ class _RegisterPageState extends State<LastPage> {
         new MaterialPageRoute(builder: (context) => new MainPage()));
   }
 
+  openPrivacy() async {
+    var url =
+        "https://piggybanx.com/wp-content/uploads/2019/11/Adatkezel%C3%A9si-t%C3%A1j%C3%A9koztat%C3%B3.pdf";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     var store = StoreProvider.of<AppState>(context);
     var telephoneBlock = new Form(
         key: _telephoneFormKey,
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
-                child: new Text(
-                  loc.trans("final_step"),
-                  style: Theme.of(context).textTheme.headline2,
-                  textAlign: TextAlign.center,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.85,
+          child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 60.0, top: 30.0),
+                  child: new Text(
+                    loc.trans("final_step"),
+                    style: Theme.of(context).textTheme.headline2,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              PiggyInput(
-                inputIcon: FontAwesomeIcons.user,
-                hintText: loc.trans("user_name"),
-                textController: _userNameController,
-                textInputAction: TextInputAction.go,
-                onSubmit: (val) {
-                  FocusScope.of(context).requestFocus(focusEmail);
-                },
-                width: MediaQuery.of(context).size.width * 0.7,
-                onValidate: (value) {
-                  if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  }
-                  return null;
-                },
-                onErrorMessage: (error) {
-                  setState(() {});
-                },
-              ),
-              PiggyInput(
-                inputIcon: Icons.mail_outline,
-                hintText: loc.trans("email"),
-                focusNode: focusEmail,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.go,
-                textController: _emailController,
-                width: MediaQuery.of(context).size.width * 0.7,
-                onSubmit: (val) {
-                  FocusScope.of(context).requestFocus(focusPassword);
-                },
-                onValidate: (value) {
-                  if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  }
-                  return null;
-                },
-                onErrorMessage: (error) {
-                  setState(() {});
-                },
-              ),
-              PiggyInput(
-                inputIcon: Icons.lock_outline,
-                hintText: loc.trans("password"),
-                textController: _passwordController,
-                focusNode: focusPassword,
-                width: MediaQuery.of(context).size.width * 0.7,
-                obscureText: true,
-                onSubmit: (value) async {
-                  if (_telephoneFormKey.currentState.validate()) {
-                    await _register(context, store);
-                  }
-                },
-                onValidate: (value) {
-                  if (value.isEmpty) {
-                    return loc.trans("required_field");
-                  }
-                  return null;
-                },
-                onErrorMessage: (error) {
-                  setState(() {});
-                },
-              ),
-              Text(
-                _message,
-                style: new TextStyle(color: Colors.redAccent),
-              ),
-              PiggyButton(
-                  text: loc.trans("register"),
-                  onClick: () async {
-                    if (_telephoneFormKey.currentState.validate()) {
-                      await _register(context, store);
+                PiggyInput(
+                  inputIcon: FontAwesomeIcons.user,
+                  hintText: loc.trans("user_name"),
+                  textController: _userNameController,
+                  textInputAction: TextInputAction.go,
+                  onSubmit: (val) {
+                    FocusScope.of(context).requestFocus(focusEmail);
+                  },
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  onValidate: (value) {
+                    if (value.isEmpty) {
+                      return loc.trans("required_field");
                     }
-                  }),
-              Text(loc.trans('or_register_somehow')),
-              PiggyGoogleButton(
-                text: "Google",
-                onClick: () async => signInAndRegisterGoogle(store),
-              ),
-            ]));
+                    return null;
+                  },
+                  onErrorMessage: (error) {
+                    setState(() {});
+                  },
+                ),
+                PiggyInput(
+                  inputIcon: Icons.mail_outline,
+                  hintText: loc.trans("email"),
+                  focusNode: focusEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.go,
+                  textController: _emailController,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  onSubmit: (val) {
+                    FocusScope.of(context).requestFocus(focusPassword);
+                  },
+                  onValidate: (value) {
+                    if (value.isEmpty) {
+                      return loc.trans("required_field");
+                    }
+                    return null;
+                  },
+                  onErrorMessage: (error) {
+                    setState(() {});
+                  },
+                ),
+                PiggyInput(
+                  inputIcon: Icons.lock_outline,
+                  hintText: loc.trans("password"),
+                  textController: _passwordController,
+                  focusNode: focusPassword,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  obscureText: true,
+                  onSubmit: (value) async {
+                    if (_telephoneFormKey.currentState.validate()) {
+                      await _register();
+                    }
+                  },
+                  onValidate: (value) {
+                    if (value.isEmpty) {
+                      return loc.trans("required_field");
+                    }
+                    return null;
+                  },
+                  onErrorMessage: (error) {
+                    setState(() {});
+                  },
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Checkbox(
+                        activeColor: Theme.of(context).primaryColor,
+                        onChanged: (val) {
+                          setState(() {
+                            _privacyElfogadva = val;
+                          });
+                        },
+                        value: _privacyElfogadva,
+                      ),
+                      Flexible(
+                        child: Text(
+                          loc.trans('privacy_accept'),
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                    onTap: () async => await openPrivacy(),
+                    child: Text(
+                      loc.trans('privacy_policy'),
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
+                    )),
+                Text(
+                  _message,
+                  style: new TextStyle(color: Colors.redAccent),
+                ),
+                PiggyButton(
+                    text: loc.trans("register"),
+                    onClick: () async {
+                      if (_telephoneFormKey.currentState.validate()) {
+                        await _register();
+                      }
+                    }),
+                Text(loc.trans('or_register_somehow')),
+                PiggyGoogleButton(
+                  text: "Google",
+                  onClick: () async => signInAndRegisterGoogle(store),
+                ),
+              ]),
+        ));
     return new Scaffold(
         appBar: new AppBar(
           title: Text(loc.trans('registration')),

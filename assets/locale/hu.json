@@ -198,5 +198,10 @@
   "invite_parent_menu": "Szülő meghívása",
   "invite_child_menu": "Gyerek meghívása",
   "invite_by_email": "Meghívás email címmel",
-  "invite": "Meghívás"
+  "invite": "Meghívás",
+  "privacy": "Adatvédelem",
+  "privacy_accept": "Elolvastam és elfogadom az adatvédelmi nyilatkozatot",
+  "privacy_policy": "Adatvédelmi nyilatkozat",
+  "privacy_validation_error": "Kérem a regisztrációhoz fogadja el az adatvédelmi tájékoztatót",
+  "save": "MENTÉS"
 }

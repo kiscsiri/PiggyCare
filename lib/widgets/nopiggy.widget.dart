@@ -5,6 +5,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/widgets/no.parent.modal.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 
 class NoPiggyWidget extends StatefulWidget {
@@ -19,6 +20,14 @@ class NoPiggyWidget extends StatefulWidget {
 
 class _NoPiggyWidgetState extends State<NoPiggyWidget> {
   _addUser() async {
+    await showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return NoParentModal();
+        });
+    return;
+
     var store = StoreProvider.of<AppState>(context);
     var searchString = await showUserAddModal(context, store);
     if (searchString.isNotEmpty)

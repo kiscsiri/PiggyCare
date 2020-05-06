@@ -21,6 +21,8 @@ AppState initUser(AppState state, InitUserData action) {
       pictureUrl: action.user.pictureUrl,
       numberOfCoins: action.user.numberOfCoins,
       period: action.user.period,
+      isAutoPostEnabled: action.user.isAutoPostEnabled,
+      isPublicProfile: action.user.isPublicProfile,
       isDemoOver: action.user.isDemoOver,
       parentId: action.user.parentId,
       phoneNumber: action.user.phoneNumber,
@@ -93,6 +95,18 @@ AppState setWantToSeeDoubleInfo(AppState state, SetSeenDoubleInfo action) {
   var user = state.user;
 
   user.wantToSeeInfoAgain = action.wantToSeeDoubleInfo;
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState updateUserProfile(AppState state, UpdateUserProfile action) {
+  var user = state.user;
+
+  user.isAutoPostEnabled = action.user.isAutoPostEnabled;
+  user.isPublicProfile = action.user.isPublicProfile;
+  user.name = action.user.name;
+  user.email = action.user.email;
 
   var newUserData = user;
   return new AppState(user: newUserData);

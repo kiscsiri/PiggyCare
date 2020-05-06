@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/screens/search.user.dart';
+import 'package:piggybanx/services/email.services.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 
@@ -50,9 +51,13 @@ class _NoParentModalState extends State<NoParentModal> {
         ),
         Text(loc.trans('no_registration')),
         PiggyButton(
-          onClick: null,
+          onClick: () async {
+            var email = await showUserInviteModal(context, store);
+            EmailService.sendInviteEmail(
+                store.state.user.name, store.state.user.userType, email);
+            Navigator.pop(context);
+          },
           text: loc.trans('invite_parent'),
-          disabled: true,
         ),
       ],
     );

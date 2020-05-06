@@ -28,6 +28,8 @@ class UserData {
   String pictureUrl;
   String parentId;
   bool wantToSeeInfoAgain;
+  bool isPublicProfile;
+  bool isAutoPostEnabled;
   List<Piggy> piggies;
   List<Chore> chores;
   List<UserData> children;
@@ -89,6 +91,8 @@ class UserData {
     chores = another.chores;
     piggies = another.piggies;
     children = another.children;
+    isAutoPostEnabled = another.isAutoPostEnabled;
+    isPublicProfile = another.isPublicProfile;
   }
 
   factory UserData.fromFirebaseDocumentSnapshot(
@@ -148,6 +152,8 @@ class UserData {
       this.parentId,
       this.isDemoOver,
       this.phoneNumber,
+      bool isAutoPostEnabled,
+      bool isPublicProfile,
       this.wantToSeeInfoAgain = true,
       this.created,
       this.email,
@@ -155,5 +161,7 @@ class UserData {
       this.pictureUrl})
       : piggies = piggies ?? List<Piggy>(),
         children = children ?? List<UserData>(),
+        isPublicProfile = isPublicProfile ?? true,
+        isAutoPostEnabled = isAutoPostEnabled ?? true,
         chores = chores ?? List<Chore>();
 }

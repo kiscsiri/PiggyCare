@@ -26,6 +26,7 @@ import 'package:piggybanx/widgets/exit.dialog.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
 import 'package:redux/redux.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -158,7 +159,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   ),
                   if (store.state.user.userType == UserType.child)
                     ListTile(
-                      title: Text(loc.trans('add_parent')),
+                      title: Text(loc.trans('add_parent'),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 15)),
                       onTap: () async {
                         var searchString =
                             await showUserAddModal(context, store);
@@ -213,39 +216,49 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               fontWeight: FontWeight.w600, fontSize: 15)),
                       onTap: () async {
                         var email = await showUserInviteModal(context, store);
-                        EmailService.sendInviteEmail(user.name, email);
+                        EmailService.sendInviteEmail(
+                            user.name, user.userType, email);
                         Navigator.pop(context);
                       },
                     )
-                  else if (user.userType == UserType.adult)
+                  else if (user.userType == UserType.child)
                     ListTile(
                       title: Text(loc.trans('invite_parent_menu'),
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 15)),
                       onTap: () async {
                         var email = await showUserInviteModal(context, store);
-                        EmailService.sendInviteEmail(user.name, email);
+                        EmailService.sendInviteEmail(
+                            user.name, user.userType, email);
                         Navigator.pop(context);
                       },
                     ),
                   ListTile(
-                    title: Text(loc.trans('eula_short'),
+                    title: Text(loc.trans('privacy'),
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 15)),
-                    onTap: () {},
+                    onTap: () async {
+                      var url =
+                          "https://piggybanx.com/wp-content/uploads/2019/11/Adatkezel%C3%A9si-t%C3%A1j%C3%A9koztat%C3%B3.pdf";
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
                   ),
-                  ListTile(
-                    title: Text('Profil',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15)),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    title: Text(loc.trans('terms_use'),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15)),
-                    onTap: () {},
-                  ),
+                  // ListTile(
+                  //   title: Text('Profil',
+                  //       style: TextStyle(
+                  //           fontWeight: FontWeight.w600, fontSize: 15)),
+                  //   onTap: () {},
+                  // ),
+                  // ListTile(
+                  //   title: Text(loc.trans('terms_use'),
+                  //       style: TextStyle(
+                  //           fontWeight: FontWeight.w600, fontSize: 15)),
+                  //   onTap: () {},
+                  // ),
                   ListTile(
                     title: Text(
                       loc.trans('logout'),

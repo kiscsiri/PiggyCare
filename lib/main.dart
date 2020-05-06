@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +49,8 @@ class PiggyApp extends StatelessWidget {
     return supportedLocales.first;
   };
 
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+
   ///Themes colors
   final primaryColor = Color(0xffe25979);
   final primaryDark = Color(0xffb1264c);
@@ -74,6 +78,9 @@ class PiggyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
           supportedLocales: supportedLangs,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
           localizationsDelegates: localizationDelegates,
           localeResolutionCallback: localisationResultCallback,
           home: StartupPage(),
