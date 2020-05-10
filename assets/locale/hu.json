@@ -203,5 +203,9 @@
   "privacy_accept": "Elolvastam és elfogadom az adatvédelmi nyilatkozatot",
   "privacy_policy": "Adatvédelmi nyilatkozat",
   "privacy_validation_error": "Kérem a regisztrációhoz fogadja el az adatvédelmi tájékoztatót",
-  "save": "MENTÉS"
+  "save": "MENTÉS",
+  "public_ask": "Public a profilod?",
+  "autmatic_share_ask": "Automatic mérföldkő megosztás?",
+  "automatic_share_info": "Ha bekapcsolod az automatikus mérföldkő megosztást, minden elért teljesítményed meg lesz osztva innenstől a publikus üzenőfalra. (Befejezett feladat, újonnan létrehozott Piggy és az információk róla, befejezett megtakarítás, új feladatok)",
+  "public_profile_info": "Ha bekapcsolod a publikus profilt, az emberek meg tudják nézni a profilodat és látják azokat az adataid, amik ezen az oldalon vannak"
 }

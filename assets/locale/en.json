@@ -200,5 +200,9 @@
   "privacy_accept": "You read and agree to our Data Privacy Policy",
   "privacy_policy": "Privacy Policy",
   "privacy_validation_error": "Please accept the privacy policy to register!",
-  "save": "SAVE"
+  "save": "SAVE",
+  "public_ask": "Public profile?",
+  "autmatic_share_ask": "Automatic milestone share?",
+  "automatic_share_info": "If you turn on automatic milestone share, all your achived progress is going to be shared on the public feed. (Completed task, new Piggy creation with it's infos, completed savings, new tasks)",
+  "public_profile_info": "If you turn on public profile, people can check your profile with your data shown on this page"
 }

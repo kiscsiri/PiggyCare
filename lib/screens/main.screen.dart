@@ -17,6 +17,7 @@ import 'package:piggybanx/screens/frames/parent.chores.screen.dart';
 import 'package:piggybanx/screens/frames/piggy.screen.dart';
 import 'package:piggybanx/screens/frames/social.screen.dart';
 import 'package:piggybanx/screens/friend.requests.dart';
+import 'package:piggybanx/screens/profile.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
 import 'package:piggybanx/services/email.services.dart';
@@ -138,22 +139,28 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          height: MediaQuery.of(context).size.width * 0.2,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: user.pictureUrl == null
-                                      ? AssetImage(
-                                          "lib/assets/images/piggy_nyito.png")
-                                      : NetworkImage(
-                                          store.state.user.pictureUrl))),
+                        Hero(
+                          tag: "profilePic",
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            height: MediaQuery.of(context).size.width * 0.2,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: user.pictureUrl == null
+                                        ? AssetImage(
+                                            "assets/images/Child-Normal.png")
+                                        : NetworkImage(
+                                            store.state.user.pictureUrl))),
+                          ),
                         ),
-                        Text(store.state.user.name ?? "",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15)),
+                        Hero(
+                          tag: "name",
+                          child: Text(store.state.user.name ?? "",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15)),
+                        ),
                       ],
                     ),
                   ),
@@ -247,12 +254,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       }
                     },
                   ),
-                  // ListTile(
-                  //   title: Text('Profil',
-                  //       style: TextStyle(
-                  //           fontWeight: FontWeight.w600, fontSize: 15)),
-                  //   onTap: () {},
-                  // ),
+                  ListTile(
+                    title: Text('Profil',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfileScreen(
+                                user: store.state.user,
+                              )));
+                    },
+                  ),
                   // ListTile(
                   //   title: Text(loc.trans('terms_use'),
                   //       style: TextStyle(

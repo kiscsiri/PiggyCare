@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/Enums/period.dart';
-import 'package:piggybanx/Enums/userType.dart';
+import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
@@ -157,9 +157,16 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
       prefs.setInt("animationCount", feedCtr + 1);
     }
 
-    vidController = VideoPlayerController.asset(
-      'assets/animations/${levelStringValue(piggy.piggyLevel)}-Feed$feedCtr.mp4',
-    );
+    if (!isLevelUp) {
+      vidController = VideoPlayerController.asset(
+        'assets/animations/${levelStringValue(piggy.piggyLevel)}-Feed$feedCtr.mp4',
+      );
+    } else {
+      vidController = VideoPlayerController.asset(
+        'assets/animations/${levelStringValue(piggy.piggyLevel)}-LevelUp.mp4',
+      );
+    }
+
     await vidController.initialize();
     vidController.addListener(videoListener);
     vidController.play();
@@ -188,13 +195,10 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
   }
 
   Future<void> _feedPiggy(int piggyId, Store<AppState> store) async {
-    var tempLevel = piggy.piggyLevel;
-
-    if (tempLevel.index == piggy.piggyLevel.index) {
-      await loadAnimation(false, context, store, piggyId);
-    } else {
-      await loadAnimation(true, context, store, piggyId);
-    }
+    var isLevelUp = (piggy.currentFeedTime >= piggyLevelUpConstraint - 1);
+    try {
+      await loadAnimation(isLevelUp, context, store, piggyId);
+    } catch (err) {}
 
     var action = FeedPiggy(store.state.user.id, piggyId);
     store.dispatch(action);
@@ -369,7 +373,7 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
                         child: Stack(children: [
                           Container(
                             padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.13),
+                                top: MediaQuery.of(context).size.height * 0.08),
                             width: MediaQuery.of(context).size.width * 1,
                             height: MediaQuery.of(context).size.height * 0.45,
                             child: PiggyCoinDropPlaceWidget(

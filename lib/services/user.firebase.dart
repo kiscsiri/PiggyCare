@@ -3,6 +3,7 @@ import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 
 import '../models/user/user.export.dart';
@@ -44,6 +45,7 @@ Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
   if (newPiggyLevel > maxLevel) {
     newPiggyLevel = maxLevel;
     user.isDemoOver = true;
+    await showAlert(context, "Demo over");
     piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
   }
 

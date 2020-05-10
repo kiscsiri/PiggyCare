@@ -20,7 +20,8 @@ class PiggyInput extends StatefulWidget {
       this.onSubmit,
       this.obscureText = false,
       this.focusNode,
-      this.textInputAction})
+      this.textInputAction,
+      this.enabled})
       : super(key: key);
   final String hintText;
   final TextEditingController textController;
@@ -35,6 +36,7 @@ class PiggyInput extends StatefulWidget {
   final bool obscureText;
   final FocusNode focusNode;
   final TextInputAction textInputAction;
+  final bool enabled;
 
   @override
   _PiggyInputState createState() => new _PiggyInputState();
@@ -63,6 +65,8 @@ class _PiggyInputState extends State<PiggyInput> {
   @override
   Widget build(BuildContext context) {
     color = isFocused ? Theme.of(context).primaryColor : Colors.grey;
+    color = (widget.enabled ?? true) ? color : Colors.grey[300];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
       child: Container(
@@ -74,6 +78,7 @@ class _PiggyInputState extends State<PiggyInput> {
           borderRadius: BorderRadius.circular(35),
         ),
         child: TextFormField(
+          enabled: widget.enabled ?? true,
           focusNode: widget.focusNode,
           onFieldSubmitted: (String val) => widget.onSubmit(val),
           obscureText: widget.obscureText,

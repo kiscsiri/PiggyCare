@@ -18,7 +18,7 @@ class PiggyServices {
     var doc = value.documents.first;
 
     var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
-    piggy.id = user.piggies.length + 1;
+    piggy.id = user.piggies.last.id + 1;
     user.piggies.add(piggy);
 
     if (piggy.isApproved) {
