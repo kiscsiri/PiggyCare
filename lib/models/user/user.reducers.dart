@@ -45,7 +45,7 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
   var piggy = state.user.piggies[index];
   piggy.currentFeedTime++;
   if (piggy.currentFeedTime >= piggyLevelUpConstraint &&
-      piggy.piggyLevel != maxPiggyLevel) {
+      piggy.piggyLevel.index < maxPiggyLevel.index) {
     piggy.piggyLevel = PiggyLevel.values[levelMap(piggy.piggyLevel) + 1];
     piggy.currentFeedTime = 0;
   } else {
@@ -54,7 +54,13 @@ AppState feedPiggy(AppState state, FeedPiggy action) {
 
   if (piggy.currentFeedTime >= piggyLevelUpConstraint &&
       piggy.piggyLevel == maxPiggyLevel) {
+    if (piggy.piggyLevel == PiggyLevel.Adult &&
+        piggy.currentFeedTime >= piggyLevelUpConstraint - 1) {
+      piggy.currentFeedTime = 0;
+      piggy.piggyLevel = PiggyLevel.values[0];
+    }
     state.user.isDemoOver = true;
+    piggy.currentFeedTime = 0;
   }
 
   state.user.saving = state.user.saving + state.user.feedPerPeriod;

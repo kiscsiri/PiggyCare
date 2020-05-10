@@ -3,8 +3,8 @@ import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';
-import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
+import 'package:piggybanx/services/notification.modals.dart';
 
 import '../models/user/user.export.dart';
 
@@ -35,17 +35,23 @@ Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
   var newPiggyLevel = 0;
 
   if (piggy.currentFeedTime >= piggyLevelUpConstraint) {
-    piggy.piggyLevel = PiggyLevel.values[piggy.piggyLevel.index + 1];
+    if (piggy.piggyLevel.index + 1 > maxLevel) {
+      piggy.currentFeedTime = 0;
+      piggy.piggyLevel = PiggyLevel.values[0];
+      if (!user.isDemoOver) {
+        await showAppRate(context);
+        user.isDemoOver = true;
+      }
+    } else {
+      piggy.piggyLevel = PiggyLevel.values[
+          (piggy.piggyLevel.index + 1) <= maxLevel
+              ? (piggy.piggyLevel.index + 1)
+              : maxLevel];
+    }
+
     piggy.currentFeedTime = 0;
   } else {
     newPiggyLevel = piggy.piggyLevel.index;
-    piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
-  }
-
-  if (newPiggyLevel > maxLevel) {
-    newPiggyLevel = maxLevel;
-    user.isDemoOver = true;
-    await showAlert(context, "Demo over");
     piggy.piggyLevel = PiggyLevel.values[newPiggyLevel];
   }
 

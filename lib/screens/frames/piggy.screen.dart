@@ -50,7 +50,6 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
   bool _coinVisible = true;
   bool isOnTarget = false;
   bool isAnimationPlaying = false;
-  String timeUntilNextFeed = "";
   Piggy piggy;
 
   void onCoinDrop(int piggyId, Store<AppState> store) {
@@ -88,14 +87,7 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
         }
       })
       ..addListener(() {
-        setState(() {
-          timeUntilNextFeed = (widget.timeUntilNextFeed * -1)
-              .toString()
-              .replaceRange(
-                  widget.timeUntilNextFeed.toString().lastIndexOf('.'),
-                  (widget.timeUntilNextFeed * -1).toString().length,
-                  '');
-        });
+        setState(() {});
       });
     _animationController.forward();
 

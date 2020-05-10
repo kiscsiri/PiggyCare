@@ -39,6 +39,7 @@ dependencies:
   flutter_pagination_helper: ^1.0.0+5
   package_info: ^0.4.0+16
   firebase_analytics: ^5.0.11
+  app_review: ^1.1.0+1
   
   flutter:
     sdk: flutter

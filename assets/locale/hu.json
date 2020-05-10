@@ -207,5 +207,7 @@
   "public_ask": "Public a profilod?",
   "autmatic_share_ask": "Automatic mérföldkő megosztás?",
   "automatic_share_info": "Ha bekapcsolod az automatikus mérföldkő megosztást, minden elért teljesítményed meg lesz osztva innenstől a publikus üzenőfalra. (Befejezett feladat, újonnan létrehozott Piggy és az információk róla, befejezett megtakarítás, új feladatok)",
-  "public_profile_info": "Ha bekapcsolod a publikus profilt, az emberek meg tudják nézni a profilodat és látják azokat az adataid, amik ezen az oldalon vannak"
+  "public_profile_info": "Ha bekapcsolod a publikus profilt, az emberek meg tudják nézni a profilodat és látják azokat az adataid, amik ezen az oldalon vannak",
+  "demo_over_info": "Hamarosan teljes verzióval több száz Piggy animációval és extra lehetőségekkel lesz elérhető a PiggyBanx. Kérlek értékeld, hogy tetszett az applikáció!",
+  "not_now": "Most nem"
 }

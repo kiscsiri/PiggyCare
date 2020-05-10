@@ -1,3 +1,4 @@
+import 'package:app_review/app_review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -82,6 +83,35 @@ Future<bool> showChildrenPiggyInfo(BuildContext context) async {
                   textAlign: TextAlign.center,
                 ),
               ])));
+}
+
+Future<bool> showAppRate(BuildContext context) async {
+  var loc = PiggyLocalizations.of(context);
+
+  return await showDialog<bool>(
+      context: context,
+      builder: (context) => PiggyModal(
+              actions: <Widget>[
+                PiggyButton(
+                  text: loc.trans('sure'),
+                  onClick: () async {
+                    await AppReview.requestReview;
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                PiggyButton(
+                  text: loc.trans('not_now'),
+                  onClick: () => Navigator.of(context).pop(false),
+                ),
+              ],
+              content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      loc.trans('demo_over_info'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ])));
 }
 
 Future<bool> showChildrenNewPiggy(BuildContext context, String name,

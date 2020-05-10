@@ -204,5 +204,7 @@
   "public_ask": "Public profile?",
   "autmatic_share_ask": "Automatic milestone share?",
   "automatic_share_info": "If you turn on automatic milestone share, all your achived progress is going to be shared on the public feed. (Completed task, new Piggy creation with it's infos, completed savings, new tasks)",
-  "public_profile_info": "If you turn on public profile, people can check your profile with your data shown on this page"
+  "public_profile_info": "If you turn on public profile, people can check your profile with your data shown on this page",
+  "demo_over_info": "Hamarosan teljes verzióval több száz Piggy animációval és extra lehetőségekkel lesz elérhető a PiggyBanx. Kérlek értékeld, hogy tetszett az applikáció!",
+  "not_now": "Not now"
 }
