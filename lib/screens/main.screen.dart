@@ -20,11 +20,14 @@ import 'package:piggybanx/screens/friend.requests.dart';
 import 'package:piggybanx/screens/profile.dart';
 import 'package:piggybanx/screens/search.user.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 import 'package:piggybanx/services/email.services.dart';
 import 'package:piggybanx/services/notification.handler.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
+import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/widgets/exit.dialog.dart';
 import 'package:piggybanx/widgets/piggy.navigationBar.dart';
+import 'package:piggybanx/services/notification.modals.dart';
 import 'package:redux/redux.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -68,6 +71,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         versionNumber = '${packageInfo.version}.${packageInfo.buildNumber}';
       });
     });
+
+    Future.delayed(Duration.zero, () {
+      var store = StoreProvider.of<AppState>(context);
+      if (store.state.user.initAutoShareSeen) {
+        showAutmaticShareModal(context).then((value) async {
+          var user = UserData.fromUserData(store.state.user);
+          user.isAutoPostEnabled = value ?? false;
+          user.initAutoShareSeen = true;
+          if (store.state.user.initAutoShareSeen) {
+          } else {
+            await UserServices.updateUser(user);
+            await UserServices.setInitAutoShareSetSeen(user.documentId, true);
+            store.dispatch(InitAutoShareSet(true, value ?? false));
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -81,6 +101,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     if (isExit ?? false) {
       await FirebaseAuth.instance.signOut();
       store.dispatch(InitUserData(UserData()));
+      AnalyticsService.logLogout();
       Navigator.pushReplacement(context,
           new MaterialPageRoute(builder: (context) => new StartupPage()));
     }
@@ -121,6 +142,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       onWillPop: () async {
         var isExitTrue = await showExitModal(context);
         if (isExitTrue ?? false) {
+          AnalyticsService.logLogout();
           exit(0);
         }
         return false;
@@ -285,6 +307,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text("Verzió: ${versionNumber ?? ""}"),
+                      Text("Contact: support@piggybanx.com")
                     ],
                   ),
                 ],

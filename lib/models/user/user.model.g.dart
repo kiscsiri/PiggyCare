@@ -29,6 +29,7 @@ UserData _$UserDataFromJson(Map json, String documentId) {
     phoneNumber: json['phoneNumber'] as String,
     created: DateTime.parse(json['created'] as String),
     email: json['email'] as String,
+    initAutoShareSeen: json['initAutoShareSeen'] as bool,
     name: json['name'] as String,
     pictureUrl: json['pictureUrl'] as String,
   );
@@ -50,6 +51,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'created': instance.created.toIso8601String(),
       'money': instance.money,
       'isDemoOver': instance.isDemoOver,
+      'initAutoShareSeen': instance.initAutoShareSeen,
       'isPublicProfile': instance.isPublicProfile,
       'isAutoPostEnabled': instance.isAutoPostEnabled,
       'chores': instance.chores.map((f) => f.toJson()).toList(),

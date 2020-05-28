@@ -49,7 +49,7 @@ class SearchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var loc = PiggyLocalizations.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
       child: Container(
         decoration: new BoxDecoration(
             boxShadow: [
@@ -71,7 +71,7 @@ class SearchTile extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
-                  width: MediaQuery.of(context).size.width * 0.13,
+                  width: MediaQuery.of(context).size.width * 0.11,
                   height: MediaQuery.of(context).size.height * 0.2,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -81,7 +81,11 @@ class SearchTile extends StatelessWidget {
                               ? AssetImage("lib/assets/images/piggy_nyito.png")
                               : NetworkImage(user.pictureUrl)))),
             ),
-            title: Text(user.name ?? user.email),
+            title: Text(user.name ?? (user.isPublicProfile ? user.email : "")),
+            subtitle: Text(
+              user.isPublicProfile ? user.email : "",
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            ),
             trailing: FlatButton(
                 color: Theme.of(context).primaryColor,
                 onPressed: () async => await _sendRequest(

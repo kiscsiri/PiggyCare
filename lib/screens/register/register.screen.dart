@@ -135,7 +135,7 @@ class _RegisterPageState extends State<LastPage> {
     var telephoneBlock = new Form(
         key: _telephoneFormKey,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.85,
+          width: MediaQuery.of(context).size.width * 0.95,
           child: new Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -225,11 +225,14 @@ class _RegisterPageState extends State<LastPage> {
                         value: _privacyElfogadva,
                       ),
                       Flexible(
+                        flex: 1,
                         child: Text(
                           loc.trans('privacy_accept'),
-                          style: Theme.of(context).textTheme.subtitle2,
+                          maxLines: 3,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(fontSize: 11),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

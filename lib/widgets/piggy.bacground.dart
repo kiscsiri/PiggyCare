@@ -17,6 +17,23 @@ BoxDecoration piggyBackgroundDecoration(BuildContext context) {
   );
 }
 
+BoxDecoration piggyTeenBackgroundDecoration(BuildContext context) {
+  var align = Alignment.bottomRight;
+
+  var assettName = 'assets/images/teen_half.png';
+
+  return BoxDecoration(
+    image: DecorationImage(
+        image: AssetImage(
+          assettName,
+        ),
+        fit: BoxFit.scaleDown,
+        colorFilter:
+            ColorFilter.mode(Colors.white.withOpacity(0.4), BlendMode.dstATop),
+        alignment: align),
+  );
+}
+
 BoxDecoration piggyBusinessBackgroundDecoration(BuildContext context) {
   var align = Alignment.bottomRight;
 

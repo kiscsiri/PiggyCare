@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/Enums/level.dart';
@@ -62,7 +63,9 @@ class _KidPiggyWidgetState extends State<PiggyWidget>
   @override
   void setState(fn) {
     if (mounted) {
-      super.setState(fn);
+      try {
+        super.setState(fn);
+      } catch (err) {}
     }
   }
 

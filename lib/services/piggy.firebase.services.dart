@@ -4,6 +4,7 @@ import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/piggy/piggy.export.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 
 class PiggyServices {
@@ -18,7 +19,7 @@ class PiggyServices {
     var doc = value.documents.first;
 
     var user = UserData.fromFirebaseDocumentSnapshot(doc.data, doc.documentID);
-    piggy.id = user.piggies.last.id + 1;
+    piggy.id = user.piggies.length == 0 ? 0 : user.piggies.last.id + 1;
     user.piggies.add(piggy);
 
     if (piggy.isApproved) {
@@ -31,10 +32,11 @@ class PiggyServices {
           user: doc.reference));
     }
 
-    Firestore.instance
+    await Firestore.instance
         .collection('users')
         .document(doc.documentID)
         .updateData(user.toJson());
+    await AnalyticsService.logPiggyCreated();
   }
 
   static Future<Piggy> validatePiggy(

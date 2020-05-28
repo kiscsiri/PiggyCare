@@ -50,6 +50,9 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
             documentId: e.documentId,
             name: e.name ?? e.email,
             savings: e.piggies
+                .where((element) =>
+                    element.isApproved &&
+                    element.currentSaving <= element.targetPrice)
                 .map((p) => SavingDto(
                     index: i++,
                     name: p.item,
@@ -154,7 +157,18 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
       }).toList();
     }
 
-    return tasks;
+    if (tasks.length != 0)
+      return tasks.toList();
+    else {
+      return [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+              "A +FELADAT HOZZÁADÁS gombra kattintva kérhetsz feladatot a szülőtől!",
+              textAlign: TextAlign.center),
+        )
+      ];
+    }
   }
 
   @override
@@ -219,8 +233,16 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Column(
-                        children: savings,
-                      ),
+                          children: savings.length != 0
+                              ? savings
+                              : [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        "A +MALACPERSELY LÉTREJOZÁSA gombra kattintva kérhetsz feladatot a szülőtől!",
+                                        textAlign: TextAlign.center),
+                                  )
+                                ]),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -276,8 +298,6 @@ class _ChildDetailsWidgetState extends State<ChildDetailsWidget> {
                         child.name + " ${loc.trans('his_tasks')}",
                         style: Theme.of(context).textTheme.headline2,
                       ),
-                      Text(loc.trans('choose_task'),
-                          style: Theme.of(context).textTheme.subtitle2),
                       Padding(
                         padding: const EdgeInsets.only(top: 30.0),
                         child: Column(

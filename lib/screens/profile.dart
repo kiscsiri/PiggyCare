@@ -7,6 +7,7 @@ import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/models/user/user.model.dart';
 import 'package:piggybanx/services/piggy.page.services.dart';
 import 'package:piggybanx/services/user.services.dart';
+import 'package:piggybanx/widgets/piggy.bacground.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -117,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
       await UserServices.updateUser(user);
       store.dispatch(UpdateUserProfile(user));
-      await showAlert(context, "Sikeres felhasználó mentés!");
+      await showAlert(context, "Sikeres felhasználó mentés!", "Siker");
     } catch (err) {
       print(err);
     }
@@ -132,200 +133,222 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: Text(store.state.user.name),
       ),
-      body: ScrollConfiguration(
-        behavior: new ScrollBehavior(),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.88,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Form(
-                  key: _telephoneFormKey,
-                  child: Center(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(children: [
-                            Hero(
-                              tag: "profilePic",
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.22,
-                                height: MediaQuery.of(context).size.width * 0.2,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fitHeight,
-                                        image: _actualImage == null
-                                            ? (user.pictureUrl == null
-                                                ? AssetImage(
-                                                    "assets/images/Child-Normal.png")
-                                                : NetworkImage(user.pictureUrl))
-                                            : _actualImage)),
-                              ),
-                            ),
-                          ]),
-                          widget.isSelfProfile
-                              ? PiggyInput(
-                                  inputIcon: FontAwesomeIcons.user,
-                                  hintText: loc.trans("full_name"),
-                                  focusNode: focusFullName,
-                                  textController: _fullNameController,
-                                  textInputAction: TextInputAction.go,
-                                  onSubmit: (val) async {
-                                    FocusScope.of(context)
-                                        .requestFocus(focusEmail);
-                                    return "";
-                                  },
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  onValidate: (value) {
-                                    if (value.isEmpty) {
-                                      return loc.trans("required_field");
-                                    }
-                                    return null;
-                                  },
-                                  onErrorMessage: (error) {
-                                    setState(() {});
-                                  },
-                                )
-                              : Text(user.name),
-                          widget.isSelfProfile
-                              ? PiggyInput(
-                                  enabled: _isEmailUser,
-                                  inputIcon: Icons.mail_outline,
-                                  hintText: loc.trans("email"),
-                                  focusNode: focusEmail,
-                                  textInputAction: TextInputAction.go,
-                                  textController: _emailController,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  onSubmit: (val) async {
-                                    FocusScope.of(context)
-                                        .requestFocus(focusPassword);
-                                    return "";
-                                  },
-                                  onValidate: (value) {
-                                    if (value.isEmpty) {
-                                      return loc.trans("required_field");
-                                    }
-                                    return null;
-                                  },
-                                  onErrorMessage: (error) {
-                                    setState(() {});
-                                  },
-                                )
-                              : Text(user.email),
-                          widget.isSelfProfile
-                              ? PiggyInput(
-                                  enabled: _isEmailUser,
-                                  inputIcon: Icons.lock_outline,
-                                  hintText: loc.trans("password"),
-                                  textController: _passwordController,
-                                  focusNode: focusPassword,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  obscureText: true,
-                                  onValidate: (value) {},
-                                  onErrorMessage: (error) {
-                                    setState(() {});
-                                  },
-                                )
-                              : Container(),
-                          widget.isSelfProfile
-                              ? Column(children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(children: <Widget>[
-                                          Switch.adaptive(
-                                              value: _isVisible,
-                                              activeColor: Colors.green,
-                                              inactiveThumbColor: Colors.red,
-                                              inactiveTrackColor:
-                                                  Colors.red[100],
-                                              onChanged: (val) =>
-                                                  _setUserVisibility(val)),
-                                          Text(loc.trans('public_ask')),
-                                        ]),
-                                        IconButton(
-                                          onPressed: () => showAlert(context,
-                                              loc.trans('public_profile_info')),
-                                          icon:
-                                              Icon(FontAwesomeIcons.infoCircle),
-                                        )
-                                      ],
-                                    ),
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height * 0.85,
+                decoration: piggyTeenBackgroundDecoration(context),
+              ),
+            ],
+          ),
+          ScrollConfiguration(
+            behavior: new ScrollBehavior(),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.88,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Form(
+                      key: _telephoneFormKey,
+                      child: Center(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(children: [
+                                Hero(
+                                  tag: "profilePic",
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.22,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.2,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: new DecorationImage(
+                                            fit: BoxFit.fitHeight,
+                                            image: _actualImage == null
+                                                ? (user.pictureUrl == null
+                                                    ? AssetImage(
+                                                        "assets/images/Child-Normal.png")
+                                                    : NetworkImage(
+                                                        user.pictureUrl))
+                                                : _actualImage)),
                                   ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
+                                ),
+                              ]),
+                              widget.isSelfProfile
+                                  ? PiggyInput(
+                                      inputIcon: FontAwesomeIcons.user,
+                                      hintText: loc.trans("full_name"),
+                                      focusNode: focusFullName,
+                                      textController: _fullNameController,
+                                      textInputAction: TextInputAction.go,
+                                      onSubmit: (val) async {
+                                        FocusScope.of(context)
+                                            .requestFocus(focusEmail);
+                                        return "";
+                                      },
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      onValidate: (value) {
+                                        if (value.isEmpty) {
+                                          return loc.trans("required_field");
+                                        }
+                                        return null;
+                                      },
+                                      onErrorMessage: (error) {
+                                        setState(() {});
+                                      },
+                                    )
+                                  : Text(user.name),
+                              widget.isSelfProfile
+                                  ? PiggyInput(
+                                      enabled: _isEmailUser,
+                                      inputIcon: Icons.mail_outline,
+                                      hintText: loc.trans("email"),
+                                      focusNode: focusEmail,
+                                      textInputAction: TextInputAction.go,
+                                      textController: _emailController,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      onSubmit: (val) async {
+                                        FocusScope.of(context)
+                                            .requestFocus(focusPassword);
+                                        return "";
+                                      },
+                                      onValidate: (value) {
+                                        if (value.isEmpty) {
+                                          return loc.trans("required_field");
+                                        }
+                                        return null;
+                                      },
+                                      onErrorMessage: (error) {
+                                        setState(() {});
+                                      },
+                                    )
+                                  : Text(user.email),
+                              widget.isSelfProfile
+                                  ? PiggyInput(
+                                      enabled: _isEmailUser,
+                                      inputIcon: Icons.lock_outline,
+                                      hintText: loc.trans("password"),
+                                      textController: _passwordController,
+                                      focusNode: focusPassword,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      obscureText: true,
+                                      onValidate: (value) {},
+                                      onErrorMessage: (error) {
+                                        setState(() {});
+                                      },
+                                    )
+                                  : Container(),
+                              widget.isSelfProfile
+                                  ? Column(children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(children: <Widget>[
                                               Switch.adaptive(
-                                                  value: _isAutoPostEnabled,
+                                                  value: _isVisible,
                                                   activeColor: Colors.green,
                                                   inactiveThumbColor:
                                                       Colors.red,
                                                   inactiveTrackColor:
                                                       Colors.red[100],
                                                   onChanged: (val) =>
-                                                      _setUAutoShare(val)),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.4,
-                                                child: Flexible(
-                                                    child: Text(loc.trans(
-                                                        'autmatic_share_ask'))),
-                                              ),
+                                                      _setUserVisibility(val)),
+                                              Text(loc.trans('public_ask')),
                                             ]),
-                                        IconButton(
-                                          onPressed: () => showAlert(
-                                              context,
-                                              loc.trans(
-                                                  'automatic_share_info')),
-                                          icon:
-                                              Icon(FontAwesomeIcons.infoCircle),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    _message,
-                                    style:
-                                        new TextStyle(color: Colors.redAccent),
-                                  ),
-                                  PiggyButton(
-                                      text: loc.trans("save"),
-                                      onClick: () async {
-                                        if (_telephoneFormKey.currentState
-                                            .validate()) {
-                                          await _updateUser();
-                                        }
-                                      }),
-                                ])
-                              : Column()
-                        ]),
+                                            IconButton(
+                                              onPressed: () => showAlert(
+                                                  context,
+                                                  loc.trans(
+                                                      'public_profile_info'),
+                                                  "Infó",
+                                                  0.16),
+                                              icon: Icon(
+                                                  FontAwesomeIcons.infoCircle),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Switch.adaptive(
+                                                      value: _isAutoPostEnabled,
+                                                      activeColor: Colors.green,
+                                                      inactiveThumbColor:
+                                                          Colors.red,
+                                                      inactiveTrackColor:
+                                                          Colors.red[100],
+                                                      onChanged: (val) =>
+                                                          _setUAutoShare(val)),
+                                                ]),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(loc
+                                                  .trans('autmatic_share_ask')),
+                                            ),
+                                            IconButton(
+                                              onPressed: () => showAlert(
+                                                  context,
+                                                  loc.trans(
+                                                      'automatic_share_info'),
+                                                  "Info",
+                                                  0.07),
+                                              icon: Icon(
+                                                  FontAwesomeIcons.infoCircle),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Text(
+                                        _message,
+                                        style: new TextStyle(
+                                            color: Colors.redAccent),
+                                      ),
+                                      PiggyButton(
+                                          text: loc.trans("save"),
+                                          onClick: () async {
+                                            if (_telephoneFormKey.currentState
+                                                .validate()) {
+                                              await _updateUser();
+                                            }
+                                          }),
+                                    ])
+                                  : Column()
+                            ]),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

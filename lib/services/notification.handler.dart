@@ -71,7 +71,17 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
       case "AproveTaskCompleted":
         int taskId = int.tryParse(data['taskId']);
         store.dispatch(FinishChoreParent(data['senderId'], taskId));
-        bool ack = await showCompletedTask(context, data['userName']);
+        var task = store.state.user.children
+            .singleWhere(
+              (element) => element.id == data['senderId'],
+              orElse: () => null,
+            )
+            ?.chores
+            ?.singleWhere((element) => element.id == taskId,
+                orElse: () => null);
+
+        bool ack = await showCompletedTask(
+            context, data['userName'], task?.title ?? "");
         if (ack ?? false) {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, true));
           await ChoreFirebaseServices.validateChildChore(
@@ -81,7 +91,7 @@ Future<dynamic> onResumeNotificationHandler(Map<String, dynamic> message,
         } else {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, false));
           await NotificationServices.sendNotificationRefusedTask(
-              data['senderId'], taskId);
+              data['senderId'], taskId, store.state.user.name);
           await ChoreFirebaseServices.refuseChildChore(
               data['senderId'], taskId);
         }
@@ -169,7 +179,18 @@ Future<dynamic> onStartNotificationHandler(Map<String, dynamic> message,
       case "AproveTaskCompleted":
         int taskId = int.tryParse(data['taskId']);
         store.dispatch(FinishChoreParent(data['senderId'], taskId));
-        bool ack = await showCompletedTask(context, data['userName']);
+        var task = store.state.user.children
+            .singleWhere(
+              (element) => element.id == data['senderId'],
+              orElse: () => null,
+            )
+            ?.chores
+            ?.singleWhere((element) => element.id == taskId,
+                orElse: () => null);
+
+        bool ack = await showCompletedTask(
+            context, data['userName'], task?.title ?? "");
+
         if (ack ?? false) {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, true));
           await ChoreFirebaseServices.validateChildChore(
@@ -179,7 +200,7 @@ Future<dynamic> onStartNotificationHandler(Map<String, dynamic> message,
         } else {
           store.dispatch(ValidateChoreParent(data['senderId'], taskId, false));
           await NotificationServices.sendNotificationRefusedTask(
-              data['senderId'], taskId);
+              data['senderId'], taskId, store.state.user.name);
           await ChoreFirebaseServices.refuseChildChore(
               data['senderId'], taskId);
         }
@@ -188,6 +209,7 @@ Future<dynamic> onStartNotificationHandler(Map<String, dynamic> message,
         await showValidatedTask(context, data['userName']);
         store.dispatch(
             AcceptChore(data['userId'], int.tryParse(data['taskId'])));
+        _navigate(0, _pageController);
         break;
       case "FriendRequestAccepted":
         var user = await UserServices.getUserById(data['senderId']);

@@ -31,6 +31,7 @@
   "piggy_hungry": "PIGGY ÉHES!",
   "change_money_box": "Persely váltás",
   "money_box_name": "Persely neve:",
+  "task_name": "Feladat neve:",
   "you_have_to_feed": "Meg kell etetned, hogy boldog legyen!",
   "how_much_i_earned": "MENNYI PÉNZT SPÓROLTAM EDDIG",
   "check_savings": "Megnézheted a megtakarításaidat!",
@@ -204,10 +205,12 @@
   "privacy_policy": "Adatvédelmi nyilatkozat",
   "privacy_validation_error": "Kérem a regisztrációhoz fogadja el az adatvédelmi tájékoztatót",
   "save": "MENTÉS",
-  "public_ask": "Public a profilod?",
-  "autmatic_share_ask": "Automatic mérföldkő megosztás?",
-  "automatic_share_info": "Ha bekapcsolod az automatikus mérföldkő megosztást, minden elért teljesítményed meg lesz osztva innenstől a publikus üzenőfalra. (Befejezett feladat, újonnan létrehozott Piggy és az információk róla, befejezett megtakarítás, új feladatok)",
-  "public_profile_info": "Ha bekapcsolod a publikus profilt, az emberek meg tudják nézni a profilodat és látják azokat az adataid, amik ezen az oldalon vannak",
+  "public_ask": "Nyilvános profil?",
+  "autmatic_share_ask": "Automatikus megosztás?",
+  "automatic_share_info": "Ha bekapcsolod az automatikus megosztást, akkor az applikáción belüli tevékenységeid meg lesznek osztva a belső idővonaladon. Ezek a megosztások minden felhasználó számára láthatóak lesznek. A megosztásokhoz a megadott beceneved alatt lesznek láthatóak más felhasználók számára.",
+  "public_profile_info": "Ha bekapcsolod a nyilvános profilt, látni fogják a keresésnél a becenevedet és az e-mail címedet.",
   "demo_over_info": "Hamarosan teljes verzióval több száz Piggy animációval és extra lehetőségekkel lesz elérhető a PiggyBanx. Kérlek értékeld, hogy tetszett az applikáció!",
-  "not_now": "Most nem"
+  "not_now": "Most nem",
+  "automatic_share_modal": "Szeretnéd, hogy Piggy automatikusan megossza a hírfolyamán a haladásaidat? Figyelem! Ez látható lesz minden felhasználó számára a neved alatt!",
+  "automatic_share_extra": "Ezeket a beállításokat a Profilom menüben bármikor módosíthatod."
 }

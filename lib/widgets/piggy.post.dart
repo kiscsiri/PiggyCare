@@ -97,18 +97,6 @@ class _PiggyPostState extends State<PiggyPost> {
                           ".",
                       style: TextStyle(color: Colors.grey)),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Icon(
-                        Icons.share,
-                        color: Colors.blue,
-                      )
-                    ],
-                  ),
-                )
               ],
             )
           ],
@@ -119,11 +107,11 @@ class _PiggyPostState extends State<PiggyPost> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
-              blurRadius: 2.0,
-              spreadRadius: 1.0,
+              blurRadius: 0.5,
+              spreadRadius: 0.5,
               offset: Offset(
-                10.0,
-                10.0,
+                7.0,
+                7.0,
               ),
             )
           ],

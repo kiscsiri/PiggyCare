@@ -38,7 +38,7 @@ class _FirendRequestsScreenState extends State<FirendRequestsScreen> {
       }
 
       NotificationServices.sendNotificationAcceptFriendRequest(
-          fromId, widget.currentUserId);
+          fromId, widget.currentUserId, store.state.user.name);
     } catch (err) {}
     Navigator.of(context).pop();
   }

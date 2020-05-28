@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/appState.dart';
+import 'package:piggybanx/widgets/modals/automatic.share.modal.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.modal.widget.dart';
 
@@ -349,7 +350,8 @@ Future<bool> showRequestSent(BuildContext context, UserType userType) async {
   );
 }
 
-Future<bool> showCompletedTask(BuildContext context, String name) async {
+Future<bool> showCompletedTask(
+    BuildContext context, String name, String taskName) async {
   var loc = PiggyLocalizations.of(context);
   return await showDialog<bool>(
       context: context,
@@ -369,6 +371,13 @@ Future<bool> showCompletedTask(BuildContext context, String name) async {
                       color: Theme.of(context).primaryColor, fontSize: 26),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "${loc.trans('task_name')} $taskName",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              )
             ],
           ),
           actions: [
@@ -427,6 +436,15 @@ Future<bool> showValidatedTask(BuildContext context, String name) async {
             ),
           ),
         );
+      });
+}
+
+Future<bool> showAutmaticShareModal(BuildContext context) async {
+  return await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AutomaticShareAskModal();
       });
 }
 

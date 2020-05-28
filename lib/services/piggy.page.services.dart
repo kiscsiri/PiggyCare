@@ -9,7 +9,7 @@ import 'package:piggybanx/screens/child.chores.details.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 import 'package:piggybanx/widgets/create.piggy.dart';
 import 'package:piggybanx/widgets/create.task.dart';
-import 'package:piggybanx/widgets/double.information.modal.dart';
+import 'package:piggybanx/widgets/modals/double.information.modal.dart';
 import 'package:piggybanx/widgets/no.parent.modal.dart';
 import 'package:piggybanx/widgets/piggy.button.dart';
 import 'package:piggybanx/widgets/piggy.input.dart';
@@ -91,7 +91,7 @@ Future<int> showPiggySelector(
 }
 
 Future<void> showAlert(BuildContext context, String errorMessage,
-    [String title]) async {
+    [String title, double verticalPadding]) async {
   var loc = PiggyLocalizations.of(context);
   await showDialog<void>(
     context: context,
@@ -99,7 +99,8 @@ Future<void> showAlert(BuildContext context, String errorMessage,
     builder: (BuildContext context) {
       return Padding(
         padding: EdgeInsets.symmetric(
-            vertical: MediaQuery.of(context).size.height * 0.2),
+            vertical:
+                MediaQuery.of(context).size.height * (verticalPadding ?? 0.24)),
         child: AlertDialog(
             title: Text(title ?? loc.trans('error')),
             actions: <Widget>[

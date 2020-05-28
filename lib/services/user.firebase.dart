@@ -1,8 +1,10 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:piggybanx/Enums/level.dart';
 import 'package:piggybanx/helpers/constants.dart';
 import 'package:piggybanx/localization/Localizations.dart';
 import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
 import 'package:piggybanx/services/notification.modals.dart';
 
@@ -70,4 +72,6 @@ Future feedPiggyDatabase(BuildContext context, FeedPiggy action) async {
       .collection('users')
       .document(doc.documentID)
       .updateData(user.toJson());
+  await FirebaseAnalytics().logEvent(name: "feed_happened");
+  await AnalyticsService.logFeed();
 }

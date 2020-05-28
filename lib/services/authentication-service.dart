@@ -14,6 +14,7 @@ import 'package:piggybanx/Enums/userType.dart';
 import 'package:piggybanx/models/registration/registration.export.dart';
 import 'package:piggybanx/models/user/user.export.dart';
 import 'package:piggybanx/screens/startup.screen.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 import 'package:redux/redux.dart';
 
 import 'notification.services.dart';
@@ -158,6 +159,8 @@ class AuthenticationService {
           new UserData.fromFirebaseDocumentSnapshot(data.data, data.documentID);
       store.dispatch(InitUserData(userData));
     }
+
+    AnalyticsService.logSignUpEmail();
   }
 
   static Future<FirebaseUser> signInWithGoogle(Store<AppState> store) async {
@@ -182,6 +185,8 @@ class AuthenticationService {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
+
+    AnalyticsService.logLoginoAuth();
     try {
       return user;
     } catch (err) {

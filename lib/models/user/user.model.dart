@@ -30,6 +30,7 @@ class UserData {
   bool wantToSeeInfoAgain;
   bool isPublicProfile;
   bool isAutoPostEnabled;
+  bool initAutoShareSeen;
   List<Piggy> piggies;
   List<Chore> chores;
   List<UserData> children;
@@ -88,6 +89,7 @@ class UserData {
     email = another.email;
     name = another.name;
     parentId = another.parentId;
+    initAutoShareSeen = another.initAutoShareSeen;
     chores = another.chores;
     piggies = another.piggies;
     children = another.children;
@@ -129,6 +131,9 @@ class UserData {
         numberOfCoins: 1,
         email: register.email,
         name: register.username,
+        isAutoPostEnabled: false,
+        initAutoShareSeen: false,
+        isPublicProfile: false,
         pictureUrl: register.pictureUrl,
         isDemoOver: false,
         period: (register.schedule != null)
@@ -152,6 +157,7 @@ class UserData {
       this.parentId,
       this.isDemoOver,
       this.phoneNumber,
+      bool initAutoShareSeen,
       bool isAutoPostEnabled,
       bool isPublicProfile,
       this.wantToSeeInfoAgain = true,
@@ -163,5 +169,6 @@ class UserData {
         children = children ?? List<UserData>(),
         isPublicProfile = isPublicProfile ?? true,
         isAutoPostEnabled = isAutoPostEnabled ?? true,
+        initAutoShareSeen = initAutoShareSeen ?? false,
         chores = chores ?? List<Chore>();
 }

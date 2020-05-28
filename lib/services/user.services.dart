@@ -68,21 +68,11 @@ class UserServices {
 
     user.isAutoPostEnabled = userData.isAutoPostEnabled;
     user.isPublicProfile = userData.isPublicProfile;
+    user.initAutoShareSeen = userData.initAutoShareSeen;
     user.email = userData.email;
     user.name = userData.name;
 
     FirebaseUser auth = await FirebaseAuth.instance.currentUser();
-
-    // if (newPass != null && newPass.isNotEmpty) {
-    //   //Pass in the password to updatePassword.
-    //   auth.updateEmail(email)
-    //   auth.updatePassword(newPass).then((_) {
-    //     print("Succesfull changed password");
-    //   }).catchError((error) {
-    //     print("Password can't be changed" + error.toString());
-    //     //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
-    //   });
-    // }
 
     Firestore.instance
         .collection('users')
@@ -224,6 +214,18 @@ class UserServices {
     var user = await getUserById(documentId);
 
     user.wantToSeeInfoAgain = seenInfo;
+
+    await Firestore.instance
+        .collection('users')
+        .document(documentId)
+        .updateData(user.toJson());
+  }
+
+  static Future setInitAutoShareSetSeen(
+      String documentId, bool seenInfo) async {
+    var user = await getUserById(documentId);
+
+    user.initAutoShareSeen = seenInfo;
 
     await Firestore.instance
         .collection('users')

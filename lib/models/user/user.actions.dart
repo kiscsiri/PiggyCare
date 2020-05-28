@@ -54,4 +54,11 @@ class SetSeenDoubleInfo extends UserAction {
   SetSeenDoubleInfo(this.wantToSeeDoubleInfo);
 }
 
+class InitAutoShareSet extends UserAction {
+  final bool initAutoShareSet;
+  final bool wantToSharePosts;
+
+  InitAutoShareSet(this.initAutoShareSet, this.wantToSharePosts);
+}
+
 class IncrementCoins extends UserAction {}

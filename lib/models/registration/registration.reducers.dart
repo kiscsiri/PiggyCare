@@ -58,27 +58,7 @@ AppState addItem(AppState state, AddPiggy action) {
         isApproved: isApproved,
         targetPrice: action.piggy.targetPrice));
 
-    newUser = UserData(
-        created: state.user.created,
-        feedPerPeriod: state.user.feedPerPeriod,
-        userType: state.user.userType,
-        id: state.user.id,
-        piggies: state.user.piggies,
-        lastFeed: state.user.lastFeed,
-        money: state.user.money,
-        numberOfCoins: state.user.numberOfCoins,
-        wantToSeeInfoAgain: state.user.wantToSeeInfoAgain,
-        children: state.user.children,
-        documentId: state.user.documentId,
-        parentId: state.user.parentId,
-        email: state.user.email,
-        name: state.user.name,
-        isDemoOver: state.user.isDemoOver,
-        chores: state.user.chores,
-        pictureUrl: state.user.pictureUrl,
-        period: state.user.period,
-        phoneNumber: state.user.phoneNumber,
-        saving: state.user.saving);
+    newUser = UserData.fromUserData(state.user);
   } else {
     var child = state.user.children
         .singleWhere((element) => element.id == action.piggy.userId);
@@ -95,25 +75,7 @@ AppState addItem(AppState state, AddPiggy action) {
         isApproved: true,
         targetPrice: action.piggy.targetPrice));
 
-    newUser = UserData(
-        created: state.user.created,
-        feedPerPeriod: state.user.feedPerPeriod,
-        userType: state.user.userType,
-        id: state.user.id,
-        piggies: state.user.piggies,
-        lastFeed: state.user.lastFeed,
-        money: state.user.money,
-        children: state.user.children,
-        documentId: state.user.documentId,
-        parentId: state.user.parentId,
-        email: state.user.email,
-        name: state.user.name,
-        isDemoOver: state.user.isDemoOver,
-        chores: state.user.chores,
-        pictureUrl: state.user.pictureUrl,
-        period: state.user.period,
-        phoneNumber: state.user.phoneNumber,
-        saving: state.user.saving);
+    newUser = UserData.fromUserData(state.user);
   }
 
   return new AppState(user: newUser, registrationData: new RegistrationData());

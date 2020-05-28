@@ -24,6 +24,7 @@ AppState initUser(AppState state, InitUserData action) {
       isAutoPostEnabled: action.user.isAutoPostEnabled,
       isPublicProfile: action.user.isPublicProfile,
       isDemoOver: action.user.isDemoOver,
+      initAutoShareSeen: action.user.initAutoShareSeen,
       parentId: action.user.parentId,
       phoneNumber: action.user.phoneNumber,
       saving: action.user.saving,
@@ -101,6 +102,16 @@ AppState setWantToSeeDoubleInfo(AppState state, SetSeenDoubleInfo action) {
   var user = state.user;
 
   user.wantToSeeInfoAgain = action.wantToSeeDoubleInfo;
+
+  var newUserData = user;
+  return new AppState(user: newUserData);
+}
+
+AppState setinitAutoShareSet(AppState state, InitAutoShareSet action) {
+  var user = state.user;
+
+  user.initAutoShareSeen = true;
+  user.isAutoPostEnabled = action.wantToSharePosts;
 
   var newUserData = user;
   return new AppState(user: newUserData);

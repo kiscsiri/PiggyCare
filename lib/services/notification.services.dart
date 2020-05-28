@@ -241,10 +241,8 @@ class NotificationServices {
     });
   }
 
-  static sendNotificationNewPiggy(String childId) async {
-    Map<String, Object> data = {
-      'childId': childId,
-    };
+  static sendNotificationNewPiggy(String childId, String name) async {
+    Map<String, Object> data = {'childId': childId, 'name': name};
     var jsonString = json.encode(data);
 
     await http
@@ -282,11 +280,12 @@ class NotificationServices {
   }
 
   static sendNotificationAcceptFriendRequest(
-      String targetId, String fromId) async {
+      String targetId, String fromId, String fromName) async {
     Map<String, Object> data = {
       'targetId': targetId,
       'fromId': fromId,
-      'senderId': fromId
+      'senderId': fromId,
+      'userName': fromName
     };
     var jsonString = json.encode(data);
 
@@ -302,8 +301,12 @@ class NotificationServices {
     });
   }
 
-  static Future<void> sendNotificationRefusedTask(childId, taskId) async {
-    Map<String, Object> data = {'targetId': childId, 'taskId': taskId};
+  static Future<void> sendNotificationRefusedTask(childId, taskId, name) async {
+    Map<String, Object> data = {
+      'targetId': childId,
+      'taskId': taskId,
+      'userName': name
+    };
     var jsonString = json.encode(data);
 
     await http

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piggybanx/helpers/pagination.helper.dart';
 import 'package:piggybanx/models/post/user.post.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 
 class UserPostService {
   static Future<UserPost> createUserPiggyPost(UserPost post) async {
@@ -8,6 +9,7 @@ class UserPostService {
     var isAutoPostEnabled = user.data['isAutoPostEnabled'] as bool;
     if (isAutoPostEnabled != null && isAutoPostEnabled) {
       await Firestore.instance.collection('userPosts').add(post.toJson());
+      await AnalyticsService.logPostCreated();
     }
     return post;
   }
@@ -37,6 +39,8 @@ class UserPostService {
         .collection('userPosts')
         .document(post.documentID)
         .updateData(postDto.toJson());
+
+    await AnalyticsService.logPostLiked();
   }
 
   static Future removeLikeFromPost(String postId, String userDocumentId) async {
@@ -52,5 +56,6 @@ class UserPostService {
         .collection('userPosts')
         .document(post.documentID)
         .updateData(postDto.toJson());
+    AnalyticsService.logDislike();
   }
 }

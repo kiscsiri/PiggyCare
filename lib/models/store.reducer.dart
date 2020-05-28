@@ -37,6 +37,8 @@ AppState handleUserActions(AppState appState, UserAction action) {
     return updateUserProfile(appState, action);
   } else if (action is SetSeenDoubleInfo) {
     return setWantToSeeDoubleInfo(appState, action);
+  } else if (action is InitAutoShareSet) {
+    return setinitAutoShareSet(appState, action);
   } else {
     return null;
   }
@@ -69,7 +71,8 @@ AppState handleRegistrationActions(
 
 AppState handlePiggyActions(AppState appState, ChildPiggyAction action) {
   if (action is AddNewPiggy) {
-    NotificationServices.sendNotificationNewPiggy(action.piggy.userId);
+    NotificationServices.sendNotificationNewPiggy(
+        action.piggy.userId, appState.user.name);
     PiggyFirebaseServices().addPiggy(action.piggy);
     return addPiggy(appState, action);
   } else if (action is FeedChildPiggy) {

@@ -38,7 +38,8 @@ class _ChoreInputState extends State<ParentChoreInput> {
   bool selected = false;
 
   Future<void> _finishChore(BuildContext context) async {
-    bool ack = await showCompletedTask(context, "");
+    var store = StoreProvider.of(context);
+    bool ack = await showCompletedTask(context, "", "asd");
     if (ack ?? false) {
       StoreProvider.of<AppState>(context)
           .dispatch(ValidateChoreParent(widget.userId, widget.taskId, true));
@@ -50,7 +51,7 @@ class _ChoreInputState extends State<ParentChoreInput> {
       StoreProvider.of<AppState>(context)
           .dispatch(ValidateChoreParent(widget.userId, widget.taskId, false));
       await NotificationServices.sendNotificationRefusedTask(
-          widget.userId, widget.taskId);
+          widget.userId, widget.taskId, store.state.user.name);
       await ChoreFirebaseServices.refuseChildChore(
           widget.userId, widget.taskId);
     }

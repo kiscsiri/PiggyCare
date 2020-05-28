@@ -124,20 +124,6 @@ class _PiggySocialState extends State<PiggySocial> {
   Widget build(BuildContext context) {
     var store = StoreProvider.of<AppState>(context);
     return Column(children: [
-      // Container(
-      //   height: MediaQuery.of(context).size.height * 0.08,
-      //   width: MediaQuery.of(context).size.width,
-      //   color: Theme.of(context).primaryColor,
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: <Widget>[
-      //       TopNavigationBarItem(icon: Icons.home),
-      //       TopNavigationBarItem(icon: Icons.image),
-      //       TopNavigationBarItem(icon: Icons.videocam),
-      //       TopNavigationBarItem(icon: Icons.chat_bubble)
-      //     ],
-      //   ),
-      // ),
       Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * (isLoading ? 0.7 : 0.8),

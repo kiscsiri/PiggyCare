@@ -5,6 +5,7 @@ import 'package:piggybanx/models/appState.dart';
 import 'package:piggybanx/models/chore/chore.export.dart';
 import 'package:piggybanx/models/post/user.post.dart';
 import 'package:piggybanx/models/user/user.export.dart';
+import 'package:piggybanx/services/analytics.service.dart';
 import 'package:piggybanx/services/notification.services.dart';
 import 'package:piggybanx/services/user.services.dart';
 import 'package:piggybanx/services/user.social.post.service.dart';
@@ -42,11 +43,11 @@ class ChoreFirebaseServices extends ChangeNotifier {
         text:
             '${store.state.user.name} ${loc.trans('gave_task')} ${user.name} ${loc.trans('for')}, ${loc.trans('namen_before')} "${chore.title}" ${loc.trans('namen_after')}!'));
 
-    Firestore.instance
+    await Firestore.instance
         .collection('users')
         .document(user.documentId)
         .updateData(user.toJson());
-
+    AnalyticsService.logTaszkCreated();
     return chore.id;
   }
 
@@ -110,6 +111,7 @@ class ChoreFirebaseServices extends ChangeNotifier {
           .collection('users')
           .document(user.documentID)
           .updateData(userData.toJson());
+      AnalyticsService.logTaskCompleted();
     }
   }
 
