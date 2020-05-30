@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>856214861570-bdrshh637hj9ncoel1e544c107b5gdhr.apps.googleusercontent.com</string>
+	<string>856214861570-38q6qhrn7hfcvo3a9efqh7bkijmfemk0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.856214861570-bdrshh637hj9ncoel1e544c107b5gdhr</string>
+	<string>com.googleusercontent.apps.856214861570-38q6qhrn7hfcvo3a9efqh7bkijmfemk0</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>856214861570-qpe9llbr6utctalob9h1fp8rlsobelsg.apps.googleusercontent.com</string>
+	<string>856214861570-kkfeqng60reinqj8rpjhbtf38otc9l81.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDTZSi4NrIA6edE6eVijhUBeN8_UGBBycM</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:856214861570:ios:cdf85c62f854f62b</string>
+	<string>1:856214861570:ios:3cbc5df8f5a83f93d2b41b</string>
 	<key>DATABASE_URL</key>
 	<string>https://piggybanx-c2e75.firebaseio.com</string>
 </dict>
