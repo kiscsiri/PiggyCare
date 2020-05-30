@@ -74,7 +74,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     Future.delayed(Duration.zero, () {
       var store = StoreProvider.of<AppState>(context);
-      if (store.state.user.initAutoShareSeen) {
+      if (!store.state.user.initAutoShareSeen) {
         showAutmaticShareModal(context).then((value) async {
           var user = UserData.fromUserData(store.state.user);
           user.isAutoPostEnabled = value ?? false;
